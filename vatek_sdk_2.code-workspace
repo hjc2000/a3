@@ -10,7 +10,8 @@
 			"tar": "cpp",
 			"ctar": "cpp",
 			"tool_stream.h": "c",
-			"bridge_device.h": "c"
+			"bridge_device.h": "c",
+			"tool_printf.h": "c"
 		}
 	}
 }
