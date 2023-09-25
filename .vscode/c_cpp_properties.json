@@ -4,7 +4,7 @@
 			"name": "Win32",
 			"includePath": [
 				"${workspaceFolder}/**",
-				"${workspaceFolder}/api/**",
+				"${workspaceFolder}/api/**"
 			],
 			"defines": [
 				"_DEBUG",
