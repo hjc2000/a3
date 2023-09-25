@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"test": "cpp",
+			"tar": "cpp",
+			"ctar": "cpp",
+			"tool_stream.h": "c",
+			"bridge_device.h": "c"
+		}
+	}
+}
