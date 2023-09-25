@@ -41,53 +41,77 @@
 #include "../common/inc/tool_tspacket.h"
 #include "../common/inc/tool_stream.h"
 
+#define BROADCAST_EN_AUX 0
+#define BROADCAST_EN_BML 0
+#define BROADCAST_EN_COLORBAR 1
+#define BROADCAST_EN_BRIDGE 0
 
-#define BROADCAST_EN_AUX		0
-#define BROADCAST_EN_BML		0
-#define BROADCAST_EN_COLORBAR	1
-#define BROADCAST_EN_BRIDGE		0
-
-#define BROADCAST_RF_TEST		0
-#define BROADCAST_NORMAL		1
+#define BROADCAST_RF_TEST 0
+#define BROADCAST_NORMAL 1
 
 /* broadcast parameters*/
 static broadcast_param bc_param =
-{
-	.enc =
 	{
+		.enc =
+			{
 #if BROADCAST_EN_COLORBAR
-		.mode = encoder_source_colorbar,
+				.mode = encoder_source_colorbar,
 #else
-		.mode = encoder_source_vi_0,
+				.mode = encoder_source_vi_0,
 #endif
-		.pmt_pid = 0x1000,
-		.recv = 0,
-		.encoder_flags = 1,
-		.encoder_tag = 0,
-		.video = { encvideo_mpeg2,resolution_1080i,framerate_59_94,aspectrate_16_9 },
-		.quality = { rc_vbr,5,10,16,500,19000000, },
-		.viparam = { EP9555E_VI_FLAG,148500,0,0, },
+				.pmt_pid = 0x1000,
+				.recv = 0,
+				.encoder_flags = 1,
+				.encoder_tag = 0,
+				.video = {encvideo_mpeg2, resolution_1080i, framerate_59_94, aspectrate_16_9},
+				.quality = {
+					rc_vbr,
+					5,
+					10,
+					16,
+					500,
+					19000000,
+				},
+				.viparam = {
+					EP9555E_VI_FLAG,
+					148500,
+					0,
+					0,
+				},
 #if BROADCAST_EN_COLORBAR
-		.audio = { encaudio_aac_lc_adts,sample_rate_48,channel_mute, },
+				.audio = {
+					encaudio_aac_lc_adts,
+					sample_rate_48,
+					channel_mute,
+				},
 #else
-		.audio = { encaudio_aac_lc_adts,sample_rate_48,channel_stereo, },
+				.audio = {
+					encaudio_aac_lc_adts,
+					sample_rate_48,
+					channel_stereo,
+				},
 #endif
-		.video_pid = 0x1002,
-		.audio_pid = 0x1003,
-	},
-	.mod =
-	{
-		.bandwidth_symbolrate = 6,
-		.type = modulator_isdb_t,
-		.ifmode = ifmode_iqoffset,.iffreq_offset = 143,.dac_gain = 0,
-		.mod = {.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_32, coderate_2_3, isdb_t_interleaved_mode3},},
-	},
-	.mux =
-	{
-		.pcr_pid = 0x100,
-		.padding_pid = 0x1FFF,
-		.bitrate = 0,0,0,0,
-	},
+				.video_pid = 0x1002,
+				.audio_pid = 0x1003,
+			},
+		.mod = {
+			.bandwidth_symbolrate = 6,
+			.type = modulator_isdb_t,
+			.ifmode = ifmode_iqoffset,
+			.iffreq_offset = 143,
+			.dac_gain = 0,
+			.mod = {
+				.isdb_t = {isdb_t_qam64, fft_8k, guard_interval_1_32, coderate_2_3, isdb_t_interleaved_mode3},
+			},
+		},
+		.mux = {
+			.pcr_pid = 0x100,
+			.padding_pid = 0x1FFF,
+			.bitrate = 0,
+			0,
+			0,
+			0,
+		},
 };
 
 #if BROADCAST_EN_BML
@@ -99,27 +123,33 @@ typedef struct _bml_stream
 	uint8_t recv;
 	int32_t eslen;
 	uint8_t esbuf[64];
-}bml_stream, * Pbml_stream;
+} bml_stream, *Pbml_stream;
 
 extern void bmlesinfo_create(Pbml_stream pbml);
 
 static bml_stream bmltests[3] =
-{
-	{0x320,0x40,0,0,{0,}},
-	{0x321,0x50,0,0,{0,}},
-	{0x322,0x60,0,0,{0,}},
+	{
+		{0x320, 0x40, 0, 0, {
+								0,
+							}},
+		{0x321, 0x50, 0, 0, {
+								0,
+							}},
+		{0x322, 0x60, 0, 0, {
+								0,
+							}},
 };
 
 #endif
 
 #if BROADCAST_EN_AUX
 
-extern Pbroadcast_auxstream auxsource_test_open(const char* filename, usbaux_mode mode, uint32_t bitrate);
+extern Pbroadcast_auxstream auxsource_test_open(const char *filename, usbaux_mode mode, uint32_t bitrate);
 extern void auxsource_test_close(Pbroadcast_auxstream pauxtest);
 
 #endif
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	hvatek_devices hdevlist = NULL;
 	hvatek_chip hchip = NULL;
@@ -137,37 +167,41 @@ int main(int argc, char* argv[])
 	if (argc == 4)
 	{
 		int32_t cmdbitrate = atoi(argv[2]);
-		if (cmdbitrate > 0)auxbitrate = cmdbitrate;
-		if (strcmp(argv[1], "async") == 0)auxmode = usbaux_async;
+		if (cmdbitrate > 0)
+			auxbitrate = cmdbitrate;
+		if (strcmp(argv[1], "async") == 0)
+			auxmode = usbaux_async;
 
 		pauxstream = auxsource_test_open(argv[3], auxmode, auxbitrate);
-		if (!pauxstream)_disp_err("open aux test file fail : %s", argv[3]);
+		if (!pauxstream)
+			_disp_err("open aux test file fail : %s", argv[3]);
 		else
 		{
 			_disp_l("enable aux stream - [%d:%d:%s]", auxmode, auxbitrate, argv[3]);
 			nres = vatek_success;
 		}
 	}
-	else nres = vatek_success;
+	else
+		nres = vatek_success;
 
 #else
 	nres = vatek_success;
 #endif
 
 #if 1
-	/*
-		the easiest way to changed modulation mode used modulator_param_reset.
-		example :
-			modulator_param_reset(modulator_atsc,&usbcmd.modulator);
-			modulator_param_reset(modulator_j83b,&usbcmd.modulator);
-			modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
-			modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
+		/*
+			the easiest way to changed modulation mode used modulator_param_reset.
+			example :
+				modulator_param_reset(modulator_atsc,&usbcmd.modulator);
+				modulator_param_reset(modulator_j83b,&usbcmd.modulator);
+				modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
+				modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
 
-	*/
-	//modulator_param_reset(modulator_isdb_t, &bc_param.mod);
-	//bc_param.mod.ifmode = ifmode_iqoffset;
-	//bc_param.mod.iffreq_offset = 143;
-	//nres = modulator_param_get_bitrate(&bc_param.mod);
+		*/
+		// modulator_param_reset(modulator_isdb_t, &bc_param.mod);
+		// bc_param.mod.ifmode = ifmode_iqoffset;
+		// bc_param.mod.iffreq_offset = 143;
+		// nres = modulator_param_get_bitrate(&bc_param.mod);
 #endif
 	/*
 		step 1 :
@@ -187,21 +221,32 @@ int main(int argc, char* argv[])
 			else
 			{
 				nres = vatek_device_open(hdevlist, 0, &hchip);
-				if (!is_vatek_success(nres))_disp_err("open device fail : %d", nres);
+				if (!is_vatek_success(nres))
+				{
+					_disp_err("open device fail : %d", nres);
+				}
 				else
 				{
 					pinfo = vatek_device_get_info(hchip);
 					printf_chip_info(pinfo);
 					nres = vatek_badstatus;
-					if (pinfo->status != chip_status_waitcmd)_disp_err("device not ready : %d", pinfo->status);
-					else nres = vatek_success;
+					if (pinfo->status != chip_status_waitcmd)
+					{
+						_disp_err("device not ready : %d", pinfo->status);
+					}
+					else
+					{
+						nres = vatek_success;
+					}
 				}
 			}
 		}
+
 		if (is_vatek_success(nres))
 		{
 			nres = vatek_broadcast_open(hchip, &hbc);
-			if (!is_vatek_success(nres))_disp_err("open broadcast service fail : %d", nres);
+			if (!is_vatek_success(nres))
+				_disp_err("open broadcast service fail : %d", nres);
 		}
 	}
 
@@ -210,23 +255,20 @@ int main(int argc, char* argv[])
 			- check video and audio source ready or used bootlogo_ or colorbar_
 	*/
 #if BROADCAST_RF_TEST
-	//vatek_device_start_sine(hchip, 473000);
-	//vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
+	// vatek_device_start_sine(hchip, 473000);
+	// vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
 
 	r2_param r2param;
 	nres = rfmixer_r2_get_param(hchip, &r2param);
-	if (is_vatek_success(nres)) {
-		r2param.mode = r2_cntl_path_1;          // switch j83b qam inversion used r2_cntl_path_1
+	if (is_vatek_success(nres))
+	{
+		r2param.mode = r2_cntl_path_1; // switch j83b qam inversion used r2_cntl_path_1
 		r2param.freqkhz = 473000;
 		nres = rfmixer_r2_set_param(hchip, &r2param);
 		nres = rfmixer_r2_start(hchip, 0x600, &r2param);
 	}
 
-
-
 #endif
-
-
 
 #if BROADCAST_NORMAL
 #if BROADCAST_EN_BRIDGE
@@ -238,8 +280,10 @@ int main(int argc, char* argv[])
 		nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_broadcast, &hblists);
 		if (is_vatek_success(nres))
 		{
-			if (nres > vatek_success)nres = vatek_device_open(hblists, 0, &hbchip);
-			else if (nres == vatek_success)nres = vatek_nodevice;
+			if (nres > vatek_success)
+				nres = vatek_device_open(hblists, 0, &hbchip);
+			else if (nres == vatek_success)
+				nres = vatek_nodevice;
 		}
 
 		_disp_l("connect to bridge device .... [%d]", nres);
@@ -265,7 +309,8 @@ int main(int argc, char* argv[])
 							if (bsource.status == bstatus_active || bsource.status == bstatus_active_protect)
 							{
 								nres = vatek_bridge_start_av_source(hbridge, &bsource);
-								if (!is_vatek_success(nres))_disp_err("start bridge avsource fail : %d", nres);
+								if (!is_vatek_success(nres))
+									_disp_err("start bridge avsource fail : %d", nres);
 								else
 								{
 									Pencoder_param penc = &bc_param.enc;
@@ -286,11 +331,14 @@ int main(int argc, char* argv[])
 					}
 				}
 			}
-			else _disp_err("open bridge fail : %d", nres);
+			else
+				_disp_err("open bridge fail : %d", nres);
 		}
 
-		if (hbchip)vatek_device_close(hbchip);
-		if (hblists)vatek_device_list_free(hblists);
+		if (hbchip)
+			vatek_device_close(hbchip);
+		if (hblists)
+			vatek_device_list_free(hblists);
 		nres = vatek_success;
 	}
 #endif
@@ -306,12 +354,12 @@ int main(int argc, char* argv[])
 			penc->audio .... (audio encoder and input information)
 		*/
 		if (pinfo->chip_module == ic_module_b3_lite)
-			penc->video.vcodec = encvideo_h264;			/* b3 lite only support h264 codec */
+			penc->video.vcodec = encvideo_h264; /* b3 lite only support h264 codec */
 
 		if (bc_param.mod.type == modulator_isdb_t)
 			penc->audio.acodec = encaudio_aac_lc_adts;
 		else if (bc_param.mod.type == modulator_atsc ||
-			bc_param.mod.type == modulator_j83b)
+				 bc_param.mod.type == modulator_j83b)
 			penc->audio.acodec = encaudio_ac3;
 #if 0
 		penc->mode = encoder_source_colorbar;
@@ -407,22 +455,24 @@ int main(int argc, char* argv[])
 
 	r2_param r2param;
 	nres = rfmixer_r2_get_param(hchip, &r2param);
-	if (is_vatek_success(nres)) {
-		r2param.mode = r2_cntl_path_0;          // switch j83b qam inversion used r2_cntl_path_1
+	if (is_vatek_success(nres))
+	{
+		r2param.mode = r2_cntl_path_0; // switch j83b qam inversion used r2_cntl_path_1
 		r2param.freqkhz = 473000;
 	}
 
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_broadcast_start(hbc, &bc_param, pauxstream, r2param);
-		if (!is_vatek_success(nres))_disp_err("start broadcast fail : %d", nres);
+		if (!is_vatek_success(nres))
+			_disp_err("start broadcast fail : %d", nres);
 	}
 
 	if (is_vatek_success(nres))
 	{
 		int32_t is_stop = 0;
-		int* index = 0;
-		uint8_t* pktbuf = NULL;
+		int *index = 0;
+		uint8_t *pktbuf = NULL;
 		Pbroadcast_info pbcinfo = NULL;
 		uint32_t ntickms = cross_os_get_tick_ms();
 		_disp_l("broadcast start. press any key to stop");
@@ -457,15 +507,19 @@ int main(int argc, char* argv[])
 					nres = vatek_badstatus;
 				}
 			}
-			if (!is_vatek_success(nres))break;
-			if (cross_os_get_ch_no_wait() != -1)is_stop = 1;
-			else cross_os_sleep(1);
+			if (!is_vatek_success(nres))
+				break;
+			if (cross_os_get_ch_no_wait() != -1)
+				is_stop = 1;
+			else
+				cross_os_sleep(1);
 		}
 
 		nres = vatek_broadcast_stop(hbc);
-		if (!is_vatek_success(nres))_disp_err("stop broadcast fail : %d", nres);
+		if (!is_vatek_success(nres))
+			_disp_err("stop broadcast fail : %d", nres);
 	}
-	
+
 	/*
 		setp 5 :
 		before quit demo stop and free both device and source
@@ -474,15 +528,21 @@ int main(int argc, char* argv[])
 	_disp_l("broadcast finiah : %d", nres);
 
 #if BROADCAST_EN_AUX
-	if (pauxstream)auxsource_test_close(pauxstream);
+	if (pauxstream)
+		auxsource_test_close(pauxstream);
 #endif
-	if (hchip) {
+	if (hchip)
+	{
 		vatek_device_close_reboot(hchip);
 	}
-	if (hmux)mux_handle_free(hmux);
-	if (hbc)vatek_broadcast_close(hbc);
-	if (hchip) vatek_device_close(hchip);
-	if (hdevlist)vatek_device_list_free(hdevlist);
+	if (hmux)
+		mux_handle_free(hmux);
+	if (hbc)
+		vatek_broadcast_close(hbc);
+	if (hchip)
+		vatek_device_close(hchip);
+	if (hdevlist)
+		vatek_device_list_free(hdevlist);
 #endif
 	printf_app_end();
 	return (int32_t)1;
@@ -490,53 +550,238 @@ int main(int argc, char* argv[])
 
 #if BROADCAST_EN_AUX
 
-#define ASYNC_TEST_UPDATE	30000 /*  10 second */
-#define AUXPID_MAX_NUMS		10
+#define ASYNC_TEST_UPDATE 30000 /*  10 second */
+#define AUXPID_MAX_NUMS 10
 
 typedef struct _aux_pid
 {
 	uint16_t pid;
 	uint16_t ncontinue;
-}aux_pid, * Paux_pid;
+} aux_pid, *Paux_pid;
 
 typedef struct _aux_test_handle
 {
-	FILE* file;
+	FILE *file;
 #if ASYNC_TEST_UPDATE
 	uint32_t tick;
 #endif
 	int32_t pktnums;
 	int32_t pktvalid;
-	uint8_t* buffer[CHIP_STREAM_SLICE_LEN];
+	uint8_t *buffer[CHIP_STREAM_SLICE_LEN];
 	int32_t pidpos;
 	aux_pid pids[AUXPID_MAX_NUMS];
-}aux_test_handle, * Paux_test_handle;
+} aux_test_handle, *Paux_test_handle;
 
 static uint8_t null_packet[TS_PACKET_LEN] =
-{
-	0x47,0x1F,0xFF,0x1F,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-	0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+	{
+		0x47,
+		0x1F,
+		0xFF,
+		0x1F,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
+		0xFF,
 };
 
-extern void auxsource_pid_continue(Paux_test_handle ptest, uint8_t* ppacket);
+extern void auxsource_pid_continue(Paux_test_handle ptest, uint8_t *ppacket);
 extern int32_t auxsource_test_check_update(hvatek_aux haux);
-extern vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t* pbuf, int32_t len);
+extern vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t *pbuf, int32_t len);
 
-static broadcast_auxstream bcaux_stream = { NULL,{usbaux_null,0,0,},auxsource_test_check_update,auxsource_test_get_packets, };
+static broadcast_auxstream bcaux_stream = {
+	NULL,
+	{
+		usbaux_null,
+		0,
+		0,
+	},
+	auxsource_test_check_update,
+	auxsource_test_get_packets,
+};
 
-Pbroadcast_auxstream auxsource_test_open(const char* filename, usbaux_mode mode, uint32_t bitrate)
+Pbroadcast_auxstream auxsource_test_open(const char *filename, usbaux_mode mode, uint32_t bitrate)
 {
-	FILE* hfile = fopen(filename, "rb");
+	FILE *hfile = fopen(filename, "rb");
 	if (hfile)
 	{
 		Paux_test_handle newaux = (Paux_test_handle)malloc(sizeof(aux_test_handle));
@@ -590,16 +835,16 @@ int32_t auxsource_test_check_update(hvatek_aux haux)
 	return 0;
 }
 
-vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t* ppktbuf, int32_t pktnums)
+vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t *ppktbuf, int32_t pktnums)
 {
 	Paux_test_handle paux = (Paux_test_handle)haux;
 	vatek_result nres = vatek_success;
-	uint8_t* ptrbuf = &ppktbuf[0];
+	uint8_t *ptrbuf = &ppktbuf[0];
 	while (pktnums)
 	{
 		if (paux->pktvalid)
 		{
-			
+
 			nres = (vatek_result)fread(ptrbuf, TS_PACKET_LEN, 1, paux->file);
 			if (nres == 1)
 			{
@@ -612,17 +857,20 @@ vatek_result auxsource_test_get_packets(hvatek_aux haux, uint8_t* ppktbuf, int32
 					paux->pktvalid = paux->pktnums;
 				}
 			}
-			else nres = vatek_hwfail;
+			else
+				nres = vatek_hwfail;
 		}
-		else memcpy(ptrbuf, &null_packet[0], TS_PACKET_LEN);
-		if (!is_vatek_success(nres))break;
+		else
+			memcpy(ptrbuf, &null_packet[0], TS_PACKET_LEN);
+		if (!is_vatek_success(nres))
+			break;
 		ptrbuf += TS_PACKET_LEN;
 		pktnums--;
 	}
 	return nres;
 }
 
-void auxsource_pid_continue(Paux_test_handle ptest, uint8_t* ppacket)
+void auxsource_pid_continue(Paux_test_handle ptest, uint8_t *ppacket)
 {
 	uint32_t pid = ((ppacket[1] & 0x1F) << 8) | ppacket[2];
 	if (pid != 0x1FFF)
@@ -647,12 +895,25 @@ void auxsource_pid_continue(Paux_test_handle ptest, uint8_t* ppacket)
 
 #if BROADCAST_EN_BML
 
-static const uint8_t bml_addinfo_40[] = { 0x33,0x3F,0x00,0x03,0x00,0x00,0xFF,0xBF, };
-static const uint8_t bml_addinfo_60[] = { 0x1F,0xFF,0xBF, };
+static const uint8_t bml_addinfo_40[] = {
+	0x33,
+	0x3F,
+	0x00,
+	0x03,
+	0x00,
+	0x00,
+	0xFF,
+	0xBF,
+};
+static const uint8_t bml_addinfo_60[] = {
+	0x1F,
+	0xFF,
+	0xBF,
+};
 
 void bmlesinfo_create(Pbml_stream pstream)
 {
-	uint8_t* ptr = &pstream->esbuf[0];
+	uint8_t *ptr = &pstream->esbuf[0];
 	memset(ptr, 0, 64);
 
 	ptr[0] = 0x52;
