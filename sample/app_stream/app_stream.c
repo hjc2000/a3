@@ -85,6 +85,15 @@ static usbstream_param usbcmd =
 };
 
 extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
+
+/// <summary>
+///		解析命令行
+/// </summary>
+/// <param name="argc"></param>
+/// <param name="argv"></param>
+/// <param name="psource"></param>
+/// <param name="pustream"></param>
+/// <returns></returns>
 extern vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psource, Pusbstream_param pustream);
 
 int main(int argc, char *argv[])
@@ -101,21 +110,6 @@ int main(int argc, char *argv[])
 
 	printf_logo(_app_logo);
 
-	#if 0
-	/*
-		the easiest way to changed modulation mode used modulator_param_reset.
-		example :
-			modulator_param_reset(modulator_atsc,&usbcmd.modulator);
-			modulator_param_reset(modulator_j83b,&usbcmd.modulator);
-			modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
-			modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
-
-	*/
-	modulator_param_reset(modulator_isdb_t, &usbcmd.modulator);
-	usbcmd.modulator.ifmode = ifmode_iqoffset;
-	usbcmd.modulator.iffreq_offset = 143;
-	nres = modulator_param_get_bitrate(&usbcmd.modulator);
-	#endif
 	nres = parser_cmd_source(argc, argv, &streamsource, &usbcmd);
 	/*
 		step 1 :
@@ -136,7 +130,9 @@ int main(int argc, char *argv[])
 			{
 				nres = vatek_device_open(hdevlist, 0, &hchip);
 				if (!is_vatek_success(nres))
+				{
 					_disp_err("open device fail : %d", nres);
+				}
 				else
 				{
 					Pchip_info pinfo = vatek_device_get_info(hchip);
@@ -146,7 +142,9 @@ int main(int argc, char *argv[])
 			}
 		}
 		else
+		{
 			_disp_err("enum device fail : %d", nres);
+		}
 	}
 
 	/*
@@ -271,12 +269,17 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psour
 {
 	vatek_result nres = vatek_unsupport;
 
+	// 如果参数大于等于 2，第二个参数要是制式选择。在这里比较字符串来判断选中了哪个制式。
 	if (argc >= 2)
 	{
 		if (strcmp(argv[1], "atsc") == 0)
+		{
 			modulator_param_reset(modulator_atsc, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "dvbt") == 0)
+		{
 			modulator_param_reset(modulator_dvb_t, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "isdbt") == 0)
 		{
 			modulator_param_reset(modulator_isdb_t, &usbcmd.modulator);
@@ -284,22 +287,35 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psour
 			usbcmd.modulator.iffreq_offset = 143;
 		}
 		else if (strcmp(argv[1], "j83a") == 0)
+		{
 			modulator_param_reset(modulator_j83a, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "j83b") == 0)
+		{
 			modulator_param_reset(modulator_j83b, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "j83c") == 0)
+		{
 			modulator_param_reset(modulator_j83c, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "dtmb") == 0)
+		{
 			modulator_param_reset(modulator_dtmb, &usbcmd.modulator);
+		}
 		else if (strcmp(argv[1], "dvbt2") == 0)
 		{
 			modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
 		}
 		else if (strcmp(argv[1], "test") == 0)
+		{
 			nres = stream_source_test_get(&usbcmd.modulator, psource);
+		}
 		else
+		{
 			nres = vatek_unsupport;
+		}
 
+		// 如果参数大于等于 3，第三个参数是视频源的协议，第 4 个参数是视频源的 URL
 		if (argc >= 3)
 		{
 			if (strcmp(argv[2], "file") == 0)
@@ -309,6 +325,8 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psour
 			else
 				nres = vatek_unsupport;
 		}
+
+		// 第5个参数用来选择 PCR 是穿透还是需要进行校正
 		if (argc == 5)
 		{
 			if (strcmp(argv[4], "passthrough") == 0)
