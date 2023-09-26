@@ -59,24 +59,29 @@ static const char *_app_logo[] = {
 };
 
 static usbstream_param usbcmd =
-	{
-		.mode = ustream_mode_sync,
-		.remux = ustream_remux_pcr,
-		.pcradjust = pcr_adjust,
-		.r2param.freqkhz = 473000, /* output _rf frequency */
-		.r2param.mode = r2_cntl_path_0,
-		.modulator =
-			{
-				6,
-				modulator_dvb_t,
-				ifmode_disable,
-				0,
-				0,
-				.mod = {
-					.dvb_t = {dvb_t_qam64, fft_8k, guard_interval_1_16, coderate_5_6},
+{
+	.mode = ustream_mode_sync,
+	.remux = ustream_remux_pcr,
+	.pcradjust = pcr_adjust,
+	.r2param.freqkhz = 473000, /* output _rf frequency */
+	.r2param.mode = r2_cntl_path_0,
+	.modulator =
+		{
+			.bandwidth_symbolrate = 6,
+			.type = modulator_dvb_t,
+			.ifmode = ifmode_disable,
+			.iffreq_offset = 0,
+			.dac_gain = 0,
+			.mod = {
+				.dvb_t = {
+					.constellation = dvb_t_qam64,
+					.fft = fft_8k,
+					.guardinterval = guard_interval_1_16,
+					.coderate = coderate_5_6
 				},
 			},
-		.sync = {NULL, NULL},
+		},
+	.sync = {NULL, NULL},
 };
 
 extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
@@ -96,10 +101,10 @@ int main(int argc, char *argv[])
 
 	printf_logo(_app_logo);
 
-#if 0
-	/* 
+	#if 0
+	/*
 		the easiest way to changed modulation mode used modulator_param_reset.
-		example : 
+		example :
 			modulator_param_reset(modulator_atsc,&usbcmd.modulator);
 			modulator_param_reset(modulator_j83b,&usbcmd.modulator);
 			modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
@@ -110,7 +115,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.ifmode = ifmode_iqoffset;
 	usbcmd.modulator.iffreq_offset = 143;
 	nres = modulator_param_get_bitrate(&usbcmd.modulator);
-#endif
+	#endif
 	nres = parser_cmd_source(argc, argv, &streamsource, &usbcmd);
 	/*
 		step 1 :
@@ -150,12 +155,12 @@ int main(int argc, char *argv[])
 			- config used usb_stream sync mode and start stream
 	*/
 
-#if TRANSFORM_RF_TEST
+	#if TRANSFORM_RF_TEST
 	vatek_device_start_test(hchip, (Pmodulator_param)&usbcmd.modulator, 900000);
 	vatek_device_start_sine(hchip, 900000);
-#endif
+	#endif
 
-#if TRANSFORM_NORMAL
+	#if TRANSFORM_NORMAL
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_usbstream_open(hchip, &hustream);
@@ -247,7 +252,7 @@ int main(int argc, char *argv[])
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;
-#endif
+	#endif
 }
 
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
