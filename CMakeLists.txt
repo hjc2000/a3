@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+
 project(vatek_sdk_2)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
