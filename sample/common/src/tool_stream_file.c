@@ -44,11 +44,15 @@ extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
 vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 {
+	/* 动态分配一块 handle_file 这么大的内存，用来存放 handle_file 对象。返回这块内存的指针。
+	*/
 	Phandle_file pfile = (Phandle_file)malloc(sizeof(handle_file));
 	vatek_result nres = vatek_memfail;
 	if (pfile)
 	{
 		memset(pfile, 0, sizeof(handle_file));
+
+		// 打开文件，将文件句柄放到刚才分配的 handle_file 里面
 		pfile->fhandle = fopen(file, "rb+");
 		nres = vatek_format;
 		if (pfile->fhandle)
@@ -76,9 +80,11 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 
 			}
 		}
+
 		if (!is_vatek_success(nres))
 			_disp_err("file not current ts format - [%s]", file);
 	}
+
 	return nres;
 }
 

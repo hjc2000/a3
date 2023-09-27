@@ -45,6 +45,7 @@ vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 			pmod->ifmode = ifmode_disable;
 			pmod->iffreq_offset = 0;
 		}
+
 		pmod->dac_gain = 0;
 		pmod->bandwidth_symbolrate = default_bw_sb[type];
 		pmod->type = type;

@@ -51,11 +51,17 @@ typedef enum _usbstream_status{
 	usbstream_status_stop = 4,		/*!< stop finish */
 }usbstream_status;
 
+/// <summary>
+///		USB 流模式，有同步、异步两种
+/// </summary>
 typedef enum _usbstream_mode{
 	ustream_mode_async = 0,			/*!< async */
 	ustream_mode_sync = 1,			/*!< sync */
 }usbstream_mode;
 
+/// <summary>
+///		USB 流混合模式。有重新复用 PCR 和透传两种。
+/// </summary>
 typedef enum _usbstream_remux
 {
 	ustream_remux_pcr,

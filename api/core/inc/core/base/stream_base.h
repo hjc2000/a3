@@ -42,6 +42,9 @@ typedef enum _stream_mode
     stream_passthrogh = STREAM_MODE_PASSTHROUGH,
 }stream_mode;
 
+/// <summary>
+///     PCR 调整模式
+/// </summary>
 typedef enum _pcr_adjust_mode
 {
     pcr_disable = PCR_MODE_DISABLE,

@@ -30,6 +30,13 @@ extern "C" {
 #endif
 
 	vatek_result stream_source_test_get(Pmodulator_param pmod, Ptsstream_source psource);
+
+	/// <summary>
+	///		从文件中获取流
+	/// </summary>
+	/// <param name="file">要打开的文件的路径</param>
+	/// <param name="psource"></param>
+	/// <returns></returns>
 	vatek_result stream_source_file_get(const char* file, Ptsstream_source psource);
 	vatek_result stream_source_udp_get(const char* ipaddr, Ptsstream_source psource);
 

@@ -84,20 +84,20 @@ int main(int argc, char *argv[])
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;
 
-	usbcmd.mode = ustream_mode_sync;
-	usbcmd.remux = ustream_remux_pcr;
-	usbcmd.pcradjust = pcr_adjust;
+	usbcmd.mode = usbstream_mode::ustream_mode_sync;
+	usbcmd.remux = usbstream_remux::ustream_remux_pcr;
+	usbcmd.pcradjust = pcr_adjust_mode::pcr_adjust;
 	usbcmd.r2param.freqkhz = 473000; /* output _rf frequency */
-	usbcmd.r2param.mode = r2_cntl_path_0;
+	usbcmd.r2param.mode = r2_cntl_mode::r2_cntl_path_0;
 	usbcmd.modulator.bandwidth_symbolrate = 6;
-	usbcmd.modulator.type = modulator_dvb_t;
-	usbcmd.modulator.ifmode = ifmode_disable;
+	usbcmd.modulator.type = modulator_type::modulator_dvb_t;
+	usbcmd.modulator.ifmode = dac_ifmode::ifmode_disable;
 	usbcmd.modulator.iffreq_offset = 0;
 	usbcmd.modulator.dac_gain = 0;
-	usbcmd.modulator.mod.dvb_t.constellation = dvb_t_qam64;
-	usbcmd.modulator.mod.dvb_t.fft = fft_8k;
-	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval_1_16;
-	usbcmd.modulator.mod.dvb_t.coderate = coderate_5_6;
+	usbcmd.modulator.mod.dvb_t.constellation = constellation_mode::dvb_t_qam64;
+	usbcmd.modulator.mod.dvb_t.fft = fft_mode::fft_8k;
+	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
+	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 	usbcmd.sync = usbstream_sync{ NULL, NULL };
 
 	printf_logo(_app_logo);
@@ -254,14 +254,15 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 		*pslicebuf = ptssource->get(ptssource->hsource);
 		nres = (vatek_result)1;
 	}
+
 	return nres;
 }
 
 vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psource, Pusbstream_param pustream)
 {
-	vatek_result nres = vatek_unsupport;
+	vatek_result nres = vatek_result::vatek_unsupport;
 
-	// 如果参数大于等于 2，第二个参数要是制式选择。在这里比较字符串来判断选中了哪个制式。
+	// 如果参数大于等于 2，第二个参数必须是制式选择。在这里比较字符串来判断选中了哪个制式。
 	if (argc >= 2)
 	{
 		if (strcmp(argv[1], "atsc") == 0)
@@ -307,8 +308,8 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psour
 			nres = vatek_unsupport;
 		}
 
-		// 如果参数大于等于 3，第三个参数是视频源的协议，第 4 个参数是视频源的 URL
-		if (argc >= 3)
+		// 如果参数大于等于 4，第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
+		if (argc >= 4)
 		{
 			if (strcmp(argv[2], "file") == 0)
 				nres = stream_source_file_get(argv[3], psource);
@@ -318,7 +319,7 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psour
 				nres = vatek_unsupport;
 		}
 
-		// 第5个参数用来选择 PCR 是穿透还是需要进行校正
+		// 第 5 个参数用来选择 PCR 是穿透还是需要进行校正
 		if (argc == 5)
 		{
 			if (strcmp(argv[4], "passthrough") == 0)

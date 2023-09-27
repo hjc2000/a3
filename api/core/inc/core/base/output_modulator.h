@@ -36,10 +36,9 @@
 #include <core/ui/ui_props_api.h>
 #include <core/base/output_rfmixer.h>
 
-/**
- * @ingroup mod_props
- * Modulation Type 
- */
+/// <summary>
+///     调制器调制方式
+/// </summary>
 typedef enum _modulator_type{
 	modulator_unknown = -1,
 	modulator_dvb_t = MOD_DVB_T,		/*!< DVB-T              */
@@ -57,6 +56,10 @@ typedef enum _modulator_type{
  * @ingroup mod_props
  * Modulation Constellation Mode
  */
+
+/// <summary>
+///     调制器星座模式
+/// </summary>
 typedef enum _constellation_mode{
 	qam_null = -1,
 	_8vsb = ATSC_8VSB,					/*!< 8VSB (ATSC)    */
@@ -107,10 +110,9 @@ typedef enum _constellation_mode{
 #define is_base_fft(a)						((int32_t)a >= fft_2k && (int32_t)a <= fft_4k)
 #define is_current_modulator(a)				((modulator_type)a >= modulator_dvb_t && (modulator_type)a < modulator_mod_nums)
 
-/**
- * @ingroup mod_props
- * Modulation Code Rate 
- */
+/// <summary>
+///     调制器码率
+/// </summary>
 typedef enum _code_rate{
 	coderate_null = -1,
 	coderate_1_2 = DVB_T_CODERATE_1_2,		/*!< 1/2		*/
@@ -124,6 +126,10 @@ typedef enum _code_rate{
  * @ingroup mod_props
  * Modulation Guard Interval
  */
+
+/// <summary>
+///     调制器保护间隔
+/// </summary>
 typedef enum _guard_interval{
 	guard_interval_null = -1,
 	guard_interval_1_32 = DVB_T_GI_1_32,		/*!< 1/32		*/
@@ -132,11 +138,9 @@ typedef enum _guard_interval{
 	guard_interval_1_4 = DVB_T_GI_1_4,			/*!< 1/4		*/
 }guard_interval;
 
-/**
- * @ingroup mod_props
- * Modulation FFT
- * 
- */
+/// <summary>
+///     调制器 FFT
+/// </summary>
 typedef enum _fft_mode{
 	fft_null = -1,
 	fft_2k = DVB_T_FFT2K,			/*!< 2K(2048)	*/	
@@ -512,6 +516,10 @@ static const dvb_t2_param default_dvb_t2_param = {
  * @ingroup mod_props 
  * DAC output mode
 */
+
+/// <summary>
+///     DAC 输出模式
+/// </summary>
 typedef enum _dac_ifmode
 {
 	ifmode_disable = IFMODE_DISABLE,        /*!< IQ mode    */
