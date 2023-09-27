@@ -58,31 +58,7 @@ static const char *_app_logo[] = {
 	NULL,
 };
 
-static usbstream_param usbcmd =
-{
-	.mode = ustream_mode_sync,
-	.remux = ustream_remux_pcr,
-	.pcradjust = pcr_adjust,
-	.r2param.freqkhz = 473000, /* output _rf frequency */
-	.r2param.mode = r2_cntl_path_0,
-	.modulator =
-		{
-			.bandwidth_symbolrate = 6,
-			.type = modulator_dvb_t,
-			.ifmode = ifmode_disable,
-			.iffreq_offset = 0,
-			.dac_gain = 0,
-			.mod = {
-				.dvb_t = {
-					.constellation = dvb_t_qam64,
-					.fft = fft_8k,
-					.guardinterval = guard_interval_1_16,
-					.coderate = coderate_5_6
-				},
-			},
-		},
-	.sync = {NULL, NULL},
-};
+static usbstream_param usbcmd;
 
 extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 
@@ -107,6 +83,22 @@ int main(int argc, char *argv[])
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;
+
+	usbcmd.mode = ustream_mode_sync;
+	usbcmd.remux = ustream_remux_pcr;
+	usbcmd.pcradjust = pcr_adjust;
+	usbcmd.r2param.freqkhz = 473000; /* output _rf frequency */
+	usbcmd.r2param.mode = r2_cntl_path_0;
+	usbcmd.modulator.bandwidth_symbolrate = 6;
+	usbcmd.modulator.type = modulator_dvb_t;
+	usbcmd.modulator.ifmode = ifmode_disable;
+	usbcmd.modulator.iffreq_offset = 0;
+	usbcmd.modulator.dac_gain = 0;
+	usbcmd.modulator.mod.dvb_t.constellation = dvb_t_qam64;
+	usbcmd.modulator.mod.dvb_t.fft = fft_8k;
+	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval_1_16;
+	usbcmd.modulator.mod.dvb_t.coderate = coderate_5_6;
+	usbcmd.sync = usbstream_sync{ NULL, NULL };
 
 	printf_logo(_app_logo);
 
@@ -207,7 +199,7 @@ int main(int argc, char *argv[])
 					_disp_l("Data:[%d]  Current:[%d]",
 							pinfo->info.data_bitrate,
 							pinfo->info.cur_bitrate);
-					if (pinfo->info.data_bitrate == 0 | pinfo->info.cur_bitrate == 0)
+					if (pinfo->info.data_bitrate == 0 || pinfo->info.cur_bitrate == 0)
 					{
 						error++;
 					}

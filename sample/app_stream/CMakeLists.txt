@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(cli_SRC
-    app_stream.c)
+    "app_stream.cpp")
 
 set(cli_SRC_COM
     ../common/src/tool_printf.c
