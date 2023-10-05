@@ -51,10 +51,11 @@ typedef struct _handle_file
 
 /// <summary>
 ///		锁定 ts 流。
-///		总共会读取 2 个包，检查同步字节。如果成功同步到 2 个包，就认为锁定成功。
+///		* 总共会读取 2 个包，检查同步字节。如果成功同步到 2 个包，就认为锁定成功。
+///		* 锁定成功后会将文件指针恢复到原来的位置。
 /// </summary>
 /// <param name="pfile"></param>
-/// <returns></returns>
+/// <returns>成功返回 0，失败返回错误代码</returns>
 extern vatek_result file_lock(Phandle_file pfile);
 
 /// <summary>
@@ -75,6 +76,7 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 	handle_file *pfile = new handle_file;
 	if (!pfile)
 	{
+		// 内存分配失败
 		return vatek_memfail;
 	}
 
@@ -108,7 +110,6 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 			psource->free = file_stream_free;
 			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len, pfile->file_size);
 			printf("\r\n");
-
 		}
 	}
 
@@ -137,28 +138,28 @@ vatek_result file_stream_check(hstream_source hsource)
 	{
 		// 读取一个 ts 包
 		nres = (vatek_result)fread(ptr, pfile->packet_len, 1, pfile->fhandle);
-		if (nres == 0)
+		if (nres != 1)
 		{
+			// 读取失败，就 seek 回文件头，然后锁定 ts 流，然后 continue
+			// 为什么要这样？可能是为了排除因为即将到达文件尾所以读取包失败。
 			fseek(pfile->fhandle, 0, SEEK_SET);
 			nres = file_lock(pfile);
 			if (is_vatek_success(nres))
 				continue;
 		}
-		else if (nres == 1)
-		{
-			if (ptr[0] == TS_PACKET_SYNC_TAG)
-			{
-				pos++;
-				ptr += TS_PACKET_LEN;
-			}
-			else
-			{
-				nres = file_lock(pfile);
-			}
-		}
 
-		if (!is_vatek_success(nres))
-			break;
+		// 读取包成功
+		if (ptr[0] == TS_PACKET_SYNC_TAG)
+		{
+			pos++;
+			ptr += TS_PACKET_LEN;
+		}
+		else
+		{
+			nres = file_lock(pfile);
+			if (!is_vatek_success(nres))
+				break;
+		}
 	}
 
 	if (is_vatek_success(nres))
@@ -241,6 +242,7 @@ vatek_result file_lock(Phandle_file pfile)
 			if (pfile->packet_len != 0)
 			{
 				// pfile->packet_len != 0 说明前面的 file_check_sync 成功了
+				// 成功后 seek 回原来的位置。将 seek 的结果作为返回值。成功为 0，失败为 -1.
 				nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
 				return nres;
 			}
