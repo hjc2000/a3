@@ -10,6 +10,12 @@
 /// <returns></returns>
 extern vatek_result file_stream_start(hstream_source hsource);
 extern vatek_result file_stream_check(hstream_source hsource);
+
+/// <summary>
+///		将 hsource 强制转换为 handle_file * 后返回 buffer 字段。这是一个一维数组的头指针。
+/// </summary>
+/// <param name="hsource"></param>
+/// <returns></returns>
 extern uint8_t *file_stream_get(hstream_source hsource);
 
 /// <summary>
@@ -58,14 +64,17 @@ extern vatek_result file_lock(Phandle_file pfile);
 /// <param name="hfile"></param>
 /// <param name="pos"></param>
 /// <param name="offset"></param>
-/// <returns>是同步字节返回 1，不是同步字节或发生了错误则返回错误代码。</returns>
+/// <returns>
+///		是同步字节返回 1，不是同步字节或发生了错误则返回错误代码。
+///		如果是格式错误，返回的错误代码为 vatek_format。
+/// </returns>
 extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
 vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 {
 	/* 动态分配一块 handle_file 这么大的内存，用来存放 handle_file 对象。返回这块内存的指针。
 	*/
-	Phandle_file pfile = (Phandle_file)malloc(sizeof(handle_file));
+	handle_file *pfile = (handle_file *)malloc(sizeof(handle_file));
 	vatek_result nres = vatek_memfail;
 	if (pfile)
 	{
