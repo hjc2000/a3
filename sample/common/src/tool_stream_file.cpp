@@ -206,7 +206,7 @@ vatek_result file_lock(Phandle_file pfile)
 			return vatek_hwfail;
 		}
 
-		// 检查读取到的 1 个字节是否是 ts 的同步字节
+		// 成功读取到 1 个字节，检查读取到的 1 个字节是否是 ts 的同步字节
 		if (sync == TS_PACKET_SYNC_TAG)
 		{
 			// 如果是同步字节
@@ -230,33 +230,27 @@ vatek_result file_lock(Phandle_file pfile)
 			{
 				// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
 				nres = file_check_sync(pfile->fhandle, (int32_t)pos, 204);
+
 				if (is_vatek_success(nres))
+				{
+					// 再试一次后如果是同步字节
 					pfile->packet_len = 204;
+				}
 			}
 
-			if (nres == vatek_format)
+			if (pfile->packet_len != 0)
 			{
-				nres = vatek_success;
-			}
-			else if (pfile->packet_len != 0)
-			{
+				// pfile->packet_len != 0 说明前面的 file_check_sync 成功了
 				nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
-				break;
+				return nres;
 			}
 		}
 
-		// 发生了错误，返回错误代码
-		if (!is_vatek_success(nres))
-			return nres;
-
 		count++;
-
 		// 计数溢出后还没锁定到 ts 流，就超时
 		if (count > 1000)
 			return vatek_timeout;
 	}
-
-	return nres;
 }
 
 vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset)
