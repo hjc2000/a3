@@ -163,7 +163,7 @@ vatek_result file_stream_check(hstream_source hsource)
 	}
 
 	if (is_vatek_success(nres))
-		nres = pos;
+		nres = (vatek_result)pos;
 
 	return nres;
 }
@@ -272,7 +272,7 @@ vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset)
 	if (nres)
 	{
 		// seek 失败，返回 -1
-		return -1;
+		return (vatek_result)-1;
 	}
 
 	uint8_t tag = 0;
