@@ -4,14 +4,15 @@
 
 #include <core/base/output_modulator.h>
 
-#define TS_PACKET_LEN										188
+// 一个 ts 的包长度是 188 字节
+#define TS_PACKET_LEN				188
 #define TSSLICE_BUFFER_LEN			CHIP_STREAM_SLICE_LEN
 #define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN/TS_PACKET_LEN)
 
-typedef void* hstream_source;
+typedef void *hstream_source;
 typedef vatek_result(*fpstream_source_start)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_check)(hstream_source hsource);
-typedef uint8_t*(*fpstream_source_get)(hstream_source hsource);
+typedef uint8_t *(*fpstream_source_get)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_stop)(hstream_source hsource);
 typedef void(*fpstream_source_free)(hstream_source hsource);
 
@@ -28,11 +29,11 @@ typedef struct _tsstream_source
 	fpstream_source_get get;
 	fpstream_source_stop stop;
 	fpstream_source_free free;
-}tsstream_source,*Ptsstream_source;
+}tsstream_source, *Ptsstream_source;
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
 	/// <summary>
 	///		初始化 psource。会为 psource 的 hsource 字段赋值，并为 psource 的函数指针赋值。
@@ -51,10 +52,10 @@ extern "C" {
 	/// <param name="file">要打开的文件的路径</param>
 	/// <param name="psource"></param>
 	/// <returns></returns>
-	vatek_result stream_source_file_get(const char* file, Ptsstream_source psource);
-	vatek_result stream_source_udp_get(const char* ipaddr, Ptsstream_source psource);
+	vatek_result stream_source_file_get(const char *file, Ptsstream_source psource);
+	vatek_result stream_source_udp_get(const char *ipaddr, Ptsstream_source psource);
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 
