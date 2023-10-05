@@ -1,4 +1,3 @@
-
 #include "../inc/tool_stream.h"
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
@@ -120,6 +119,9 @@ vatek_result file_stream_check(hstream_source hsource)
 	uint8_t *ptr = &pfile->buffer[0];
 	vatek_result nres = vatek_success;
 
+	/* CHIP_STREAM_SLICE_PACKET_NUMS 是用缓冲区大小除以 188，即计算缓冲区能容纳多少个
+	* ts 包。
+	*/
 	while (pos < CHIP_STREAM_SLICE_PACKET_NUMS)
 	{
 		nres = (vatek_result)fread(ptr, pfile->packet_len, 1, pfile->fhandle);

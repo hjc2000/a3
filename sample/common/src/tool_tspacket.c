@@ -128,6 +128,8 @@ uint8_t *tspacket_get_suffing(void)
 
 
 	uint8_t *packet = &fake_suffing_packet[packetidx][0];
+
+	// 让 packetidx 在 0 和 1 之间切换，以为是静态变量，所以本函数没被调用一次，packetidx 就切换一次。
 	packetidx = !packetidx;
 	packet[3] = (packet[3] & 0xF0) | (tscont++ & 0xF);
 	return &packet[0];
