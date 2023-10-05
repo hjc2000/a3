@@ -85,8 +85,11 @@ uint8_t *test_stream_get(hstream_source hsource)
 
 	while (nums < CHIP_STREAM_SLICE_PACKET_NUMS)
 	{
-		if (nums == 0)memcpy(ptr, tspacket_get_pcr(&ptest->time), TS_PACKET_LEN);
-		else memcpy(ptr, tspacket_get_suffing(), TS_PACKET_LEN);
+		if (nums == 0)
+			memcpy(ptr, tspacket_get_pcr(&ptest->time), TS_PACKET_LEN);
+		else
+			memcpy(ptr, tspacket_get_suffing(), TS_PACKET_LEN);
+
 		ptr += TS_PACKET_LEN;
 		nums++;
 	}

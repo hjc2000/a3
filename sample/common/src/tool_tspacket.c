@@ -4,11 +4,14 @@
 
 #define TEST_PACKET_USB_PAT		1
 
-uint8_t* tspacket_get_pcr(Pmux_time_tick ptime)
+uint8_t *tspacket_get_pcr(Pmux_time_tick ptime)
 {
 	static uint8_t fake_pcr_packet[188] =
 	{
-		0x47,(uint8_t)(TSPACKET_PCR_PID >> 8),(uint8_t)TSPACKET_PCR_PID,0x20,
+		0x47,
+		(uint8_t)(TSPACKET_PCR_PID >> 8),
+		(uint8_t)TSPACKET_PCR_PID,
+		0x20,
 		0xB7,0x10,0x00,0x00,0x00,0x00,0x00,0x00,
 		0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
 		0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
@@ -42,7 +45,7 @@ uint8_t* tspacket_get_pcr(Pmux_time_tick ptime)
 	return &fake_pcr_packet[0];
 }
 
-uint8_t* tspacket_get_suffing(void)
+uint8_t *tspacket_get_suffing(void)
 {
 	static uint8_t fake_suffing_packet[2][188] =
 	{
@@ -124,13 +127,13 @@ uint8_t* tspacket_get_suffing(void)
 	fake_suffing_packet[1][188 - 1] = (uint8_t)(crc);
 
 
-	uint8_t* packet = &fake_suffing_packet[packetidx][0];
+	uint8_t *packet = &fake_suffing_packet[packetidx][0];
 	packetidx = !packetidx;
 	packet[3] = (packet[3] & 0xF0) | (tscont++ & 0xF);
 	return &packet[0];
 }
 
-uint8_t* tspacket_get_null(void)
+uint8_t *tspacket_get_null(void)
 {
 	static uint8_t fake_null_packet[188] =
 	{
@@ -150,4 +153,3 @@ uint8_t* tspacket_get_null(void)
 
 	return &fake_null_packet[0];
 }
-

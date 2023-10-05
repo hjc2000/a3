@@ -73,9 +73,13 @@ vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device *pcross)
 					*pcross = newdev;
 				}
 			}
-			if (!is_vatek_success(nres))bridge_device_unlock(hbridge);
+
+			if (!is_vatek_success(nres))
+				bridge_device_unlock(hbridge);
 		}
-		if (!is_vatek_success(nres))bridge_device_close(hbridge);
+
+		if (!is_vatek_success(nres))
+			bridge_device_close(hbridge);
 	}
 
 	return nres;
@@ -85,6 +89,7 @@ hbridge_device cross_get_bridge_handle(Pcross_device pcross)
 {
 	if (pcross->driver == cdriver_bridge)
 		return (hbridge_device)pcross->hcross;
+
 	return NULL;
 }
 
@@ -104,6 +109,7 @@ vatek_result bridge_read_register(hcross_device hdev, int32_t addr, uint32_t *va
 	{
 		*val = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 	}
+
 	return nres;
 }
 
@@ -126,6 +132,7 @@ vatek_result bridge_read_memory(hcross_device hdev, int32_t addr, uint32_t *val)
 	{
 		*val = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
 	}
+
 	return nres;
 }
 
@@ -145,14 +152,22 @@ vatek_result bridge_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8
 {
 	uint32_t bridgecmd = 0;
 
-	if (cmd == CHIP_CMD_RDREG)bridgecmd = MOD_RD_REG;
-	else if (cmd == CHIP_CMD_WRREG)bridgecmd = MOD_WR_REG;
-	else if (cmd == CHIP_CMD_RDMEM)bridgecmd = MOD_RD_MEM;
-	else if (cmd == CHIP_CMD_WRMEM)bridgecmd = MOD_WR_MEM;
-	else if (cmd == CHIP_CMD_RDCODE || cmd == CHIP_CMD_RDBUF)bridgecmd = MOD_RD_CODE;
-	else if (cmd == CHIP_CMD_WRCODE || cmd == CHIP_CMD_WRBUF)bridgecmd = MOD_WR_CODE;
-	else if (cmd == CHIP_CMD_BRIDGE)return bridge_cmd_ip_transfer((hbridge_device)hdev, addr, vals);
-	else return vatek_badparam;
+	if (cmd == CHIP_CMD_RDREG)
+		bridgecmd = MOD_RD_REG;
+	else if (cmd == CHIP_CMD_WRREG)
+		bridgecmd = MOD_WR_REG;
+	else if (cmd == CHIP_CMD_RDMEM)
+		bridgecmd = MOD_RD_MEM;
+	else if (cmd == CHIP_CMD_WRMEM)
+		bridgecmd = MOD_WR_MEM;
+	else if (cmd == CHIP_CMD_RDCODE || cmd == CHIP_CMD_RDBUF)
+		bridgecmd = MOD_RD_CODE;
+	else if (cmd == CHIP_CMD_WRCODE || cmd == CHIP_CMD_WRBUF)
+		bridgecmd = MOD_WR_CODE;
+	else if (cmd == CHIP_CMD_BRIDGE)
+		return bridge_cmd_ip_transfer((hbridge_device)hdev, addr, vals);
+	else
+		return vatek_badparam;
 
 	return bridge_device_bulk_transfer((hbridge_device)hdev, bridgecmd, addr, vals, wlen);
 }
