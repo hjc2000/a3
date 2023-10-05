@@ -15,6 +15,11 @@ typedef uint8_t*(*fpstream_source_get)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_stop)(hstream_source hsource);
 typedef void(*fpstream_source_free)(hstream_source hsource);
 
+/// <summary>
+///		ts 流源。内部定义了一个 hstream_source 类型的字段和一些函数指针。
+///		这些函数指针的第一个参数全部是 hstream_source hsource。
+///		这个结构体就是在模仿 C++ 的类。
+/// </summary>
 typedef struct _tsstream_source
 {
 	hstream_source hsource;
@@ -29,6 +34,15 @@ typedef struct _tsstream_source
 extern "C" {
 #endif
 
+	/// <summary>
+	///		初始化 psource。会为 psource 的 hsource 字段赋值，并为 psource 的函数指针赋值。
+	/// </summary>
+	/// <param name="pmod">
+	///		会使用 pmod 计算 bitrate，然后用 bitrate 计算一些参数，用来初始化一个 handle_test 类型的对象，
+	///		最后将这个 handle_test 对象赋值给 psource 的 hsource 字段。
+	/// </param>
+	/// <param name="psource">此对象会被初始化</param>
+	/// <returns></returns>
 	vatek_result stream_source_test_get(Pmodulator_param pmod, Ptsstream_source psource);
 
 	/// <summary>

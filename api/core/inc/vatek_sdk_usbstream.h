@@ -31,6 +31,9 @@
 
 #include <service/service_transform.h>
 
+/// <summary>
+///		void * 类型
+/// </summary>
 typedef void* hvatek_usbstream;
 
 typedef struct _usbstream_slice{

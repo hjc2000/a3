@@ -62,7 +62,14 @@
 
 #define VATEK_VERSION 30900
 
+/// <summary>
+///     void * 类型
+/// </summary>
 typedef void* hvatek_devices;
+
+/// <summary>
+///     void * 类型
+/// </summary>
 typedef void* hvatek_chip;
 
 /**
