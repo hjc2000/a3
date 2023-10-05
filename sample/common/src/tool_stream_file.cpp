@@ -85,8 +85,10 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 	vatek_result nres = vatek_format;
 	if (pfile->fhandle)
 	{
+		// 通过 seek 到文件末尾来获取文件大小
 		fseek(pfile->fhandle, 0, SEEK_END);
 		pfile->file_size = (int32_t)ftell(pfile->fhandle);
+		// 刚才 seek 到文件末尾了，现在要 seek 回文件开始
 		fseek(pfile->fhandle, 0, SEEK_SET);
 
 		// 锁定 ts 流
@@ -200,57 +202,52 @@ vatek_result file_lock(Phandle_file pfile)
 		nres = (vatek_result)fread(&sync, 1, 1, pfile->fhandle);
 		if (nres != 1)
 		{
-			// 不等于 1，说明没有成功读取到 1 个字节
-			nres = vatek_hwfail;
+			// 不等于 1，说明没有成功读取到 1 个字节，返回错误代码
+			return vatek_hwfail;
 		}
-		else if (nres == 0)
+
+		// 检查读取到的 1 个字节是否是 ts 的同步字节
+		if (sync == TS_PACKET_SYNC_TAG)
 		{
-			nres = vatek_badstatus;
-		}
-		else
-		{
-			// 检查读取到的 1 个字节是否是 ts 的同步字节
-			if (sync == TS_PACKET_SYNC_TAG)
+			// 如果是同步字节
+			pfile->packet_len = 0;
+
+			/* pos 的值是一进入循环就第一时间获取了，此时还没有读取任何一个字节。执行到这里说明读取了 1 个
+			* 字节，并且这个字节是同步字节。
+			*
+			* 调用 file_check_sync 函数后，内部会以文件开头为参考点，seek 一段 pos + TS_PACKET_LEN 的距离，
+			* 因为 pos 指向的是同步字节的位置，而 TS_PACKET_LEN 等于一个 ts 包的长度，
+			* 所以 seek 后文件指针又是处于同步字节的位置。然后 file_check_sync 会读取 1 个字节并检查是否是
+			* 同步字节。如果是同步字节，加上刚才读取的同步字节，总共同步到 2 个包。
+			*/
+			nres = file_check_sync(pfile->fhandle, (int32_t)pos, TS_PACKET_LEN);
+			if (is_vatek_success(nres))
 			{
-				// 如果是同步字节
-				pfile->packet_len = 0;
-
-				/* pos 的值是一进入循环就第一时间获取了，此时还没有读取任何一个字节。执行到这里说明读取了 1 个
-				* 字节，并且这个字节是同步字节。
-				*
-				* 调用 file_check_sync 函数后，内部会以文件开头为参考点，seek 一段 pos + TS_PACKET_LEN 的距离，
-				* 因为 pos 指向的是同步字节的位置，而 TS_PACKET_LEN 等于一个 ts 包的长度，
-				* 所以 seek 后文件指针又是处于同步字节的位置。然后 file_check_sync 会读取 1 个字节并检查是否是
-				* 同步字节。如果是同步字节，加上刚才读取的同步字节，总共同步到 2 个包。
-				*/
-				nres = file_check_sync(pfile->fhandle, (int32_t)pos, TS_PACKET_LEN);
+				// 是同步字节
+				pfile->packet_len = TS_PACKET_LEN;
+			}
+			else
+			{
+				// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
+				nres = file_check_sync(pfile->fhandle, (int32_t)pos, 204);
 				if (is_vatek_success(nres))
-				{
-					// 是同步字节
-					pfile->packet_len = TS_PACKET_LEN;
-				}
-				else
-				{
-					// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
-					nres = file_check_sync(pfile->fhandle, (int32_t)pos, 204);
-					if (is_vatek_success(nres))
-						pfile->packet_len = 204;
-				}
+					pfile->packet_len = 204;
+			}
 
-				if (nres == vatek_format)
-				{
-					nres = vatek_success;
-				}
-				else if (pfile->packet_len != 0)
-				{
-					nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
-					break;
-				}
+			if (nres == vatek_format)
+			{
+				nres = vatek_success;
+			}
+			else if (pfile->packet_len != 0)
+			{
+				nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
+				break;
 			}
 		}
 
+		// 发生了错误，返回错误代码
 		if (!is_vatek_success(nres))
-			break;
+			return nres;
 
 		count++;
 
