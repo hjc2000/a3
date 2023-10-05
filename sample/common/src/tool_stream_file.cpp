@@ -72,49 +72,46 @@ extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
 vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 {
-	/* 动态分配一块 handle_file 这么大的内存，用来存放 handle_file 对象。返回这块内存的指针。
-	*/
-	handle_file *pfile = (handle_file *)malloc(sizeof(handle_file));
-	vatek_result nres = vatek_memfail;
-	if (pfile)
+	handle_file *pfile = new handle_file;
+	if (!pfile)
 	{
-		memset(pfile, 0, sizeof(handle_file));
-
-		/* 打开文件，将文件句柄放到刚才分配的 handle_file 里面。
-		* 打开方式：读写，二进制
-		*/
-		pfile->fhandle = fopen(file, "rb+");
-		nres = vatek_format;
-		if (pfile->fhandle)
-		{
-			fseek(pfile->fhandle, 0, SEEK_END);
-			pfile->file_size = (int32_t)ftell(pfile->fhandle);
-			fseek(pfile->fhandle, 0, SEEK_SET);
-
-			// 锁定 ts 流
-			nres = file_lock(pfile);
-			if (!is_vatek_success(nres))
-			{
-				fclose(pfile->fhandle);
-				free(pfile);
-			}
-			else
-			{
-				psource->hsource = pfile;
-				psource->start = file_stream_start;
-				psource->stop = file_stream_stop;
-				psource->get = file_stream_get;
-				psource->check = file_stream_check;
-				psource->free = file_stream_free;
-				_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len, pfile->file_size);
-				printf("\r\n");
-
-			}
-		}
-
-		if (!is_vatek_success(nres))
-			_disp_err("file not current ts format - [%s]", file);
+		return vatek_memfail;
 	}
+
+	/* 打开文件，将文件句柄放到刚才分配的 handle_file 里面。
+	* 打开方式：读写，二进制
+	*/
+	pfile->fhandle = fopen(file, "rb+");
+	vatek_result nres = vatek_format;
+	if (pfile->fhandle)
+	{
+		fseek(pfile->fhandle, 0, SEEK_END);
+		pfile->file_size = (int32_t)ftell(pfile->fhandle);
+		fseek(pfile->fhandle, 0, SEEK_SET);
+
+		// 锁定 ts 流
+		nres = file_lock(pfile);
+		if (!is_vatek_success(nres))
+		{
+			fclose(pfile->fhandle);
+			delete pfile;
+		}
+		else
+		{
+			psource->hsource = pfile;
+			psource->start = file_stream_start;
+			psource->stop = file_stream_stop;
+			psource->get = file_stream_get;
+			psource->check = file_stream_check;
+			psource->free = file_stream_free;
+			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len, pfile->file_size);
+			printf("\r\n");
+
+		}
+	}
+
+	if (!is_vatek_success(nres))
+		_disp_err("file not current ts format - [%s]", file);
 
 	return nres;
 }
@@ -183,7 +180,7 @@ void file_stream_free(hstream_source hsource)
 {
 	Phandle_file pfile = (Phandle_file)hsource;
 	fclose(pfile->fhandle);
-	free(pfile);
+	delete pfile;
 }
 
 vatek_result file_lock(Phandle_file pfile)
