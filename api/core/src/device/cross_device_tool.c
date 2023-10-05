@@ -35,11 +35,11 @@ typedef struct _cross_handle
 	Pcross_device last;
 	hbridge_list bridges;
 	husb_device_list usbdevices;
-}cross_handle, * Pcross_handle;
+}cross_handle, *Pcross_handle;
 
 static cross_handle m_cdevices = { 0,NULL,NULL,NULL,NULL, };
 
-vatek_result cross_devices_create(Pcross_device* pcross)
+vatek_result cross_devices_create(Pcross_device *pcross)
 {
 	vatek_result nres = vatek_success;
 	if (!m_cdevices.root)
@@ -102,7 +102,7 @@ vatek_result cross_devices_create(Pcross_device* pcross)
 	return nres;
 }
 
-vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, Pcross_device* pcross)
+vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, Pcross_device *pcross)
 {
 	vatek_result nres = vatek_success;
 	if (!m_cdevices.root)
@@ -189,14 +189,17 @@ vatek_result cross_devices_get_size(Pcross_device pcross)
 	return (vatek_result)nums;
 }
 
-const char* cdevice_get_name(Pcross_device pcross)
+const char *cdevice_get_name(Pcross_device pcross)
 {
-	if (pcross->driver == cdriver_bridge)return bridge_device_get_name((hbridge_device)pcross->hcross);
-	else if (pcross->driver == cdriver_usb)return usb_api_ll_get_name((husb_device)pcross->hcross);
+	if (pcross->driver == cdriver_bridge)
+		return bridge_device_get_name((hbridge_device)pcross->hcross);
+	else if (pcross->driver == cdriver_usb)
+		return usb_api_ll_get_name((husb_device)pcross->hcross);
+
 	return "_unknown";
 }
 
-vatek_result cdevice_malloc(Pcross_device* pcross, hal_service_mode hal)
+vatek_result cdevice_malloc(Pcross_device *pcross, hal_service_mode hal)
 {
 	vatek_result nres = vatek_unsupport;
 	if (hal == service_rescue || hal == service_broadcast || hal == service_transform)

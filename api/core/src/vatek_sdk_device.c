@@ -34,17 +34,17 @@
 #include <service/ui/ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"
 
-extern vatek_result vatek_device_malloc(Pcross_device pcross,Pvatek_device* pvatek);
+extern vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek);
 extern void vatek_device_free(Pvatek_device pvatek);
 
 typedef struct _vatek_device_list
 {
 	int32_t nums;
 	Pcross_device cross;
-	Pcross_device* listdevices;
-}vatek_device_list,*Pvatek_device_list;
+	Pcross_device *listdevices;
+}vatek_device_list, *Pvatek_device_list;
 
-vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices* hdevices)
+vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices *hdevices)
 {
 	Pcross_device newdevs = NULL;
 	vatek_result nres = cross_devices_create(&newdevs);
@@ -57,14 +57,14 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 		{
 			int32_t pos = 0;
 			nres = vatek_success;
-			memset((uint8_t*)newlist, 0, len);
-			newlist->listdevices = (Pcross_device*)&((uint8_t*)newlist)[sizeof(vatek_device_list)];
+			memset((uint8_t *)newlist, 0, len);
+			newlist->listdevices = (Pcross_device *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
 			newlist->cross = newdevs;
 			while (newdevs)
 			{
 				if ((newdevs->bus & bus))
 				{
-					if (service == service_unknown || 
+					if (service == service_unknown ||
 						service == newdevs->service)
 					{
 						newlist->listdevices[pos] = newdevs;
@@ -86,7 +86,7 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 	return nres;
 }
 
-vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices* hdevices)
+vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices *hdevices)
 {
 	Pcross_device newdevs = NULL;
 	vatek_result nres = cross_devices_create_by_usbid(vid, pid, &newdevs);
@@ -99,8 +99,8 @@ vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_
 		{
 			int32_t pos = 0;
 			nres = vatek_success;
-			memset((uint8_t*)newlist, 0, len);
-			newlist->listdevices = (Pcross_device*)&((uint8_t*)newlist)[sizeof(vatek_device_list)];
+			memset((uint8_t *)newlist, 0, len);
+			newlist->listdevices = (Pcross_device *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
 			newlist->cross = newdevs;
 			while (newdevs)
 			{
@@ -129,7 +129,7 @@ uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx)
 	return DEVICE_BUS_UNKNOWN;
 }
 
-const char* vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx)
+const char *vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx)
 {
 	Pvatek_device_list pdevices = (Pvatek_device_list)hdevices;
 	if (idx < pdevices->nums)
@@ -145,7 +145,7 @@ hal_service_mode vatek_device_list_get_service(hvatek_devices hdevices, int32_t 
 	return service_unknown;
 }
 
-vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip* hchip)
+vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip *hchip)
 {
 	Pvatek_device_list pdevices = (Pvatek_device_list)hdevices;
 	vatek_result nres = vatek_badparam;
@@ -157,10 +157,13 @@ vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip
 		if (is_vatek_success(nres))
 		{
 			nres = chip_info_get((hvatek_chip)pvatek, &pvatek->info);
-			if (is_vatek_success(nres))*hchip = pvatek;
-			else vatek_device_free(pvatek);
+			if (is_vatek_success(nres))
+				*hchip = pvatek;
+			else
+				vatek_device_free(pvatek);
 		}
 	}
+
 	return nres;
 }
 
@@ -184,7 +187,7 @@ Pchip_info vatek_device_get_info(hvatek_chip hchip)
 	return &pvatek->info;
 }
 
-const char* vatek_device_get_name(hvatek_chip hchip)
+const char *vatek_device_get_name(hvatek_chip hchip)
 {
 	Pvatek_device pvatek = (Pvatek_device)hchip;
 	return cdevice_get_name(pvatek->cross);
@@ -197,13 +200,14 @@ vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
 	{
-		if (pinfo->peripheral_en & PERIPHERAL_FINTEKR2) {
+		if (pinfo->peripheral_en & PERIPHERAL_FINTEKR2)
+		{
 			nres = rfmixer_start(hchip, HALREG_SERVICE_BASE_CNTL, freqkhz);
 		}
 		else nres = vatek_success;
 
-		if(is_vatek_success(nres))
-			nres = chip_send_command(hchip, BASE_CMD_TEST_START_SINE,HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
+		if (is_vatek_success(nres))
+			nres = chip_send_command(hchip, BASE_CMD_TEST_START_SINE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
 	}
 	return nres;
 }
@@ -215,7 +219,8 @@ vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, u
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
 	{
-		if (pinfo->peripheral_en & PERIPHERAL_FINTEKR2) {
+		if (pinfo->peripheral_en & PERIPHERAL_FINTEKR2)
+		{
 			nres = rfmixer_start(hchip, HALREG_SERVICE_BASE_CNTL, freqkhz);
 		}
 
@@ -223,8 +228,8 @@ vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, u
 
 		if (is_vatek_success(nres))
 		{
-			nres = modulator_param_set(hchip,pmod);
-			if(is_vatek_success(nres))
+			nres = modulator_param_set(hchip, pmod);
+			if (is_vatek_success(nres))
 				nres = chip_send_command(hchip, BASE_CMD_TEST_START_SINE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
 		}
 	}
@@ -288,11 +293,11 @@ vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_para
 	Pvatek_device pvatek = (Pvatek_device)hchip;
 	vatek_result nres = vatek_badstatus;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
-	if(pinfo->status == chip_status_running)
+	if (pinfo->status == chip_status_running)
 	{
 		nres = vatek_unsupport;
 		if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
-			nres = calibration_set(hchip, pcalibration,1);
+			nres = calibration_set(hchip, pcalibration, 1);
 		nres = calibration_adjust_gain(hchip, pcalibration->dac_power, pcalibration);
 		nres = rfmixer_r2_adjust_pagain(hchip, pcalibration->r2_power);
 
@@ -348,7 +353,7 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod,
 		if (is_vatek_success(nres))
 		{
 			cross_stream_mode mode = stream_mode_output;
-			/* _isdb-t must disable usb_dma because chip memory bandwidth limited. 
+			/* _isdb-t must disable usb_dma because chip memory bandwidth limited.
 				DVB-T2 only remux set output_nodma*/
 			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb || (stream_mode == stream_remux && pmod->type == modulator_dvb_t2))
 				mode = stream_mode_output_nodma;
@@ -360,7 +365,7 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod,
 	return nres;
 }
 
-vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t* pbuf, int32_t size)
+vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t *pbuf, int32_t size)
 {
 	vatek_result nres = vatek_badstatus;
 	Pvatek_device pvatek = (Pvatek_device)hchip;
@@ -381,12 +386,12 @@ vatek_result vatek_device_stream_stop(hvatek_chip hchip)
 	if (pvatek->streammode != stream_mode_idle)
 	{
 		nres = pstream->stop_stream(hcross);
-		pvatek->streammode = stream_mode_idle;		
+		pvatek->streammode = stream_mode_idle;
 	}
 	return nres;
 }
 
-vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t* pbuf, int32_t len)
+vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t *pbuf, int32_t len)
 {
 	#define USBBUF_DIR_NULL	0
 	#define USBBUF_DIR_IN	1
@@ -441,7 +446,7 @@ vatek_result vatek_device_usbbulk_get_result(hvatek_chip hchip, Pusbbulk_result 
 	return nres;
 }
 
-vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t* pbuf, int32_t len)
+vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t *pbuf, int32_t len)
 {
 	Pvatek_device pvatek = (Pvatek_device)hchip;
 	vatek_result nres = vatek_unsupport;
@@ -454,7 +459,7 @@ vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t* pbuf, int32_
 	return nres;
 }
 
-vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t* pbuf, int32_t len)
+vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t *pbuf, int32_t len)
 {
 	Pvatek_device pvatek = (Pvatek_device)hchip;
 	vatek_result nres = vatek_unsupport;
@@ -480,7 +485,7 @@ vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device* pvatek)
+vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek)
 {
 	Pvatek_device newdev = (Pvatek_device)malloc(sizeof(vatek_device));
 	vatek_result nres = vatek_memfail;

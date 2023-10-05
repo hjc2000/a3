@@ -5,7 +5,7 @@
 
 
 /// <summary>
-///		永远返回 vatek_success，其实就是 0
+///		直接返回 vatek_success，其实就是 0
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
@@ -69,7 +69,9 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 	{
 		memset(pfile, 0, sizeof(handle_file));
 
-		// 打开文件，将文件句柄放到刚才分配的 handle_file 里面
+		/* 打开文件，将文件句柄放到刚才分配的 handle_file 里面。
+		* 打开方式：读写，二进制
+		*/
 		pfile->fhandle = fopen(file, "rb+");
 		nres = vatek_format;
 		if (pfile->fhandle)
@@ -78,6 +80,7 @@ vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
 			pfile->file_size = (int32_t)ftell(pfile->fhandle);
 			fseek(pfile->fhandle, 0, SEEK_SET);
 
+			// 锁定 ts 流
 			nres = file_lock(pfile);
 			if (!is_vatek_success(nres))
 			{
@@ -146,6 +149,7 @@ vatek_result file_stream_check(hstream_source hsource)
 
 	if (is_vatek_success(nres))
 		nres = pos;
+
 	return nres;
 }
 
