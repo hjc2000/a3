@@ -248,6 +248,7 @@ vatek_result file_lock(Phandle_file pfile)
 			}
 		}
 
+		// 没有读取到第 1 个同步字节就递增计数，等下一次循环再次读取下一个字节
 		count++;
 		// 计数溢出后还没锁定到 ts 流，就超时
 		if (count > 1000)

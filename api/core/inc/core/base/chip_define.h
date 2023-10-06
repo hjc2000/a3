@@ -39,9 +39,10 @@
 
 /**
  * @ingroup core_props
- * chip module id define 
+ * chip module id define
  */
-typedef enum _vatek_ic_module{
+typedef enum _vatek_ic_module
+{
 	ic_module_nodevice = -1,
 	ic_module_a1 = HAL_CHIPID_A1,				/*!< a1 (101) */
 	ic_module_b1 = HAL_CHIPID_B1,				/*!< b1 (201) */
@@ -60,9 +61,10 @@ typedef enum _vatek_ic_module{
 
 /**
  * @ingroup core_props
- * chip status 
+ * chip status
  */
-typedef enum _chip_status{
+typedef enum _chip_status
+{
 	chip_status_last = -4,
 	chip_status_badstatus = -4,		/*!< chip status fail */
 	chip_status_fail_hw = -3,		/*!< chip hw fail */
@@ -76,6 +78,9 @@ typedef enum _chip_status{
 #define is_current_chip_status(status)			(status >= chip_status_badstatus && status <= chip_status_running)
 #define is_chip_status_valid(status)    		(status == chip_status_waitcmd || status == chip_status_running)
 
+/// <summary>
+///		一个数组，应该是用来代替枚举类型表示芯片状态的。
+/// </summary>
 const static uint32_t chip_status_tags[] =
 {
 	SYS_STATUS_BADSTATUS,
@@ -87,13 +92,15 @@ const static uint32_t chip_status_tags[] =
 	SYS_STATUS_RUN,
 };
 
+// chip_status_tags 数组的元素个数
 #define STATUS_TAGS_NUMS						sizeof(chip_status_tags)/sizeof(uint32_t)
 
 /**
  * @ingroup core_props
  * Core Service Mode
  */
-typedef enum _hal_service_mode{
+typedef enum _hal_service_mode
+{
 	service_unknown = 0,
 	service_rescue = SERVICE_TAG_RESCUE,			/*!< service rescure */
 	service_broadcast = SERVICE_TAG_BROADCAST,		/*!< service broadcast (b-serial) */
@@ -102,9 +109,10 @@ typedef enum _hal_service_mode{
 
 /**
  * @ingroup core_props
- * Chip Information 
+ * Chip Information
  */
-typedef struct _chip_info{
+typedef struct _chip_info
+{
 	chip_status status;				/*!< chip status */
 	uint32_t errcode;				/*!< if chip status fail set error code */
 	vatek_ic_module chip_module;	/*!< chip id */
@@ -115,7 +123,7 @@ typedef struct _chip_info{
 	uint32_t output_support;		/*!< support output mode */
 }chip_info;
 
-typedef chip_info* Pchip_info;
+typedef chip_info *Pchip_info;
 
 #define chip_is_halservice(info,en)				(info->hal_service == en)	
 #define chip_is_en_output(info,en)				(((info)->output_support | en) == en)
@@ -124,23 +132,23 @@ typedef chip_info* Pchip_info;
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
-	HAL_API chip_status chip_status_get(hvatek_chip hchip,uint32_t* errcode);
-	HAL_API vatek_result chip_status_set(hvatek_chip hchip,chip_status status,uint32_t errcode);
+	HAL_API chip_status chip_status_get(hvatek_chip hchip, uint32_t *errcode);
+	HAL_API vatek_result chip_status_set(hvatek_chip hchip, chip_status status, uint32_t errcode);
 
 	HAL_API vatek_result chip_status_check(hvatek_chip hchip, chip_status status);
 
 	HAL_API vatek_result chip_info_reset(Pchip_info pinfo, hal_service_mode service, vatek_ic_module icmodule);
-	HAL_API vatek_result chip_info_get(hvatek_chip hchip,Pchip_info pinfo);
-	HAL_API vatek_result chip_info_set(hvatek_chip hchip,Pchip_info pinfo);
+	HAL_API vatek_result chip_info_get(hvatek_chip hchip, Pchip_info pinfo);
+	HAL_API vatek_result chip_info_set(hvatek_chip hchip, Pchip_info pinfo);
 
 	HAL_API vatek_result chip_send_command(hvatek_chip hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr);
-	HAL_API vatek_result chip_raise_command(hvatek_chip hchip,uint32_t cmdaddr,uint32_t cmd,int32_t iswait);
+	HAL_API vatek_result chip_raise_command(hvatek_chip hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait);
 	HAL_API vatek_result chip_check_command(hvatek_chip hchip, uint32_t cmdaddr);
-	HAL_API vatek_result chip_result_command(hvatek_chip hchip,uint32_t resultaddr,uint32_t* errcode);
+	HAL_API vatek_result chip_result_command(hvatek_chip hchip, uint32_t resultaddr, uint32_t *errcode);
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 

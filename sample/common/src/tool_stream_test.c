@@ -95,6 +95,8 @@ uint8_t *test_stream_get(hstream_source hsource)
 	}
 
 	ptest->time.ns += ptest->slice_ns;
+
+	// 纳秒进位到毫秒
 	if (ptest->time.ns >= 1000000)
 	{
 		ptest->time.ms += ptest->time.ns / 1000000;

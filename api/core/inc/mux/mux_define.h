@@ -253,10 +253,10 @@ typedef struct _mux_clock_tick
 
 typedef mux_clock_tick* Pmux_clock_tick;
 
-/**
- * @ingroup core_props
- * time tick 
- */
+/// <summary>
+///		表示时间的结构体，有 2 个字段，一个储存毫秒，一个储存纳秒。纳秒的
+///		字段计数到 1e6 后会模 1e6 ，进位到毫秒。
+/// </summary>
 typedef struct _mux_time_tick{
 	uint32_t ms;	/*!< time ms */
 	uint32_t ns;	/*!< time ns */
