@@ -240,11 +240,10 @@ typedef struct _mux_string
 
 typedef mux_string* Pmux_string;
 
-
-/**
- * @ingroup mux_props
- * mux tick 
- */
+/// <summary>
+///		PCR 时钟。
+///		有两个时钟，一个 90kHz，一个 27MHz，两个字段分别储存这两个时钟。
+/// </summary>
 typedef struct _mux_clock_tick
 {
 	uint64_t _90KHz;

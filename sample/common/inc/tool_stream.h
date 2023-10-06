@@ -6,8 +6,12 @@
 
 // 一个 ts 的包长度是 188 字节
 #define TS_PACKET_LEN				188
+
+// 用来读取 ts 流的缓冲区的大小
 #define TSSLICE_BUFFER_LEN			CHIP_STREAM_SLICE_LEN
-#define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN/TS_PACKET_LEN)
+
+// 缓冲区大小除以一个 ts 包的尺寸，得出缓冲区可以储存多少个 ts 包
+#define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN / TS_PACKET_LEN)
 
 typedef void *hstream_source;
 typedef vatek_result(*fpstream_source_start)(hstream_source hsource);

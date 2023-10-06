@@ -236,10 +236,17 @@ int main(int argc, char *argv[])
 		// reboot chip
 		vatek_device_close_reboot(hchip);
 	}
+
 	if (hdevlist)
+	{
 		vatek_device_list_free(hdevlist);
+	}
+
 	if (streamsource.hsource)
+	{
 		streamsource.free(streamsource.hsource);
+	}
+
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;

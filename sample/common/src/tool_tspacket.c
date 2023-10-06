@@ -115,6 +115,7 @@ uint8_t *tspacket_get_suffing(void)
 	static int32_t packetidx = 0;
 
 	uint32_t crc = tool_crc32(&fake_suffing_packet[0][4], 180);
+	// 用大端序将 CRC 值放入 ts 包中
 	fake_suffing_packet[0][188 - 4] = (uint8_t)(crc >> 24);
 	fake_suffing_packet[0][188 - 3] = (uint8_t)(crc >> 16);
 	fake_suffing_packet[0][188 - 2] = (uint8_t)(crc >> 8);
