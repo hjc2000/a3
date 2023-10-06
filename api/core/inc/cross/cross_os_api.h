@@ -174,7 +174,7 @@ extern "C" {
 
 	typedef struct _socket_param{
 		socket_mode mode;
-		const char* ip;
+		const char* url;
 		int32_t buffer_len;
 	}socket_param;
 

@@ -51,6 +51,7 @@
 	#define closesocket			close
 #endif 
 
+// 允许的 URL 的最大长度
 #define MAX_IP_STR_LEN		256
 
 typedef struct _handle_socket
@@ -244,7 +245,7 @@ vatek_result socket_init_handle(Phandle_socket psocket)
 {
 	vatek_result nres = vatek_success;
 	char* ptr = NULL;
-	strncpy(&psocket->url_buf[0], psocket->param.ip, MAX_IP_STR_LEN);
+	strncpy(&psocket->url_buf[0], psocket->param.url, MAX_IP_STR_LEN);
 
 	ptr = strstr(&psocket->url_buf[0], TAG_TCP);
 	if (ptr)ptr += 2;
@@ -263,16 +264,21 @@ vatek_result socket_init_handle(Phandle_socket psocket)
 	return nres;
 }
 
+/// <summary>
+///		
+/// </summary>
+/// <param name="param"></param>
+/// <returns></returns>
 socket_protocol socket_get_protocol(Psocket_param param)
 {
 	socket_protocol nprotocol = protocol_unknown;
-	if (strlen(param->ip) < MAX_IP_STR_LEN)
+	if (strlen(param->url) < MAX_IP_STR_LEN)
 	{
-		if (strncmp(param->ip, TAG_UDP, strlen(TAG_UDP)) == 0)
+		if (strncmp(param->url, TAG_UDP, strlen(TAG_UDP)) == 0)
 			nprotocol = protocol_udp;
-		else if (strncmp(param->ip, TAG_RTP, strlen(TAG_RTP)) == 0)
+		else if (strncmp(param->url, TAG_RTP, strlen(TAG_RTP)) == 0)
 			nprotocol = protocol_rtp;
-		else if (strncmp(param->ip, TAG_TCP,strlen(TAG_TCP)) == 0)
+		else if (strncmp(param->url, TAG_TCP,strlen(TAG_TCP)) == 0)
 			nprotocol = protocol_tcp;
 	}
 	return nprotocol;

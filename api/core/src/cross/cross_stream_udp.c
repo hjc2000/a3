@@ -75,7 +75,7 @@ vatek_result cross_stream_udp_get(const char* url, Pcstream_handler* pcstream)
 	hcross_mutex hlock = NULL;
 
 	sparam.buffer_len = UDP_BUFFER_LEN;
-	sparam.ip = url;
+	sparam.url = url;
 	sparam.mode = socket_client;
 
 	nres = cross_os_create_socket(&sparam, &hsocket);
