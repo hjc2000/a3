@@ -29,26 +29,26 @@
 #include <cross/cross_os_api.h>
 
 #ifdef _WIN32
-	#ifndef _WIN32_WINNT
-		#define _WIN32_WINNT 0x0501  /* Windows XP. */
-	#endif
-	#include <winsock2.h>
-	#include <Ws2tcpip.h>
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501  /* Windows XP. */
+#endif
+#include <winsock2.h>
+#include <Ws2tcpip.h>
 
-	#pragma comment (lib, "Ws2_32.lib")
-	#pragma comment (lib, "Mswsock.lib")
-	#pragma comment (lib, "AdvApi32.lib")
+#pragma comment (lib, "Ws2_32.lib")
+#pragma comment (lib, "Mswsock.lib")
+#pragma comment (lib, "AdvApi32.lib")
 #else
-	#include <sys/socket.h>
-	#include <arpa/inet.h>
-	#include <netdb.h>  /* Needed for getaddrinfo() and freeaddrinfo() */
-	#include <unistd.h> /* Needed for close() */
-	#include <unistd.h>
-	#include <fcntl.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netdb.h>  /* Needed for getaddrinfo() and freeaddrinfo() */
+#include <unistd.h> /* Needed for close() */
+#include <unistd.h>
+#include <fcntl.h>
 
-	#define SOCKET 				int32_t
-	#define INVALID_SOCKET 		-1
-	#define closesocket			close
+#define SOCKET 				int32_t
+#define INVALID_SOCKET 		-1
+#define closesocket			close
 #endif 
 
 // 允许的 URL 的最大长度
@@ -61,19 +61,28 @@ typedef struct _handle_socket
 	struct sockaddr_storage addr;
 	socket_param param;
 	char url_buf[MAX_IP_STR_LEN];
-	char* ptr_ip;
-	char* prt_port;
+	char *ptr_ip;
+	char *prt_port;
 }handle_socket, *Phandle_socket;
 
 extern void socket_init();
 extern void socket_free();
+
+/// <summary>
+///		通过分析 Psocket_param 的 url 字段，获取使用的是什么协议。
+///		* 以 "udp://" 开头，是 protocol_udp
+///		* 以 "rtp://" 开头，是 protocol_rtp
+///		* 以 "//" 开头，是 protocol_tcp
+/// </summary>
+/// <param name="param"></param>
+/// <returns>协议类型</returns>
 extern socket_protocol socket_get_protocol(Psocket_param param);
 extern vatek_result socket_init_handle(Phandle_socket psocket);
 extern vatek_result socket_set_block(Phandle_socket psocket, int32_t isblock);
 extern vatek_result socket_mutilcast_group(Phandle_socket psocket);
 extern vatek_result socket_set_recvbuf(Phandle_socket psocket);
 
-vatek_result cross_os_create_socket(Psocket_param param, hcross_socket* hsocket)
+vatek_result cross_os_create_socket(Psocket_param param, hcross_socket *hsocket)
 {
 	socket_protocol nprotocol = socket_get_protocol(param);
 	vatek_result nres = vatek_unsupport;
@@ -90,7 +99,7 @@ vatek_result cross_os_create_socket(Psocket_param param, hcross_socket* hsocket)
 			psocket->protocol = nprotocol;
 			psocket->socket_fd = -1;
 			memcpy(&psocket->param, param, sizeof(socket_param));
-			
+
 			nres = socket_init_handle(psocket);
 			if (!is_vatek_success(nres))free(psocket);
 			else *hsocket = psocket;
@@ -127,7 +136,7 @@ vatek_result cross_os_connect_socket(hcross_socket hsocket)
 			hint.ai_protocol = IPPROTO_TCP;
 		}
 
-		nres = (vatek_result)getaddrinfo(psocket->ptr_ip,psocket->prt_port, &hint, &recvaddr);
+		nres = (vatek_result)getaddrinfo(psocket->ptr_ip, psocket->prt_port, &hint, &recvaddr);
 		if (is_vatek_success(nres))
 		{
 			recvptr = recvaddr;
@@ -139,7 +148,7 @@ vatek_result cross_os_connect_socket(hcross_socket hsocket)
 					int32_t opt = 1;
 					if (psocket->protocol != protocol_tcp)
 					{
-						nres = (vatek_result)setsockopt(psocket->socket_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+						nres = (vatek_result)setsockopt(psocket->socket_fd, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt, sizeof(opt));
 						if (is_vatek_success(nres))
 						{
 							nres = socket_set_block(psocket, 0);
@@ -169,7 +178,7 @@ vatek_result cross_os_connect_socket(hcross_socket hsocket)
 	return nres;
 }
 
-vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t* pbuf, int32_t len, int32_t timeout)
+vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	vatek_result nres = vatek_unsupport;
@@ -198,30 +207,40 @@ vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t* pbuf, int32_t 
 	return nres;
 }
 
-vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t* pbuf, int32_t len, int32_t timeout)
+vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
-	vatek_result nres = vatek_unsupport;
-	if (psocket->protocol == protocol_tcp)
+	if (psocket->protocol != protocol_tcp)
 	{
-		int32_t pos = 0;
-		while (pos < len)
-		{
-			int32_t rlen = len - pos;
-			nres = (vatek_result)send(psocket->socket_fd, &pbuf[pos], rlen, 0);
-			if (is_vatek_success(nres))pos += (int32_t)nres;
-			else break;
-		}
-		
+		return vatek_unsupport;
 	}
-	return nres;
+
+	int32_t pos = 0;
+	while (pos < len)
+	{
+		/* 因为 send 函数实际发送出去的数据可能少于 rlen，所以需要在循环中反复发送 */
+		int32_t rlen = len - pos;
+		int have_send = (vatek_result)send(psocket->socket_fd, &pbuf[pos], rlen, 0);
+		if (have_send >= 0)
+		{
+			pos += have_send;
+		}
+		else
+		{
+			// 发送失败，因为 send 函数发生了错误
+			return -1;
+		}
+	}
+
+	// 退出循环说明数据发送完成
+	return 0;
 }
 
 vatek_result cross_os_disconnect_socket(hcross_socket hsocket)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	vatek_result nres = vatek_success;
-	if(psocket->socket_fd != -1)
+	if (psocket->socket_fd != -1)
 		nres = (vatek_result)closesocket(psocket->socket_fd);
 	psocket->socket_fd = -1;
 	return nres;
@@ -244,7 +263,7 @@ void cross_os_free_socket(hcross_socket hsocket)
 vatek_result socket_init_handle(Phandle_socket psocket)
 {
 	vatek_result nres = vatek_success;
-	char* ptr = NULL;
+	char *ptr = NULL;
 	strncpy(&psocket->url_buf[0], psocket->param.url, MAX_IP_STR_LEN);
 
 	ptr = strstr(&psocket->url_buf[0], TAG_TCP);
@@ -264,11 +283,6 @@ vatek_result socket_init_handle(Phandle_socket psocket)
 	return nres;
 }
 
-/// <summary>
-///		
-/// </summary>
-/// <param name="param"></param>
-/// <returns></returns>
 socket_protocol socket_get_protocol(Psocket_param param)
 {
 	socket_protocol nprotocol = protocol_unknown;
@@ -278,7 +292,7 @@ socket_protocol socket_get_protocol(Psocket_param param)
 			nprotocol = protocol_udp;
 		else if (strncmp(param->url, TAG_RTP, strlen(TAG_RTP)) == 0)
 			nprotocol = protocol_rtp;
-		else if (strncmp(param->url, TAG_TCP,strlen(TAG_TCP)) == 0)
+		else if (strncmp(param->url, TAG_TCP, strlen(TAG_TCP)) == 0)
 			nprotocol = protocol_tcp;
 	}
 	return nprotocol;
@@ -287,18 +301,18 @@ socket_protocol socket_get_protocol(Psocket_param param)
 vatek_result socket_set_block(Phandle_socket psocket, int32_t isblock)
 {
 	vatek_result nres = vatek_unsupport;
-#ifdef _WIN32
+	#ifdef _WIN32
 	u_long	flags;
 
 	flags = !isblock;
-	nres = (vatek_result)ioctlsocket(psocket->socket_fd, FIONBIO, (u_long FAR *) &flags);
-#else
+	nres = (vatek_result)ioctlsocket(psocket->socket_fd, FIONBIO, (u_long FAR *) & flags);
+	#else
 	int flags = fcntl(psocket->socket_fd, F_GETFL, 0);
 	if (isblock)flags &= ~O_NONBLOCK;
 	else flags |= O_NONBLOCK;
 	nres = (vatek_result)fcntl(psocket->socket_fd, F_SETFL, O_NONBLOCK | flags);
 
-#endif
+	#endif
 	return nres;
 }
 
@@ -322,7 +336,7 @@ vatek_result socket_set_recvbuf(Phandle_socket psocket)
 	int32_t buflen = psocket->param.buffer_len;
 	if (buflen)
 		nres = (vatek_result)setsockopt(psocket->socket_fd, SOL_SOCKET, SO_RCVBUF, (void *)&buflen, sizeof(int32_t));
-	
+
 	return nres;
 }
 
@@ -331,36 +345,36 @@ vatek_result socket_set_recvbuf(Phandle_socket psocket)
 uint32_t socket_get_tick(void)
 {
 	struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);	
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 }
 
 void socket_sleep(int32_t ms)
 {
-    usleep(ms*1000);
+	usleep(ms * 1000);
 }
 
 #endif
 
 #ifdef _WIN32
-	static int32_t socket_ref = 0;
+static int32_t socket_ref = 0;
 #endif
 void socket_init()
 {
-#ifdef _WIN32
+	#ifdef _WIN32
 	if (!socket_ref)
 	{
 		WSADATA wsa_data;
 		WSAStartup(MAKEWORD(1, 1), &wsa_data);
 	}
 	socket_ref++;
-#endif
+	#endif
 }
 
 void socket_free()
 {
-#ifdef _WIN32
+	#ifdef _WIN32
 	socket_ref--;
 	if (!socket_ref)WSACleanup();
-#endif
+	#endif
 }

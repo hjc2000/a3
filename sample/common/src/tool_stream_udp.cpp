@@ -15,7 +15,7 @@
 
 extern vatek_result udp_stream_start(hstream_source hsource);
 extern vatek_result udp_stream_check(hstream_source hsource);
-extern uint8_t* udp_stream_get(hstream_source hsource);
+extern uint8_t *udp_stream_get(hstream_source hsource);
 extern vatek_result udp_stream_stop(hstream_source hsource);
 extern void udp_stream_free(hstream_source hsource);
 
@@ -28,18 +28,18 @@ typedef struct _handle_udp
 	int32_t buf_wptr;
 	uint8_t buf_pool[UDP_SLICE_BUF_NUMS][CHIP_STREAM_SLICE_LEN];
 	int32_t isrunning;
-}handle_udp,*Phandle_udp;
+}handle_udp, *Phandle_udp;
 
 extern void recv_handle(Pcross_thread_param param);
 
-extern uint8_t* get_write_buffer(Phandle_udp pudp);
+extern uint8_t *get_write_buffer(Phandle_udp pudp);
 extern void commit_write_buffer(Phandle_udp pudp);
-extern uint8_t* get_valid_buffer(Phandle_udp pudp);
+extern uint8_t *get_valid_buffer(Phandle_udp pudp);
 extern int32_t check_valid_buffer(Phandle_udp pudp);
 
-vatek_result stream_source_udp_get(const char* ipaddr, Ptsstream_source psource)
+vatek_result stream_source_udp_get(const char *ipaddr, Ptsstream_source psource)
 {
-	socket_param sparam = { 0, };
+	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;
 	hcross_socket hsocket = NULL;
 	hcross_mutex hlock = NULL;
@@ -98,7 +98,8 @@ vatek_result udp_stream_start(hstream_source hsource)
 
 			if (!is_vatek_success(nres))
 				nres = cross_os_disconnect_socket(pudp->hsocket);
-		}else _disp_err("cross_os_connect_socket fail : %d", nres);
+		}
+		else _disp_err("cross_os_connect_socket fail : %d", nres);
 	}
 	return nres;
 }
@@ -119,7 +120,7 @@ vatek_result udp_stream_check(hstream_source hsource)
 	}
 }
 
-uint8_t* udp_stream_get(hstream_source hsource)
+uint8_t *udp_stream_get(hstream_source hsource)
 {
 	if (udp_stream_check(hsource))
 		return get_valid_buffer((Phandle_udp)hsource);
@@ -155,11 +156,15 @@ void recv_handle(Pcross_thread_param param)
 	socket_protocol nprotocol = cross_os_get_protocol_socket(pudp->hsocket);
 	int32_t framelen = UDP_FRAME_LEN;
 	int32_t frameoffset = 0;
-	uint8_t* pbuf = (uint8_t*)malloc(UDP_MAX_FRAME_LEN);
+	uint8_t *pbuf = (uint8_t *)malloc(UDP_MAX_FRAME_LEN);
+	if (!pbuf)
+	{
+		throw - 1;
+	}
 
 	int32_t pktnums = 0;
 	int32_t retry = 0;
-	uint8_t* pktbuf = NULL;
+	uint8_t *pktbuf = NULL;
 
 	memset(pbuf, 0, UDP_MAX_FRAME_LEN);
 
@@ -175,7 +180,7 @@ void recv_handle(Pcross_thread_param param)
 		nres = cross_os_recv_socket(pudp->hsocket, pbuf, framelen, 1000);
 		if (is_vatek_success(nres))
 		{
-			uint8_t* precv = &pbuf[frameoffset];
+			uint8_t *precv = &pbuf[frameoffset];
 			int32_t pos = frameoffset;
 
 			while (pos < framelen && pudp->isrunning)
@@ -221,9 +226,9 @@ void recv_handle(Pcross_thread_param param)
 	free(pbuf);
 }
 
-uint8_t* get_write_buffer(Phandle_udp pudp)
+uint8_t *get_write_buffer(Phandle_udp pudp)
 {
-	uint8_t* ptr = NULL;
+	uint8_t *ptr = NULL;
 	int32_t nptr;
 	cross_os_lock_mutex(pudp->hlock);
 	nptr = (pudp->buf_wptr + 1) & UDP_SLICE_BUF_MASK;
@@ -241,9 +246,9 @@ void commit_write_buffer(Phandle_udp pudp)
 	cross_os_release_mutex(pudp->hlock);
 }
 
-uint8_t* get_valid_buffer(Phandle_udp pudp)
+uint8_t *get_valid_buffer(Phandle_udp pudp)
 {
-	uint8_t* ptr = NULL;
+	uint8_t *ptr = NULL;
 	cross_os_lock_mutex(pudp->hlock);
 	ptr = &pudp->buf_pool[pudp->buf_rptr][0];
 	pudp->buf_rptr++;
