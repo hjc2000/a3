@@ -1,6 +1,4 @@
 #include "../inc/tool_stream.h"
-#include "../inc/tool_printf.h"
-#include "../inc/tool_tspacket.h"
 
 /// <summary>
 ///		流开始。其实就是将 hsource 内表示时间的两个字段赋值为 0
@@ -32,14 +30,6 @@ extern vatek_result test_stream_stop(hstream_source hsource);
 /// <param name="hsource"></param>
 extern void test_stream_free(hstream_source hsource);
 
-typedef struct _handle_test
-{
-	mux_time_tick time;
-	uint32_t slice_ns;
-	int32_t file_size;
-	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
-}handle_test, *Phandle_test;
-
 vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource)
 {
 	uint32_t bitrate = modulator_param_get_bitrate(pmod);
@@ -61,7 +51,7 @@ vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psou
 
 vatek_result test_stream_start(hstream_source hsource)
 {
-	Phandle_test ptest = (Phandle_test)hsource;
+	handle_test *ptest = (handle_test *)hsource;
 	ptest->time.ms = 0;
 	ptest->time.ns = 0;
 	return vatek_success;
@@ -74,7 +64,7 @@ vatek_result test_stream_check(hstream_source hsource)
 
 uint8_t *test_stream_get(hstream_source hsource)
 {
-	Phandle_test ptest = (Phandle_test)hsource;
+	handle_test *ptest = (handle_test *)hsource;
 	int32_t nums = 0;
 	uint8_t *ptr = &ptest->buffer[0];
 

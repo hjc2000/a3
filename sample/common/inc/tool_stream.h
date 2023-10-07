@@ -3,6 +3,8 @@
 #define _TOOL_STREAM_
 
 #include <core/base/output_modulator.h>
+#include "../inc/tool_printf.h"
+#include "../inc/tool_tspacket.h"
 
 // 一个 ts 的包长度是 188 字节
 #define TS_PACKET_LEN				188
@@ -19,6 +21,14 @@ typedef vatek_result(*fpstream_source_check)(hstream_source hsource);
 typedef uint8_t *(*fpstream_source_get)(hstream_source hsource);
 typedef vatek_result(*fpstream_source_stop)(hstream_source hsource);
 typedef void(*fpstream_source_free)(hstream_source hsource);
+
+struct handle_test
+{
+	mux_time_tick time;
+	uint32_t slice_ns;
+	int32_t file_size;
+	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
+};
 
 /// <summary>
 ///		ts 流源。内部定义了一个 hstream_source 类型的字段和一些函数指针。
