@@ -26,7 +26,17 @@ typedef struct _handle_udp
 	hcross_mutex hlock;
 	int32_t buf_rptr;
 	int32_t buf_wptr;
+
+	/// <summary>
+	///		定义一个二维数组。因为二维数组内存上是连续的，所以可以当成长度为
+	///		UDP_SLICE_BUF_NUMS * CHIP_STREAM_SLICE_LEN 的一维数组使用。这是用来接收 UDP 流
+	///		的缓冲区。
+	/// </summary>
 	uint8_t buf_pool[UDP_SLICE_BUF_NUMS][CHIP_STREAM_SLICE_LEN];
+
+	/// <summary>
+	///		线程函数当前是否在执行
+	/// </summary>
 	int32_t isrunning;
 }handle_udp, *Phandle_udp;
 
@@ -270,8 +280,8 @@ int32_t check_valid_buffer(Phandle_udp pudp)
 	int32_t len;
 	cross_os_lock_mutex(pudp->hlock);
 	len = pudp->buf_wptr - pudp->buf_rptr;
-	if (len < 0)len += UDP_SLICE_BUF_NUMS;
+	if (len < 0)
+		len += UDP_SLICE_BUF_NUMS;
 	cross_os_release_mutex(pudp->hlock);
 	return len;
 }
-
