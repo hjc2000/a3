@@ -28,6 +28,8 @@ typedef void(*fpstream_source_free)(hstream_source hsource);
 class tsstream_source
 {
 public:
+	tsstream_source();
+
 	hstream_source hsource = nullptr;
 	fpstream_source_start start;
 	fpstream_source_check check;

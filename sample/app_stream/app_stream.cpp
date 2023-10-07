@@ -63,9 +63,7 @@ int main(int argc, char *argv[])
 {
 	hvatek_chip hchip = NULL;
 	hvatek_usbstream hustream = NULL;
-	tsstream_source streamsource = {
-		0,
-	};
+	tsstream_source streamsource;
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;

@@ -115,3 +115,12 @@ void test_stream_free(hstream_source hsource)
 {
 	free(hsource);
 }
+
+tsstream_source::tsstream_source()
+{
+	start = test_stream_start;
+	stop = test_stream_stop;
+	check = test_stream_check;
+	get = test_stream_get;
+	free = test_stream_free;
+}
