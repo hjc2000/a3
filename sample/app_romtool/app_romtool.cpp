@@ -37,84 +37,88 @@
 
 #include "../common/inc/tool_printf.h"
 
-extern vatek_result cmd_parser_romfile(int argc, char *argv[],char** romfile);
-extern void storage_process_handler(rom_progress_msg msg,void* progressval,void* param);
+extern vatek_result cmd_parser_romfile(int argc, char *argv[], char **romfile);
+extern void storage_process_handler(rom_progress_msg msg, void *progressval, void *param);
 
 int main(int argc, char *argv[])
 {
 	Promfile_handle promfile = NULL;
-	char* szromfile = NULL;
-	vatek_result nres = cmd_parser_romfile(argc,argv,&szromfile);
-	if(is_vatek_success(nres))
+	char *szromfile = NULL;
+	vatek_result nres = cmd_parser_romfile(argc, argv, &szromfile);
+	if (is_vatek_success(nres))
 	{
-		/* 
+		/*
 			step 1 :
-			create vimage file handle 
+			create vimage file handle
 		*/
-		nres = vatek_storage_romfile_create(szromfile,&promfile);
-		if(is_vatek_success(nres))
+		nres = vatek_storage_romfile_create(szromfile, &promfile);
+		if (is_vatek_success(nres))
 		{
 			hvatek_devices hdevlist = NULL;
 			hvatek_chip hchip = NULL;
 
-		/*
-			step 2 : 
-			find current device to update rom.
-		*/
-			nres = vatek_device_list_enum(DEVICE_BUS_ALL,service_unknown,&hdevlist);
-			if(nres > vatek_success)
-				nres = vatek_device_open(hdevlist,0,&hchip);
+			/*
+				step 2 :
+				find current device to update rom.
+			*/
+			nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_unknown, &hdevlist);
+			if (nres > vatek_success)
+				nres = vatek_device_open(hdevlist, 0, &hchip);
 			else if (nres == vatek_success)
 			{
 				_disp_err("can not found device.");
 				nres = vatek_nodevice;
 			}
 
-			if(is_vatek_success(nres))
+			if (is_vatek_success(nres))
 			{
-			/*
-				setp 3 : 
-				create storage handle and write vimage file to device rom.
-			*/
+				/*
+					setp 3 :
+					create storage handle and write vimage file to device rom.
+				*/
 				Pstorage_handle pstorage = NULL;
-				nres = vatek_storage_create_chip_handle(hchip,&pstorage,storage_process_handler,NULL);
-				if(is_vatek_success(nres))
+				nres = vatek_storage_create_chip_handle(hchip, &pstorage, storage_process_handler, NULL);
+				if (is_vatek_success(nres))
 				{
 					hvatek_storage hstorage = NULL;
-					nres = vatek_storage_open(pstorage,&hstorage,0);
-					if(is_vatek_success(nres))
+					nres = vatek_storage_open(pstorage, &hstorage, 0);
+					if (is_vatek_success(nres))
 					{
-						nres = vatek_storage_write_app(hstorage,promfile);
-						if(!is_vatek_success(nres))_disp_err("update rom file fail : %d",nres);
-						else _disp_l("update rom file finish - %d",nres);
+						nres = vatek_storage_write_app(hstorage, promfile);
+						if (!is_vatek_success(nres))_disp_err("update rom file fail : %d", nres);
+						else _disp_l("update rom file finish - %d", nres);
 						vatek_storage_close(hstorage);
-					}else _disp_err("open storage handle fail : %d",nres);
+					}
+					else _disp_err("open storage handle fail : %d", nres);
 					vatek_storage_free_handle(pstorage);
-				}else _disp_err("create storage handle fail : %d",nres);
+				}
+				else _disp_err("create storage handle fail : %d", nres);
 			}
 
 			/*
-				step 4 : 
+				step 4 :
 				clean all handle and resources.
 			*/
 			if (hchip)vatek_device_close_reboot(hchip);
 			//if(hchip)vatek_device_close(hchip);
-			if(hdevlist)vatek_device_list_free(hdevlist);
+			if (hdevlist)vatek_device_list_free(hdevlist);
 			vatek_storage_romfile_free(promfile);
-		}else _disp_err("open rom file fail : %d [bad format]",nres);
-	}else if(nres = vatek_badparam)_disp_err("bad romfile param : %s",argv[1]);
+		}
+		else _disp_err("open rom file fail : %d [bad format]", nres);
+	}
+	else if (nres = vatek_badparam)_disp_err("bad romfile param : %s", argv[1]);
 
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;
 }
 
-void storage_process_handler(rom_progress_msg msg, void* progressval, void* param)
+void storage_process_handler(rom_progress_msg msg, void *progressval, void *param)
 {
 	static int32_t pos = 0;
 	if (msg == rom_msg_set_str)
 	{
-		printf("%s \r\n", (char*)progressval);
+		printf("%s \r\n", (char *)progressval);
 		pos = 0;
 	}
 	else if (msg == rom_msg_set_pos)
@@ -129,21 +133,22 @@ void storage_process_handler(rom_progress_msg msg, void* progressval, void* para
 	}
 }
 
-vatek_result cmd_parser_romfile(int argc, char *argv[],char** romfile)
+vatek_result cmd_parser_romfile(int argc, char *argv[], char **romfile)
 {
 	vatek_result nres = vatek_unsupport;
-	if(argc == 2)
+	if (argc == 2)
 	{
-		FILE* from = fopen(argv[1],"rb");
-		if(from)
+		FILE *from = fopen(argv[1], "rb");
+		if (from)
 		{
 			nres = vatek_success;
 			*romfile = argv[1];
 			fclose(from);
-		}else nres = vatek_badparam;
+		}
+		else nres = vatek_badparam;
 	}
-	
-	if(nres == vatek_unsupport)
+
+	if (nres == vatek_unsupport)
 	{
 		_disp_l("support param below : ");
 		_disp_l("	- app_romtool [filename]");

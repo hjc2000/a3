@@ -51,9 +51,9 @@
 
 /* broadcast parameters*/
 static broadcast_param bc_param =
-	{
-		.enc =
-			{
+{
+	.enc =
+		{
 #if BROADCAST_EN_COLORBAR
 				.mode = encoder_source_colorbar,
 #else
@@ -108,9 +108,9 @@ static broadcast_param bc_param =
 			.pcr_pid = 0x100,
 			.padding_pid = 0x1FFF,
 			.bitrate = 0,
-			0,
-			0,
-			0,
+			.stuffing_pid = 0,
+			.recv = 0,
+			.en_function = 0,
 		},
 };
 
@@ -128,16 +128,16 @@ typedef struct _bml_stream
 extern void bmlesinfo_create(Pbml_stream pbml);
 
 static bml_stream bmltests[3] =
-	{
-		{0x320, 0x40, 0, 0, {
-								0,
-							}},
-		{0x321, 0x50, 0, 0, {
-								0,
-							}},
-		{0x322, 0x60, 0, 0, {
-								0,
-							}},
+{
+	{0x320, 0x40, 0, 0, {
+							0,
+						}},
+	{0x321, 0x50, 0, 0, {
+							0,
+						}},
+	{0x322, 0x60, 0, 0, {
+							0,
+						}},
 };
 
 #endif
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 	hmux_core hmux = NULL;
 	Pbroadcast_auxstream pauxstream = NULL;
 
-#if BROADCAST_EN_AUX
+	#if BROADCAST_EN_AUX
 
 	uint32_t auxbitrate = 4000000;
 	usbaux_mode auxmode = usbaux_sync;
@@ -184,29 +184,29 @@ int main(int argc, char *argv[])
 	else
 		nres = vatek_success;
 
-#else
+	#else
 	nres = vatek_success;
-#endif
+	#endif
 
-#if 1
-		/*
-			the easiest way to changed modulation mode used modulator_param_reset.
-			example :
-				modulator_param_reset(modulator_atsc,&usbcmd.modulator);
-				modulator_param_reset(modulator_j83b,&usbcmd.modulator);
-				modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
-				modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
-
-		*/
-		// modulator_param_reset(modulator_isdb_t, &bc_param.mod);
-		// bc_param.mod.ifmode = ifmode_iqoffset;
-		// bc_param.mod.iffreq_offset = 143;
-		// nres = modulator_param_get_bitrate(&bc_param.mod);
-#endif
+	#if 1
 	/*
-		step 1 :
-		- initialized supported device and open service
+		the easiest way to changed modulation mode used modulator_param_reset.
+		example :
+			modulator_param_reset(modulator_atsc,&usbcmd.modulator);
+			modulator_param_reset(modulator_j83b,&usbcmd.modulator);
+			modulator_param_reset(modulator_dvb_t,&usbcmd.modulator);
+			modulator_param_reset(modulator_isdb_t,&usbcmd.modulator);
+
 	*/
+	// modulator_param_reset(modulator_isdb_t, &bc_param.mod);
+	// bc_param.mod.ifmode = ifmode_iqoffset;
+	// bc_param.mod.iffreq_offset = 143;
+	// nres = modulator_param_get_bitrate(&bc_param.mod);
+	#endif
+		/*
+			step 1 :
+			- initialized supported device and open service
+		*/
 
 	if (is_vatek_success(nres))
 	{
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
 		step 2 :
 			- check video and audio source ready or used bootlogo_ or colorbar_
 	*/
-#if BROADCAST_RF_TEST
+	#if BROADCAST_RF_TEST
 	// vatek_device_start_sine(hchip, 473000);
 	// vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
 
@@ -268,10 +268,10 @@ int main(int argc, char *argv[])
 		nres = rfmixer_r2_start(hchip, 0x600, &r2param);
 	}
 
-#endif
+	#endif
 
-#if BROADCAST_NORMAL
-#if BROADCAST_EN_BRIDGE
+	#if BROADCAST_NORMAL
+	#if BROADCAST_EN_BRIDGE
 
 	if (is_vatek_success(nres))
 	{
@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
 			vatek_device_list_free(hblists);
 		nres = vatek_success;
 	}
-#endif
+	#endif
 
 	if (is_vatek_success(nres))
 	{
@@ -361,12 +361,12 @@ int main(int argc, char *argv[])
 		else if (bc_param.mod.type == modulator_atsc ||
 				 bc_param.mod.type == modulator_j83b)
 			penc->audio.acodec = encaudio_ac3;
-#if 0
+		#if 0
 		penc->mode = encoder_source_colorbar;
 		penc->video.resolution = resolution_1080i;
 		penc->video.framerate = framerate_60;
 		penc->audio.channel = channel_mute;
-#endif
+		#endif
 	}
 
 	/*
@@ -407,7 +407,7 @@ int main(int argc, char *argv[])
 				}
 			}
 
-#if BROADCAST_EN_BML
+			#if BROADCAST_EN_BML
 			if (is_vatek_success(nres))
 			{
 				bmlesinfo_create(&bmltests[0]);
@@ -420,7 +420,7 @@ int main(int argc, char *argv[])
 				if (is_vatek_success(nres))
 					nres = muxbroadcast_add_stream(hmuxbc, bmltests[2].pid, STREAMTYPE_ISO13818_6_TYPE_D, &bmltests[2].esbuf[0], bmltests[2].eslen);
 			}
-#endif
+			#endif
 		}
 
 		/*
@@ -527,10 +527,10 @@ int main(int argc, char *argv[])
 
 	_disp_l("broadcast finiah : %d", nres);
 
-#if BROADCAST_EN_AUX
+	#if BROADCAST_EN_AUX
 	if (pauxstream)
 		auxsource_test_close(pauxstream);
-#endif
+	#endif
 	if (hchip)
 	{
 		vatek_device_close_reboot(hchip);
@@ -543,7 +543,7 @@ int main(int argc, char *argv[])
 		vatek_device_close(hchip);
 	if (hdevlist)
 		vatek_device_list_free(hdevlist);
-#endif
+	#endif
 	printf_app_end();
 	return (int32_t)1;
 }
@@ -562,9 +562,9 @@ typedef struct _aux_pid
 typedef struct _aux_test_handle
 {
 	FILE *file;
-#if ASYNC_TEST_UPDATE
+	#if ASYNC_TEST_UPDATE
 	uint32_t tick;
-#endif
+	#endif
 	int32_t pktnums;
 	int32_t pktvalid;
 	uint8_t *buffer[CHIP_STREAM_SLICE_LEN];
@@ -573,195 +573,195 @@ typedef struct _aux_test_handle
 } aux_test_handle, *Paux_test_handle;
 
 static uint8_t null_packet[TS_PACKET_LEN] =
-	{
-		0x47,
-		0x1F,
-		0xFF,
-		0x1F,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
-		0xFF,
+{
+	0x47,
+	0x1F,
+	0xFF,
+	0x1F,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
 };
 
 extern void auxsource_pid_continue(Paux_test_handle ptest, uint8_t *ppacket);
@@ -798,9 +798,9 @@ Pbroadcast_auxstream auxsource_test_open(const char *filename, usbaux_mode mode,
 				newaux->pktnums = bcaux_stream.aux.length / TS_PACKET_LEN;
 				newaux->pktvalid = newaux->pktnums;
 				bcaux_stream.haux = newaux;
-#if ASYNC_TEST_UPDATE
+				#if ASYNC_TEST_UPDATE
 				newaux->tick = cross_os_get_tick_ms();
-#endif
+				#endif
 				fseek(hfile, 0, SEEK_SET);
 				return &bcaux_stream;
 			}
@@ -821,7 +821,7 @@ void auxsource_test_close(Pbroadcast_auxstream pauxtest)
 
 int32_t auxsource_test_check_update(hvatek_aux haux)
 {
-#if ASYNC_TEST_UPDATE
+	#if ASYNC_TEST_UPDATE
 	Paux_test_handle paux = (Paux_test_handle)haux;
 	if (bcaux_stream.aux.mode == usbaux_async)
 	{
@@ -831,7 +831,7 @@ int32_t auxsource_test_check_update(hvatek_aux haux)
 			return 1;
 		}
 	}
-#endif
+	#endif
 	return 0;
 }
 

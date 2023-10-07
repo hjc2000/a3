@@ -77,6 +77,7 @@ vatek_result calibration_adjust_gain(hvatek_chip hchip, int8_t gain, Pcalibratio
 		calibration.dac.igain = m_calibration->dac.igain;
 		calibration.dac.qgain = m_calibration->dac.qgain;
 	}
+
 	return calibration_set(hchip, &calibration, 1);
 }
 
