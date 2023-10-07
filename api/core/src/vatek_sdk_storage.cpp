@@ -45,7 +45,7 @@ typedef struct _storage_entry
 	loader_header loader;
 	uint32_t pos;
 	uint32_t resource_pos;
-	uint8_t* section_buf;
+	uint8_t *section_buf;
 	storage_chip_config chipconfig;
 	r2_tune_handle r2tune;
 	union
@@ -54,7 +54,7 @@ typedef struct _storage_entry
 		storage_transform transform;
 	}_service;
 	Pstorage_resource resources;
-}storage_entry,*Pstorage_entry;
+}storage_entry, *Pstorage_entry;
 
 #define storage_h(h)							(((Pstorage_entry)(h))->phandle)
 #define storage_resource_root(h)				(((Pstorage_entry)(h))->resources)
@@ -70,11 +70,11 @@ typedef struct _storage_entry
 
 
 #ifdef _MSC_VER
-	#define storage_progress_str(h,msg)			storage_h(h)->progress(rom_msg_set_str,(void*)msg,storage_h(h))
-	#define storage_progress_pos(h,pos)			storage_h(h)->progress(rom_msg_set_pos, (void*)(intptr_t)pos, storage_h(h))
+#define storage_progress_str(h,msg)			storage_h(h)->progress(rom_msg_set_str,(void*)msg,storage_h(h))
+#define storage_progress_pos(h,pos)			storage_h(h)->progress(rom_msg_set_pos, (void*)(intptr_t)pos, storage_h(h))
 #else
-	#define storage_progress_str(h,msg)			storage_h(h)->progress(rom_msg_set_str,(void*)msg,storage_h(h))
-	#define storage_progress_pos(h,pos)			storage_h(h)->progress(rom_msg_set_pos, (void*)(long)pos, storage_h(h))
+#define storage_progress_str(h,msg)			storage_h(h)->progress(rom_msg_set_str,(void*)msg,storage_h(h))
+#define storage_progress_pos(h,pos)			storage_h(h)->progress(rom_msg_set_pos, (void*)(long)pos, storage_h(h))
 #endif
 
 #define romfile_h(f)						((Promfile_handle)f)
@@ -83,35 +83,35 @@ typedef struct _storage_entry
 
 extern vatek_result storage_get_loader_header(hvatek_storage hstorage, Ploader_header ploader);
 extern vatek_result storage_get_app_header(hvatek_storage hstorage, Papp_header papp);
-extern vatek_result storage_reset(hvatek_storage hstorage,hal_service_mode service);
+extern vatek_result storage_reset(hvatek_storage hstorage, hal_service_mode service);
 extern vatek_result storage_find_resource(hvatek_storage hstorage);
-extern vatek_result storage_write_resource(hvatek_storage hstorage, uint32_t pos, uint8_t* psection, Pbin_resource_section pres);
-extern vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t* psection, uint32_t pos, int32_t len, Pstorage_resource* pres);
+extern vatek_result storage_write_resource(hvatek_storage hstorage, uint32_t pos, uint8_t *psection, Pbin_resource_section pres);
+extern vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t *psection, uint32_t pos, int32_t len, Pstorage_resource *pres);
 extern int32_t storage_getlen_resource(Pbin_resource_section pres);
-extern vatek_result filehandle_write_resource(hvatek_storage hstorage,FILE* fdest, Pbin_resource_section pres, uint8_t* psection);
+extern vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE *fdest, Pbin_resource_section pres, uint8_t *psection);
 
-vatek_result vatek_storage_open(Pstorage_handle phandler, hvatek_storage* hstorage, int32_t isresource)
+vatek_result vatek_storage_open(Pstorage_handle phandler, hvatek_storage *hstorage, int32_t isresource)
 {
 	vatek_result nres = vatek_memfail;
 	int32_t len = (sizeof(storage_entry) + BINARY_SECTION_SIZE);
-	uint8_t* rawbuf = phandler->malloc(len, phandler->param);
+	uint8_t *rawbuf = phandler->malloc(len, phandler->param);
 
 	if (rawbuf != NULL)
 	{
 		Pstorage_entry newstorage = (Pstorage_entry)&rawbuf[0];
 		memset(rawbuf, 0, len);
-		newstorage->section_buf = (uint8_t*)&rawbuf[sizeof(storage_entry)];
+		newstorage->section_buf = (uint8_t *)&rawbuf[sizeof(storage_entry)];
 		newstorage->phandle = phandler;
 		*hstorage = newstorage;
 
 		VERR("storage_read_section");
 		storage_progress_str(newstorage, "load header ...");
 		nres = storage_get_loader_header(*hstorage, &newstorage->loader);
-		if(is_vatek_success(nres))
+		if (is_vatek_success(nres))
 			nres = storage_get_app_header(*hstorage, &newstorage->app);
 		if (is_vatek_success(nres))
 			nres = storage_reset(*hstorage, newstorage->app.service_mode);
-		
+
 
 		if (is_vatek_success(nres))
 		{
@@ -129,7 +129,7 @@ vatek_result vatek_storage_open(Pstorage_handle phandler, hvatek_storage* hstora
 }
 
 
-vatek_result vatek_storage_get_app(hvatek_storage hstorage, Papp_header* papp)
+vatek_result vatek_storage_get_app(hvatek_storage hstorage, Papp_header *papp)
 {
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
 	if (pstorage->is_v2app)
@@ -140,7 +140,7 @@ vatek_result vatek_storage_get_app(hvatek_storage hstorage, Papp_header* papp)
 	return vatek_unsupport;
 }
 
-vatek_result vatek_storage_get_loader(hvatek_storage hstorage, Ploader_header* ploader)
+vatek_result vatek_storage_get_loader(hvatek_storage hstorage, Ploader_header *ploader)
 {
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
 	if (pstorage->is_v2app)
@@ -183,7 +183,7 @@ Pstorage_chip_config vatek_storage_get_config(hvatek_storage hstorage)
 	return NULL;
 }
 
-vatek_result vatek_storage_get_resource(hvatek_storage hstorage, Pstorage_resource* pres)
+vatek_result vatek_storage_get_resource(hvatek_storage hstorage, Pstorage_resource *pres)
 {
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
 	if (pstorage->is_v2app)
@@ -194,17 +194,17 @@ vatek_result vatek_storage_get_resource(hvatek_storage hstorage, Pstorage_resour
 	return vatek_unsupport;
 }
 
-vatek_result vatek_storage_save(hvatek_storage hstorage, const char* filename)
+vatek_result vatek_storage_save(hvatek_storage hstorage, const char *filename)
 {
 	vatek_result nres = vatek_badparam;
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
-	
-	FILE* fimage = fopen(filename, "wb+");
+
+	FILE *fimage = fopen(filename, "wb+");
 	if (fimage)
 	{
 		int32_t pos = 0;
 		int32_t baselen = BINARY_SECTION_LEN(LOADER_SIZE + pstorage->app.bin_size);
-		uint8_t* psection = storage_buf(hstorage);
+		uint8_t *psection = storage_buf(hstorage);
 
 		baselen /= BINARY_SECTION_SIZE;
 
@@ -238,21 +238,22 @@ vatek_result vatek_storage_save(hvatek_storage hstorage, const char* filename)
 		}
 
 		if (is_vatek_success(nres))
-		{	
+		{
 			nres = storage_r2tune_set(&pstorage->r2tune, psection);
 			if (is_vatek_success(nres))
 			{
 				nres = (vatek_result)fwrite(psection, BINARY_SECTION_SIZE, 1, fimage);
 				if (nres <= vatek_success)nres = vatek_hwfail;
 			}
-			
+
 		}
 
 		if (is_vatek_success(nres))
 		{
-			const char* filename = "modulation.mudul";
-			FILE* output_file = fopen(filename, "wb+");
-			if (!output_file) {
+			const char *filename = "modulation.mudul";
+			FILE *output_file = fopen(filename, "wb+");
+			if (!output_file)
+			{
 				perror("fopen");
 				exit(EXIT_FAILURE);
 			}
@@ -275,7 +276,7 @@ vatek_result vatek_storage_save(hvatek_storage hstorage, const char* filename)
 			memset(psection, 0xFF, BINARY_SECTION_SIZE);
 			if (storage_resource_root(hstorage) == NULL)
 			{
-				nres = fwrite(psection, BINARY_SECTION_SIZE, 1, fimage);
+				nres = (vatek_result)fwrite(psection, BINARY_SECTION_SIZE, 1, fimage);
 				if (nres <= vatek_success)nres = vatek_hwfail;
 			}
 			else
@@ -312,15 +313,15 @@ vatek_result vatek_storage_close(hvatek_storage hstorage)
 	return vatek_success;
 }
 
-vatek_result vatek_storage_dump(hvatek_storage hstorage, FILE* hfile)
+vatek_result vatek_storage_dump(hvatek_storage hstorage, FILE *hfile)
 {
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
-	vatek_result nres = fseek(hfile, 0, SEEK_SET);
+	vatek_result nres = (vatek_result)fseek(hfile, 0, SEEK_SET);
 	if (is_vatek_success(nres))
 	{
-		int32_t slen = (pstorage->app.bin_size + LOADER_SIZE)/ BINARY_SECTION_SIZE;
+		int32_t slen = (pstorage->app.bin_size + LOADER_SIZE) / BINARY_SECTION_SIZE;
 		int32_t pos = 0;
-		uint8_t* psection = pstorage->section_buf;
+		uint8_t *psection = pstorage->section_buf;
 		storage_progress_str(hstorage, "dump rom_code ....");
 		storage_progress_pos(hstorage, 0);
 
@@ -383,18 +384,18 @@ vatek_result vatek_storage_dump(hvatek_storage hstorage, FILE* hfile)
 vatek_result vatek_storage_update(hvatek_storage hstorage, Promfile_handle pimage)
 {
 	vatek_result nres = vatek_format;
-	uint8_t* psection = &storage_buf(hstorage)[0];
+	uint8_t *psection = &storage_buf(hstorage)[0];
 
 	nres = romfile_get_section(pimage, 0, psection);
 	if (is_vatek_success(nres))
 	{
 		nres = storage_section_check_loader(psection);
-		if(is_vatek_success(nres))
+		if (is_vatek_success(nres))
 			nres = vatek_storage_write_image(hstorage, pimage);
 		else
 		{
 			nres = storage_section_check_app(psection);
-			if(is_vatek_success(nres))
+			if (is_vatek_success(nres))
 				nres = vatek_storage_write_update(hstorage, pimage);
 		}
 	}
@@ -404,7 +405,7 @@ vatek_result vatek_storage_update(hvatek_storage hstorage, Promfile_handle pimag
 vatek_result vatek_storage_write_image(hvatek_storage hstorage, Promfile_handle pimage)
 {
 	vatek_result nres = vatek_format;
-	uint8_t* psection = &storage_buf(hstorage)[0];
+	uint8_t *psection = &storage_buf(hstorage)[0];
 
 	storage_progress_str(hstorage, "verify image file ...");
 	nres = romfile_get_section(pimage, 0, storage_buf(hstorage));
@@ -455,7 +456,7 @@ vatek_result vatek_storage_write_image(hvatek_storage hstorage, Promfile_handle 
 vatek_result vatek_storage_write_app(hvatek_storage hstorage, Promfile_handle papp)
 {
 	vatek_result nres = vatek_format;
-	uint8_t* psection = &storage_buf(hstorage)[0];
+	uint8_t *psection = &storage_buf(hstorage)[0];
 
 	storage_progress_str(hstorage, "verify app file ...");
 	nres = romfile_get_section(papp, 0, storage_buf(hstorage));
@@ -505,7 +506,7 @@ vatek_result vatek_storage_write_app(hvatek_storage hstorage, Promfile_handle pa
 vatek_result vatek_storage_write_update(hvatek_storage hstorage, Promfile_handle pimage)
 {
 	vatek_result nres = vatek_format;
-	uint8_t* psection = &storage_buf(hstorage)[0];
+	uint8_t *psection = &storage_buf(hstorage)[0];
 
 	storage_progress_str(hstorage, "verify update file ...");
 	nres = romfile_get_section(pimage, 0, storage_buf(hstorage));
@@ -522,8 +523,8 @@ vatek_result vatek_storage_write_update(hvatek_storage hstorage, Promfile_handle
 		if (section_len % BINARY_SECTION_SIZE == 0)
 		{
 			int32_t section_pos = 0;
-			section_len  = section_len / BINARY_SECTION_SIZE;
-			
+			section_len = section_len / BINARY_SECTION_SIZE;
+
 			storage_progress_str(hstorage, "write update file ...");
 			for (section_pos = 0; section_pos < section_len; section_pos++)
 			{
@@ -541,7 +542,7 @@ vatek_result vatek_storage_write_update(hvatek_storage hstorage, Promfile_handle
 	return nres;
 }
 
-uint32_t vatek_storage_crc(uint8_t* pbuf, int32_t len)
+uint32_t vatek_storage_crc(uint8_t *pbuf, int32_t len)
 {
 	return tool_crc32(pbuf, len);
 }
@@ -605,7 +606,7 @@ vatek_result vatek_storage_del_resource(hvatek_storage hstorage, Pstorage_resour
 	}
 
 	if (!bdel)return vatek_badparam;
-	storage_free(hstorage,pres);
+	storage_free(hstorage, pres);
 	return vatek_success;
 }
 
@@ -632,11 +633,11 @@ vatek_result vatek_storage_add_resource(hvatek_storage hstorage, Pstorage_resour
 	return vatek_success;
 }
 
-vatek_result vatek_storage_resource_create(hvatek_storage hstorage, uint32_t w, uint32_t h, Pstorage_resource* pres)
+vatek_result vatek_storage_resource_create(hvatek_storage hstorage, uint32_t w, uint32_t h, Pstorage_resource *pres)
 {	/* malloc max resource buffer */
 	vatek_result nres = vatek_memfail;
 	int32_t len = sizeof(storage_resource) + sizeof(bin_resource_section) + RESOURCE_BUF_SIZE(w, h);
-	uint8_t* rawbuf = storage_malloc(hstorage, len);
+	uint8_t *rawbuf = storage_malloc(hstorage, len);
 	if (rawbuf != NULL)
 	{
 		Pstorage_resource newres = (Pstorage_resource)&rawbuf[0];
@@ -648,9 +649,9 @@ vatek_result vatek_storage_resource_create(hvatek_storage hstorage, uint32_t w, 
 		newres->resource->width = w;
 		newres->resource->height = h;
 		newres->resource->rawpixel = &rawbuf[len];
-		
-		
-		
+
+
+
 		*pres = newres;
 		nres = vatek_success;
 
@@ -660,7 +661,7 @@ vatek_result vatek_storage_resource_create(hvatek_storage hstorage, uint32_t w, 
 
 vatek_result storage_get_app_header(hvatek_storage hstorage, Papp_header papp)
 {
-	uint8_t* psection = ((Pstorage_entry)hstorage)->section_buf;
+	uint8_t *psection = ((Pstorage_entry)hstorage)->section_buf;
 	vatek_result nres = storage_read_section(hstorage, LOADER_SIZE / BINARY_SECTION_SIZE, psection);
 	if (nres > vatek_success)
 		nres = storage_section_get_app(psection, papp);
@@ -671,7 +672,7 @@ vatek_result storage_get_app_header(hvatek_storage hstorage, Papp_header papp)
 
 vatek_result storage_get_loader_header(hvatek_storage hstorage, Ploader_header ploader)
 {
-	uint8_t* psection = ((Pstorage_entry)hstorage)->section_buf;
+	uint8_t *psection = ((Pstorage_entry)hstorage)->section_buf;
 	vatek_result nres = storage_read_section(hstorage, 0, psection);
 	if (nres > vatek_success)
 		nres = storage_section_get_loader(psection, ploader);
@@ -684,7 +685,7 @@ vatek_result storage_reset(hvatek_storage hstorage, hal_service_mode service)
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
 	vatek_result nres = vatek_success;
 	storage_chip_config_reset(&pstorage->chipconfig);
-	
+
 	//storage_r2tune_reset(&pstorage->r2tune);
 	if (service == service_broadcast)
 		storage_broadcast_reset(&pstorage->_service.broadcast);
@@ -702,9 +703,9 @@ int32_t storage_getlen_resource(Pbin_resource_section pres)
 	return len;
 }
 
-vatek_result storage_write_resource(hvatek_storage hstorage, uint32_t pos, uint8_t* psection, Pbin_resource_section pres)
+vatek_result storage_write_resource(hvatek_storage hstorage, uint32_t pos, uint8_t *psection, Pbin_resource_section pres)
 {
-	uint8_t* ptrpixel = pres->rawpixel;
+	uint8_t *ptrpixel = pres->rawpixel;
 	int32_t len = sizeof(bin_section_header) + sizeof(bin_resource_section) + storage_getlen_resource(pres);
 	vatek_result nres = vatek_success;
 	uint32_t sectionpos = pos / BINARY_SECTION_SIZE;
@@ -746,9 +747,9 @@ vatek_result storage_write_resource(hvatek_storage hstorage, uint32_t pos, uint8
 	return nres;
 }
 
-vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE* fdest, Pbin_resource_section pres, uint8_t* psection)
+vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE *fdest, Pbin_resource_section pres, uint8_t *psection)
 {
-	uint8_t* ptrpixel = pres->rawpixel;
+	uint8_t *ptrpixel = pres->rawpixel;
 	int32_t len = sizeof(bin_section_header) + sizeof(bin_resource_section) + storage_getlen_resource(pres);
 	vatek_result nres = vatek_success;
 	int32_t totalsection = len / BINARY_SECTION_SIZE;
@@ -761,8 +762,8 @@ vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE* fdest, Pbi
 	if (is_vatek_success(nres))
 	{
 		ptrpixel += 3040;
-		len -= 3040 ;
-		nres = fwrite(psection, BINARY_SECTION_SIZE, 1, fdest);
+		len -= 3040;
+		nres = (vatek_result)fwrite(psection, BINARY_SECTION_SIZE, 1, fdest);
 		if (nres <= vatek_success)nres = vatek_hwfail;
 		//sectionpos++;
 	}
@@ -783,7 +784,7 @@ vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE* fdest, Pbi
 			ptrpixel += nstep;
 			len -= nstep;
 
-			nres = fwrite(psection,BINARY_SECTION_SIZE,1,fdest);
+			nres = (vatek_result)fwrite(psection, BINARY_SECTION_SIZE, 1, fdest);
 			if (nres <= vatek_success)nres = vatek_hwfail;
 			//sectionpos++;
 			if (!is_vatek_success(nres))break;
@@ -795,7 +796,7 @@ vatek_result filehandle_write_resource(hvatek_storage hstorage, FILE* fdest, Pbi
 	return nres;
 }
 
-vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t* psection, uint32_t pos, int32_t len, Pstorage_resource* pres)
+vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t *psection, uint32_t pos, int32_t len, Pstorage_resource *pres)
 {
 	int32_t totalsection = len / BINARY_SECTION_SIZE;
 	int32_t possection = 0;
@@ -811,7 +812,7 @@ vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t* psection, u
 		nres = vatek_storage_resource_create(hstorage, tmpres.width, tmpres.height, &newres);
 		if (is_vatek_success(nres))
 		{
-			uint8_t* praw = &newres->resource->rawpixel[0];
+			uint8_t *praw = &newres->resource->rawpixel[0];
 			int32_t nlen = storage_getlen_resource(&tmpres);
 			int32_t posraw = 0;
 			int32_t rawlen = BINARY_SECTION_SIZE - possection;
@@ -827,7 +828,7 @@ vatek_result storage_read_resource(hvatek_storage hstorage, uint8_t* psection, u
 
 			storage_progress_pos(hstorage, 0);
 
-	 		while (nlen)
+			while (nlen)
 			{
 				nres = storage_read_section(hstorage, possection, psection);
 				if (nres > vatek_success)
@@ -855,7 +856,7 @@ vatek_result storage_find_resource(hvatek_storage hstorage)
 {
 	Pstorage_entry pstorage = (Pstorage_entry)hstorage;
 
-	uint8_t* psection = pstorage->section_buf;
+	uint8_t *psection = pstorage->section_buf;
 	uint32_t startpos = pstorage->pos;
 	Pstorage_resource presource = NULL;
 	vatek_result nres = (vatek_result)1;
@@ -884,7 +885,7 @@ vatek_result storage_find_resource(hvatek_storage hstorage)
 			if (sectiontag == BIN_SECTION_RESOURCE)
 			{
 				Pstorage_resource newres = NULL;
-				nres = storage_read_resource(hstorage, psection, startpos, sectionlen,&newres);
+				nres = storage_read_resource(hstorage, psection, startpos, sectionlen, &newres);
 
 
 				if (is_vatek_success(nres))
@@ -896,10 +897,12 @@ vatek_result storage_find_resource(hvatek_storage hstorage)
 					presource = newres;
 				}
 			}
-			else if (sectiontag == BIN_SECTION_CONFIG) {
+			else if (sectiontag == BIN_SECTION_CONFIG)
+			{
 				nres = storage_chip_config_get(&pstorage->chipconfig, psection);
 			}
-			else if (sectiontag == BIN_SECTION_R2TUNE) {
+			else if (sectiontag == BIN_SECTION_R2TUNE)
+			{
 				nres = storage_r2tune_get(&pstorage->r2tune, psection);
 			}
 			else if (sectiontag == BIN_SECTION_BROADCAST)
@@ -922,26 +925,26 @@ vatek_result storage_find_resource(hvatek_storage hstorage)
 
 /* stroage_handle implemented */
 
-extern vatek_result device_read_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result device_write_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result devicebulk_read_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result devicebulk_write_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result image_read_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result image_write_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result bridge_read_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result bridge_write_section(int32_t nsection, uint8_t* psection, void* param);
+extern vatek_result device_read_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result device_write_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result devicebulk_read_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result devicebulk_write_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result image_read_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result image_write_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result bridge_read_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result bridge_write_section(int32_t nsection, uint8_t *psection, void *param);
 
-extern uint8_t* rom_malloc_memory(int32_t len, void* param);
-extern void rom_free_memory(uint8_t* pptr, void* param);
-extern void rom_process_cb(rom_progress_msg msg, void* progressval, void* param);
+extern uint8_t *rom_malloc_memory(int32_t len, void *param);
+extern void rom_free_memory(uint8_t *pptr, void *param);
+extern void rom_process_cb(rom_progress_msg msg, void *progressval, void *param);
 
-extern uint8_t* rom_malloc_memory(int32_t len, void* param);
-extern void rom_free_memory(uint8_t* pptr, void* param);
+extern uint8_t *rom_malloc_memory(int32_t len, void *param);
+extern void rom_free_memory(uint8_t *pptr, void *param);
 
-extern vatek_result file_read_section(int32_t nsection, uint8_t* psection, void* param);
-extern vatek_result file_get_length(void* param);
-extern vatek_result filehandle_copy(FILE* fdest, FILE* fsource, uint8_t* psection,int32_t size);
-extern vatek_result filehandle_offset(FILE* fdest, int32_t position, uint8_t* psection);
+extern vatek_result file_read_section(int32_t nsection, uint8_t *psection, void *param);
+extern vatek_result file_get_length(void *param);
+extern vatek_result filehandle_copy(FILE *fdest, FILE *fsource, uint8_t *psection, int32_t size);
+extern vatek_result filehandle_offset(FILE *fdest, int32_t position, uint8_t *psection);
 
 typedef enum _hstorage_mode
 {
@@ -956,25 +959,25 @@ typedef struct _storage_usbbulk
 	hvatek_chip hchip;
 	usbbulk_command cmd;
 	usbbulk_result result;
-}storage_usbbulk,*Pstorage_usbbulk;
+}storage_usbbulk, *Pstorage_usbbulk;
 
 typedef struct _hstorage_entry
 {
 	hstorage_mode mode;
 	union
 	{
-		FILE* hfile;
+		FILE *hfile;
 		hvatek_chip hchip;
 		hvatek_bridge hbridge;
 		Pstorage_usbbulk husbbulk;
 	}_handle;
-	void* cbparam;
+	void *cbparam;
 	fprom_progress cbhandler;
 }hstorage_entry, *Phstorage_entry;
 
 extern Pstorage_handle create_shandle(void);
 
-vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle* phandle, fprom_progress fpcb, void* cbparam)
+vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle *phandle, fprom_progress fpcb, void *cbparam)
 {
 	vatek_result nres = vatek_memfail;
 	Pstorage_handle newstorage = create_shandle();
@@ -993,7 +996,7 @@ vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle
 
 		if (bus == DEVICE_BUS_BRIDGE)
 		{
-#if 0
+			#if 0
 			psentry->mode = hstorage_bridge;
 			nres = vatek_bridge_open(hchip, &psentry->_handle.hbridge);
 			if (is_vatek_success(nres))
@@ -1001,7 +1004,7 @@ vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle
 				newstorage->read = bridge_read_section;
 				newstorage->write = bridge_write_section;
 			}
-#endif
+			#endif
 			psentry->mode = hstorage_bridge;
 			psentry->_handle.hchip = hchip;
 			newstorage->read = device_read_section;
@@ -1038,27 +1041,27 @@ vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle
 	return nres;
 }
 
-vatek_result vatek_storage_create_file_handle(const char* fimage, const char* floader, const char* fapp, Pstorage_handle* phandle, fprom_progress fpcb, void* cbparam)
+vatek_result vatek_storage_create_file_handle(const char *fimage, const char *floader, const char *fapp, Pstorage_handle *phandle, fprom_progress fpcb, void *cbparam)
 {
-	uint8_t* pbuf = malloc(BINARY_SECTION_SIZE);
+	uint8_t *pbuf = (uint8_t *)malloc(BINARY_SECTION_SIZE);
 	vatek_result nres = vatek_memfail;
 
 	if (pbuf)
 	{
-		FILE* hloader = fopen(floader, "rb+");
-		FILE* happ = fopen(fapp, "rb+");
+		FILE *hloader = fopen(floader, "rb+");
+		FILE *happ = fopen(fapp, "rb+");
 		nres = vatek_badparam;
 
 		if (happ && hloader)
 		{
-			FILE* hrom = fopen(fimage, "wb+");
+			FILE *hrom = fopen(fimage, "wb+");
 			if (hrom)
 			{
-				nres = filehandle_copy(hrom, hloader,pbuf,-1);
+				nres = filehandle_copy(hrom, hloader, pbuf, -1);
 				if (is_vatek_success(nres))
-					nres = filehandle_offset(hrom, APP_POSITION,pbuf);
+					nres = filehandle_offset(hrom, APP_POSITION, pbuf);
 				if (is_vatek_success(nres))
-					nres = filehandle_copy(hrom, happ, pbuf,-1);
+					nres = filehandle_copy(hrom, happ, pbuf, -1);
 
 				if (is_vatek_success(nres))
 				{
@@ -1097,9 +1100,9 @@ vatek_result vatek_storage_create_file_handle(const char* fimage, const char* fl
 	return nres;
 }
 
-vatek_result vatek_storage_open_file_handle(const char* filename, Pstorage_handle* phandle, fprom_progress fpcb, void* cbparam)
+vatek_result vatek_storage_open_file_handle(const char *filename, Pstorage_handle *phandle, fprom_progress fpcb, void *cbparam)
 {
-	FILE* hfile = fopen(filename, "rb+");
+	FILE *hfile = fopen(filename, "rb+");
 	vatek_result nres = vatek_hwfail;
 	if (hfile)
 	{
@@ -1130,18 +1133,18 @@ void vatek_storage_free_handle(Pstorage_handle phandle)
 	Phstorage_entry pentry = (Phstorage_entry)phandle->param;
 	if (pentry->mode == hstorage_file)
 		fclose(pentry->_handle.hfile);
-#if 0
+	#if 0
 	else if (pentry->mode == hstorage_bridge)
 		vatek_bridge_close(pentry->_handle.hbridge);
-#endif
+	#endif
 	else if (pentry->mode == hstorage_usbbulk)
 		free(pentry->_handle.husbbulk);
 	free(phandle);
 }
 
-vatek_result vatek_storage_romfile_create(const char* romfle, Promfile_handle* promfile)
+vatek_result vatek_storage_romfile_create(const char *romfle, Promfile_handle *promfile)
 {
-	FILE* hfile = fopen(romfle, "rb+");
+	FILE *hfile = fopen(romfle, "rb+");
 	vatek_result nres = vatek_badparam;
 	if (hfile)
 	{
@@ -1164,7 +1167,7 @@ vatek_result vatek_storage_romfile_create(const char* romfle, Promfile_handle* p
 
 vatek_result vatek_storage_romfile_free(Promfile_handle promfile)
 {
-	FILE* hfile = promfile->param;
+	FILE *hfile = (FILE *)promfile->param;
 	fclose(hfile);
 	free(promfile);
 	return vatek_success;
@@ -1174,7 +1177,7 @@ vatek_result vatek_storage_romfile_free(Promfile_handle promfile)
 
 Pstorage_handle create_shandle(void)
 {
-	uint8_t* praw = (uint8_t*)malloc(SHANDLE_LEN);
+	uint8_t *praw = (uint8_t *)malloc(SHANDLE_LEN);
 	if (praw)
 	{
 		Pstorage_handle hstorage = (Pstorage_handle)praw;
@@ -1185,14 +1188,14 @@ Pstorage_handle create_shandle(void)
 	return NULL;
 }
 
-void rom_process_cb(rom_progress_msg msg, void* progressval, void* param)
+void rom_process_cb(rom_progress_msg msg, void *progressval, void *param)
 {
 	Pstorage_handle hstorage = (Pstorage_handle)param;
 	Phstorage_entry psentry = (Phstorage_entry)hstorage->param;
 	psentry->cbhandler(msg, progressval, psentry->cbparam);
 }
 
-vatek_result image_read_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result image_read_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	vatek_result nres = (vatek_result)fseek(prom->_handle.hfile, (long)nsection * BINARY_SECTION_SIZE, SEEK_SET);
@@ -1201,7 +1204,7 @@ vatek_result image_read_section(int32_t nsection, uint8_t* psection, void* param
 	return nres;
 }
 
-vatek_result image_write_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result image_write_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	vatek_result nres = (vatek_result)fseek(prom->_handle.hfile, (long)nsection * BINARY_SECTION_SIZE, SEEK_SET);
@@ -1212,7 +1215,7 @@ vatek_result image_write_section(int32_t nsection, uint8_t* psection, void* para
 
 #define SECTION_W	(BINARY_SECTION_SIZE >> 2)
 
-vatek_result device_read_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result device_read_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	uint32_t val = 0;
 	Phstorage_entry prom = (Phstorage_entry)param;
@@ -1264,7 +1267,7 @@ vatek_result device_read_section(int32_t nsection, uint8_t* psection, void* para
 }
 
 
-vatek_result device_write_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result device_write_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	uint32_t val = 0;
 	Phstorage_entry prom = (Phstorage_entry)param;
@@ -1313,7 +1316,7 @@ vatek_result device_write_section(int32_t nsection, uint8_t* psection, void* par
 	return nres;
 }
 
-vatek_result bridge_read_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result bridge_read_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	vatek_result nres = vatek_bridge_read_section(prom->_handle.hbridge, nsection, psection);
@@ -1321,13 +1324,13 @@ vatek_result bridge_read_section(int32_t nsection, uint8_t* psection, void* para
 	return nres;
 }
 
-vatek_result bridge_write_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result bridge_write_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	return vatek_bridge_write_section(prom->_handle.hbridge, nsection, psection);
 }
 
-vatek_result devicebulk_read_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result devicebulk_read_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	Pstorage_usbbulk pbulk = prom->_handle.husbbulk;
@@ -1345,7 +1348,7 @@ vatek_result devicebulk_read_section(int32_t nsection, uint8_t* psection, void* 
 	return nres;
 }
 
-vatek_result devicebulk_write_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result devicebulk_write_section(int32_t nsection, uint8_t *psection, void *param)
 {
 	Phstorage_entry prom = (Phstorage_entry)param;
 	Pstorage_usbbulk pbulk = prom->_handle.husbbulk;
@@ -1363,35 +1366,41 @@ vatek_result devicebulk_write_section(int32_t nsection, uint8_t* psection, void*
 	return nres;
 }
 
-uint8_t* rom_malloc_memory(int32_t len, void* param)
+uint8_t *rom_malloc_memory(int32_t len, void *param)
 {
-	return (uint8_t*)malloc(len);
+	return (uint8_t *)malloc(len);
 }
 
-void rom_free_memory(uint8_t* pptr, void* param)
+void rom_free_memory(uint8_t *pptr, void *param)
 {
 	free(pptr);
 }
 
-vatek_result file_read_section(int32_t nsection, uint8_t* psection, void* param)
+vatek_result file_read_section(int32_t nsection, uint8_t *psection, void *param)
 {
-	FILE* hfile = (FILE*)param;
-	vatek_result nres = fseek(hfile, nsection * BINARY_SECTION_SIZE, SEEK_SET);
-	if (nres == 0)nres = fread(psection, BINARY_SECTION_SIZE, 1, hfile);
-	else nres = vatek_hwfail;
+	FILE *hfile = (FILE *)param;
+	vatek_result nres = (vatek_result)fseek(hfile, nsection * BINARY_SECTION_SIZE, SEEK_SET);
+	if (nres == 0)
+	{
+		nres = (vatek_result)fread(psection, BINARY_SECTION_SIZE, 1, hfile);
+	}
+	else
+	{
+		nres = vatek_hwfail;
+	}
 	return nres;
 }
 
-vatek_result file_get_length(void* param)
+vatek_result file_get_length(void *param)
 {
-	FILE* hfile = (FILE*)param;
-	vatek_result nres = fseek(hfile, 0, SEEK_END);
+	FILE *hfile = (FILE *)param;
+	vatek_result nres = (vatek_result)fseek(hfile, 0, SEEK_END);
 	if (nres == 0)nres = (vatek_result)ftell(hfile);
 	else nres = vatek_hwfail;
 	return nres;
 }
 
-vatek_result filehandle_copy(FILE* fdest, FILE* fsource, uint8_t* psection,int32_t size)
+vatek_result filehandle_copy(FILE *fdest, FILE *fsource, uint8_t *psection, int32_t size)
 {
 	int32_t len = 0;
 	vatek_result nres = (vatek_result)fseek(fsource, 0, SEEK_END);
@@ -1428,9 +1437,9 @@ vatek_result filehandle_copy(FILE* fdest, FILE* fsource, uint8_t* psection,int32
 	return nres;
 }
 
-vatek_result filehandle_offset(FILE* fdest, int32_t position, uint8_t* psection)
+vatek_result filehandle_offset(FILE *fdest, int32_t position, uint8_t *psection)
 {
-	vatek_result nres = fseek(fdest, 0, SEEK_END);
+	vatek_result nres = (vatek_result)fseek(fdest, 0, SEEK_END);
 	int32_t len = (int32_t)ftell(fdest);
 	if (is_vatek_success(nres))
 	{

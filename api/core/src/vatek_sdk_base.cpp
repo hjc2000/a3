@@ -126,5 +126,5 @@ vatek_result vatek_chip_read_buffer(hvatek_chip hchip, int32_t addr, uint8_t* bu
 
 vatek_result vatek_version()
 {
-	return VATEK_VERSION;
+	return (vatek_result)VATEK_VERSION;
 }

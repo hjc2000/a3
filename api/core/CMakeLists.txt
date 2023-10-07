@@ -199,14 +199,14 @@ set(core_SRC_SERVICE
     src/service/service_transform.c)
 
 set(core_SRC_SDK
-    src/vatek_sdk_base.c
-    src/vatek_sdk_bridge.c
-    src/vatek_sdk_broadcast.c
-    src/vatek_sdk_device.c
-    src/vatek_sdk_storage.c
-    src/vatek_sdk_transform.c
-    src/vatek_sdk_usbmux.c
-    src/vatek_sdk_usbstream.c)
+    src/vatek_sdk_base.cpp
+    src/vatek_sdk_bridge.cpp
+    src/vatek_sdk_broadcast.cpp
+    src/vatek_sdk_device.cpp
+    src/vatek_sdk_storage.cpp
+    src/vatek_sdk_transform.cpp
+    src/vatek_sdk_usbmux.cpp
+    src/vatek_sdk_usbstream.cpp)
 
 if(MSVC)
     set(core_SRC_OS
