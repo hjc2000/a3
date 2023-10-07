@@ -38,14 +38,16 @@
 
 typedef USHORT USAGE, *PUSAGE;
 
-typedef struct _HIDD_ATTRIBUTES {
+typedef struct _HIDD_ATTRIBUTES
+{
 	ULONG  Size;
 	USHORT VendorID;
 	USHORT ProductID;
 	USHORT VersionNumber;
 } HIDD_ATTRIBUTES, *PHIDD_ATTRIBUTES;
 
-typedef struct _HIDP_CAPS {
+typedef struct _HIDP_CAPS
+{
 	USAGE  Usage;
 	USAGE  UsagePage;
 	USHORT InputReportByteLength;
@@ -64,7 +66,7 @@ typedef struct _HIDP_CAPS {
 	USHORT NumberFeatureDataIndices;
 } HIDP_CAPS, *PHIDP_CAPS;
 
-typedef struct _HIDP_PREPARSED_DATA * PHIDP_PREPARSED_DATA;
+typedef struct _HIDP_PREPARSED_DATA *PHIDP_PREPARSED_DATA;
 
 typedef BOOLEAN(__stdcall *HidD_GetAttributes_)(HANDLE device, PHIDD_ATTRIBUTES attrib);
 typedef BOOLEAN(__stdcall *HidD_GetSerialNumberString_)(HANDLE device, PVOID buffer, ULONG buffer_len);
@@ -96,9 +98,13 @@ static HidD_SetNumInputBuffers_ HidD_SetNumInputBuffers;
 #define HID_PACKET_START_OFFSET     3
 #define HID_TIMEOUT                 1000
 
+/// <summary>
+///		储存 windows 下的 HID（Human Interface Device，即人机交互设备）的信息的
+///		链表。
+/// </summary>
 typedef struct _win_hid_device
 {
-	struct _win_hid_device* pnext;
+	struct _win_hid_device *pnext;
 	uint16_t hid_vid;
 	uint16_t hid_pid;
 	HANDLE hid_handle;
@@ -110,17 +116,23 @@ typedef struct _win_hid_device
 }win_hid_device, *Pwin_hid_device;
 
 #pragma comment(lib, "Setupapi.lib")
-#define LOADFUN(fun) fun = (fun##_)GetProcAddress(hid_api_lib,#fun); if(fun == NULL)return vatek_unknown;
 
 const GUID hid_class_guid = { 0x4d1e55b2, 0xf16f, 0x11cf,{ 0x88, 0xcb, 0x00, 0x11, 0x11, 0x00, 0x00, 0x30 } };
 
 static HMODULE hid_api_lib = NULL;
 
-extern vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t* ppacket);
-extern vatek_result win_hid_api_read(Pwin_hid_device pdevice, uint8_t* ppacket);
+extern vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t *ppacket);
+extern vatek_result win_hid_api_read(Pwin_hid_device pdevice, uint8_t *ppacket);
 
+/// <summary>
+///		加载 hid.dll 并加载其中的函数。加载成功返回 0，加载失败返回 vatek_memfail
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
 vatek_result bridge_device_init(void)
 {
+	#define LOADFUN(fun) fun = (fun##_)GetProcAddress(hid_api_lib,#fun); if(fun == NULL)return vatek_unknown;
+
 	vatek_result nres = vatek_success;
 	if (hid_api_lib == NULL)
 	{
@@ -139,8 +151,12 @@ vatek_result bridge_device_init(void)
 			LOADFUN(HidP_GetCaps);
 			LOADFUN(HidD_SetNumInputBuffers);
 		}
-		else nres = vatek_memfail;
+		else
+		{
+			nres = vatek_memfail;
+		}
 	}
+
 	return nres;
 }
 
@@ -151,24 +167,36 @@ vatek_result bridge_device_free(void)
 		FreeLibrary(hid_api_lib);
 		hid_api_lib = NULL;
 	}
+
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_enum_default(hbridge_list* hblist)
+vatek_result bridge_device_list_enum_default(hbridge_list *hblist)
 {
+	/* bridge_device_list_enum_usb 函数如果没有发生错误，会返回找到的设备的数量，发生错误会
+	* 返回错误代码。
+	*/
 	vatek_result nres = bridge_device_list_enum_usb(USB_BRIDGE_VID, USB_BRIDGE_PID, hblist);
-	if(nres == vatek_success)
+
+	/* 然后这里竟然用 nres == vatek_success 来判断没有发生错误并且找到的设备数量为 0. 傻逼东西。*/
+	if (nres == vatek_success)
+	{
+		// 如果找到的设备数量为 0，就换成老的供应商 ID （USB_BRIDGE_VID_OLD），然后再次查找
 		nres = bridge_device_list_enum_usb(USB_BRIDGE_VID_OLD, USB_BRIDGE_PID, hblist);
+	}
+
 	return nres;
 }
 
-vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_list* hblist)
+vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_list *hblist)
 {
 	SP_DEVINFO_DATA devinfo_data;
 	SP_DEVICE_INTERFACE_DATA device_interface_data;
 	HDEVINFO hinfo = INVALID_HANDLE_VALUE;
 	vatek_result nres = bridge_device_init();
-	if (!is_vatek_success(nres))return nres;
+	if (!is_vatek_success(nres))
+		return nres;
+
 	memset(&devinfo_data, 0, sizeof(SP_DEVINFO_DATA));
 	devinfo_data.cbSize = sizeof(SP_DEVINFO_DATA);
 	device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
@@ -184,24 +212,49 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_lis
 
 		nres = vatek_success;
 
-		while (SetupDiEnumDeviceInterfaces(hinfo, NULL, &hid_class_guid, index, &device_interface_data))
+		while (SetupDiEnumDeviceInterfaces(hinfo, NULL,
+										   &hid_class_guid, index,
+										   &device_interface_data))
 		{
-			BOOL bres = SetupDiGetDeviceInterfaceDetailA(hinfo, &device_interface_data, NULL, 0, &datalen, NULL);
+			BOOL bres = SetupDiGetDeviceInterfaceDetailA(
+				hinfo,
+				&device_interface_data,
+				NULL,
+				0,
+				(PDWORD)&datalen,
+				NULL
+			);
+
 			index++;
 			if (datalen > 0)
 			{
-				intf_detail_info = (SP_DEVICE_INTERFACE_DETAIL_DATA_A*)malloc(datalen);
+				intf_detail_info = (SP_DEVICE_INTERFACE_DETAIL_DATA_A *)(new uint8_t[datalen]);
+				if (!intf_detail_info)
+				{
+					throw - 1;
+				}
+
 				intf_detail_info->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_A);
-				bres = SetupDiGetDeviceInterfaceDetailA(hinfo, &device_interface_data, intf_detail_info, datalen, NULL, NULL);
+				bres = SetupDiGetDeviceInterfaceDetailA(
+					hinfo,
+					&device_interface_data,
+					intf_detail_info,
+					datalen,
+					NULL,
+					NULL
+				);
+
 				if (bres)
 				{
-					HANDLE hhid = CreateFileA(intf_detail_info->DevicePath,
+					HANDLE hhid = CreateFileA(
+						intf_detail_info->DevicePath,
 						GENERIC_WRITE | GENERIC_READ,
 						FILE_SHARE_READ | FILE_SHARE_WRITE,
 						NULL,
 						OPEN_EXISTING,
 						FILE_FLAG_OVERLAPPED,/*FILE_ATTRIBUTE_NORMAL,*/
-						0);
+						0
+					);
 
 					if (hhid != INVALID_HANDLE_VALUE)
 					{
@@ -226,19 +279,22 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_lis
 								nres = vatek_success;
 							}
 						}
+
 						CloseHandle(hhid);
 					}
 				}
-				free(intf_detail_info);
+
+				delete[] intf_detail_info;
 			}
 		}
-		
+
 		if (is_vatek_success(nres))
 		{
 			nres = (vatek_result)nums;
 			*hblist = proot;
 		}
 	}
+
 	return nres;
 }
 
@@ -260,10 +316,11 @@ vatek_result bridge_device_list_free(hbridge_list hbridges)
 		free(proot);
 		proot = pnext;
 	}
+
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_device* hbridge)
+vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_device *hbridge)
 {
 	Pwin_hid_device proot = (Pwin_hid_device)hblist;
 	int32_t nums = 0;
@@ -274,17 +331,21 @@ vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_de
 			*hbridge = proot;
 			return vatek_success;
 		}
+
+		// 前往链表的下一个节点
 		proot = proot->pnext;
 	}
+
 	return vatek_badparam;
 }
 
-const char* bridge_device_list_get_name(hbridge_list hblist, int32_t idx)
+const char *bridge_device_list_get_name(hbridge_list hblist, int32_t idx)
 {
 	hbridge_device hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
 	if (is_vatek_success(nres))
 		return &((Pwin_hid_device)hbridge)->hid_path[0];
+
 	return NULL;
 }
 
@@ -298,13 +359,15 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 		nres = cross_os_create_mutex(&hlock);
 		if (is_vatek_success(nres))
 		{
-			phid->hid_handle = CreateFileA(&phid->hid_path[0],
+			phid->hid_handle = CreateFileA(
+				&phid->hid_path[0],
 				GENERIC_WRITE | GENERIC_READ,
 				FILE_SHARE_READ | FILE_SHARE_WRITE,
 				NULL,
 				OPEN_EXISTING,
 				FILE_FLAG_OVERLAPPED,/*FILE_ATTRIBUTE_NORMAL,*/
-				0);
+				0
+			);
 
 			if (phid->hid_handle != INVALID_HANDLE_VALUE)
 			{
@@ -318,6 +381,7 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 					phid->lock_cmd = hlock;
 					return vatek_success;
 				}
+
 				CloseHandle(phid->hid_handle);
 				phid->hid_handle = NULL;
 			}
@@ -325,6 +389,7 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 			if (!is_vatek_success(nres))cross_os_free_mutex(hlock);
 		}
 	}
+
 	return nres;
 }
 
@@ -340,7 +405,7 @@ void bridge_device_unlock_command(hbridge_device hbridge)
 	cross_os_release_mutex(phid->lock_cmd);
 }
 
-const char* bridge_device_get_name(hbridge_device hbridge)
+const char *bridge_device_get_name(hbridge_device hbridge)
 {
 	Pwin_hid_device phid = (Pwin_hid_device)hbridge;
 	return &phid->hid_path[0];
@@ -384,29 +449,29 @@ vatek_result bridge_device_send_bridge_command(hbridge_device hbridge)
 		if (is_vatek_success(nres))
 		{
 			Phid_bridge_result presult = bridge_device_get_result(hbridge);
-			presult->result = vatek_buffer_2_uint32((uint8_t*)&presult->result);
-			presult->cmd = vatek_buffer_2_uint32((uint8_t*)&presult->cmd);
-			if (strncmp(&presult->tag[0], &hid_bridge_tag[0], 4) != 0)nres = vatek_badparam;
+			presult->result = vatek_buffer_2_uint32((uint8_t *)&presult->result);
+			presult->cmd = vatek_buffer_2_uint32((uint8_t *)&presult->cmd);
+			if (strncmp((char *)&presult->tag[0], &hid_bridge_tag[0], 4) != 0)nres = vatek_badparam;
 			else nres = (vatek_result)presult->result;
 		}
 	}
 	return nres;
 }
 
-vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t* ppacket)
+vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t *ppacket)
 {
 	uint32_t nwrite = 0;
 	vatek_result nres = vatek_badstatus;
 	if (pdevice->hid_handle)
 	{
-		BOOL bres = WriteFile(pdevice->hid_handle, ppacket, HID_PACKET_LEN, &nwrite, &pdevice->hid_overlapped);
+		BOOL bres = WriteFile(pdevice->hid_handle, ppacket, HID_PACKET_LEN, (LPDWORD)&nwrite, &pdevice->hid_overlapped);
 		nres = vatek_hwfail;
 		if (bres || (GetLastError() == ERROR_IO_PENDING))
 		{
 			int32_t nerr = (vatek_result)WaitForSingleObject(pdevice->hid_overlapped.hEvent, INFINITE);
 			if (nerr == WAIT_OBJECT_0)
 			{
-				bres = GetOverlappedResult(pdevice->hid_handle, &pdevice->hid_overlapped, &nwrite, TRUE);
+				bres = GetOverlappedResult(pdevice->hid_handle, &pdevice->hid_overlapped, (LPDWORD)&nwrite, TRUE);
 				if (bres && nwrite == HID_PACKET_LEN)nres = vatek_success;
 			}
 		}
@@ -415,24 +480,24 @@ vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t* ppacket)
 	return nres;
 }
 
-vatek_result win_hid_api_read(Pwin_hid_device pdevice, uint8_t* ppacket)
+vatek_result win_hid_api_read(Pwin_hid_device pdevice, uint8_t *ppacket)
 {
 	uint32_t nread = 0;
 	vatek_result nres = vatek_badstatus;
 	if (pdevice->hid_handle)
 	{
-		BOOL bres = ReadFile(pdevice->hid_handle, ppacket, HID_PACKET_LEN, &nread, &pdevice->hid_overlapped);
+		BOOL bres = ReadFile(pdevice->hid_handle, ppacket, HID_PACKET_LEN, (LPDWORD)&nread, &pdevice->hid_overlapped);
 		nres = vatek_hwfail;
 		if (bres || (GetLastError() == ERROR_IO_PENDING))
 		{
 			int32_t nerr = (vatek_result)WaitForSingleObject(pdevice->hid_overlapped.hEvent, INFINITE);
 			if (nerr == WAIT_OBJECT_0)
 			{
-				bres = GetOverlappedResult(pdevice->hid_handle, &pdevice->hid_overlapped, &nread, TRUE);
+				bres = GetOverlappedResult(pdevice->hid_handle, &pdevice->hid_overlapped, (LPDWORD)&nread, TRUE);
 				if (bres && nread == HID_PACKET_LEN)nres = vatek_success;
 			}
 		}
-		if(!is_vatek_success(nres))CancelIo(pdevice->hid_handle);
+		if (!is_vatek_success(nres))CancelIo(pdevice->hid_handle);
 	}
 	return nres;
 }

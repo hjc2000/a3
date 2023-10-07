@@ -37,12 +37,14 @@
 extern vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek);
 extern void vatek_device_free(Pvatek_device pvatek);
 
-typedef struct _vatek_device_list
+struct vatek_device_list
 {
 	int32_t nums;
 	Pcross_device cross;
 	Pcross_device *listdevices;
-}vatek_device_list, *Pvatek_device_list;
+};
+
+typedef vatek_device_list *Pvatek_device_list;
 
 vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices *hdevices)
 {

@@ -31,8 +31,13 @@
 
 #include <core/vatek_base.h>
 
+// 旧的供应商 ID
 #define USB_BRIDGE_VID_OLD          0x1934
+
+// 供应商 ID
 #define USB_BRIDGE_VID				0x2C42
+
+// 产品 ID
 #define USB_BRIDGE_PID				0x0122
 
 #define USB_CMD_TAG					0x80000000

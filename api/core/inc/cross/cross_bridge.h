@@ -51,11 +51,30 @@ typedef void* hbridge_list;
 extern "C" {
 #endif
 
-	/* bridge_device core tool [cross_hal_interface ]*/
+	/// <summary>
+	///		调用 bridge_device_list_enum_usb 函数扫描 USB 设备。会先用新的供应商 ID
+	///		查找一遍，如果没有找到设备，再用老的供应商 ID 查找一遍。
+	/// </summary>
+	/// <param name="hblist"></param>
+	/// <returns></returns>
 	HAL_API vatek_result bridge_device_list_enum_default(hbridge_list* hblist);
+	
+	/// <summary>
+	///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
+	/// </summary>
+	/// <param name="vid"></param>
+	/// <param name="pid"></param>
+	/// <param name="hblist">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 hblist</param>
+	/// <returns>找到的设备的数量，也等于 hblist 指向的链表的长度</returns>
 	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_list* hblist);
 	HAL_API vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_device* hbridge);
 	HAL_API const char* bridge_device_list_get_name(hbridge_list hblist, int32_t idx);
+	
+	/// <summary>
+	///		释放 hbridges 指向的链表。此链表的节点储存查找到的设备的信息。
+	/// </summary>
+	/// <param name="hbridges"></param>
+	/// <returns></returns>
 	HAL_API vatek_result bridge_device_list_free(hbridge_list hbridges);
 
 	HAL_API vatek_result bridge_device_open(hbridge_device hbridge);

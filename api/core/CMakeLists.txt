@@ -210,7 +210,7 @@ set(core_SRC_SDK
 
 if(MSVC)
     set(core_SRC_OS
-        src/cross/os/win/win_os_bridge.c
+        src/cross/os/win/win_os_bridge.cpp
         src/cross/os/win/win_os_common.c
         src/cross/os/win/win_os_event_api.c
         src/cross/os/win/win_os_mutex_api.c
