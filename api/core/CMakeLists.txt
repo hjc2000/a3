@@ -118,15 +118,15 @@ set(core_INC_SDK
     inc/vatek_sdk_usbstream.h)
 
 set(core_SRC_CORE
-    src/core/chip_define.c
-    src/core/calibration_define.c
-    src/core/output_modulator.c
-    src/core/output_rfmixer.c
-    src/core/storage_section.c
-    src/core/storage_default.c
+    src/core/chip_define.cpp
+    src/core/calibration_define.cpp
+    src/core/output_modulator.cpp
+    src/core/output_rfmixer.cpp
+    src/core/storage_section.cpp
+    src/core/storage_default.cpp
     src/core/stream_base.c
     src/core/stream_encoder.c
-    src/core/device_usb.c
+    src/core/device_usb.cpp
     src/core/tool_binary_crc.c
     src/core/tool_bufstream.c
     src/core/tool_crc32.c
@@ -177,7 +177,7 @@ set(core_SRC_DEVICE
     src/device/cross_device_bridge.cpp
     src/device/cross_device_tool.cpp
     src/device/cross_device_usb.cpp
-    src/device/mux_usbstream.c)
+    src/device/mux_usbstream.cpp)
 
 set(core_SRC_MUX
     src/mux/mux_epg.c

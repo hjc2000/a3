@@ -35,7 +35,7 @@
 #include <core/ui/ui_props/ui_props_modulator.h>
 
 /* import default params */
-#include "storage_default.c"
+#include "storage_default.cpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -221,7 +221,7 @@ vatek_result storage_section_put_resource(uint8_t *psection, int32_t size, Pbin_
 
 	if (is_vatek_success(nres))
 		nres = section_put_end(&s);
-	return pos;
+	return (vatek_result)pos;
 }
 
 vatek_result storage_section_get_resource(uint8_t *psection, Pbin_resource_section pbin)
