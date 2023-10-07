@@ -38,6 +38,19 @@
 extern "C" {
 #endif
 
+	/// <summary>
+	///		查找设备
+	/// </summary>
+	/// <param name="bus">
+	///		可以传入以下宏定义
+	///		#define DEVICE_BUS_UNKNOWN		0x00000000
+	///		#define DEVICE_BUS_USB			0x00000001
+	///		#define DEVICE_BUS_BRIDGE		0x00000002
+	///		#define DEVICE_BUS_ALL			0x00000007
+	/// </param>
+	/// <param name="service"></param>
+	/// <param name="hdevices"></param>
+	/// <returns></returns>
 	HAL_API vatek_result vatek_device_list_enum(uint32_t bus,hal_service_mode service,hvatek_devices* hdevices);
 	HAL_API vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices* hdevices);
 	HAL_API uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx);

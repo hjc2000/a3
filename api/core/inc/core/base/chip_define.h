@@ -95,10 +95,9 @@ const static uint32_t chip_status_tags[] =
 // chip_status_tags 数组的元素个数
 #define STATUS_TAGS_NUMS						sizeof(chip_status_tags)/sizeof(uint32_t)
 
-/**
- * @ingroup core_props
- * Core Service Mode
- */
+/// <summary>
+///		服务模式。有：抢救模式，广播模式，传输模式。
+/// </summary>
 typedef enum _hal_service_mode
 {
 	service_unknown = 0,
@@ -107,10 +106,9 @@ typedef enum _hal_service_mode
 	service_transform = SERVICE_TAG_TRANSFORM,		/*!< service transform (a-serial) */
 }hal_service_mode;
 
-/**
- * @ingroup core_props
- * Chip Information
- */
+/// <summary>
+///		芯片信息。
+/// </summary>
 typedef struct _chip_info
 {
 	chip_status status;				/*!< chip status */
