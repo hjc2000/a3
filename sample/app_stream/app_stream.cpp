@@ -43,21 +43,6 @@
 #define TRANSFORM_RF_TEST 0
 #define TRANSFORM_NORMAL 1
 
-static const char *_app_logo[] = {
-	"	    _     ___          _                              _				\r\n",
-	"	   /_\\   / __| ___ _ _(_)___ ___  ___ __ _ _ __  _ __| |___		\r\n",
-	"	  / _ \\  \\__ \\/ -_) '_| / -_|_-< (_-</ _` | '  \\| '_ \\ / -_)   \r\n",
-	"	 /_/ \\_\\ |___/\\___|_| |_\\___/__/ /__/\\__,_|_|_|_| .__/_\\___|  \r\n",
-	"	                                                |_|					\r\n",
-	"	-----------------------------------------------------------------	\r\n",
-	"\r\n",
-	"	Copyright (c) 2023, Vision Advance Technology Inc.（VATek）.	\r\n",
-	"\r\n",
-	"	-----------------------------------------------------------------	\r\n",
-	"\r\n",
-	NULL,
-};
-
 static usbstream_param usbcmd;
 
 extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
@@ -76,7 +61,6 @@ extern vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_sourc
 // ./app_stream dvbt udp udp://127.0.0.1:40000
 int main(int argc, char *argv[])
 {
-	hvatek_devices hdevlist = NULL;
 	hvatek_chip hchip = NULL;
 	hvatek_usbstream hustream = NULL;
 	tsstream_source streamsource = {
@@ -102,14 +86,13 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 	usbcmd.sync = usbstream_sync{ NULL, NULL };
 
-	printf_logo(_app_logo);
-
 	nres = parser_cmd_source(argc, argv, &streamsource, &usbcmd);
 	/*
 		step 1 :
 		- initialized supported device and open
 	*/
 
+	hvatek_devices hdevlist = nullptr;
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist);

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(app_stream)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(cli_SRC

@@ -74,7 +74,10 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 				newdevs = newdevs->next;
 			}
 
-			if (!pos)free(newlist);
+			if (!pos)
+			{
+				free(newlist);
+			}
 			else
 			{
 				newlist->nums = pos;
@@ -83,6 +86,7 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 			}
 		}
 	}
+
 	return nres;
 }
 

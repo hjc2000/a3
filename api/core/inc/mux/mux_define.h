@@ -113,22 +113,24 @@
 
 /**
  * @ingroup mux_props
- * raw psi table 
+ * raw psi table
  */
-typedef struct _psi_table_raw{
-	struct _psi_table_raw* next;	/*!< link next psi table */
+typedef struct _psi_table_raw
+{
+	struct _psi_table_raw *next;	/*!< link next psi table */
 	uint16_t interval_ms;			/*!< interval time (ms) */
 	uint16_t packet_nums;			/*!< length in packet numbers (188) */
-	uint8_t* packet_buf;			/*!< packet buffer */
+	uint8_t *packet_buf;			/*!< packet buffer */
 }psi_table_raw;
 
-typedef psi_table_raw* Ppsi_table_raw;
+typedef psi_table_raw *Ppsi_table_raw;
 
 /**
  * @ingroup mux_props
  * define dtv psi service spec id
  */
-typedef enum _mux_spec_mode{
+typedef enum _mux_spec_mode
+{
 	mux_spec_undefine = 0,				/*!< undefine (normal)*/
 	mux_spec_iso = 0x00010000,			/*!< iso 13818-1 */
 	mux_spec_dvb = 0x00020000,			/*!< dvb */
@@ -197,25 +199,27 @@ typedef enum _mux_country_code
 
 /**
  * @ingroup mux_props
- * psi provider mode 
+ * psi provider mode
  */
-typedef enum _mux_psi_mode{
+typedef enum _mux_psi_mode
+{
 	mux_psi_undefine = -1,
 	mux_psi_pure = MUX_PURE,			/*!< disable default psi service */
 	mux_psi_iso13818 = MUX_ISO13818,	/*!< iso-13818-1 psi service */
-	mux_psi_specrule = MUX_SPEC,		
+	mux_psi_specrule = MUX_SPEC,
 	mux_psi_specdefault = MUX_DEFSPEC,	/*!< default psi config by spec */
 	mux_psi_rawtable,
 }mux_psi_mode;
 
 #define is_current_mux_psi_mode(m)	(m >= mux_psi_pure && m <= mux_psi_specdefault)
 
-typedef struct _mux_iso_13818{
+typedef struct _mux_iso_13818
+{
 	uint16_t transport_stream_id;
 	uint16_t program_number;
 }mux_iso_13818;
 
-typedef mux_iso_13818* Pmux_iso_13818;
+typedef mux_iso_13818 *Pmux_iso_13818;
 
 typedef union _mux_iso_lang
 {
@@ -223,7 +227,7 @@ typedef union _mux_iso_lang
 	uint32_t value;
 }mux_iso_lang;
 
-typedef mux_iso_lang* Pmux_iso_lang;
+typedef mux_iso_lang *Pmux_iso_lang;
 
 #define _ISOLANG_JPN {'j','p','n','\0',}
 #define _ISOLANG_ENG {'e','n','g','\0',}
@@ -234,11 +238,11 @@ typedef mux_iso_lang* Pmux_iso_lang;
 typedef struct _mux_string
 {
 	uint32_t len;
-	uint8_t* text;
+	uint8_t *text;
 	uint32_t maxlen;
 }mux_string;
 
-typedef mux_string* Pmux_string;
+typedef mux_string *Pmux_string;
 
 /// <summary>
 ///		PCR 时钟。
@@ -250,23 +254,23 @@ typedef struct _mux_clock_tick
 	uint32_t _27MHz;
 }mux_clock_tick;
 
-typedef mux_clock_tick* Pmux_clock_tick;
+typedef mux_clock_tick *Pmux_clock_tick;
 
 /// <summary>
 ///		表示时间的结构体，有 2 个字段，一个储存毫秒，一个储存纳秒。纳秒的
 ///		字段计数到 1e6 后会模 1e6 ，进位到毫秒。
 /// </summary>
-typedef struct _mux_time_tick{
+typedef struct _mux_time_tick
+{
 	uint32_t ms;	/*!< time ms */
 	uint32_t ns;	/*!< time ns */
 }mux_time_tick;
 
-typedef mux_time_tick* Pmux_time_tick;
+typedef mux_time_tick *Pmux_time_tick;
 
-/**
- * @ingroup mux_props
- * stream type 
- */
+/// <summary>
+///		流类型。有视频流，音频流，数据流。
+/// </summary>
 typedef enum _mux_stream_type
 {
 	mux_stream_video = MUX_STREAM_TYPE_VIDEO,	/*!< video */
@@ -276,10 +280,11 @@ typedef enum _mux_stream_type
 
 /**
  * @ingroup mux_props
- * define context stream  
+ * define context stream
  */
-typedef struct _mux_stream{
-	struct _mux_stream* next;
+typedef struct _mux_stream
+{
+	struct _mux_stream *next;
 	mux_stream_type type;
 	union
 	{
@@ -289,51 +294,50 @@ typedef struct _mux_stream{
 	uint16_t stream_pid;
 	uint8_t stream_type;
 	uint8_t es_info_len;
-	uint8_t* es_info_buf;
+	uint8_t *es_info_buf;
 }mux_stream;
 
-typedef mux_stream* Pmux_stream;
+typedef mux_stream *Pmux_stream;
 
 /**
  * @ingroup mux_props
- * define context program  
+ * define context program
  */
-typedef struct _mux_program{
-	struct _mux_program* next;
+typedef struct _mux_program
+{
+	struct _mux_program *next;
 	uint16_t pcr_pid;
 	uint16_t pmt_pid;
 	Pmux_stream streams;
 }mux_program;
 
-typedef mux_program* Pmux_program;
+typedef mux_program *Pmux_program;
 
 /**
  * @ingroup mux_props
- * define context channel  
+ * define context channel
  */
-typedef struct _mux_channel{
+typedef struct _mux_channel
+{
 	Pmux_program programs;
 }mux_channel;
 
-typedef mux_channel* Pmux_channel;
+typedef mux_channel *Pmux_channel;
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
 	static inline uint32_t mux_clock_get_eclipse(Pmux_clock_tick pclk0, Pmux_clock_tick pclk1)
 	{
-		if(pclk0->_90KHz > pclk1->_90KHz)
+		if (pclk0->_90KHz > pclk1->_90KHz)
 		{
 			uint32_t ntick = (uint32_t)((((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) + pclk1->_90KHz);
 			ntick *= 300;
 			ntick += (300 - pclk0->_27MHz) + pclk1->_27MHz;
 			return ntick;
-			#if 0
-			uint32_t ntick = (uint32_t)(((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) * 300;
-			return ntick - (300 - pclk0->_27MHz) + pclk1->_27MHz;
-			#endif
-		}else
+		}
+		else
 		{
 			uint32_t ntick = (uint32_t)(pclk1->_90KHz - pclk0->_90KHz) * 300;
 			int32_t n27 = pclk1->_27MHz - pclk0->_27MHz;
@@ -349,7 +353,7 @@ extern "C" {
 		pclk->_27MHz %= 300;
 	}
 
-	static inline void mux_clock_append_clock(Pmux_clock_tick pclk,Pmux_clock_tick pclkappend)
+	static inline void mux_clock_append_clock(Pmux_clock_tick pclk, Pmux_clock_tick pclkappend)
 	{
 		pclk->_90KHz += pclkappend->_90KHz;
 		pclk->_27MHz += pclkappend->_27MHz;
@@ -370,7 +374,7 @@ extern "C" {
 		ptime->ns %= 1000000;
 	}
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 
