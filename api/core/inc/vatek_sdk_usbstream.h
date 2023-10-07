@@ -108,7 +108,7 @@ typedef struct _usbstream_async
 
 typedef usbstream_async *Pusbstream_async;
 
-typedef struct _usbstream_param
+struct usbstream_param
 {
 	usbstream_mode mode;
 	usbstream_remux remux;
@@ -121,7 +121,7 @@ typedef struct _usbstream_param
 		usbstream_sync sync;
 		usbstream_async async;
 	};
-}usbstream_param;
+};
 
 typedef usbstream_param *Pusbstream_param;
 

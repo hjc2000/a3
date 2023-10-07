@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	vatek_result nres = vatek_success;
 	Pchip_info pinfo = NULL;
 	Pbdevice_info pbinfo = NULL;
-	/* 
+	/*
 		step 1 :
 		- initialized supported device and open service
 	*/
@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
 					break;
 				}
 			}
-			else _disp_err("get av source fail : [%d:%d]",i,nres);
-			if(!is_vatek_success(nres))break;
+			else _disp_err("get av source fail : [%d:%d]", i, nres);
+			if (!is_vatek_success(nres))break;
 		}
 	}
 

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(cli_SRC
-    app_bridge.c)
+    "app_bridge.cpp")
 
 set(cli_SRC_COM
     "../common/src/tool_printf.cpp")
