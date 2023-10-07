@@ -124,27 +124,27 @@ set(core_SRC_CORE
     src/core/output_rfmixer.cpp
     src/core/storage_section.cpp
     src/core/storage_default.cpp
-    src/core/stream_base.c
-    src/core/stream_encoder.c
+    src/core/stream_base.cpp
+    src/core/stream_encoder.cpp
     src/core/device_usb.cpp
-    src/core/tool_binary_crc.c
-    src/core/tool_bufstream.c
-    src/core/tool_crc32.c
-    src/core/tool_dvb.c
-    src/core/tool_dvb_t2.c
-    src/core/tool_dtmb.c
-    src/core/tool_ofdm.c
-    src/core/tool_helpful_bitstream.c
-    src/core/tool_helpful_circlebuf.c
-    src/core/tool_helpful_fifo.c
-    src/core/tool_helpful_mempool.c
-    src/core/tool_helpful_memquery.c
-    src/core/tool_helpful_objectlist.c
-    src/core/tool_isdb_t.c
-    src/core/tool_j83abc.c
-    src/core/tool_8vsb.c
-    src/core/tool_output.c
-    src/core/ui_props_api.c)
+    src/core/tool_binary_crc.cpp
+    src/core/tool_bufstream.cpp
+    src/core/tool_crc32.cpp
+    src/core/tool_dvb.cpp
+    src/core/tool_dvb_t2.cpp
+    src/core/tool_dtmb.cpp
+    src/core/tool_ofdm.cpp
+    src/core/tool_helpful_bitstream.cpp
+    src/core/tool_helpful_circlebuf.cpp
+    src/core/tool_helpful_fifo.cpp
+    src/core/tool_helpful_mempool.cpp
+    src/core/tool_helpful_memquery.cpp
+    src/core/tool_helpful_objectlist.cpp
+    src/core/tool_isdb_t.cpp
+    src/core/tool_j83abc.cpp
+    src/core/tool_8vsb.cpp
+    src/core/tool_output.cpp
+    src/core/ui_props_api.cpp)
 
 if(MSVC)
 	set(core_SRC_CROSS
