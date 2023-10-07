@@ -36,17 +36,17 @@
 /// </summary>
 typedef void *hvatek_usbstream;
 
-typedef struct _usbstream_slice
+struct usbstream_slice
 {
 	int32_t packet_len;			/*!< recv packet length (packet numbers)*/
 	int32_t packet_pos;			/*!< current buffer pos */
 	uint8_t *buf;				/*!< raw buffer */
 	uint8_t *ptrbuf;			/*!< buffer pointer */
-}usbstream_slice;
+};
 
 typedef usbstream_slice *Pusbstream_slice;
 
-typedef enum _usbstream_status
+enum usbstream_status
 {
 	usbstream_err_unknown = -1,		/*!< unknown fail */
 	usbstream_status_idle = 0,		/*!< idle */
@@ -54,57 +54,57 @@ typedef enum _usbstream_status
 	usbstream_status_moredata = 2,	/*!< more data (need more data to start) */
 	usbstream_status_stopping = 3,	/*!< wait stop */
 	usbstream_status_stop = 4,		/*!< stop finish */
-}usbstream_status;
+};
 
 /// <summary>
 ///		USB 流模式，有同步、异步两种
 /// </summary>
-typedef enum _usbstream_mode
+enum usbstream_mode
 {
 	ustream_mode_async = 0,			/*!< async */
 	ustream_mode_sync = 1,			/*!< sync */
-}usbstream_mode;
+};
 
 /// <summary>
 ///		USB 流混合模式。有重新复用 PCR 和透传两种。
 /// </summary>
-typedef enum _usbstream_remux
+enum usbstream_remux
 {
 	ustream_remux_pcr,
 	ustream_remux_passthrough,
-}usbstream_remux;
+};
 
 typedef vatek_result(*fpsync_get_buffer)(void *param, uint8_t **slicebuf);
 
-typedef struct _usbstream_sync
+struct usbstream_sync
 {
 	void *param;
 	fpsync_get_buffer getbuffer;
-}usbstream_sync;
+};
 
 typedef usbstream_sync *Pusbstream_sync;
 
-typedef enum _uasync_status
+enum uasync_status
 {
 	uasync_status_unsupport = -1,
 	uasync_status_idle = 0,
 	uasync_status_prepare,
 	uasync_status_streaming,
 	uasync_status_pause,
-}uasync_status;
+};
 
-typedef enum _uasync_mode
+enum uasync_mode
 {
 	uasync_mode_normal = 0,
 	uasync_mode_cbr,
-}uasync_mode;
+};
 
-typedef struct _usbstream_async
+struct usbstream_async
 {
 	uasync_mode mode;
 	uint32_t bitrate;			/* config source bitrate	[0: mean auto]*/
 	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
-}usbstream_async;
+};
 
 typedef usbstream_async *Pusbstream_async;
 

@@ -18,36 +18,38 @@
 #define CHIP_CMD_WRCODE         0x00000102
 #define CHIP_CMD_BRIDGE			0x00000103
 
-typedef enum _cross_driver
+enum cross_driver
 {
 	cdriver_bridge,
 	cdriver_usb,
 	cdriver_sim,
-}cross_driver;
+};
 
 typedef void *hcross_device;
 typedef void *hcross_list;
 
-typedef enum _cross_stream_mode
+enum cross_stream_mode
 {
 	stream_mode_idle = 0,
 	stream_mode_output = 1,
 	stream_mode_input = 2,
 	stream_mode_output_nodma = 3,
-}cross_stream_mode;
+};
 
 typedef vatek_result(*fp_start_stream)(hcross_device hdev, cross_stream_mode mode);
 typedef vatek_result(*fp_read_stream)(hcross_device hdev, uint8_t *pbuf, int32_t len);
 typedef vatek_result(*fp_write_stream)(hcross_device hdev, uint8_t *pbuf, int32_t len);
 typedef vatek_result(*fp_stop_stream)(hcross_device hdev);
 
-typedef struct _cross_stream
+struct cross_stream
 {
 	fp_start_stream start_stream;
 	fp_write_stream write_stream;
 	fp_read_stream read_stream;
 	fp_stop_stream stop_stream;
-}cross_stream, *Pcross_stream;
+};
+
+typedef cross_stream *Pcross_stream;
 
 typedef vatek_result(*fpbulk_get_size)(husb_device husb);
 typedef vatek_result(*fpbulk_send_command)(husb_device husb, Pusbbulk_command pcmd);
@@ -57,14 +59,16 @@ typedef vatek_result(*fpbulk_read)(husb_device husb, uint8_t *pbuf, int32_t len)
 
 /* interface for bulk stream used to updated rom or broadcast write aux stream*/
 
-typedef struct _cross_usbbulk
+struct cross_usbbulk
 {
 	fpbulk_get_size get_size;
 	fpbulk_send_command send_command;
 	fpbulk_get_result get_result;
 	fpbulk_write write;
 	fpbulk_read read;
-}cross_usbbulk, *Pcross_usbbulk;
+};
+
+typedef cross_usbbulk *Pcross_usbbulk;
 
 typedef vatek_result(*fp_read_register)(hcross_device hdev, int32_t addr, uint32_t *val);
 typedef vatek_result(*fp_write_register)(hcross_device hdev, int32_t addr, uint32_t val);
@@ -74,7 +78,7 @@ typedef vatek_result(*fp_write_buffer)(hcross_device hdev, int32_t addr, uint8_t
 typedef vatek_result(*fp_read_buffer)(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
 typedef vatek_result(*fp_sendcmd)(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
 
-typedef struct _cross_core
+struct cross_core
 {
 	fp_read_register read_register;
 	fp_write_register write_register;
@@ -83,11 +87,13 @@ typedef struct _cross_core
 	fp_write_buffer write_buffer;
 	fp_read_buffer	read_buffer;
 	fp_sendcmd sendcmd;
-}cross_core, *Pcross_core;
+};
 
-typedef struct _cross_device
+typedef cross_core *Pcross_core;
+
+struct cross_device
 {
-	struct _cross_device *next;
+	cross_device *next;
 	uint32_t bus;
 	cross_driver driver;
 	hcross_device hcross;
@@ -95,14 +101,18 @@ typedef struct _cross_device
 	Pcross_core core;
 	Pcross_stream stream;
 	Pcross_usbbulk bulk;
-}cross_device, *Pcross_device;
+};
 
-typedef struct _vatek_device
+typedef cross_device *Pcross_device;
+
+struct vatek_device
 {
 	Pcross_device cross;
 	chip_info info;
 	cross_stream_mode streammode;
-}vatek_device, *Pvatek_device;
+};
+
+typedef vatek_device *Pvatek_device;
 
 #ifdef __cplusplus
 extern "C" {

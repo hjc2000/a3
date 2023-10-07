@@ -25,15 +25,17 @@ typedef void(*fpstream_source_free)(hstream_source hsource);
 ///		这些函数指针的第一个参数全部是 hstream_source hsource。
 ///		这个结构体就是在模仿 C++ 的类。
 /// </summary>
-typedef struct _tsstream_source
+class tsstream_source
 {
-	hstream_source hsource;
+public:
+	hstream_source hsource = nullptr;
 	fpstream_source_start start;
 	fpstream_source_check check;
 	fpstream_source_get get;
 	fpstream_source_stop stop;
 	fpstream_source_free free;
-}tsstream_source, *Ptsstream_source;
+};
+typedef tsstream_source *Ptsstream_source;
 
 #ifdef __cplusplus
 extern "C" {
