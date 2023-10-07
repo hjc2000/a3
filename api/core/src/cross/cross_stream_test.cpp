@@ -32,7 +32,7 @@
 #define TEST_PACKET_USB_PAT		1
 #define TEST_PACKET_PCR_PID		0x100
 
-typedef struct _handle_test
+struct handle_test
 {
 	cstream_handler handle;
 	mux_time_tick time;
@@ -40,17 +40,17 @@ typedef struct _handle_test
 	uint8_t buffer[TSSLICE_BUFFER_LEN];
 	uint32_t packetnums;
 	uint32_t tick;
-}handle_test, * Phandle_test;
+};
 
 extern vatek_result cstream_test_start(hcstream hstream);
-extern vatek_result cstream_test_get_slice(hcstream hstream, uint8_t** pslice);
+extern vatek_result cstream_test_get_slice(hcstream hstream, uint8_t **pslice);
 extern uint32_t cstream_test_get_bitrate(hcstream hstream);
 extern void cstream_test_stop(hcstream hstream);
 extern void cstream_test_close(hcstream hstream);
 
-vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler* pcstream)
+vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler *pcstream)
 {
-	Phandle_test ptest = (Phandle_test)malloc(sizeof(handle_test));
+	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));
 	vatek_result nres = vatek_memfail;
 
 	if (ptest)
@@ -66,12 +66,13 @@ vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler* pcstream)
 		*pcstream = &ptest->handle;
 		nres = vatek_success;
 	}
+
 	return nres;
 }
 
 vatek_result cstream_test_start(hcstream hstream)
 {
-	Phandle_test ptest = (Phandle_test)hstream;
+	handle_test *ptest = (handle_test *)hstream;
 	ptest->time.ms = 0;
 	ptest->time.ns = 0;
 	ptest->tick = cross_os_get_tick_ms();
@@ -80,7 +81,7 @@ vatek_result cstream_test_start(hcstream hstream)
 
 uint32_t cstream_test_get_bitrate(hcstream hstream)
 {
-	Phandle_test ptest = (Phandle_test)hstream;
+	handle_test *ptest = (handle_test *)hstream;
 	int32_t eclipse = cross_os_get_tick_ms() - ptest->tick;
 	if (eclipse)
 	{
@@ -89,14 +90,15 @@ uint32_t cstream_test_get_bitrate(hcstream hstream)
 		ptest->packetnums = 0;
 		return bitrate;
 	}
+
 	return 0;
 }
 
-vatek_result cstream_test_get_slice(hcstream hstream, uint8_t** pslice)
+vatek_result cstream_test_get_slice(hcstream hstream, uint8_t **pslice)
 {
-	Phandle_test ptest = (Phandle_test)hstream;
+	handle_test *ptest = (handle_test *)hstream;
 	int32_t nums = 0;
-	uint8_t* ptr = &ptest->buffer[0];
+	uint8_t *ptr = &ptest->buffer[0];
 
 	while (nums < TSSLICE_PACKET_NUM)
 	{
@@ -105,6 +107,7 @@ vatek_result cstream_test_get_slice(hcstream hstream, uint8_t** pslice)
 		ptr += TS_PACKET_LEN;
 		nums++;
 	}
+
 	ptest->time.ns += ptest->slice_ns;
 	if (ptest->time.ns >= 1000000)
 	{
@@ -112,6 +115,7 @@ vatek_result cstream_test_get_slice(hcstream hstream, uint8_t** pslice)
 		ptest->time.ns = ptest->time.ns % 1000000;
 		ptest->packetnums += TSSLICE_PACKET_NUM;
 	}
+
 	*pslice = &ptest->buffer[0];
 	return (vatek_result)1;
 }
@@ -123,11 +127,11 @@ void cstream_test_stop(hcstream hstream)
 
 void cstream_test_close(hcstream hstream)
 {
-	Phandle_test ptest = (Phandle_test)hstream;
+	handle_test *ptest = (handle_test *)hstream;
 	free(hstream);
 }
 
-uint8_t* tspacket_get_pcr(Pmux_time_tick ptime)
+uint8_t *tspacket_get_pcr(Pmux_time_tick ptime)
 {
 	static uint8_t fake_pcr_packet[188] =
 	{
@@ -165,7 +169,7 @@ uint8_t* tspacket_get_pcr(Pmux_time_tick ptime)
 	return &fake_pcr_packet[0];
 }
 
-uint8_t* tspacket_get_suffing(void)
+uint8_t *tspacket_get_suffing(void)
 {
 	static uint8_t fake_suffing_packet[2][188] =
 	{
@@ -234,7 +238,7 @@ uint8_t* tspacket_get_suffing(void)
 	static uint32_t tscont = 0;
 	static int32_t packetidx = 0;
 
-#if !TEST_PACKET_USB_PAT
+	#if !TEST_PACKET_USB_PAT
 	uint32_t crc = tool_crc32(&fake_suffing_packet[0][4], 180);
 	fake_suffing_packet[0][188 - 4] = (uint8_t)(crc >> 24);
 	fake_suffing_packet[0][188 - 3] = (uint8_t)(crc >> 16);
@@ -246,16 +250,16 @@ uint8_t* tspacket_get_suffing(void)
 	fake_suffing_packet[1][188 - 3] = (uint8_t)(crc >> 16);
 	fake_suffing_packet[1][188 - 2] = (uint8_t)(crc >> 8);
 	fake_suffing_packet[1][188 - 1] = (uint8_t)(crc);
-#endif
+	#endif
 
 
-	uint8_t* packet = &fake_suffing_packet[packetidx][0];
-	packetidx = !packetidx;
+	uint8_t *packet = &fake_suffing_packet[packetidx][0];
+	packetidx = (uint32_t)(!packetidx);
 	packet[3] = (packet[3] & 0xF0) | (tscont++ & 0xF);
 	return &packet[0];
 }
 
-uint8_t* tspacket_get_null(void)
+uint8_t *tspacket_get_null(void)
 {
 	static uint8_t fake_null_packet[188] =
 	{

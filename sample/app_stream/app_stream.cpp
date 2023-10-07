@@ -55,7 +55,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// <param name="psource"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
-extern vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psource, Pusbstream_param pustream);
+extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, Pusbstream_param pustream);
 
 // ./app_stream dvbt file qq.ts
 // ./app_stream dvbt udp udp://127.0.0.1:40000
@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
 
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 {
-	Ptsstream_source ptssource = (Ptsstream_source)param;
+	tsstream_source *ptssource = (tsstream_source *)param;
 	vatek_result nres = ptssource->check(ptssource->hsource);
 	if (nres > vatek_success)
 	{
@@ -250,7 +250,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
-vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psource, Pusbstream_param pustream)
+vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, Pusbstream_param pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
 

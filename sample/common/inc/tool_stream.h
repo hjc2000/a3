@@ -35,7 +35,6 @@ public:
 	fpstream_source_stop stop;
 	fpstream_source_free free;
 };
-typedef tsstream_source *Ptsstream_source;
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,7 +49,7 @@ extern "C" {
 	/// </param>
 	/// <param name="psource">此对象会被初始化</param>
 	/// <returns></returns>
-	vatek_result stream_source_test_get(Pmodulator_param pmod, Ptsstream_source psource);
+	vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource);
 
 	/// <summary>
 	///		从文件中获取流
@@ -58,8 +57,8 @@ extern "C" {
 	/// <param name="file">要打开的文件的路径</param>
 	/// <param name="psource"></param>
 	/// <returns></returns>
-	vatek_result stream_source_file_get(const char *file, Ptsstream_source psource);
-	vatek_result stream_source_udp_get(const char *ipaddr, Ptsstream_source psource);
+	vatek_result stream_source_file_get(const char *file, tsstream_source *psource);
+	vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource);
 
 	#ifdef __cplusplus
 }

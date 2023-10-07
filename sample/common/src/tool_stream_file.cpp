@@ -71,7 +71,7 @@ extern vatek_result file_lock(Phandle_file pfile);
 /// </returns>
 extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
-vatek_result stream_source_file_get(const char *file, Ptsstream_source psource)
+vatek_result stream_source_file_get(const char *file, tsstream_source * psource)
 {
 	handle_file *pfile = new handle_file;
 	if (!pfile)

@@ -40,7 +40,7 @@ typedef struct _handle_test
 	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
 }handle_test, *Phandle_test;
 
-vatek_result stream_source_test_get(Pmodulator_param pmod, Ptsstream_source psource)
+vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource)
 {
 	uint32_t bitrate = modulator_param_get_bitrate(pmod);
 	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));
