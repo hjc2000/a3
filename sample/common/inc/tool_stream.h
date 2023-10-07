@@ -38,6 +38,18 @@ public:
 	fpstream_source_free free;
 };
 
+class TsStreamSource
+{
+public:
+
+};
+
+class TestTsStreamSource :public TsStreamSource
+{
+public:
+
+};
+
 #ifdef __cplusplus
 extern "C" {
 	#endif
