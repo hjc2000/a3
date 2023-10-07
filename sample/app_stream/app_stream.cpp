@@ -73,6 +73,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 extern vatek_result parser_cmd_source(int32_t argc, char **argv, Ptsstream_source psource, Pusbstream_param pustream);
 
 // ./app_stream dvbt file qq.ts
+// ./app_stream dvbt udp udp://@127.0.0.1:40000
 int main(int argc, char *argv[])
 {
 	hvatek_devices hdevlist = NULL;

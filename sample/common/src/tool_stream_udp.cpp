@@ -11,7 +11,7 @@
 #define UDP_SLICE_BUF_NUMS		32
 #define UDP_SLICE_BUF_MASK		0x1F
 
-#define UDP_BUFFER_LEN			(((4*1024*1024)/UDP_FRAME_LEN) * UDP_FRAME_LEN)
+#define UDP_BUFFER_LEN			(((4*1024*1024) / UDP_FRAME_LEN) * UDP_FRAME_LEN)
 
 extern vatek_result udp_stream_start(hstream_source hsource);
 extern vatek_result udp_stream_check(hstream_source hsource);
@@ -30,6 +30,10 @@ typedef struct _handle_udp
 	int32_t isrunning;
 }handle_udp, *Phandle_udp;
 
+/// <summary>
+///		接收 UDP 流的线程函数
+/// </summary>
+/// <param name="param"></param>
 extern void recv_handle(Pcross_thread_param param);
 
 extern uint8_t *get_write_buffer(Phandle_udp pudp);
@@ -76,8 +80,10 @@ vatek_result stream_source_udp_get(const char *ipaddr, Ptsstream_source psource)
 
 	if (!is_vatek_success(nres))
 	{
-		if (hsocket)cross_os_free_socket(hsocket);
-		if (hlock)cross_os_free_mutex(hlock);
+		if (hsocket)
+			cross_os_free_socket(hsocket);
+		if (hlock)
+			cross_os_free_mutex(hlock);
 	}
 
 	return  nres;
@@ -99,8 +105,10 @@ vatek_result udp_stream_start(hstream_source hsource)
 			if (!is_vatek_success(nres))
 				nres = cross_os_disconnect_socket(pudp->hsocket);
 		}
-		else _disp_err("cross_os_connect_socket fail : %d", nres);
+		else
+			_disp_err("cross_os_connect_socket fail : %d", nres);
 	}
+
 	return nres;
 }
 
