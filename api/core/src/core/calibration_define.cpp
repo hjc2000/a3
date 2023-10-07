@@ -49,6 +49,7 @@ vatek_result calibration_set(hvatek_chip hchip, Pcalibration_param pcalibration,
 		val = CALIBRATION_EN_TAG | (isapply != 0);
 		nres = vatek_chip_write_memory(hchip, HALREG_CALIBRATION_CNTL, val);
 	}
+
 	return nres;
 }
 

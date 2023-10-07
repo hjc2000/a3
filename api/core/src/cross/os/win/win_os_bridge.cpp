@@ -386,7 +386,8 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 				phid->hid_handle = NULL;
 			}
 
-			if (!is_vatek_success(nres))cross_os_free_mutex(hlock);
+			if (!is_vatek_success(nres))
+				cross_os_free_mutex(hlock);
 		}
 	}
 
@@ -420,6 +421,7 @@ vatek_result bridge_device_close(hbridge_device hbridge)
 		CloseHandle(phid->hid_overlapped.hEvent);
 		CloseHandle(phid->hid_handle);
 	}
+
 	phid->hid_overlapped.hEvent = NULL;
 	phid->hid_handle = NULL;
 	phid->lock_cmd = NULL;
@@ -475,8 +477,11 @@ vatek_result win_hid_api_write(Pwin_hid_device pdevice, uint8_t *ppacket)
 				if (bres && nwrite == HID_PACKET_LEN)nres = vatek_success;
 			}
 		}
-		if (!is_vatek_success(nres))CancelIo(pdevice->hid_handle);
+
+		if (!is_vatek_success(nres))
+			CancelIo(pdevice->hid_handle);
 	}
+
 	return nres;
 }
 
