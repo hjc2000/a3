@@ -10,11 +10,11 @@ set(cli_SRC
     "app_broadcast.cpp")
 
 set(cli_SRC_COM
-    ../common/src/tool_printf.c
+    "../common/src/tool_printf.cpp"
     "../common/src/tool_stream_file.cpp"
-    ../common/src/tool_stream_test.c
+    "../common/src/tool_stream_test.cpp"
     "../common/src/tool_stream_udp.cpp"
-    ../common/src/tool_tspacket.c)
+    "../common/src/tool_tspacket.cpp")
 
 set(cli_INC_COM
     ../common/inc/tool_printf.h

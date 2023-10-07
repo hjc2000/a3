@@ -10,7 +10,7 @@ set(cli_SRC
     app_bridge.c)
 
 set(cli_SRC_COM
-    ../common/src/tool_printf.c)
+    "../common/src/tool_printf.cpp")
 
 set(cli_INC_COM
     ../common/inc/tool_printf.h)
