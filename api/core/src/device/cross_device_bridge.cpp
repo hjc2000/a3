@@ -38,12 +38,12 @@ extern vatek_result bridge_read_buffer(hcross_device hdev, int32_t addr, uint8_t
 
 static cross_core bridge_core =
 {
-	.read_memory = bridge_read_memory,
-	.write_memory = bridge_write_memory,
 	.read_register = bridge_read_register,
 	.write_register = bridge_write_register,
-	.read_buffer = bridge_read_buffer,
+	.read_memory = bridge_read_memory,
+	.write_memory = bridge_write_memory,
 	.write_buffer = bridge_write_buffer,
+	.read_buffer = bridge_read_buffer,
 	.sendcmd = bridge_sendcmd,
 };
 
@@ -198,7 +198,7 @@ vatek_result bridge_cmd_ip_transfer(hcross_device hdev, int32_t cmd, uint8_t *pb
 	if (is_vatek_success(nres))
 	{
 		Phid_bridge_result presult = bridge_device_get_result(hhid);
-		nres = presult->result;
+		nres = (vatek_result)presult->result;
 		if (is_vatek_success(nres))
 			memcpy(pbuf, &presult->data.raw[0], BRIDGE_PARAM_MAX_LEN);
 	}

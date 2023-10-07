@@ -174,9 +174,9 @@ elseif(UNIX)
 endif()
 
 set(core_SRC_DEVICE
-    src/device/cross_device_bridge.c
+    src/device/cross_device_bridge.cpp
     src/device/cross_device_tool.cpp
-    src/device/cross_device_usb.c
+    src/device/cross_device_usb.cpp
     src/device/mux_usbstream.c)
 
 set(core_SRC_MUX
