@@ -103,46 +103,36 @@ struct cross_device
 	Pcross_usbbulk bulk;
 };
 
-typedef cross_device *Pcross_device;
-
 struct vatek_device
 {
-	Pcross_device cross;
+	cross_device *cross;
 	chip_info info;
 	cross_stream_mode streammode;
 };
 
-#ifdef __cplusplus
-extern "C" {
-	#endif
+vatek_result cross_devices_create(cross_device **pcross);
+vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross);
+vatek_result cross_bridge_open(hbridge_device hbridge, cross_device **pcross);
+vatek_result cross_usb_device_open(husb_device husb, cross_device **pcross);
 
-	vatek_result cross_devices_create(Pcross_device *pcross);
-	vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, Pcross_device *pcross);
-	vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device *pcross);
-	vatek_result cross_usb_device_open(husb_device husb, Pcross_device *pcross);
+hbridge_device cross_get_bridge_handle(cross_device *pcross);
+husb_device cross_get_usb_device(cross_device *pcross);
 
-	hbridge_device cross_get_bridge_handle(Pcross_device pcross);
-	husb_device cross_get_usb_device(Pcross_device pcross);
+void cross_bridge_close(cross_device *pcross);
+void cross_usb_device_close(cross_device *pcross);
 
-	void cross_bridge_close(Pcross_device pcross);
-	void cross_usb_device_close(Pcross_device pcross);
+vatek_result cross_devices_get_size(cross_device *pcross);
+vatek_result cross_devices_free(cross_device *pcross);
 
-	vatek_result cross_devices_get_size(Pcross_device pcross);
-	vatek_result cross_devices_free(Pcross_device pcross);
-
-	/// <summary>
-	///		获取设备名称。
-	///		会判断设备是通过桥还是 USB 连接的，从而调用不同的 API 获取名称。
-	///		如果是未知的连接类型，则返回 "_unknown" 字符串。
-	/// </summary>
-	/// <param name="pcross"></param>
-	/// <returns></returns>
-	const char *cdevice_get_name(Pcross_device pcross);
-	vatek_result cdevice_malloc(Pcross_device *pcross, hal_service_mode hal);
-	void cdevice_free(Pcross_device pcross);
-
-	#ifdef __cplusplus
-}
-#endif
+/// <summary>
+///		获取设备名称。
+///		会判断设备是通过桥还是 USB 连接的，从而调用不同的 API 获取名称。
+///		如果是未知的连接类型，则返回 "_unknown" 字符串。
+/// </summary>
+/// <param name="pcross"></param>
+/// <returns></returns>
+const char *cdevice_get_name(cross_device *pcross);
+vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal);
+void cdevice_free(cross_device *pcross);
 
 #endif

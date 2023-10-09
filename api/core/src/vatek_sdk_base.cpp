@@ -90,37 +90,37 @@ void vatek_debug_print(vatek_debug_level level, const char *fmt, ...)
 
 vatek_result vatek_chip_read_register(hvatek_chip hchip, int32_t addr, uint32_t *val)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->read_register(pcross->hcross, addr, val);
 }
 
 vatek_result vatek_chip_write_register(hvatek_chip hchip, int32_t addr, uint32_t val)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->write_register(pcross->hcross, addr, val);
 }
 
 vatek_result vatek_chip_read_memory(hvatek_chip hchip, int32_t addr, uint32_t *val)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->read_memory(pcross->hcross, addr, val);
 }
 
 vatek_result vatek_chip_write_memory(hvatek_chip hchip, int32_t addr, uint32_t val)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->write_memory(pcross->hcross, addr, val);
 }
 
 vatek_result vatek_chip_write_buffer(hvatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->write_buffer(pcross->hcross, addr, buf, wlen);
 }
 
 vatek_result vatek_chip_read_buffer(hvatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->core->read_buffer(pcross->hcross, addr, buf, wlen);
 }
 

@@ -47,7 +47,7 @@ static cross_core bridge_core =
 	.sendcmd = bridge_sendcmd,
 };
 
-vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device *pcross)
+vatek_result cross_bridge_open(hbridge_device hbridge, cross_device * *pcross)
 {
 	vatek_result nres = bridge_device_open(hbridge);
 	if (is_vatek_success(nres))
@@ -60,7 +60,7 @@ vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device *pcross)
 			if (is_vatek_success(nres))
 			{
 				hal_service_mode halservice = (hal_service_mode)val;
-				Pcross_device newdev = NULL;
+				cross_device * newdev = NULL;
 				nres = cdevice_malloc(&newdev, halservice);
 				if (is_vatek_success(nres))
 				{
@@ -85,7 +85,7 @@ vatek_result cross_bridge_open(hbridge_device hbridge, Pcross_device *pcross)
 	return nres;
 }
 
-hbridge_device cross_get_bridge_handle(Pcross_device pcross)
+hbridge_device cross_get_bridge_handle(cross_device * pcross)
 {
 	if (pcross->driver == cdriver_bridge)
 		return (hbridge_device)pcross->hcross;
@@ -93,7 +93,7 @@ hbridge_device cross_get_bridge_handle(Pcross_device pcross)
 	return NULL;
 }
 
-void cross_bridge_close(Pcross_device pcross)
+void cross_bridge_close(cross_device * pcross)
 {
 	hbridge_device hbridge = (hbridge_device)pcross->hcross;
 	bridge_device_unlock(hbridge);

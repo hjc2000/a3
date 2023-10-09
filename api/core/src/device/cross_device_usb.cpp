@@ -71,7 +71,7 @@ static cross_usbbulk udev_bulk =
 	.read = usb_api_ll_bulk_read,
 };
 
-vatek_result cross_usb_device_open(husb_device husb, Pcross_device *pcross)
+vatek_result cross_usb_device_open(husb_device husb, cross_device * *pcross)
 {
 	vatek_result nres = usb_api_ll_open(husb);
 	if (is_vatek_success(nres))
@@ -81,7 +81,7 @@ vatek_result cross_usb_device_open(husb_device husb, Pcross_device *pcross)
 		if (is_vatek_success(nres))
 		{
 			hal_service_mode halservice = (hal_service_mode)val;
-			Pcross_device newdev = NULL;
+			cross_device * newdev = NULL;
 			nres = cdevice_malloc(&newdev, halservice);
 			if (is_vatek_success(nres))
 			{
@@ -101,13 +101,13 @@ vatek_result cross_usb_device_open(husb_device husb, Pcross_device *pcross)
 	return nres;
 }
 
-void cross_usb_device_close(Pcross_device pcross)
+void cross_usb_device_close(cross_device * pcross)
 {
 	usb_api_ll_close((husb_device)pcross->hcross);
 	cdevice_free(pcross);
 }
 
-husb_device cross_get_usb_device(Pcross_device pcross)
+husb_device cross_get_usb_device(cross_device * pcross)
 {
 	if (pcross->driver == cdriver_usb)
 		return (husb_device)pcross->hcross;

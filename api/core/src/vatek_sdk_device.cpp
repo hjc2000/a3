@@ -34,25 +34,25 @@
 #include <service/ui/ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"
 
-extern vatek_result vatek_device_malloc(Pcross_device pcross, vatek_device * *pvatek);
+extern vatek_result vatek_device_malloc(cross_device * pcross, vatek_device * *pvatek);
 extern void vatek_device_free(vatek_device * pvatek);
 
 struct vatek_device_list
 {
 	int32_t nums;
-	Pcross_device cross;
-	Pcross_device *listdevices;
+	cross_device * cross;
+	cross_device * *listdevices;
 };
 
 typedef vatek_device_list *Pvatek_device_list;
 
 vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices *hdevices)
 {
-	Pcross_device newdevs = NULL;
+	cross_device * newdevs = NULL;
 	vatek_result nres = cross_devices_create(&newdevs);
 	if (nres > vatek_success)
 	{
-		int32_t len = sizeof(vatek_device_list) + (sizeof(Pcross_device) * (nres + 1));
+		int32_t len = sizeof(vatek_device_list) + (sizeof(cross_device *) * (nres + 1));
 		Pvatek_device_list newlist = (Pvatek_device_list)malloc(len);
 		nres = vatek_memfail;
 		if (newlist)
@@ -60,7 +60,7 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 			int32_t pos = 0;
 			nres = vatek_success;
 			memset((uint8_t *)newlist, 0, len);
-			newlist->listdevices = (Pcross_device *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
+			newlist->listdevices = (cross_device * *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
 			newlist->cross = newdevs;
 			while (newdevs)
 			{
@@ -94,11 +94,11 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 
 vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices *hdevices)
 {
-	Pcross_device newdevs = NULL;
+	cross_device * newdevs = NULL;
 	vatek_result nres = cross_devices_create_by_usbid(vid, pid, &newdevs);
 	if (nres > vatek_success)
 	{
-		int32_t len = sizeof(vatek_device_list) + (sizeof(Pcross_device) * (nres + 1));
+		int32_t len = sizeof(vatek_device_list) + (sizeof(cross_device *) * (nres + 1));
 		Pvatek_device_list newlist = (Pvatek_device_list)malloc(len);
 		nres = vatek_memfail;
 		if (newlist)
@@ -106,7 +106,7 @@ vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_
 			int32_t pos = 0;
 			nres = vatek_success;
 			memset((uint8_t *)newlist, 0, len);
-			newlist->listdevices = (Pcross_device *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
+			newlist->listdevices = (cross_device * *)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
 			newlist->cross = newdevs;
 			while (newdevs)
 			{
@@ -158,7 +158,7 @@ vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip
 	if (idx < pdevices->nums)
 	{
 		vatek_device * pvatek = NULL;
-		Pcross_device pcross = pdevices->listdevices[idx];
+		cross_device * pcross = pdevices->listdevices[idx];
 		nres = vatek_device_malloc(pcross, &pvatek);
 		if (is_vatek_success(nres))
 		{
@@ -182,7 +182,7 @@ void vatek_device_list_free(hvatek_devices hdevices)
 
 uint32_t vatek_device_get_bus(hvatek_chip hchip)
 {
-	Pcross_device pcross = ((vatek_device *)hchip)->cross;
+	cross_device * pcross = ((vatek_device *)hchip)->cross;
 	return pcross->bus;
 }
 
@@ -491,7 +491,7 @@ vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_device_malloc(Pcross_device pcross, vatek_device * *pvatek)
+vatek_result vatek_device_malloc(cross_device * pcross, vatek_device * *pvatek)
 {
 	vatek_device * newdev = (vatek_device *)malloc(sizeof(vatek_device));
 	vatek_result nres = vatek_memfail;
