@@ -7,8 +7,6 @@
 #include "../common/inc/tool_stream.h"
 #include <core/tools/tool_dvb_t2.h>
 
-#define TRANSFORM_NORMAL 1
-
 static usbstream_param usbcmd;
 
 extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
@@ -94,7 +92,6 @@ int main(int argc, char *argv[])
 			- config used usb_stream sync mode and start stream
 	*/
 
-	#if TRANSFORM_NORMAL
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_usbstream_open(hchip, &hustream);
@@ -193,7 +190,6 @@ int main(int argc, char *argv[])
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;
-	#endif
 }
 
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
