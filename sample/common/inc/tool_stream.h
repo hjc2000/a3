@@ -5,6 +5,9 @@
 #include <core/base/output_modulator.h>
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
+#include<memory>
+
+using namespace std;
 
 // 一个 ts 的包长度是 188 字节
 #define TS_PACKET_LEN				188
