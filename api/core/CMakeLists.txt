@@ -153,7 +153,7 @@ if(MSVC)
     		src/cross/cross_os_api.c
     		src/cross/cross_os_socket.c
     		src/cross/cross_stream.c
-    		src/cross/cross_stream_file.c
+    		src/cross/cross_stream_file.cpp
     		src/cross/cross_stream_test.cpp
     		src/cross/cross_stream_udp.c
     		src/cross/cross_stream_mux.c
@@ -165,7 +165,7 @@ elseif(UNIX)
     		src/cross/cross_os_api.c
     		src/cross/cross_os_socket.c
     		src/cross/cross_stream.c
-    		src/cross/cross_stream_file.c
+    		src/cross/cross_stream_file.cpp
     		src/cross/cross_stream_test.cpp
     		src/cross/cross_stream_udp.c
     		src/cross/cross_stream_mux.c

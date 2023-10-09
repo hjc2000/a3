@@ -34,7 +34,7 @@ extern void file_stream_free(hstream_source hsource);
 /// <summary>
 ///		文件句柄。其实是对 C 的 FILE 类型的文件句柄的包装
 /// </summary>
-typedef struct _handle_file
+struct handle_file
 {
 	/// <summary>
 	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
@@ -47,7 +47,7 @@ typedef struct _handle_file
 	/// </summary>
 	FILE *fhandle;
 	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
-}handle_file, *Phandle_file;
+};
 
 /// <summary>
 ///		锁定 ts 流。
@@ -56,7 +56,7 @@ typedef struct _handle_file
 /// </summary>
 /// <param name="pfile"></param>
 /// <returns>成功返回 0，失败返回错误代码</returns>
-extern vatek_result file_lock(Phandle_file pfile);
+extern vatek_result file_lock(handle_file *pfile);
 
 /// <summary>
 ///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
@@ -71,7 +71,7 @@ extern vatek_result file_lock(Phandle_file pfile);
 /// </returns>
 extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
-vatek_result stream_source_file_get(const char *file, tsstream_source * psource)
+vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 {
 	handle_file *pfile = new handle_file;
 	if (!pfile)
@@ -126,7 +126,7 @@ vatek_result file_stream_start(hstream_source hsource)
 
 vatek_result file_stream_check(hstream_source hsource)
 {
-	Phandle_file pfile = (Phandle_file)hsource;
+	handle_file *pfile = (handle_file *)hsource;
 	int32_t pos = 0;
 	uint8_t *ptr = &pfile->buffer[0];
 	vatek_result nres = vatek_success;
@@ -170,7 +170,7 @@ vatek_result file_stream_check(hstream_source hsource)
 
 uint8_t *file_stream_get(hstream_source hsource)
 {
-	Phandle_file pfile = (Phandle_file)hsource;
+	handle_file *pfile = (handle_file *)hsource;
 	return &pfile->buffer[0];
 }
 
@@ -181,12 +181,12 @@ vatek_result file_stream_stop(hstream_source hsource)
 
 void file_stream_free(hstream_source hsource)
 {
-	Phandle_file pfile = (Phandle_file)hsource;
+	handle_file *pfile = (handle_file *)hsource;
 	fclose(pfile->fhandle);
 	delete pfile;
 }
 
-vatek_result file_lock(Phandle_file pfile)
+vatek_result file_lock(handle_file *pfile)
 {
 	vatek_result nres = vatek_badstatus;
 	uint8_t sync;

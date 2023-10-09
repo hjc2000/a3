@@ -58,32 +58,24 @@ public:
 
 };
 
-#ifdef __cplusplus
-extern "C" {
-	#endif
+/// <summary>
+///		初始化 psource。会为 psource 的 hsource 字段赋值，并为 psource 的函数指针赋值。
+/// </summary>
+/// <param name="pmod">
+///		会使用 pmod 计算 bitrate，然后用 bitrate 计算一些参数，用来初始化一个 handle_test 类型的对象，
+///		最后将这个 handle_test 对象赋值给 psource 的 hsource 字段。
+/// </param>
+/// <param name="psource">此对象会被初始化</param>
+/// <returns></returns>
+vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource);
 
-	/// <summary>
-	///		初始化 psource。会为 psource 的 hsource 字段赋值，并为 psource 的函数指针赋值。
-	/// </summary>
-	/// <param name="pmod">
-	///		会使用 pmod 计算 bitrate，然后用 bitrate 计算一些参数，用来初始化一个 handle_test 类型的对象，
-	///		最后将这个 handle_test 对象赋值给 psource 的 hsource 字段。
-	/// </param>
-	/// <param name="psource">此对象会被初始化</param>
-	/// <returns></returns>
-	vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource);
-
-	/// <summary>
-	///		从文件中获取流
-	/// </summary>
-	/// <param name="file">要打开的文件的路径</param>
-	/// <param name="psource"></param>
-	/// <returns></returns>
-	vatek_result stream_source_file_get(const char *file, tsstream_source *psource);
-	vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource);
-
-	#ifdef __cplusplus
-}
-#endif
+/// <summary>
+///		从文件中获取流
+/// </summary>
+/// <param name="file">要打开的文件的路径</param>
+/// <param name="psource"></param>
+/// <returns></returns>
+vatek_result stream_source_file_get(const char *file, tsstream_source *psource);
+vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource);
 
 #endif
