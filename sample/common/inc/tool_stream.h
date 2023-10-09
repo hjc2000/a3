@@ -46,16 +46,23 @@ public:
 	fpstream_source_free free;
 };
 
-class TsStreamSource
+/// <summary>
+///		对 C 的 FILE 类型的文件句柄的包装
+/// </summary>
+class FileWrapper
 {
 public:
+	/// <summary>
+	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
+	/// </summary>
+	int32_t packet_len;
+	int32_t file_size;
 
-};
-
-class TestTsStreamSource :public TsStreamSource
-{
-public:
-
+	/// <summary>
+	///		C 的文件句柄
+	/// </summary>
+	FILE *fhandle;
+	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
 };
 
 /// <summary>

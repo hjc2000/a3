@@ -32,24 +32,6 @@ extern vatek_result file_stream_stop(hstream_source hsource);
 extern void file_stream_free(hstream_source hsource);
 
 /// <summary>
-///		文件句柄。其实是对 C 的 FILE 类型的文件句柄的包装
-/// </summary>
-struct FileWrapper
-{
-	/// <summary>
-	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
-	/// </summary>
-	int32_t packet_len;
-	int32_t file_size;
-
-	/// <summary>
-	///		C 的文件句柄
-	/// </summary>
-	FILE *fhandle;
-	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
-};
-
-/// <summary>
 ///		锁定 ts 流。
 ///		* 总共会读取 2 个包，检查同步字节。如果成功同步到 2 个包，就认为锁定成功。
 ///		* 锁定成功后会将文件指针恢复到原来的位置。
