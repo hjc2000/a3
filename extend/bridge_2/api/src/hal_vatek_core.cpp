@@ -19,14 +19,14 @@ static vatek_debug_level haldbg_level = debug_level_warning;
 
 void chip_operation_wait() { int32_t i = 100; while (i--); }
 
-extern vatek_result chip_i2c_send_read(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uint32_t *val);
-extern vatek_result chip_i2c_send_write(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uint32_t val);
+extern vatek_result chip_i2c_send_read(stm32_i2c *pi2c, uint8_t cmd, int32_t addr, uint32_t *val);
+extern vatek_result chip_i2c_send_write(stm32_i2c *pi2c, uint8_t cmd, int32_t addr, uint32_t val);
 
-extern vatek_result chip_i2c_write(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len);
-extern vatek_result chip_i2c_read(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len);
+extern vatek_result chip_i2c_write(stm32_i2c *pi2c, uint8_t *pbuf, int32_t len);
+extern vatek_result chip_i2c_read(stm32_i2c *pi2c, uint8_t *pbuf, int32_t len);
 
-extern vatek_result chip_write_buffer_word(Pstm32_i2c pi2c, int32_t addr, uint32_t val);
-extern vatek_result chip_read_buffer_word(Pstm32_i2c pi2c, int32_t addr, uint32_t *val);
+extern vatek_result chip_write_buffer_word(stm32_i2c *pi2c, int32_t addr, uint32_t val);
+extern vatek_result chip_read_buffer_word(stm32_i2c *pi2c, int32_t addr, uint32_t *val);
 
 uint32_t vatek_get_tick_ms(void)
 {
@@ -56,22 +56,22 @@ _HAL_WEAK(void, vatek_debug_print)(vatek_debug_level level, const char *fmt, ...
 
 vatek_result vatek_chip_read_register(hvatek_chip hchip, int32_t addr, uint32_t *val)
 {
-	return chip_i2c_send_read((Pstm32_i2c)hchip, HAL_I2CCHIP_READ, addr, val);
+	return chip_i2c_send_read((stm32_i2c *)hchip, HAL_I2CCHIP_READ, addr, val);
 }
 
 vatek_result vatek_chip_write_register(hvatek_chip hchip, int32_t addr, uint32_t val)
 {
-	return chip_i2c_send_write((Pstm32_i2c)hchip, HAL_I2CCHIP_WRITE, addr, val);
+	return chip_i2c_send_write((stm32_i2c *)hchip, HAL_I2CCHIP_WRITE, addr, val);
 }
 
 vatek_result vatek_chip_read_memory(hvatek_chip hchip, int32_t addr, uint32_t *val)
 {
-	return chip_i2c_send_read((Pstm32_i2c)hchip, HAL_I2CCMD_READ, addr, val);
+	return chip_i2c_send_read((stm32_i2c *)hchip, HAL_I2CCMD_READ, addr, val);
 }
 
 vatek_result vatek_chip_write_memory(hvatek_chip hchip, int32_t addr, uint32_t val)
 {
-	return chip_i2c_send_write((Pstm32_i2c)hchip, HAL_I2CCMD_WRITE, addr, val);
+	return chip_i2c_send_write((stm32_i2c *)hchip, HAL_I2CCMD_WRITE, addr, val);
 }
 
 vatek_result vatek_chip_write_buffer(hvatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen)
@@ -81,7 +81,7 @@ vatek_result vatek_chip_write_buffer(hvatek_chip hchip, int32_t addr, uint8_t *b
 	while (wlen--)
 	{
 
-		res = chip_write_buffer_word((Pstm32_i2c)hchip, addr, *wvals);
+		res = chip_write_buffer_word((stm32_i2c *)hchip, addr, *wvals);
 		addr++;
 		wvals++;
 	}
@@ -94,14 +94,14 @@ vatek_result vatek_chip_read_buffer(hvatek_chip hchip, int32_t addr, uint8_t *bu
 	uint32_t *wvals = (uint32_t *)buf;
 	while (wlen--)
 	{
-		res = chip_read_buffer_word((Pstm32_i2c)hchip, addr, wvals);
+		res = chip_read_buffer_word((stm32_i2c *)hchip, addr, wvals);
 		addr++;
 		wvals++;
 	}
 	return res;
 }
 
-vatek_result chip_i2c_send_read(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uint32_t *val)
+vatek_result chip_i2c_send_read(stm32_i2c *pi2c, uint8_t cmd, int32_t addr, uint32_t *val)
 {
 	vatek_result res = vatek_success;
 	hali2c_cmd[0] = 0x04;					/* i2c_ip buffer position*/
@@ -125,7 +125,7 @@ vatek_result chip_i2c_send_read(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uint
 	return res;
 }
 
-vatek_result chip_i2c_send_write(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uint32_t val)
+vatek_result chip_i2c_send_write(stm32_i2c *pi2c, uint8_t cmd, int32_t addr, uint32_t val)
 {
 	hali2c_cmd[0] = 0x00;
 	hali2c_cmd[1] = (uint8_t)val;
@@ -142,7 +142,7 @@ vatek_result chip_i2c_send_write(Pstm32_i2c pi2c, uint8_t cmd, int32_t addr, uin
 	return chip_i2c_write(pi2c, &hali2c_cmd[0], 9);
 }
 
-vatek_result chip_i2c_write(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len)
+vatek_result chip_i2c_write(stm32_i2c *pi2c, uint8_t *pbuf, int32_t len)
 {
 	vatek_result res = pi2c->start(pi2c->hi2c, HAL_I2CCHIP_WRADDR, 0);
 	if (is_vatek_success(res))
@@ -154,7 +154,7 @@ vatek_result chip_i2c_write(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len)
 	return res;
 }
 
-vatek_result chip_i2c_read(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len)
+vatek_result chip_i2c_read(stm32_i2c *pi2c, uint8_t *pbuf, int32_t len)
 {
 	vatek_result res = pi2c->start(pi2c->hi2c, HAL_I2CCHIP_RDADDR, 0);
 	if (is_vatek_success(res))
@@ -166,7 +166,7 @@ vatek_result chip_i2c_read(Pstm32_i2c pi2c, uint8_t *pbuf, int32_t len)
 	return res;
 }
 
-vatek_result chip_write_buffer_word(Pstm32_i2c pi2c, int32_t addr, uint32_t val)
+vatek_result chip_write_buffer_word(stm32_i2c *pi2c, int32_t addr, uint32_t val)
 {
 	hali2c_cmd[0] = 0x00;
 	hali2c_cmd[4] = (uint8_t)val;
@@ -183,7 +183,7 @@ vatek_result chip_write_buffer_word(Pstm32_i2c pi2c, int32_t addr, uint32_t val)
 	return chip_i2c_write(pi2c, &hali2c_cmd[0], 9);
 }
 
-vatek_result chip_read_buffer_word(Pstm32_i2c pi2c, int32_t addr, uint32_t *val)
+vatek_result chip_read_buffer_word(stm32_i2c *pi2c, int32_t addr, uint32_t *val)
 {
 	vatek_result res = vatek_success;
 	hali2c_cmd[0] = 0x04;					/* i2c_ip buffer position*/

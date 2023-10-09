@@ -75,7 +75,7 @@ vatek_result hal_gpio_get(hhal_pin pin)
 vatek_result hal_i2c_config(uint32_t speedkhz)
 {
     vatek_result nres = vatek_unsupport;
-    Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+    stm32_i2c * pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->set_speed(pi2c->hi2c,speedkhz);
     return nres;
@@ -89,7 +89,7 @@ vatek_result hal_i2c_check_device(uint8_t devaddr)
 vatek_result hal_i2c_start(uint8_t devaddr,int32_t restart)
 {
     vatek_result nres = vatek_unsupport;
-    Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+    stm32_i2c * pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->start(pi2c->hi2c,devaddr,restart);
     else
@@ -100,7 +100,7 @@ vatek_result hal_i2c_start(uint8_t devaddr,int32_t restart)
 vatek_result hal_i2c_write(const uint8_t* pbuf,int32_t len)
 {
     vatek_result nres = vatek_unsupport;
-    Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+    stm32_i2c * pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->write(pi2c->hi2c,pbuf,len);
     else
@@ -111,7 +111,7 @@ vatek_result hal_i2c_write(const uint8_t* pbuf,int32_t len)
 vatek_result hal_i2c_read(uint8_t* pbuf,int32_t len)
 {
     vatek_result nres = vatek_unsupport;
-    Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+    stm32_i2c * pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->read(pi2c->hi2c,pbuf,len);
     else
@@ -122,7 +122,7 @@ vatek_result hal_i2c_read(uint8_t* pbuf,int32_t len)
 vatek_result hal_i2c_stop(void)
 {
     vatek_result nres = vatek_unsupport;
-    Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+    stm32_i2c * pi2c = stm32_core_get_main_i2c();
     if(pi2c)
         nres = pi2c->stop(pi2c->hi2c);
     return nres; 

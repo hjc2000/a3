@@ -164,7 +164,7 @@ vatek_result vatek_chip_open(hvatek_bridge hbridge,hvatek_chip* hchip)
 {
 	#define MC_BASERAM_BASE             (0x5200 >> 2)      //128 MC base register address      
 	vatek_result nres = vatek_badstatus;
-	Pstm32_i2c pi2c = stm32_core_get_main_i2c();
+	stm32_i2c * pi2c = stm32_core_get_main_i2c();
 	if(pi2c)
 	{
 		uint32_t val = 0;

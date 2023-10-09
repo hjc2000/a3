@@ -35,7 +35,7 @@ extern "C" {
         main gpio   : pin_7,9,11,12,13,15,16,18,22,24,26,27,28,29,31,32,33,35,36,37,38,40, 
     */
     vatek_result stm32_core_main_i2c_check_device(uint8_t devaddr);
-    Pstm32_i2c stm32_core_get_main_i2c(void); 
+    stm32_i2c * stm32_core_get_main_i2c(void); 
     
     /* stm32 uart api */
     Pstm32_uart stm32_core_get_main_uart(void);
@@ -54,8 +54,8 @@ extern "C" {
 	//void stm32_core_extram_rest(void);
 	
     /* stm32 extend api - to used hw resource that over the 40-pins define */ 
-    vatek_result stm32_core_create_i2c(I2C_HandleTypeDef* i2c,Pstm32_i2c* pi2cdrv);
-    vatek_result stm32_core_free_i2c(Pstm32_i2c pi2cdrv);
+    vatek_result stm32_core_create_i2c(I2C_HandleTypeDef* i2c,stm32_i2c ** pi2cdrv);
+    vatek_result stm32_core_free_i2c(stm32_i2c * pi2cdrv);
     
     vatek_result stm32_core_create_spi(SPI_HandleTypeDef* spi,Pstm32_pin pincs,Pstm32_spi* pspidrv);
     vatek_result stm32_core_free_spi(Pstm32_spi pspidrv);

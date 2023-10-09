@@ -15,9 +15,9 @@ extern vatek_result stmi2c_write(hstm32_i2c hi2c,const uint8_t* pbuf, int32_t le
 extern vatek_result stmi2c_read(hstm32_i2c hi2c, uint8_t* pbuf, int32_t len);
 extern vatek_result stmi2c_stop(hstm32_i2c hi2c);
 
-vatek_result stm32_core_create_i2c(I2C_HandleTypeDef* i2c,Pstm32_i2c* pi2cdrv)
+vatek_result stm32_core_create_i2c(I2C_HandleTypeDef* i2c,stm32_i2c ** pi2cdrv)
 {
-    Pstm32_i2c newi2c = (Pstm32_i2c)malloc(sizeof(stm32_i2c));
+    stm32_i2c * newi2c = (stm32_i2c *)malloc(sizeof(stm32_i2c));
     vatek_result nres = vatek_memfail;
     if(newi2c != NULL)
     {
@@ -34,7 +34,7 @@ vatek_result stm32_core_create_i2c(I2C_HandleTypeDef* i2c,Pstm32_i2c* pi2cdrv)
     return nres;
 }
 
-vatek_result stm32_core_free_i2c(Pstm32_i2c pi2cdrv)
+vatek_result stm32_core_free_i2c(stm32_i2c * pi2cdrv)
 {
     HAL_I2C_DeInit((I2C_HandleTypeDef*)pi2cdrv->hi2c);
     free(pi2cdrv);

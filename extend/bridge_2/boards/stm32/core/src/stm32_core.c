@@ -92,9 +92,9 @@ vatek_result stm32_core_main_i2c_check_device(uint8_t devaddr)
     return nres;
 }
 
-Pstm32_i2c stm32_core_get_main_i2c(void)
+stm32_i2c * stm32_core_get_main_i2c(void)
 {
-    static Pstm32_i2c main_i2c = NULL;
+    static stm32_i2c * main_i2c = NULL;
     if(main_i2c == NULL && stm32_main_i2c != NULL)
     {
         vatek_result nres = stm32_core_create_i2c(stm32_main_i2c,&main_i2c);
