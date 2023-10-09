@@ -70,7 +70,6 @@ typedef void *hvatek_devices;
 /// <summary>
 ///     void * 类型。
 ///		* 被强转为 vatek_device* 类型
-///		* 被强转为 stm32_i2c * 类型
 /// </summary>
 typedef void *hvatek_chip;
 
