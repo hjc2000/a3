@@ -113,7 +113,75 @@ public:
 	/// </summary>
 	/// <param name="pfile"></param>
 	/// <returns>成功返回 0，失败返回错误代码</returns>
-	vatek_result file_lock();
+	vatek_result file_lock()
+	{
+		vatek_result nres = vatek_badstatus;
+		uint8_t sync;
+		uint32_t count = 0;
+
+		for (;;)
+		{
+			// 获取当前文件指针
+			size_t pos = ftell(fhandle);
+
+			/* 读取 1 个字节，返回值为成功读取的元素个数，而不是字节数。在这里，一个元素就是 1 个字节，所以元素数
+			* 等于字节数。
+			*/
+			nres = (vatek_result)fread(&sync, 1, 1, fhandle);
+			if (nres != 1)
+			{
+				// 不等于 1，说明没有成功读取到 1 个字节，返回错误代码
+				return vatek_hwfail;
+			}
+
+			// 成功读取到 1 个字节，检查读取到的 1 个字节是否是 ts 的同步字节
+			if (sync == TS_PACKET_SYNC_TAG)
+			{
+				// 如果是同步字节
+				packet_len = 0;
+
+				/* pos 的值是一进入循环就第一时间获取了，此时还没有读取任何一个字节。执行到这里说明读取了 1 个
+				* 字节，并且这个字节是同步字节。
+				*
+				* 调用 file_check_sync 函数后，内部会以文件开头为参考点，seek 一段 pos + TS_PACKET_LEN 的距离，
+				* 因为 pos 指向的是同步字节的位置，而 TS_PACKET_LEN 等于一个 ts 包的长度，
+				* 所以 seek 后文件指针又是处于同步字节的位置。然后 file_check_sync 会读取 1 个字节并检查是否是
+				* 同步字节。如果是同步字节，加上刚才读取的同步字节，总共同步到 2 个包。
+				*/
+				nres = file_check_sync((int32_t)pos, TS_PACKET_LEN);
+				if (is_vatek_success(nres))
+				{
+					// 是同步字节
+					packet_len = TS_PACKET_LEN;
+				}
+				else
+				{
+					// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
+					nres = file_check_sync((int32_t)pos, 204);
+
+					if (is_vatek_success(nres))
+					{
+						// 再试一次后如果是同步字节
+						packet_len = 204;
+					}
+				}
+
+				if (packet_len != 0)
+				{
+					// pfile->packet_len != 0 说明前面的 file_check_sync 成功了
+					// 成功后 seek 回原来的位置。将 seek 的结果作为返回值。成功为 0，失败为 -1.
+					nres = (vatek_result)fseek(fhandle, (int32_t)pos, SEEK_SET);
+					return nres;
+				}
+			}
+
+			// 没有读取到第 1 个同步字节就递增计数，等下一次循环再次读取下一个字节
+			count++;
+			// 计数溢出后还没锁定到 ts 流，就超时
+			if (count > 1000)
+				return vatek_timeout;
+		}
+	}
 };
 
 /// <summary>
