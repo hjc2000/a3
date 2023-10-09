@@ -116,7 +116,7 @@ public:
 	/// </summary>
 	/// <param name="pfile"></param>
 	/// <returns>成功返回 0，失败返回错误代码</returns>
-	vatek_result file_lock()
+	vatek_result lock_file_stream()
 	{
 		vatek_result nres = vatek_badstatus;
 		uint8_t sync;
