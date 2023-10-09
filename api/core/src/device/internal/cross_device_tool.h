@@ -68,8 +68,6 @@ struct cross_usbbulk
 	fpbulk_read read;
 };
 
-typedef cross_usbbulk *Pcross_usbbulk;
-
 typedef vatek_result(*fp_read_register)(hcross_device hdev, int32_t addr, uint32_t *val);
 typedef vatek_result(*fp_write_register)(hcross_device hdev, int32_t addr, uint32_t val);
 typedef vatek_result(*fp_read_memory)(hcross_device hdev, int32_t addr, uint32_t *val);
@@ -89,8 +87,6 @@ struct cross_core
 	fp_sendcmd sendcmd;
 };
 
-typedef cross_core *Pcross_core;
-
 struct cross_device
 {
 	cross_device *next;
@@ -98,9 +94,9 @@ struct cross_device
 	cross_driver driver;
 	hcross_device hcross;
 	hal_service_mode service;
-	Pcross_core core;
+	cross_core *core;
 	Pcross_stream stream;
-	Pcross_usbbulk bulk;
+	cross_usbbulk *bulk;
 };
 
 struct vatek_device

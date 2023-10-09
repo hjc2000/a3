@@ -407,7 +407,7 @@ vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd,
 	if (pvatek->cross->bulk)
 	{
 		husb_device husb = pvatek->cross->hcross;
-		Pcross_usbbulk pbulk = pvatek->cross->bulk;
+		cross_usbbulk * pbulk = pvatek->cross->bulk;
 
 		nres = pbulk->send_command(husb, pcmd);
 		if (is_vatek_success(nres))
@@ -446,7 +446,7 @@ vatek_result vatek_device_usbbulk_get_result(hvatek_chip hchip, Pusbbulk_result 
 	if (pvatek->cross->bulk)
 	{
 		husb_device husb = pvatek->cross->hcross;
-		Pcross_usbbulk pbulk = pvatek->cross->bulk;
+		cross_usbbulk * pbulk = pvatek->cross->bulk;
 		nres = pbulk->get_result(husb, presult);
 	}
 	return nres;
@@ -459,7 +459,7 @@ vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t *pbuf, int32_
 	if (pvatek->cross->bulk)
 	{
 		husb_device husb = pvatek->cross->hcross;
-		Pcross_usbbulk pbulk = pvatek->cross->bulk;
+		cross_usbbulk * pbulk = pvatek->cross->bulk;
 		nres = pbulk->write(husb, pbuf, len);
 	}
 	return nres;
@@ -472,7 +472,7 @@ vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t *pbuf, int32_t
 	if (pvatek->cross->bulk)
 	{
 		husb_device husb = pvatek->cross->hcross;
-		Pcross_usbbulk pbulk = pvatek->cross->bulk;
+		cross_usbbulk * pbulk = pvatek->cross->bulk;
 		nres = pbulk->read(husb, pbuf, len);
 	}
 	return nres;
@@ -485,7 +485,7 @@ vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 	if (pvatek->cross->bulk)
 	{
 		husb_device husb = pvatek->cross->hcross;
-		Pcross_usbbulk pbulk = pvatek->cross->bulk;
+		cross_usbbulk * pbulk = pvatek->cross->bulk;
 		nres = pbulk->get_size(husb);
 	}
 	return nres;
