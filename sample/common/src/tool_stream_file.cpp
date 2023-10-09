@@ -32,15 +32,6 @@ extern vatek_result file_stream_stop(hstream_source hsource);
 extern void file_stream_free(hstream_source hsource);
 
 /// <summary>
-///		锁定 ts 流。
-///		* 总共会读取 2 个包，检查同步字节。如果成功同步到 2 个包，就认为锁定成功。
-///		* 锁定成功后会将文件指针恢复到原来的位置。
-/// </summary>
-/// <param name="pfile"></param>
-/// <returns>成功返回 0，失败返回错误代码</returns>
-extern vatek_result file_lock(FileWrapper *pfile);
-
-/// <summary>
 ///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
 ///		的同步字节。
 /// </summary>
@@ -76,7 +67,7 @@ vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 		fseek(pfile->fhandle, 0, SEEK_SET);
 
 		// 锁定 ts 流
-		nres = file_lock(pfile);
+		nres = pfile->file_lock();
 		if (!is_vatek_success(nres))
 		{
 			fclose(pfile->fhandle);
@@ -125,7 +116,7 @@ vatek_result file_stream_check(hstream_source hsource)
 			// 读取失败，就 seek 回文件头，然后锁定 ts 流，然后 continue
 			// 为什么要这样？可能是为了排除因为即将到达文件尾所以读取包失败。
 			fseek(pfile->fhandle, 0, SEEK_SET);
-			nres = file_lock(pfile);
+			nres = pfile->file_lock();
 			if (is_vatek_success(nres))
 				continue;
 		}
@@ -138,7 +129,7 @@ vatek_result file_stream_check(hstream_source hsource)
 		}
 		else
 		{
-			nres = file_lock(pfile);
+			nres = pfile->file_lock();
 			if (!is_vatek_success(nres))
 				break;
 		}
@@ -168,7 +159,7 @@ void file_stream_free(hstream_source hsource)
 	delete pfile;
 }
 
-vatek_result file_lock(FileWrapper *pfile)
+vatek_result FileWrapper::file_lock()
 {
 	vatek_result nres = vatek_badstatus;
 	uint8_t sync;
@@ -177,12 +168,12 @@ vatek_result file_lock(FileWrapper *pfile)
 	for (;;)
 	{
 		// 获取当前文件指针
-		size_t pos = ftell(pfile->fhandle);
+		size_t pos = ftell(fhandle);
 
 		/* 读取 1 个字节，返回值为成功读取的元素个数，而不是字节数。在这里，一个元素就是 1 个字节，所以元素数
 		* 等于字节数。
 		*/
-		nres = (vatek_result)fread(&sync, 1, 1, pfile->fhandle);
+		nres = (vatek_result)fread(&sync, 1, 1, fhandle);
 		if (nres != 1)
 		{
 			// 不等于 1，说明没有成功读取到 1 个字节，返回错误代码
@@ -193,7 +184,7 @@ vatek_result file_lock(FileWrapper *pfile)
 		if (sync == TS_PACKET_SYNC_TAG)
 		{
 			// 如果是同步字节
-			pfile->packet_len = 0;
+			packet_len = 0;
 
 			/* pos 的值是一进入循环就第一时间获取了，此时还没有读取任何一个字节。执行到这里说明读取了 1 个
 			* 字节，并且这个字节是同步字节。
@@ -203,29 +194,29 @@ vatek_result file_lock(FileWrapper *pfile)
 			* 所以 seek 后文件指针又是处于同步字节的位置。然后 file_check_sync 会读取 1 个字节并检查是否是
 			* 同步字节。如果是同步字节，加上刚才读取的同步字节，总共同步到 2 个包。
 			*/
-			nres = file_check_sync(pfile->fhandle, (int32_t)pos, TS_PACKET_LEN);
+			nres = file_check_sync(fhandle, (int32_t)pos, TS_PACKET_LEN);
 			if (is_vatek_success(nres))
 			{
 				// 是同步字节
-				pfile->packet_len = TS_PACKET_LEN;
+				packet_len = TS_PACKET_LEN;
 			}
 			else
 			{
 				// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
-				nres = file_check_sync(pfile->fhandle, (int32_t)pos, 204);
+				nres = file_check_sync(fhandle, (int32_t)pos, 204);
 
 				if (is_vatek_success(nres))
 				{
 					// 再试一次后如果是同步字节
-					pfile->packet_len = 204;
+					packet_len = 204;
 				}
 			}
 
-			if (pfile->packet_len != 0)
+			if (packet_len != 0)
 			{
 				// pfile->packet_len != 0 说明前面的 file_check_sync 成功了
 				// 成功后 seek 回原来的位置。将 seek 的结果作为返回值。成功为 0，失败为 -1.
-				nres = (vatek_result)fseek(pfile->fhandle, (int32_t)pos, SEEK_SET);
+				nres = (vatek_result)fseek(fhandle, (int32_t)pos, SEEK_SET);
 				return nres;
 			}
 		}

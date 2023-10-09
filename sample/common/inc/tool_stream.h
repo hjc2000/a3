@@ -63,6 +63,15 @@ public:
 	/// </summary>
 	FILE *fhandle;
 	uint8_t buffer[CHIP_STREAM_SLICE_LEN];
+
+	/// <summary>
+	///		锁定 ts 流。
+	///		* 总共会读取 2 个包，检查同步字节。如果成功同步到 2 个包，就认为锁定成功。
+	///		* 锁定成功后会将文件指针恢复到原来的位置。
+	/// </summary>
+	/// <param name="pfile"></param>
+	/// <returns>成功返回 0，失败返回错误代码</returns>
+	vatek_result file_lock();
 };
 
 /// <summary>
