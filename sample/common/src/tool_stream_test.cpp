@@ -43,6 +43,11 @@ vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psou
 		_disp_l("open test_stream : %d bps - %d ns", bitrate, ptest->slice_ns);
 
 		psource->hsource = ptest;
+		psource->start = test_stream_start;
+		psource->stop = test_stream_stop;
+		psource->check = test_stream_check;
+		psource->get = test_stream_get;
+		psource->free = test_stream_free;
 		nres = vatek_success;
 	}
 
@@ -99,13 +104,4 @@ vatek_result test_stream_stop(hstream_source hsource)
 void test_stream_free(hstream_source hsource)
 {
 	free(hsource);
-}
-
-tsstream_source::tsstream_source()
-{
-	start = test_stream_start;
-	stop = test_stream_stop;
-	check = test_stream_check;
-	get = test_stream_get;
-	free = test_stream_free;
 }
