@@ -51,6 +51,48 @@ public:
 /// </summary>
 class FileWrapper
 {
+	/// <summary>
+	///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
+	///		的同步字节。
+	/// </summary>
+	/// <param name="hfile"></param>
+	/// <param name="pos"></param>
+	/// <param name="offset"></param>
+	/// <returns>
+	///		是同步字节返回 1，不是同步字节或发生了错误则返回错误代码。
+	///		如果是格式错误，返回的错误代码为 vatek_format。
+	/// </returns>
+	vatek_result file_check_sync(int32_t pos, int32_t offset)
+	{
+		// seek 成功返回 0，失败返回 -1
+		vatek_result nres = (vatek_result)fseek(fhandle, pos + offset, SEEK_SET);
+		if (nres)
+		{
+			// seek 失败，返回 -1
+			return (vatek_result)-1;
+		}
+
+		uint8_t tag = 0;
+
+		// 读取 1 个字节
+		nres = (vatek_result)fread(&tag, 1, 1, fhandle);
+		if (nres != 1)
+		{
+			// 没有成功读取到 1 个字节
+			return vatek_hwfail;
+		}
+
+		// 检查读取到的 1 个字节是否是 ts 的同步字节
+		if (tag == TS_PACKET_SYNC_TAG)
+		{
+			// 是同步字节
+			return (vatek_result)1;
+		}
+
+		// 不是同步字节，返回格式错误的错误代码
+		return vatek_format;
+	}
+
 public:
 	/// <summary>
 	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.

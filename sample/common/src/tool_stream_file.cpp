@@ -31,19 +31,6 @@ extern vatek_result file_stream_stop(hstream_source hsource);
 /// <param name="hsource"></param>
 extern void file_stream_free(hstream_source hsource);
 
-/// <summary>
-///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
-///		的同步字节。
-/// </summary>
-/// <param name="hfile"></param>
-/// <param name="pos"></param>
-/// <param name="offset"></param>
-/// <returns>
-///		是同步字节返回 1，不是同步字节或发生了错误则返回错误代码。
-///		如果是格式错误，返回的错误代码为 vatek_format。
-/// </returns>
-extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
-
 vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 {
 	FileWrapper *pfile = new FileWrapper;
@@ -194,7 +181,7 @@ vatek_result FileWrapper::file_lock()
 			* 所以 seek 后文件指针又是处于同步字节的位置。然后 file_check_sync 会读取 1 个字节并检查是否是
 			* 同步字节。如果是同步字节，加上刚才读取的同步字节，总共同步到 2 个包。
 			*/
-			nres = file_check_sync(fhandle, (int32_t)pos, TS_PACKET_LEN);
+			nres = file_check_sync((int32_t)pos, TS_PACKET_LEN);
 			if (is_vatek_success(nres))
 			{
 				// 是同步字节
@@ -203,7 +190,7 @@ vatek_result FileWrapper::file_lock()
 			else
 			{
 				// 不是同步字节，可能是因为此 ts 流的包大小不是 188 字节，而是 204 字节，再试一次。
-				nres = file_check_sync(fhandle, (int32_t)pos, 204);
+				nres = file_check_sync((int32_t)pos, 204);
 
 				if (is_vatek_success(nres))
 				{
@@ -227,35 +214,4 @@ vatek_result FileWrapper::file_lock()
 		if (count > 1000)
 			return vatek_timeout;
 	}
-}
-
-vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset)
-{
-	// seek 成功返回 0，失败返回 -1
-	vatek_result nres = (vatek_result)fseek(hfile, pos + offset, SEEK_SET);
-	if (nres)
-	{
-		// seek 失败，返回 -1
-		return (vatek_result)-1;
-	}
-
-	uint8_t tag = 0;
-
-	// 读取 1 个字节
-	nres = (vatek_result)fread(&tag, 1, 1, hfile);
-	if (nres != 1)
-	{
-		// 没有成功读取到 1 个字节
-		return vatek_hwfail;
-	}
-
-	// 检查读取到的 1 个字节是否是 ts 的同步字节
-	if (tag == TS_PACKET_SYNC_TAG)
-	{
-		// 是同步字节
-		return (vatek_result)1;
-	}
-
-	// 不是同步字节，返回格式错误的错误代码
-	return vatek_format;
 }
