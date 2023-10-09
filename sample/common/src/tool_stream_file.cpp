@@ -12,7 +12,7 @@ extern vatek_result file_stream_start(hstream_source hsource);
 extern vatek_result file_stream_check(hstream_source hsource);
 
 /// <summary>
-///		将 hsource 强制转换为 handle_file * 后返回 buffer 字段。这是一个一维数组的头指针。
+///		将 hsource 强制转换为 FileWrapper * 后返回 buffer 字段。这是一个一维数组的头指针。
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
@@ -34,7 +34,7 @@ extern void file_stream_free(hstream_source hsource);
 /// <summary>
 ///		文件句柄。其实是对 C 的 FILE 类型的文件句柄的包装
 /// </summary>
-struct handle_file
+struct FileWrapper
 {
 	/// <summary>
 	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
@@ -56,7 +56,7 @@ struct handle_file
 /// </summary>
 /// <param name="pfile"></param>
 /// <returns>成功返回 0，失败返回错误代码</returns>
-extern vatek_result file_lock(handle_file *pfile);
+extern vatek_result file_lock(FileWrapper *pfile);
 
 /// <summary>
 ///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
@@ -73,14 +73,14 @@ extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
 vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 {
-	handle_file *pfile = new handle_file;
+	FileWrapper *pfile = new FileWrapper;
 	if (!pfile)
 	{
 		// 内存分配失败
 		return vatek_memfail;
 	}
 
-	/* 打开文件，将文件句柄放到刚才分配的 handle_file 里面。
+	/* 打开文件，将文件句柄放到刚才分配的 FileWrapper 里面。
 	* 打开方式：读写，二进制
 	*/
 	pfile->fhandle = fopen(file, "rb+");
@@ -126,7 +126,7 @@ vatek_result file_stream_start(hstream_source hsource)
 
 vatek_result file_stream_check(hstream_source hsource)
 {
-	handle_file *pfile = (handle_file *)hsource;
+	FileWrapper *pfile = (FileWrapper *)hsource;
 	int32_t pos = 0;
 	uint8_t *ptr = &pfile->buffer[0];
 	vatek_result nres = vatek_success;
@@ -170,7 +170,7 @@ vatek_result file_stream_check(hstream_source hsource)
 
 uint8_t *file_stream_get(hstream_source hsource)
 {
-	handle_file *pfile = (handle_file *)hsource;
+	FileWrapper *pfile = (FileWrapper *)hsource;
 	return &pfile->buffer[0];
 }
 
@@ -181,12 +181,12 @@ vatek_result file_stream_stop(hstream_source hsource)
 
 void file_stream_free(hstream_source hsource)
 {
-	handle_file *pfile = (handle_file *)hsource;
+	FileWrapper *pfile = (FileWrapper *)hsource;
 	fclose(pfile->fhandle);
 	delete pfile;
 }
 
-vatek_result file_lock(handle_file *pfile)
+vatek_result file_lock(FileWrapper *pfile)
 {
 	vatek_result nres = vatek_badstatus;
 	uint8_t sync;
