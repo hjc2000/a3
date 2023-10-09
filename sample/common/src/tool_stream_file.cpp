@@ -54,7 +54,7 @@ vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 		fseek(pfile->fhandle, 0, SEEK_SET);
 
 		// 锁定 ts 流
-		nres = pfile->lock_file_stream();
+		nres = pfile->lock_ts_file_stream();
 		if (!is_vatek_success(nres))
 		{
 			fclose(pfile->fhandle);
@@ -103,7 +103,7 @@ vatek_result file_stream_check(hstream_source hsource)
 			// 读取失败，就 seek 回文件头，然后锁定 ts 流，然后 continue
 			// 为什么要这样？可能是为了排除因为即将到达文件尾所以读取包失败。
 			fseek(pfile->fhandle, 0, SEEK_SET);
-			nres = pfile->lock_file_stream();
+			nres = pfile->lock_ts_file_stream();
 			if (is_vatek_success(nres))
 				continue;
 		}
@@ -116,7 +116,7 @@ vatek_result file_stream_check(hstream_source hsource)
 		}
 		else
 		{
-			nres = pfile->lock_file_stream();
+			nres = pfile->lock_ts_file_stream();
 			if (!is_vatek_success(nres))
 				break;
 		}
