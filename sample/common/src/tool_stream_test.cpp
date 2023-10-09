@@ -30,28 +30,26 @@ extern vatek_result test_stream_stop(hstream_source hsource);
 /// <param name="hsource"></param>
 extern void test_stream_free(hstream_source hsource);
 
-vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource)
+vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *stream_source)
 {
 	uint32_t bitrate = modulator_param_get_bitrate(pmod);
 	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));
-	vatek_result nres = vatek_memfail;
-
-	if (ptest)
+	if (!ptest)
 	{
-		memset(ptest, 0, sizeof(handle_test));
-		ptest->slice_ns = (1000000000 / (bitrate / (TS_PACKET_LEN * 8))) * CHIP_STREAM_SLICE_PACKET_NUMS;
-		_disp_l("open test_stream : %d bps - %d ns", bitrate, ptest->slice_ns);
-
-		psource->hsource = ptest;
-		psource->start = test_stream_start;
-		psource->stop = test_stream_stop;
-		psource->check = test_stream_check;
-		psource->get = test_stream_get;
-		psource->free = test_stream_free;
-		nres = vatek_success;
+		throw - 1;
 	}
 
-	return nres;
+	memset(ptest, 0, sizeof(handle_test));
+	ptest->slice_ns = (1000000000 / (bitrate / (TS_PACKET_LEN * 8))) * CHIP_STREAM_SLICE_PACKET_NUMS;
+	_disp_l("open test_stream : %d bps - %d ns", bitrate, ptest->slice_ns);
+
+	stream_source->hsource = ptest;
+	stream_source->start = test_stream_start;
+	stream_source->stop = test_stream_stop;
+	stream_source->check = test_stream_check;
+	stream_source->get = test_stream_get;
+	stream_source->free = test_stream_free;
+	return vatek_success;
 }
 
 vatek_result test_stream_start(hstream_source hsource)

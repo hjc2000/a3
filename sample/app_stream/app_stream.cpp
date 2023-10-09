@@ -52,7 +52,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// </summary>
 /// <param name="argc"></param>
 /// <param name="argv"></param>
-/// <param name="psource"></param>
+/// <param name="stream_source"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
 extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, Pusbstream_param pustream);
@@ -248,7 +248,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
-vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, Pusbstream_param pustream)
+vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, Pusbstream_param pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
 
@@ -291,7 +291,7 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psour
 		}
 		else if (strcmp(argv[1], "test") == 0)
 		{
-			nres = stream_source_test_get(&usbcmd.modulator, psource);
+			nres = stream_source_test_get(&usbcmd.modulator, stream_source);
 		}
 		else
 		{
@@ -302,9 +302,9 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psour
 		if (argc >= 4)
 		{
 			if (strcmp(argv[2], "file") == 0)
-				nres = stream_source_file_get(argv[3], psource);
+				nres = stream_source_file_get(argv[3], stream_source);
 			else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
-				nres = stream_source_udp_get(argv[3], psource);
+				nres = stream_source_udp_get(argv[3], stream_source);
 			else
 				nres = vatek_unsupport;
 		}
