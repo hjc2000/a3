@@ -34,8 +34,8 @@
 #include <service/ui/ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"
 
-extern vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek);
-extern void vatek_device_free(Pvatek_device pvatek);
+extern vatek_result vatek_device_malloc(Pcross_device pcross, vatek_device * *pvatek);
+extern void vatek_device_free(vatek_device * pvatek);
 
 struct vatek_device_list
 {
@@ -157,7 +157,7 @@ vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip
 	vatek_result nres = vatek_badparam;
 	if (idx < pdevices->nums)
 	{
-		Pvatek_device pvatek = NULL;
+		vatek_device * pvatek = NULL;
 		Pcross_device pcross = pdevices->listdevices[idx];
 		nres = vatek_device_malloc(pcross, &pvatek);
 		if (is_vatek_success(nres))
@@ -182,26 +182,26 @@ void vatek_device_list_free(hvatek_devices hdevices)
 
 uint32_t vatek_device_get_bus(hvatek_chip hchip)
 {
-	Pcross_device pcross = ((Pvatek_device)hchip)->cross;
+	Pcross_device pcross = ((vatek_device *)hchip)->cross;
 	return pcross->bus;
 }
 
 Pchip_info vatek_device_get_info(hvatek_chip hchip)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	pvatek->info.status = chip_status_get(hchip, &pvatek->info.errcode);
 	return &pvatek->info;
 }
 
 const char *vatek_device_get_name(hvatek_chip hchip)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	return cdevice_get_name(pvatek->cross);
 }
 
 vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
@@ -220,7 +220,7 @@ vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)
 
 vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, uint32_t freqkhz)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
@@ -253,7 +253,7 @@ vatek_result vatek_device_polling(hvatek_chip hchip)
 
 void vatek_device_stop(hvatek_chip hchip)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_running)
@@ -280,14 +280,14 @@ vatek_result vatek_device_close_reboot(hvatek_chip hchip)
 
 vatek_result vatek_device_close(hvatek_chip hchip)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_device_free(pvatek);
 	return vatek_success;
 }
 
 vatek_result vatek_device_calibration_load(hvatek_chip hchip, Pcalibration_param pcalibration)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 		nres = calibration_get(hchip, pcalibration);
@@ -296,7 +296,7 @@ vatek_result vatek_device_calibration_load(hvatek_chip hchip, Pcalibration_param
 
 vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_param pcalibration)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_badstatus;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
@@ -313,7 +313,7 @@ vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_para
 
 vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_badstatus;
 	Pchip_info pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
@@ -327,7 +327,7 @@ vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power)
 
 vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param pcalibration)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 	{
@@ -342,7 +342,7 @@ vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param
 
 vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod, uint32_t stream_mode)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	Pcross_stream pstream = pvatek->cross->stream;
 	vatek_result nres = vatek_unsupport;
 
@@ -374,7 +374,7 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod,
 vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t *pbuf, int32_t size)
 {
 	vatek_result nres = vatek_badstatus;
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	hcross_device hcross = (hcross_device)pvatek->cross->hcross;
 	Pcross_stream pstream = pvatek->cross->stream;
 	if (pvatek->streammode == stream_mode_output)
@@ -385,7 +385,7 @@ vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t *pbuf, int32_t
 vatek_result vatek_device_stream_stop(hvatek_chip hchip)
 {
 	vatek_result nres = vatek_badstatus;
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	hcross_device hcross = (hcross_device)pvatek->cross->hcross;
 	Pcross_stream pstream = pvatek->cross->stream;
 
@@ -402,7 +402,7 @@ vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd,
 	#define USBBUF_DIR_NULL	0
 	#define USBBUF_DIR_IN	1
 	#define USBBUF_DIR_OUT	2
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
@@ -441,7 +441,7 @@ vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd,
 
 vatek_result vatek_device_usbbulk_get_result(hvatek_chip hchip, Pusbbulk_result presult)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
@@ -454,7 +454,7 @@ vatek_result vatek_device_usbbulk_get_result(hvatek_chip hchip, Pusbbulk_result 
 
 vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t *pbuf, int32_t len)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
@@ -467,7 +467,7 @@ vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t *pbuf, int32_
 
 vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t *pbuf, int32_t len)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
@@ -480,7 +480,7 @@ vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t *pbuf, int32_t
 
 vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 {
-	Pvatek_device pvatek = (Pvatek_device)hchip;
+	vatek_device * pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
@@ -491,9 +491,9 @@ vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek)
+vatek_result vatek_device_malloc(Pcross_device pcross, vatek_device * *pvatek)
 {
-	Pvatek_device newdev = (Pvatek_device)malloc(sizeof(vatek_device));
+	vatek_device * newdev = (vatek_device *)malloc(sizeof(vatek_device));
 	vatek_result nres = vatek_memfail;
 	if (newdev)
 	{
@@ -506,7 +506,7 @@ vatek_result vatek_device_malloc(Pcross_device pcross, Pvatek_device *pvatek)
 	return nres;
 }
 
-void vatek_device_free(Pvatek_device pvatek)
+void vatek_device_free(vatek_device * pvatek)
 {
 	free(pvatek);
 }

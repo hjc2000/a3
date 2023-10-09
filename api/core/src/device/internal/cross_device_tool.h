@@ -112,8 +112,6 @@ struct vatek_device
 	cross_stream_mode streammode;
 };
 
-typedef vatek_device *Pvatek_device;
-
 #ifdef __cplusplus
 extern "C" {
 	#endif
