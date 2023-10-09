@@ -49,8 +49,6 @@ struct cross_stream
 	fp_stop_stream stop_stream;
 };
 
-typedef cross_stream *Pcross_stream;
-
 typedef vatek_result(*fpbulk_get_size)(husb_device husb);
 typedef vatek_result(*fpbulk_send_command)(husb_device husb, Pusbbulk_command pcmd);
 typedef vatek_result(*fpbulk_get_result)(husb_device husb, Pusbbulk_result presult);
@@ -95,7 +93,7 @@ struct cross_device
 	hcross_device hcross;
 	hal_service_mode service;
 	cross_core *core;
-	Pcross_stream stream;
+	cross_stream *stream;
 	cross_usbbulk *bulk;
 };
 
