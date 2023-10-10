@@ -86,15 +86,6 @@ struct cross_core
 };
 
 /// <summary>
-///		储存 cross_device 节点的链表
-/// </summary>
-class CrossDeviceList
-{
-public:
-
-};
-
-/// <summary>
 ///		设备链表的节点。储存着一个设备的数据。
 /// </summary>
 class cross_device
