@@ -46,7 +46,7 @@ struct bridge_handle
 vatek_result vatek_bridge_open(hvatek_chip hchip, hvatek_bridge *hbridge)
 {
 	cross_device *pcross = ((vatek_device *)hchip)->cross;
-	hbridge_device hdevice = pcross->cross_get_bridge_handle();
+	hbridge_device hdevice = pcross->cross_get_bridge_device_handle();
 	vatek_result nres = vatek_unsupport;
 	if (hdevice)
 	{

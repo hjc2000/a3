@@ -116,13 +116,21 @@ public:
 		return "_unknown";
 	}
 
-	hbridge_device cross_get_bridge_handle()
+	hbridge_device cross_get_bridge_device_handle()
 	{
 		if (driver == cdriver_bridge)
 			return (hbridge_device)hcross;
 
 		return NULL;
 	}
+
+	husb_device cross_get_usb_device_handle()
+	{
+		if (driver == cdriver_usb)
+			return (husb_device)hcross;
+		return NULL;
+	}
+
 };
 
 struct vatek_device
@@ -136,8 +144,6 @@ vatek_result cross_devices_create(cross_device **pcross);
 vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross);
 vatek_result cross_bridge_open(hbridge_device hbridge, cross_device **pcross);
 vatek_result cross_usb_device_open(husb_device husb, cross_device **pcross);
-
-husb_device cross_get_usb_device(cross_device *pcross);
 
 void cross_bridge_close(cross_device *pcross);
 void cross_usb_device_close(cross_device *pcross);

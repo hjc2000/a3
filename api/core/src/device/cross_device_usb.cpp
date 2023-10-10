@@ -107,13 +107,6 @@ void cross_usb_device_close(cross_device * pcross)
 	cdevice_free(pcross);
 }
 
-husb_device cross_get_usb_device(cross_device * pcross)
-{
-	if (pcross->driver == cdriver_usb)
-		return (husb_device)pcross->hcross;
-	return NULL;
-}
-
 vatek_result usbdevice_stream_start(hcross_device hdev, cross_stream_mode streammode)
 {
 	vatek_result nres = vatek_unsupport;
