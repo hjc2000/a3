@@ -108,7 +108,7 @@ const char *vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
-		return cdevice_get_name(pdevices->listdevices[idx]);
+		return pdevices->listdevices[idx]->get_device_name();
 	return "_unknown";
 }
 
@@ -165,7 +165,7 @@ Pchip_info vatek_device_get_info(hvatek_chip hchip)
 const char *vatek_device_get_name(hvatek_chip hchip)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
-	return cdevice_get_name(pvatek->cross);
+	return pvatek->cross->get_device_name();
 }
 
 vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)

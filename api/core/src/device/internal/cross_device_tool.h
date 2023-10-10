@@ -85,8 +85,12 @@ struct cross_core
 	fp_sendcmd sendcmd;
 };
 
-struct cross_device
+/// <summary>
+///		设备链表
+/// </summary>
+class cross_device
 {
+public:
 	cross_device *next;
 	uint32_t bus;
 	cross_driver driver;
@@ -95,6 +99,22 @@ struct cross_device
 	cross_core *core;
 	cross_stream *stream;
 	cross_usbbulk *bulk;
+
+	/// <summary>
+	///		获取设备名称。
+	///		会判断设备是通过桥还是 USB 连接的，从而调用不同的 API 获取名称。
+	///		如果是未知的连接类型，则返回 "_unknown" 字符串。
+	/// </summary>
+	/// <returns>设备名称</returns>
+	const char *get_device_name()
+	{
+		if (driver == cdriver_bridge)
+			return bridge_device_get_name((hbridge_device)hcross);
+		else if (driver == cdriver_usb)
+			return usb_api_ll_get_name((husb_device)hcross);
+
+		return "_unknown";
+	}
 };
 
 struct vatek_device
@@ -118,14 +138,6 @@ void cross_usb_device_close(cross_device *pcross);
 vatek_result cross_devices_get_size(cross_device *pcross);
 vatek_result cross_devices_free(cross_device *pcross);
 
-/// <summary>
-///		获取设备名称。
-///		会判断设备是通过桥还是 USB 连接的，从而调用不同的 API 获取名称。
-///		如果是未知的连接类型，则返回 "_unknown" 字符串。
-/// </summary>
-/// <param name="pcross"></param>
-/// <returns></returns>
-const char *cdevice_get_name(cross_device *pcross);
 vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal);
 void cdevice_free(cross_device *pcross);
 

@@ -31,22 +31,22 @@
 typedef struct _cross_handle
 {
 	int32_t reference;
-	cross_device * root;
-	cross_device * last;
+	cross_device *root;
+	cross_device *last;
 	hbridge_list bridges;
 	husb_device_list usbdevices;
 }cross_handle, *Pcross_handle;
 
 static cross_handle m_cdevices = { 0,NULL,NULL,NULL,NULL, };
 
-vatek_result cross_devices_create(cross_device * *pcross)
+vatek_result cross_devices_create(cross_device **pcross)
 {
 	vatek_result nres = vatek_success;
 	if (!m_cdevices.root)
 	{
 		int32_t i = 0;
 		int32_t nums = 0;
-		cross_device * newcross = NULL;
+		cross_device *newcross = NULL;
 
 		nres = bridge_device_list_enum_default(&m_cdevices.bridges);
 		if (nres > vatek_success)
@@ -102,7 +102,7 @@ vatek_result cross_devices_create(cross_device * *pcross)
 	return nres;
 }
 
-vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device * *pcross)
+vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross)
 {
 	vatek_result nres = vatek_success;
 	if (!m_cdevices.root)
@@ -113,7 +113,7 @@ vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_dev
 		{
 			int32_t nums = nres;
 			int32_t i = 0;
-			cross_device * newcross = NULL;
+			cross_device *newcross = NULL;
 			for (i = 0; i < nums; i++)
 			{
 				husb_device husb = NULL;
@@ -142,7 +142,7 @@ vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_dev
 	return nres;
 }
 
-vatek_result cross_devices_free(cross_device * pcross)
+vatek_result cross_devices_free(cross_device *pcross)
 {
 	vatek_result nres = vatek_badstatus;
 	if (m_cdevices.reference)
@@ -151,10 +151,10 @@ vatek_result cross_devices_free(cross_device * pcross)
 		nres = vatek_success;
 		if (!m_cdevices.reference)
 		{
-			cross_device * ptrdev = m_cdevices.root;
+			cross_device *ptrdev = m_cdevices.root;
 			while (ptrdev)
 			{
-				cross_device * pnext = ptrdev->next;
+				cross_device *pnext = ptrdev->next;
 				if (ptrdev->driver == cdriver_bridge)
 					cross_bridge_close(ptrdev);
 				else if (ptrdev->driver == cdriver_usb)
@@ -177,10 +177,10 @@ vatek_result cross_devices_free(cross_device * pcross)
 	return nres;
 }
 
-vatek_result cross_devices_get_size(cross_device * pcross)
+vatek_result cross_devices_get_size(cross_device *pcross)
 {
 	int32_t nums = 0;
-	cross_device * ptrdev = pcross;
+	cross_device *ptrdev = pcross;
 	while (ptrdev)
 	{
 		nums++;
@@ -189,22 +189,12 @@ vatek_result cross_devices_get_size(cross_device * pcross)
 	return (vatek_result)nums;
 }
 
-const char *cdevice_get_name(cross_device * pcross)
-{
-	if (pcross->driver == cdriver_bridge)
-		return bridge_device_get_name((hbridge_device)pcross->hcross);
-	else if (pcross->driver == cdriver_usb)
-		return usb_api_ll_get_name((husb_device)pcross->hcross);
-
-	return "_unknown";
-}
-
-vatek_result cdevice_malloc(cross_device * *pcross, hal_service_mode hal)
+vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal)
 {
 	vatek_result nres = vatek_unsupport;
 	if (hal == service_rescue || hal == service_broadcast || hal == service_transform)
 	{
-		cross_device * newdev = (cross_device *)malloc(sizeof(cross_device));
+		cross_device *newdev = (cross_device *)malloc(sizeof(cross_device));
 		nres = vatek_memfail;
 		if (newdev)
 		{
@@ -216,7 +206,7 @@ vatek_result cdevice_malloc(cross_device * *pcross, hal_service_mode hal)
 	return nres;
 }
 
-void cdevice_free(cross_device * pcross)
+void cdevice_free(cross_device *pcross)
 {
 	free(pcross);
 }
