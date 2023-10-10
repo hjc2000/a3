@@ -37,7 +37,7 @@ typedef void* hbridge_device;
 /// <summary>
 ///		设备链表
 /// </summary>
-typedef void* hbridge_list;
+typedef void* hbridge_device_list;
 
 #define BRIDGE_SETCMD(pcmd,val)             vatek_uint32_2_buffer((uint8_t*)&pcmd->cmd,val)
 #define BRIDGE_PARAM_SET(cmd,idx,val)       vatek_uint32_2_buffer((uint8_t*)&cmd->param.base.params[idx],val)
@@ -62,7 +62,7 @@ extern "C" {
 	/// </summary>
 	/// <param name="hblist"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_enum_default(hbridge_list* hblist);
+	HAL_API vatek_result bridge_device_list_enum_default(hbridge_device_list* hblist);
 	
 	/// <summary>
 	///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
@@ -71,7 +71,7 @@ extern "C" {
 	/// <param name="pid"></param>
 	/// <param name="hblist">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 hblist</param>
 	/// <returns>找到的设备的数量，也等于 hblist 指向的链表的长度</returns>
-	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_list* hblist);
+	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list* hblist);
 
 	/// <summary>
 	///		从链表中获取指定索引值的设备
@@ -80,15 +80,15 @@ extern "C" {
 	/// <param name="idx"></param>
 	/// <param name="hbridge"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_device* hbridge);
-	HAL_API const char* bridge_device_list_get_name(hbridge_list hblist, int32_t idx);
+	HAL_API vatek_result bridge_device_list_get(hbridge_device_list hblist, int32_t idx, hbridge_device* hbridge);
+	HAL_API const char* bridge_device_list_get_name(hbridge_device_list hblist, int32_t idx);
 	
 	/// <summary>
 	///		释放 hbridges 指向的链表。此链表的节点储存查找到的设备的信息。
 	/// </summary>
 	/// <param name="hbridges"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_free(hbridge_list hbridges);
+	HAL_API vatek_result bridge_device_list_free(hbridge_device_list hbridges);
 
 	HAL_API vatek_result bridge_device_open(hbridge_device hbridge);
     HAL_API const char* bridge_device_get_name(hbridge_device hbridge);

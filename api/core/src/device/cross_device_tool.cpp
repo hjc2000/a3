@@ -1,44 +1,30 @@
-//----------------------------------------------------------------------------
-//
-// Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-// THE POSSIBILITY OF SUCH DAMAGE.
-//
-
 #include "./internal/cross_device_tool.h"
 
 struct cross_handle
 {
-	int32_t reference;
-	cross_device *root;
-	cross_device *last;
-	hbridge_list bridges;
-	husb_device_list usbdevices;
+	int32_t reference = 0;
+	cross_device *root = nullptr;
+	cross_device *last = nullptr;
+
+	/// <summary>
+	///		bridge 设备的链表
+	/// </summary>
+	hbridge_device_list bridges = nullptr;
+
+	/// <summary>
+	///		usb 设备的链表
+	/// </summary>
+	husb_device_list usbdevices = nullptr;
 };
 
-static cross_handle m_cdevices = { 0,NULL,NULL,NULL,NULL, };
+static cross_handle m_cdevices{};
 
+/// <summary>
+///		pcross 是指针的指针，因为本函数需要更改来自调用者的 cross_device* 变量，让它
+///		指向别的地方。
+/// </summary>
+/// <param name="pcross"></param>
+/// <returns></returns>
 vatek_result cross_devices_create(cross_device **pcross)
 {
 	vatek_result nres = vatek_success;
@@ -61,12 +47,16 @@ vatek_result cross_devices_create(cross_device **pcross)
 					nres = cross_bridge_open(hbridge, &newcross);
 					if (is_vatek_success(nres))
 					{
-						if (!m_cdevices.root)m_cdevices.root = newcross;
-						else m_cdevices.last->next = newcross;
+						if (!m_cdevices.root)
+							m_cdevices.root = newcross;
+						else
+							m_cdevices.last->next = newcross;
 						m_cdevices.last = newcross;
 					}
 				}
-				if (!is_vatek_success(nres))VWAR("cross_devices_create - bridge fail [%d:%d]", i, nres);
+
+				if (!is_vatek_success(nres))
+					VWAR("cross_devices_create - bridge fail [%d:%d]", i, nres);
 			}
 		}
 
@@ -102,7 +92,9 @@ vatek_result cross_devices_create(cross_device **pcross)
 		nres = (vatek_result)cross_devices_get_size(m_cdevices.root);
 	}
 	else
+	{
 		nres = vatek_success;
+	}
 
 	return nres;
 }
@@ -208,6 +200,7 @@ vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal)
 			*pcross = newdev;
 		}
 	}
+
 	return nres;
 }
 

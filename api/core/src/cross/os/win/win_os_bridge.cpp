@@ -32,6 +32,7 @@
 #include <windows.h>
 #include <setupapi.h>
 #include <winioctl.h>
+#include<Exception.h>
 
 #define HID_DEVICE_MAX_NUMS         32
 /* not used DDK to compiler so hid define self. (orange in ddk/hid.h) */
@@ -171,7 +172,7 @@ vatek_result bridge_device_free(void)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_enum_default(hbridge_list *hblist)
+vatek_result bridge_device_list_enum_default(hbridge_device_list *hblist)
 {
 	/* bridge_device_list_enum_usb 函数如果没有发生错误，会返回找到的设备的数量，发生错误会
 	* 返回错误代码。
@@ -188,7 +189,7 @@ vatek_result bridge_device_list_enum_default(hbridge_list *hblist)
 	return nres;
 }
 
-vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_list *hblist)
+vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list *hblist)
 {
 	SP_DEVINFO_DATA devinfo_data;
 	SP_DEVICE_INTERFACE_DATA device_interface_data;
@@ -231,7 +232,7 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_lis
 				intf_detail_info = (SP_DEVICE_INTERFACE_DETAIL_DATA_A *)(new uint8_t[datalen]);
 				if (!intf_detail_info)
 				{
-					throw - 1;
+					throw Exception();
 				}
 
 				intf_detail_info->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_A);
@@ -298,7 +299,7 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_lis
 	return nres;
 }
 
-vatek_result bridge_device_list_free(hbridge_list hbridges)
+vatek_result bridge_device_list_free(hbridge_device_list hbridges)
 {
 	Pwin_hid_device proot = (Pwin_hid_device)hbridges;
 
@@ -320,7 +321,7 @@ vatek_result bridge_device_list_free(hbridge_list hbridges)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_device *hbridge)
+vatek_result bridge_device_list_get(hbridge_device_list hblist, int32_t idx, hbridge_device *hbridge)
 {
 	Pwin_hid_device proot = (Pwin_hid_device)hblist;
 	int32_t nums = 0;
@@ -334,12 +335,13 @@ vatek_result bridge_device_list_get(hbridge_list hblist, int32_t idx, hbridge_de
 
 		// 前往链表的下一个节点
 		proot = proot->pnext;
+		nums++;
 	}
 
 	return vatek_badparam;
 }
 
-const char *bridge_device_list_get_name(hbridge_list hblist, int32_t idx)
+const char *bridge_device_list_get_name(hbridge_device_list hblist, int32_t idx)
 {
 	hbridge_device hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
