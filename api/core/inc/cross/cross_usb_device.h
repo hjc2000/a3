@@ -5,7 +5,7 @@
 #include <core/base/device_usb.h>
 
 typedef void* husb_device;
-typedef void* husb_device_list;
+typedef void* void_usb_device_list;
 
 #define _usb_table_start	static const  usbdevice_id usb_device_ids[] = {
 #define _usb_broadcast(pid)	{ usb_type_broadcast	,USBDEV_VID	,pid,},
@@ -33,11 +33,11 @@ extern "C" {
 #endif
 
 	/* usb_device list tools */
-	HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, husb_device_list* hlist);
-	HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list* hlist);
-	HAL_API vatek_result usb_api_ll_list_get_device(husb_device_list hlist,int32_t idx, husb_device* husb);
-	HAL_API const char* usb_api_ll_list_get_name(husb_device_list hlist, int32_t idx);
-	HAL_API vatek_result usb_api_ll_free_list(husb_device_list hlist);
+	HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list* hlist);
+	HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_list* hlist);
+	HAL_API vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist,int32_t idx, husb_device* husb);
+	HAL_API const char* usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx);
+	HAL_API vatek_result usb_api_ll_free_list(void_usb_device_list hlist);
 	HAL_API vatek_result usb_api_ll_open(husb_device husb);
     HAL_API vatek_result usb_api_ll_close(husb_device husb);
 	HAL_API const char* usb_api_ll_get_name(husb_device husb);

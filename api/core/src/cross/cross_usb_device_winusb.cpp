@@ -55,17 +55,17 @@ typedef struct _usb_handle
 extern Pusbdevice_id usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len);
 typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
-extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list *hlist, uint32_t checkparam);
+extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *hlist, uint32_t checkparam);
 
 extern int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
 extern int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
 
-vatek_result usb_api_ll_enum(usbdevice_type type, husb_device_list *hlist)
+vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list *hlist)
 {
 	return usb_api_ll_enum_common(usb_enum_check_normal, hlist, (uint32_t)type);
 }
 
-vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, husb_device_list *hlist)
+vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_list *hlist)
 {
 	return usb_api_ll_enum_common(usb_enum_check_id, hlist, ((vid << 16) | pid));
 }
@@ -95,7 +95,7 @@ int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, ui
 	return 0;
 }
 
-vatek_result usb_api_ll_list_get_device(husb_device_list hlist, int32_t idx, husb_device *husb)
+vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx, husb_device *husb)
 {
 	Pusb_handle pusbs = (Pusb_handle)hlist;
 	USB_DEVICE_DESCRIPTOR deviceDesc;
@@ -114,7 +114,7 @@ vatek_result usb_api_ll_list_get_device(husb_device_list hlist, int32_t idx, hus
 	return vatek_badparam;
 }
 
-const char *usb_api_ll_list_get_name(husb_device_list hlist, int32_t idx)
+const char *usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx)
 {
 	husb_device husb = NULL;
 	vatek_result nres = usb_api_ll_list_get_device(hlist, idx, &husb);
@@ -125,7 +125,7 @@ const char *usb_api_ll_list_get_name(husb_device_list hlist, int32_t idx)
 	return NULL;
 }
 
-vatek_result usb_api_ll_free_list(husb_device_list hlist)
+vatek_result usb_api_ll_free_list(void_usb_device_list hlist)
 {
 	Pusb_handle pusbs = (Pusb_handle)hlist;
 	while (pusbs)
@@ -465,7 +465,7 @@ CloseDevice(
 	return;
 }
 
-vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list *hlist, uint32_t checkparam)
+vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *hlist, uint32_t checkparam)
 {
 	USB_DEVICE_DESCRIPTOR deviceDesc;
 	ULONG                 lengthReceived;

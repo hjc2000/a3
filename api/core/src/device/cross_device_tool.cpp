@@ -1,7 +1,7 @@
 #include "./internal/cross_device_tool.h"
 
 /// <summary>
-///		这个似乎才是链表类，而里面的 void_bridge_device_list_node 和 husb_device_list 其实应该
+///		这个似乎才是链表类，而里面的 void_bridge_device_list_node 和 void_usb_device_list 其实应该
 ///		是链表结点。
 /// </summary>
 struct cross_handle
@@ -18,7 +18,7 @@ struct cross_handle
 	/// <summary>
 	///		usb 设备的链表
 	/// </summary>
-	husb_device_list usbdevices = nullptr;
+	void_usb_device_list usbdevices = nullptr;
 };
 
 static cross_handle m_cdevices{};
@@ -124,8 +124,11 @@ vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_dev
 					nres = cross_usb_device_open(husb, &newcross);
 					if (is_vatek_success(nres))
 					{
-						if (!m_cdevices.root)m_cdevices.root = newcross;
-						else m_cdevices.last->next = newcross;
+						if (!m_cdevices.root)
+							m_cdevices.root = newcross;
+						else
+							m_cdevices.last->next = newcross;
+
 						m_cdevices.last = newcross;
 					}
 				}
@@ -164,7 +167,9 @@ vatek_result cross_devices_free(cross_device *pcross)
 					cross_bridge_close(ptrdev);
 				else if (ptrdev->driver == cdriver_usb)
 					cross_usb_device_close(ptrdev);
-				else VWAR("bad memory unknown cross device - %08x", ptrdev->driver);
+				else
+					VWAR("bad memory unknown cross device - %08x", ptrdev->driver);
+
 				ptrdev = pnext;
 			}
 
@@ -178,7 +183,11 @@ vatek_result cross_devices_free(cross_device *pcross)
 			m_cdevices.last = NULL;
 		}
 	}
-	else VWAR("cross_devices_free ref underflow");
+	else
+	{
+		VWAR("cross_devices_free ref underflow");
+	}
+
 	return nres;
 }
 
