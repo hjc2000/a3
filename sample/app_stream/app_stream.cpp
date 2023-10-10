@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 		- initialized supported device and open
 	*/
 
-	hvatek_devices hdevlist = nullptr;
+	void_vatek_device_list hdevlist = nullptr;
 	if (is_vatek_success(nres))
 	{
 		nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist);

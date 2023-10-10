@@ -65,7 +65,7 @@
 /// <summary>
 ///     void * 类型
 /// </summary>
-typedef void *hvatek_devices;
+typedef void *void_vatek_device_list;
 
 /// <summary>
 ///     void * 类型。

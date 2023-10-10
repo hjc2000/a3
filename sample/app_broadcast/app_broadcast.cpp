@@ -151,7 +151,7 @@ extern void auxsource_test_close(Pbroadcast_auxstream pauxtest);
 
 int main(int argc, char *argv[])
 {
-	hvatek_devices hdevlist = NULL;
+	void_vatek_device_list hdevlist = NULL;
 	hvatek_chip hchip = NULL;
 	hvatek_broadcast hbc = NULL;
 	vatek_result nres = vatek_badparam;
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
 
 	if (is_vatek_success(nres))
 	{
-		hvatek_devices hblists = NULL;
+		void_vatek_device_list hblists = NULL;
 		hvatek_chip hbchip = NULL;
 		nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_broadcast, &hblists);
 		if (is_vatek_success(nres))

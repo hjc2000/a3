@@ -6,17 +6,7 @@
 #include "device/internal/cross_device_tool.h"
 #include<Exception.h>
 
-extern vatek_result vatek_device_malloc(cross_device *pcross, vatek_device **pvatek);
-extern void vatek_device_free(vatek_device *pvatek);
-
-struct vatek_device_list
-{
-	int32_t nums;
-	cross_device *cross;
-	cross_device **listdevices;
-};
-
-vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices *hdevices)
+vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, void_vatek_device_list *hdevices)
 {
 	cross_device *newdevs = NULL;
 	vatek_result nres = cross_devices_create(&newdevs);
@@ -62,7 +52,7 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 	return nres;
 }
 
-vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices *hdevices)
+vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, void_vatek_device_list *hdevices)
 {
 	cross_device *newdevs = NULL;
 	vatek_result nres = cross_devices_create_by_usbid(vid, pid, &newdevs);
@@ -97,7 +87,7 @@ vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_
 	return nres;
 }
 
-uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx)
+uint32_t vatek_device_list_get_bus(void_vatek_device_list hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -105,7 +95,7 @@ uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx)
 	return DEVICE_BUS_UNKNOWN;
 }
 
-const char *vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx)
+const char *vatek_device_list_get_name(void_vatek_device_list hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -113,7 +103,7 @@ const char *vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx)
 	return "_unknown";
 }
 
-hal_service_mode vatek_device_list_get_service(hvatek_devices hdevices, int32_t idx)
+hal_service_mode vatek_device_list_get_service(void_vatek_device_list hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -121,29 +111,25 @@ hal_service_mode vatek_device_list_get_service(hvatek_devices hdevices, int32_t 
 	return service_unknown;
 }
 
-vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip *hchip)
+vatek_result vatek_device_open(void_vatek_device_list hdevices, int32_t idx, hvatek_chip *hchip)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	vatek_result nres = vatek_badparam;
 	if (idx < pdevices->nums)
 	{
-		vatek_device *pvatek = NULL;
 		cross_device *pcross = pdevices->listdevices[idx];
-		nres = vatek_device_malloc(pcross, &pvatek);
+		vatek_device *pvatek = new vatek_device{ pcross };
+		nres = chip_info_get((hvatek_chip)pvatek, &pvatek->info);
 		if (is_vatek_success(nres))
-		{
-			nres = chip_info_get((hvatek_chip)pvatek, &pvatek->info);
-			if (is_vatek_success(nres))
-				*hchip = pvatek;
-			else
-				vatek_device_free(pvatek);
-		}
+			*hchip = pvatek;
+		else
+			delete pvatek;
 	}
 
-	return nres;
+	return vatek_result::vatek_success;
 }
 
-void vatek_device_list_free(hvatek_devices hdevices)
+void vatek_device_list_free(void_vatek_device_list hdevices)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	cross_devices_free(pdevices->cross);
@@ -251,7 +237,7 @@ vatek_result vatek_device_close_reboot(hvatek_chip hchip)
 vatek_result vatek_device_close(hvatek_chip hchip)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
-	vatek_device_free(pvatek);
+	delete pvatek;
 	return vatek_success;
 }
 
@@ -464,25 +450,4 @@ vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip)
 	}
 
 	return nres;
-}
-
-vatek_result vatek_device_malloc(cross_device *pcross, vatek_device **pvatek)
-{
-	vatek_device *newdev = (vatek_device *)malloc(sizeof(vatek_device));
-	vatek_result nres = vatek_memfail;
-	if (newdev)
-	{
-		memset(newdev, 0, sizeof(vatek_device));
-		newdev->cross = pcross;
-		newdev->streammode = stream_mode_idle;
-		*pvatek = newdev;
-		nres = vatek_success;
-	}
-
-	return nres;
-}
-
-void vatek_device_free(vatek_device *pvatek)
-{
-	free(pvatek);
 }

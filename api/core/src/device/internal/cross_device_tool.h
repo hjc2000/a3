@@ -141,8 +141,22 @@ public:
 	}
 };
 
-struct vatek_device
+struct vatek_device_list
 {
+	int32_t nums;
+	cross_device *cross;
+	cross_device **listdevices;
+};
+
+class vatek_device
+{
+public:
+	vatek_device(cross_device *pcross)
+	{
+		cross = pcross;
+		streammode = stream_mode_idle;
+	}
+
 	cross_device *cross;
 	chip_info info;
 	cross_stream_mode streammode;

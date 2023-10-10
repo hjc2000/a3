@@ -48,13 +48,13 @@
 /// <param name="service"></param>
 /// <param name="hdevices"></param>
 /// <returns></returns>
-HAL_API vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvatek_devices *hdevices);
-HAL_API vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, hvatek_devices *hdevices);
-HAL_API uint32_t vatek_device_list_get_bus(hvatek_devices hdevices, int32_t idx);
-HAL_API const char *vatek_device_list_get_name(hvatek_devices hdevices, int32_t idx);
-HAL_API hal_service_mode vatek_device_list_get_service(hvatek_devices hdevices, int32_t idx);
-HAL_API void vatek_device_list_free(hvatek_devices hdevices);
-HAL_API vatek_result vatek_device_open(hvatek_devices hdevices, int32_t idx, hvatek_chip *hchip);
+HAL_API vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, void_vatek_device_list *hdevices);
+HAL_API vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, void_vatek_device_list *hdevices);
+HAL_API uint32_t vatek_device_list_get_bus(void_vatek_device_list hdevices, int32_t idx);
+HAL_API const char *vatek_device_list_get_name(void_vatek_device_list hdevices, int32_t idx);
+HAL_API hal_service_mode vatek_device_list_get_service(void_vatek_device_list hdevices, int32_t idx);
+HAL_API void vatek_device_list_free(void_vatek_device_list hdevices);
+HAL_API vatek_result vatek_device_open(void_vatek_device_list hdevices, int32_t idx, hvatek_chip *hchip);
 
 HAL_API vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz);
 HAL_API vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, uint32_t freqkhz);
