@@ -33,6 +33,10 @@
 #include <bridge/bridge_device.h>
 
 typedef void* hbridge_device;
+
+/// <summary>
+///		设备链表
+/// </summary>
 typedef void* hbridge_list;
 
 #define BRIDGE_SETCMD(pcmd,val)             vatek_uint32_2_buffer((uint8_t*)&pcmd->cmd,val)

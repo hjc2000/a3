@@ -83,8 +83,11 @@ vatek_result cross_devices_create(cross_device **pcross)
 					nres = cross_usb_device_open(husb, &newcross);
 					if (is_vatek_success(nres))
 					{
-						if (!m_cdevices.root)m_cdevices.root = newcross;
-						else m_cdevices.last->next = newcross;
+						if (!m_cdevices.root)
+							m_cdevices.root = newcross;
+						else
+							m_cdevices.last->next = newcross;
+
 						m_cdevices.last = newcross;
 					}
 				}
@@ -98,7 +101,9 @@ vatek_result cross_devices_create(cross_device **pcross)
 		*pcross = m_cdevices.root;
 		nres = (vatek_result)cross_devices_get_size(m_cdevices.root);
 	}
-	else nres = vatek_success;
+	else
+		nres = vatek_success;
+
 	return nres;
 }
 
