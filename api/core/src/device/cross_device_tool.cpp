@@ -1,5 +1,9 @@
 #include "./internal/cross_device_tool.h"
 
+/// <summary>
+///		这个似乎才是链表类，而里面的 hbridge_device_list 和 husb_device_list 其实应该
+///		是链表结点。
+/// </summary>
 struct cross_handle
 {
 	int32_t reference = 0;
@@ -135,7 +139,11 @@ vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_dev
 		*pcross = m_cdevices.root;
 		nres = (vatek_result)cross_devices_get_size(m_cdevices.root);
 	}
-	else nres = vatek_success;
+	else
+	{
+		nres = vatek_success;
+	}
+
 	return nres;
 }
 
