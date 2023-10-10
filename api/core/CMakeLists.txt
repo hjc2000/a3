@@ -150,7 +150,6 @@ if(MSVC)
 	set(core_SRC_CROSS
     		src/cross/cross_bridge.cpp
     		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_api.c
     		src/cross/cross_os_socket.c
     		src/cross/cross_stream.c
     		src/cross/cross_stream_file.cpp
@@ -162,7 +161,6 @@ elseif(UNIX)
 	set(core_SRC_CROSS
     		src/cross/cross_bridge.cpp
     		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_api.c
     		src/cross/cross_os_socket.c
     		src/cross/cross_stream.c
     		src/cross/cross_stream_file.cpp
