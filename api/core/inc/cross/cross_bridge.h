@@ -32,12 +32,12 @@
 #include <bridge/bridge_usb.h>
 #include <bridge/bridge_device.h>
 
-typedef void* hbridge_device;
+typedef void *hbridge_device;
 
 /// <summary>
 ///		设备链表
 /// </summary>
-typedef void* hbridge_device_list;
+typedef void *hbridge_device_list_node;
 
 #define BRIDGE_SETCMD(pcmd,val)             vatek_uint32_2_buffer((uint8_t*)&pcmd->cmd,val)
 #define BRIDGE_PARAM_SET(cmd,idx,val)       vatek_uint32_2_buffer((uint8_t*)&cmd->param.base.params[idx],val)
@@ -53,7 +53,7 @@ typedef void* hbridge_device_list;
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
 	/// <summary>
 	///		会根据不同的系统在编译时选择不同的版本。
@@ -62,8 +62,8 @@ extern "C" {
 	/// </summary>
 	/// <param name="hblist"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_enum_default(hbridge_device_list* hblist);
-	
+	HAL_API vatek_result bridge_device_list_enum_default(hbridge_device_list_node *hblist);
+
 	/// <summary>
 	///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
 	/// </summary>
@@ -71,7 +71,7 @@ extern "C" {
 	/// <param name="pid"></param>
 	/// <param name="hblist">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 hblist</param>
 	/// <returns>找到的设备的数量，也等于 hblist 指向的链表的长度</returns>
-	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list* hblist);
+	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list_node *hblist);
 
 	/// <summary>
 	///		从链表中获取指定索引值的设备
@@ -80,19 +80,19 @@ extern "C" {
 	/// <param name="idx"></param>
 	/// <param name="hbridge"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_get(hbridge_device_list hblist, int32_t idx, hbridge_device* hbridge);
-	HAL_API const char* bridge_device_list_get_name(hbridge_device_list hblist, int32_t idx);
-	
+	HAL_API vatek_result bridge_device_list_get(hbridge_device_list_node hblist, int32_t idx, hbridge_device *hbridge);
+	HAL_API const char *bridge_device_list_get_name(hbridge_device_list_node hblist, int32_t idx);
+
 	/// <summary>
 	///		释放 hbridges 指向的链表。此链表的节点储存查找到的设备的信息。
 	/// </summary>
 	/// <param name="hbridges"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_free(hbridge_device_list hbridges);
+	HAL_API vatek_result bridge_device_list_free(hbridge_device_list_node hbridges);
 
 	HAL_API vatek_result bridge_device_open(hbridge_device hbridge);
-    HAL_API const char* bridge_device_get_name(hbridge_device hbridge);
-    HAL_API vatek_result bridge_device_close(hbridge_device hbridge);
+	HAL_API const char *bridge_device_get_name(hbridge_device hbridge);
+	HAL_API vatek_result bridge_device_close(hbridge_device hbridge);
 	HAL_API void bridge_device_lock_command(hbridge_device hbridge);
 	HAL_API Phid_bridge_cmd bridge_device_get_command(hbridge_device hbridge);
 	HAL_API Phid_bridge_result bridge_device_get_result(hbridge_device hbridge);
@@ -103,7 +103,7 @@ extern "C" {
 	HAL_API vatek_result bridge_device_lock(hbridge_device hbridge);
 	HAL_API vatek_result bridge_device_unlock(hbridge_device hbridge);
 	HAL_API bridge_device_status bridge_device_get_status(hbridge_device hbridge);
-	HAL_API vatek_result bridge_device_bulk_transfer(hbridge_device hbridge,uint32_t type,uint32_t addr,uint8_t* pbuf,uint32_t len);
+	HAL_API vatek_result bridge_device_bulk_transfer(hbridge_device hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len);
 
 	/* bridge_device board devices tool */
 
@@ -121,16 +121,16 @@ extern "C" {
 	HAL_API vatek_result bridge_device_stop_source(hbridge_device hbridge);
 
 	HAL_API vatek_result bridge_device_get_source_status(hbridge_device hbridge, Pbridge_source psource);
-	HAL_API const char* bridge_device_get_source_name(hbridge_device hbridge, Pbridge_source psource);
+	HAL_API const char *bridge_device_get_source_name(hbridge_device hbridge, Pbridge_source psource);
 
 	HAL_API vatek_result bridge_device_start_rfmixer(hbridge_device hbridge, Pbrfmixer_op_param pparam);
 	HAL_API vatek_result bridge_device_stop_rfmixer(hbridge_device hbridge);
 
-	HAL_API vatek_result bridge_device_storage_write(hbridge_device hbridge, int32_t nsection, uint8_t* pbuf);
-	HAL_API vatek_result bridge_device_storage_read(hbridge_device hbridge, int32_t nsection, uint8_t* pbuf);
+	HAL_API vatek_result bridge_device_storage_write(hbridge_device hbridge, int32_t nsection, uint8_t *pbuf);
+	HAL_API vatek_result bridge_device_storage_read(hbridge_device hbridge, int32_t nsection, uint8_t *pbuf);
 	HAL_API vatek_result bridge_device_storage_erase(hbridge_device hbridge, int32_t nsection);
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 

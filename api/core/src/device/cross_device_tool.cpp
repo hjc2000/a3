@@ -1,7 +1,7 @@
 #include "./internal/cross_device_tool.h"
 
 /// <summary>
-///		这个似乎才是链表类，而里面的 hbridge_device_list 和 husb_device_list 其实应该
+///		这个似乎才是链表类，而里面的 hbridge_device_list_node 和 husb_device_list 其实应该
 ///		是链表结点。
 /// </summary>
 struct cross_handle
@@ -13,7 +13,7 @@ struct cross_handle
 	/// <summary>
 	///		bridge 设备的链表
 	/// </summary>
-	hbridge_device_list bridges = nullptr;
+	hbridge_device_list_node bridges = nullptr;
 
 	/// <summary>
 	///		usb 设备的链表

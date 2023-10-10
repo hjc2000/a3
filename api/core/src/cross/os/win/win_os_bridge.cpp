@@ -172,7 +172,7 @@ vatek_result bridge_device_free(void)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_enum_default(hbridge_device_list *hblist)
+vatek_result bridge_device_list_enum_default(hbridge_device_list_node *hblist)
 {
 	/* bridge_device_list_enum_usb 函数如果没有发生错误，会返回找到的设备的数量，发生错误会
 	* 返回错误代码。
@@ -189,7 +189,7 @@ vatek_result bridge_device_list_enum_default(hbridge_device_list *hblist)
 	return nres;
 }
 
-vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list *hblist)
+vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list_node *hblist)
 {
 	SP_DEVINFO_DATA devinfo_data;
 	SP_DEVICE_INTERFACE_DATA device_interface_data;
@@ -299,7 +299,7 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_dev
 	return nres;
 }
 
-vatek_result bridge_device_list_free(hbridge_device_list hbridges)
+vatek_result bridge_device_list_free(hbridge_device_list_node hbridges)
 {
 	Pwin_hid_device proot = (Pwin_hid_device)hbridges;
 
@@ -321,7 +321,7 @@ vatek_result bridge_device_list_free(hbridge_device_list hbridges)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(hbridge_device_list hblist, int32_t idx, hbridge_device *hbridge)
+vatek_result bridge_device_list_get(hbridge_device_list_node hblist, int32_t idx, hbridge_device *hbridge)
 {
 	Pwin_hid_device proot = (Pwin_hid_device)hblist;
 	int32_t nums = 0;
@@ -341,7 +341,7 @@ vatek_result bridge_device_list_get(hbridge_device_list hblist, int32_t idx, hbr
 	return vatek_badparam;
 }
 
-const char *bridge_device_list_get_name(hbridge_device_list hblist, int32_t idx)
+const char *bridge_device_list_get_name(hbridge_device_list_node hblist, int32_t idx)
 {
 	hbridge_device hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
