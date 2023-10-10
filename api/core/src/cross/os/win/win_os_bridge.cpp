@@ -5,6 +5,9 @@
 #include <setupapi.h>
 #include <winioctl.h>
 #include<Exception.h>
+#include<memory>
+
+using namespace std;
 
 #define HID_DEVICE_MAX_NUMS         32
 /* not used DDK to compiler so hid define self. (orange in ddk/hid.h) */
@@ -92,57 +95,86 @@ struct win_hid_device_list_node
 
 const GUID hid_class_guid = { 0x4d1e55b2, 0xf16f, 0x11cf,{ 0x88, 0xcb, 0x00, 0x11, 0x11, 0x00, 0x00, 0x30 } };
 
-static HMODULE hid_api_lib = NULL;
-
 extern vatek_result win_hid_api_write(win_hid_device_list_node *pdevice, uint8_t *ppacket);
 extern vatek_result win_hid_api_read(win_hid_device_list_node *pdevice, uint8_t *ppacket);
 
-/// <summary>
-///		加载 hid.dll 并加载其中的函数。加载成功返回 0，加载失败返回 vatek_memfail
-/// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-vatek_result bridge_device_init(void)
+class HidApiModule
 {
-	#define LOADFUN(fun) fun = (fun##_)GetProcAddress(hid_api_lib,#fun); if(fun == NULL)return vatek_unknown;
+	HMODULE hid_api_lib = nullptr;
 
-	vatek_result nres = vatek_success;
-	if (hid_api_lib == NULL)
+	template<typename FuncType>
+	vatek_result LoadFunctionFromLib(const char *funName, FuncType &funcPointer, HMODULE hid_api_lib)
 	{
-		hid_api_lib = LoadLibraryA("hid.dll");
-		if (hid_api_lib != NULL)
+		funcPointer = reinterpret_cast<FuncType>(GetProcAddress(hid_api_lib, funName));
+
+		// 检查是否成功加载
+		if (!funcPointer)
 		{
-			LOADFUN(HidD_GetAttributes);
-			LOADFUN(HidD_GetSerialNumberString);
-			LOADFUN(HidD_GetManufacturerString);
-			LOADFUN(HidD_GetProductString);
-			LOADFUN(HidD_SetFeature);
-			LOADFUN(HidD_GetFeature);
-			LOADFUN(HidD_GetIndexedString);
-			LOADFUN(HidD_GetPreparsedData);
-			LOADFUN(HidD_FreePreparsedData);
-			LOADFUN(HidP_GetCaps);
-			LOADFUN(HidD_SetNumInputBuffers);
+			return vatek_unknown;
 		}
-		else
+
+		return vatek_success;
+	}
+
+	void bridge_device_free(void)
+	{
+		if (hid_api_lib)
 		{
-			nres = vatek_memfail;
+			FreeLibrary(hid_api_lib);
+			hid_api_lib = nullptr;
 		}
 	}
 
-	return nres;
-}
-
-vatek_result bridge_device_free(void)
-{
-	if (hid_api_lib)
+	/// <summary>
+	///		加载 hid.dll 并加载其中的函数。加载成功返回 0，加载失败返回 vatek_memfail
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns></returns>
+	vatek_result bridge_device_init(void)
 	{
-		FreeLibrary(hid_api_lib);
-		hid_api_lib = NULL;
+		#define LOADFUN(fun) fun = (fun##_)GetProcAddress(hid_api_lib,#fun); if(fun == NULL)return vatek_unknown;
+
+		vatek_result nres = vatek_success;
+		if (hid_api_lib == nullptr)
+		{
+			hid_api_lib = LoadLibraryA("hid.dll");
+			if (hid_api_lib != nullptr)
+			{
+				LoadFunctionFromLib("HidD_GetAttributes", HidD_GetAttributes, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetSerialNumberString", HidD_GetSerialNumberString, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetManufacturerString", HidD_GetManufacturerString, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetProductString", HidD_GetProductString, hid_api_lib);
+				LoadFunctionFromLib("HidD_SetFeature", HidD_SetFeature, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetFeature", HidD_GetFeature, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetIndexedString", HidD_GetIndexedString, hid_api_lib);
+				LoadFunctionFromLib("HidD_GetPreparsedData", HidD_GetPreparsedData, hid_api_lib);
+				LoadFunctionFromLib("HidD_FreePreparsedData", HidD_FreePreparsedData, hid_api_lib);
+				LoadFunctionFromLib("HidP_GetCaps", HidP_GetCaps, hid_api_lib);
+				LoadFunctionFromLib("HidD_SetNumInputBuffers", HidD_SetNumInputBuffers, hid_api_lib);
+			}
+			else
+			{
+				nres = vatek_memfail;
+			}
+		}
+
+		return nres;
 	}
 
-	return vatek_success;
-}
+public:
+	HidApiModule()
+	{
+		if (bridge_device_init() < 0)
+		{
+			throw Exception();
+		}
+	}
+
+	~HidApiModule()
+	{
+		bridge_device_free();
+	}
+};
 
 int bridge_device_list_enum_usb_with_pid_and_old_pid(void_bridge_device_list_node *hblist)
 {
@@ -166,9 +198,15 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, void_bridge
 	SP_DEVINFO_DATA devinfo_data;
 	SP_DEVICE_INTERFACE_DATA device_interface_data;
 	HDEVINFO hinfo = INVALID_HANDLE_VALUE;
-	vatek_result nres = bridge_device_init();
-	if (!is_vatek_success(nres))
-		return nres;
+	vatek_result nres = vatek_success;
+
+	static shared_ptr<HidApiModule> hid_api_module;
+	if (!hid_api_module)
+	{
+		hid_api_module = shared_ptr<HidApiModule>{
+			new HidApiModule{}
+		};
+	}
 
 	memset(&devinfo_data, 0, sizeof(SP_DEVINFO_DATA));
 	devinfo_data.cbSize = sizeof(SP_DEVINFO_DATA);
