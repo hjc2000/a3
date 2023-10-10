@@ -199,6 +199,7 @@ set(core_SRC_SERVICE
     src/service/service_transform.c)
 
 set(core_SRC_SDK
+    src/cross_os_api.cpp
     src/vatek_sdk_base.cpp
     src/vatek_sdk_bridge.cpp
     src/vatek_sdk_broadcast.cpp

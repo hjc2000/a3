@@ -7,11 +7,6 @@
 #define TIME_SECOND_TO_NS		    1000000000
 #define TIME_SECOND_TO_US		    1000000
 
-void cross_os_sleep(int32_t ms)
-{
-	cross_os_usleep(ms * 1000);
-}
-
 void cross_os_sleep_yield()
 {
 	sched_yield();	/* always success */
@@ -22,16 +17,6 @@ uint32_t cross_os_get_tick_ms(void)
 	struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);	
-}
-
-void cross_os_usleep(uint32_t us)
-{
-	struct timespec ts;
-	int32_t res;
-	ts.tv_sec = us / TIME_SECOND_TO_US;
-	ts.tv_nsec = (us % TIME_SECOND_TO_US) * 1000;
-	res = nanosleep(&ts,NULL);
-	if(res < 0)sched_yield();
 }
 
 void cross_os_wait_unit(struct timespec* target)
