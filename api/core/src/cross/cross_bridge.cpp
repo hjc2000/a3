@@ -31,10 +31,10 @@
 
 vatek_result bridge_device_lock(hbridge_device hbridge)
 {
-    vatek_result nres = vatek_success;
-    if (bridge_device_get_status(hbridge) == hid_status_idle)
-    {
-		Phid_bridge_cmd pcmd = bridge_device_get_command(hbridge);
+	vatek_result nres = vatek_success;
+	if (bridge_device_get_status(hbridge) == hid_status_idle)
+	{
+		hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 		bridge_device_lock_command(hbridge);
 		BRIDGE_SETCMD(pcmd, USB_CMD_LOCK);
 		nres = bridge_device_send_bridge_command(hbridge);
@@ -46,7 +46,7 @@ vatek_result bridge_device_lock(hbridge_device hbridge)
 			cross_os_sleep(10);
 			while (count < 10)
 			{
-				nres = bridge_device_get_status(hbridge);
+				nres = (vatek_result)bridge_device_get_status(hbridge);
 				if (is_vatek_success(nres) && nres == hid_status_locked)break;
 				cross_os_sleep(10);
 				count++;
@@ -66,8 +66,8 @@ vatek_result bridge_device_lock(hbridge_device hbridge)
 			nres = bridge_device_send_bridge_command(hbridge);
 			bridge_device_unlock_command(hbridge);
 		}
-    }	
-    return nres;
+	}
+	return nres;
 }
 
 vatek_result bridge_device_unlock(hbridge_device hbridge)
@@ -75,7 +75,7 @@ vatek_result bridge_device_unlock(hbridge_device hbridge)
 	vatek_result nres = vatek_success;
 	if (bridge_device_get_status(hbridge) == hid_status_locked)
 	{
-		Phid_bridge_cmd pcmd = bridge_device_get_command(hbridge);
+		hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 		bridge_device_lock_command(hbridge);
 		BRIDGE_SETCMD(pcmd, MODULATOR_CMD_CLOSE);
 		BRIDGE_MOD_SETIDX(pcmd, 0);
@@ -95,7 +95,7 @@ vatek_result bridge_device_unlock(hbridge_device hbridge)
 				cross_os_sleep(10);
 				while (count < 10)
 				{
-					nres = bridge_device_get_status(hbridge);
+					nres = (vatek_result)bridge_device_get_status(hbridge);
 					if (is_vatek_success(nres) && nres == hid_status_idle)return nres;
 					cross_os_sleep(10);
 					count++;
@@ -104,21 +104,21 @@ vatek_result bridge_device_unlock(hbridge_device hbridge)
 			}
 		}
 	}
-    return nres;
+	return nres;
 }
 
 bridge_device_status bridge_device_get_status(hbridge_device hbridge)
 {
-    Phid_bridge_cmd pcmd = bridge_device_get_command(hbridge);
+	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 	bridge_device_status status;
-    BRIDGE_SETCMD(pcmd, USB_CMD_GETSTATUS);
-	status = bridge_device_send_bridge_command(hbridge);
+	BRIDGE_SETCMD(pcmd, USB_CMD_GETSTATUS);
+	status = (bridge_device_status)bridge_device_send_bridge_command(hbridge);
 	return status;
 }
 
-vatek_result bridge_device_bulk_transfer(hbridge_device hbridge,uint32_t type,uint32_t addr,uint8_t* pbuf,uint32_t len)
+vatek_result bridge_device_bulk_transfer(hbridge_device hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len)
 {
-	Phid_bridge_cmd pcmd = bridge_device_get_command(hbridge);
+	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 	Pbridge_mod_param modparam = &pcmd->param.mod;
 	vatek_result nres = vatek_unknown;
 	int32_t eachlen = 0;
@@ -147,7 +147,8 @@ vatek_result bridge_device_bulk_transfer(hbridge_device hbridge,uint32_t type,ui
 			Phid_bridge_result presult = bridge_device_get_result(hbridge);
 			if (!iswrite && is_vatek_success(presult->result))
 				memcpy(pbuf, &presult->data.mod.buffer[0], eachlen);
-			else nres = presult->result;
+			else
+				nres = (vatek_result)presult->result;
 			blen -= eachlen;
 			pbuf += eachlen;
 			addr += eachlen / 4;

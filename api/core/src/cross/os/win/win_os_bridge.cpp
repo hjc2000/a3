@@ -387,7 +387,7 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 				phid->hid_overlapped.hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 				if (phid->hid_overlapped.hEvent != INVALID_HANDLE_VALUE)
 				{
-					Phid_bridge_cmd pcmd = (Phid_bridge_cmd)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
+					hid_bridge_cmd * pcmd = (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 					memset(&phid->rawbuf_tx[0], 0, HID_PACKET_BUFFER_LEN);
 					memset(&phid->rawbuf_rx[0], 0, HID_PACKET_BUFFER_LEN);
 					memcpy(&pcmd->tag[0], &hid_bridge_tag[0], 4);
@@ -442,10 +442,10 @@ vatek_result bridge_device_close(hbridge_device hbridge)
 }
 
 
-Phid_bridge_cmd bridge_device_get_command(hbridge_device hbridge)
+hid_bridge_cmd * bridge_device_get_command(hbridge_device hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
-	return (Phid_bridge_cmd)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
+	return (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 }
 
 Phid_bridge_result bridge_device_get_result(hbridge_device hbridge)

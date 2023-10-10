@@ -177,7 +177,7 @@ vatek_result bridge_read_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, 
 vatek_result bridge_cmd_ip_transfer(hcross_device hdev, int32_t cmd, uint8_t *pbuf)
 {
 	hbridge_device hhid = (hbridge_device)hdev;
-	Phid_bridge_cmd pcmd = bridge_device_get_command(hhid);
+	hid_bridge_cmd * pcmd = bridge_device_get_command(hhid);
 	vatek_result nres = vatek_unknown;
 
 	bridge_device_lock_command(hdev);

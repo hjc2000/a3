@@ -42,17 +42,17 @@
 
 #define USB_CMD_TAG					0x80000000
 #define IS_USB_CMD(a)				((a & USB_CMD_TAG) == USB_CMD_TAG)
-	
+
 #define USB_CMD_LOCK				(USB_CMD_TAG | 0x1000)
 #define USB_CMD_UNLOCK				(USB_CMD_LOCK + 1)
 #define USB_CMD_GETSTATUS			(USB_CMD_UNLOCK + 1)
 
 typedef enum _bridge_device_status
 {
-    hid_status_idle = 100,
-    hid_status_waitlock = 101,
-    hid_status_locked = 102,
-    hid_status_waitunlock = 103,
+	hid_status_idle = 100,
+	hid_status_waitlock = 101,
+	hid_status_locked = 102,
+	hid_status_waitunlock = 103,
 }bridge_device_status;
 
 #define is_current_usb_hid_status(status)  (status >= hid_status_idle && status <= hid_status_waitunlock)
@@ -73,12 +73,12 @@ typedef enum _bridge_device_status
 
 const static char hid_bridge_tag[4] =
 {
-    'v','a','-','1',
+	'v','a','-','1',
 };
 
 typedef struct _bridge_base_param
 {
-    uint32_t params[13];
+	uint32_t params[13];
 }bridge_base_param, *Pbridge_base_param;
 
 #define BRIDGE_PARAM_MAX_LEN	52
@@ -88,10 +88,10 @@ typedef struct _bridge_base_param
 #define TURNKEY_I2C_MAX_BUFFER_LEN 36
 typedef struct _bridge_i2c_param
 {
-    uint32_t handle;
-    uint32_t address;
-    uint32_t len;
-    uint8_t buffer[TURNKEY_I2C_MAX_BUFFER_LEN];
+	uint32_t handle;
+	uint32_t address;
+	uint32_t len;
+	uint8_t buffer[TURNKEY_I2C_MAX_BUFFER_LEN];
 }bridge_i2c_param, *Pbridge_i2c_param;
 
 
@@ -115,26 +115,26 @@ typedef struct _bridge_i2c_param
 
 typedef struct _bridge_mod_param
 {
-    uint32_t address;
-    uint32_t len;
-    int32_t index;
-    uint32_t datatype;
-    uint8_t buffer[BRIDGE_MOD_BUFFER_LEN];
-}bridge_mod_param,*Pbridge_mod_param;
+	uint32_t address;
+	uint32_t len;
+	int32_t index;
+	uint32_t datatype;
+	uint8_t buffer[BRIDGE_MOD_BUFFER_LEN];
+}bridge_mod_param, *Pbridge_mod_param;
 
-typedef struct _hid_bridge_cmd
+struct hid_bridge_cmd
 {
-    uint8_t tag[4];
-    uint32_t cmd;
-    uint32_t recv;
-    union
-    {
-        uint8_t raw[BRIDGE_PARAM_MAX_LEN];
-        bridge_base_param base;
-        bridge_i2c_param i2c;
-        bridge_mod_param mod;
-    }param;
-}hid_bridge_cmd, *Phid_bridge_cmd;
+	uint8_t tag[4];
+	uint32_t cmd;
+	uint32_t recv;
+	union
+	{
+		uint8_t raw[BRIDGE_PARAM_MAX_LEN];
+		bridge_base_param base;
+		bridge_i2c_param i2c;
+		bridge_mod_param mod;
+	}param;
+};
 
 #define HALBRIDGE_ERR_NODEVICE		-9
 #define HALBRIDGE_ERR_BUSY			-8
@@ -149,15 +149,15 @@ typedef struct _hid_bridge_cmd
 
 typedef struct _hid_bridge_result
 {
-    uint8_t tag[4];
-    uint32_t cmd;
-    int32_t result;
-    union _bridge_result_data
-    {
-        uint8_t raw[BRIDGE_PARAM_MAX_LEN];
-        bridge_i2c_param i2c;
-        bridge_mod_param mod;
-    }data;
+	uint8_t tag[4];
+	uint32_t cmd;
+	int32_t result;
+	union _bridge_result_data
+	{
+		uint8_t raw[BRIDGE_PARAM_MAX_LEN];
+		bridge_i2c_param i2c;
+		bridge_mod_param mod;
+	}data;
 }hid_bridge_result, *Phid_bridge_result;
 
 #endif

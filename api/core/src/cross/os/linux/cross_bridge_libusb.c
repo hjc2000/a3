@@ -146,7 +146,7 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 			nres = (vatek_result)libusb_claim_interface(hdevice, 0);
 			if (is_vatek_success(nres))
 			{
-				Phid_bridge_cmd pcmd = (Phid_bridge_cmd)&pusb->rawbuf_tx[0];
+				hid_bridge_cmd * pcmd = (hid_bridge_cmd *)&pusb->rawbuf_tx[0];
 				memset(&pusb->rawbuf_tx[0],0,BRIDGE_PKTBUF_LEN);
 				memset(&pusb->rawbuf_rx[0],0,BRIDGE_PKTBUF_LEN);
 				memcpy(&pcmd->tag[0],&hid_bridge_tag[0],4);
@@ -185,7 +185,7 @@ vatek_result bridge_device_open(hcross_ausb hausb,hbridge_device* hbridge)
 		nres = cross_os_create_mutex(&hlock);
 		if(is_vatek_success(nres))
 		{
-			Phid_bridge_cmd pcmd = (Phid_bridge_cmd)&newdevice->rawbuf_tx[0];
+			hid_bridge_cmd * pcmd = (hid_bridge_cmd *)&newdevice->rawbuf_tx[0];
 			memset(&newdevice->rawbuf_tx[0],0,BRIDGE_PKTBUF_LEN);
 			memset(&newdevice->rawbuf_rx[0],0,BRIDGE_PKTBUF_LEN);
 			memcpy(&pcmd->tag[0],&hid_bridge_tag[0],4);
@@ -234,10 +234,10 @@ vatek_result bridge_device_close(hbridge_device hbridge)
 	return vatek_badstatus;
 }
 
-Phid_bridge_cmd bridge_device_get_command(hbridge_device hbridge)
+hid_bridge_cmd * bridge_device_get_command(hbridge_device hbridge)
 {
 	Plinux_bridge pusb = (Plinux_bridge)hbridge;
-	return (Phid_bridge_cmd)&pusb->rawbuf_tx[0];
+	return (hid_bridge_cmd *)&pusb->rawbuf_tx[0];
 }
 
 Phid_bridge_result bridge_device_get_result(hbridge_device hbridge)
