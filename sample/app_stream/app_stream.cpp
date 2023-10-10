@@ -6,6 +6,7 @@
 #include "../common/inc/tool_tspacket.h"
 #include "../common/inc/tool_stream.h"
 #include <core/tools/tool_dvb_t2.h>
+#include<Exception.h>
 
 static usbstream_param usbcmd;
 

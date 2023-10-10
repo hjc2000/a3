@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD 20)
 project(vatek_sdk_2)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+# 为我的库添加编译
+message(STATUS "MyCppCommonLib value: $ENV{MyCppCommonLib}")
+add_subdirectory($ENV{MyCppCommonLib} ${CMAKE_BINARY_DIR}/MyCppCommonLib)
+# 这条命令要放在开头，一开始就引入头文件，这样，下面被构建的项目才能看到头文件
+include_directories($ENV{MyCppCommonLib})
+
 if(MSVC)
     option(SDK2_EN_QT "build vatek_qt enable" OFF)
     option(SDK2_EN_APP "build demo app enable" ON)
