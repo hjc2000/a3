@@ -8,13 +8,6 @@ uint32_t cross_os_get_tick_ms(void)
 	return (uint32_t)GetTickCount64();
 }
 
-void cross_os_sleep_yield()
-{
-	timeBeginPeriod(1);
-	Sleep(0);
-	timeEndPeriod(1);
-}
-
 #pragma comment(lib,"Winmm.lib") 
 
 static int32_t qf_init = 0;

@@ -7,11 +7,6 @@
 #define TIME_SECOND_TO_NS		    1000000000
 #define TIME_SECOND_TO_US		    1000000
 
-void cross_os_sleep_yield()
-{
-	sched_yield();	/* always success */
-}
-
 uint32_t cross_os_get_tick_ms(void)
 {
 	struct timespec ts;

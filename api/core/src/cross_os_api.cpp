@@ -14,3 +14,8 @@ HAL_API void cross_os_usleep(uint32_t us)
 {
 	this_thread::sleep_for(microseconds(us));
 }
+
+void cross_os_yield()
+{
+	this_thread::yield();
+}

@@ -39,7 +39,7 @@ extern "C" {
 
 	/* cross_os_time_api */
 	HAL_API void cross_os_sleep(int32_t ms);
-	HAL_API void cross_os_sleep_yield();			/*  relinquish the CPU */
+	HAL_API void cross_os_yield();			/*  relinquish the CPU */
 	HAL_API uint32_t cross_os_get_tick_ms(void);
 	HAL_API void cross_os_usleep(uint32_t us);
 	HAL_API void cross_os_wait_unit(struct timespec *target);
