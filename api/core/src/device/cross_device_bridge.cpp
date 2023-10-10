@@ -85,14 +85,6 @@ vatek_result cross_bridge_open(hbridge_device hbridge, cross_device * *pcross)
 	return nres;
 }
 
-hbridge_device cross_get_bridge_handle(cross_device * pcross)
-{
-	if (pcross->driver == cdriver_bridge)
-		return (hbridge_device)pcross->hcross;
-
-	return NULL;
-}
-
 void cross_bridge_close(cross_device * pcross)
 {
 	hbridge_device hbridge = (hbridge_device)pcross->hcross;
