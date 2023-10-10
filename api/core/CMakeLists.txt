@@ -157,7 +157,7 @@ if(MSVC)
     		src/cross/cross_stream_test.cpp
     		src/cross/cross_stream_udp.c
     		src/cross/cross_stream_mux.c
-    		src/cross/cross_usb_device_winusb.c)
+    		src/cross/cross_usb_device_winusb.cpp)
 elseif(UNIX)
 	set(core_SRC_CROSS
     		src/cross/cross_bridge.c
