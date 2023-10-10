@@ -29,19 +29,19 @@
 #include "./internal/cross_device_tool.h"
 
 /* usb_device_chip_api */
-extern vatek_result usbdevice_read_register(hcross_device hdev, int32_t addr, uint32_t *val);
-extern vatek_result usbdevice_write_register(hcross_device hdev, int32_t addr, uint32_t val);
-extern vatek_result usbdevice_read_memory(hcross_device hdev, int32_t addr, uint32_t *val);
-extern vatek_result usbdevice_write_memory(hcross_device hdev, int32_t addr, uint32_t val);
-extern vatek_result usbdevice_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
-extern vatek_result usbdevice_write_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-extern vatek_result usbdevice_read_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-extern vatek_result usbdevice_free(hcross_device hdev);
+extern vatek_result usbdevice_read_register(void_cross_device hdev, int32_t addr, uint32_t *val);
+extern vatek_result usbdevice_write_register(void_cross_device hdev, int32_t addr, uint32_t val);
+extern vatek_result usbdevice_read_memory(void_cross_device hdev, int32_t addr, uint32_t *val);
+extern vatek_result usbdevice_write_memory(void_cross_device hdev, int32_t addr, uint32_t val);
+extern vatek_result usbdevice_sendcmd(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
+extern vatek_result usbdevice_write_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+extern vatek_result usbdevice_read_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+extern vatek_result usbdevice_free(void_cross_device hdev);
 
-extern vatek_result usbdevice_stream_start(hcross_device hdev, cross_stream_mode streammode);
-extern vatek_result usbdevice_stream_stop(hcross_device hdev);
-extern vatek_result usbdevice_stream_write(hcross_device hdev, uint8_t *pbuf, int32_t len);
-extern vatek_result usbdevice_stream_read(hcross_device hdev, uint8_t *pbuf, int32_t len);
+extern vatek_result usbdevice_stream_start(void_cross_device hdev, cross_stream_mode streammode);
+extern vatek_result usbdevice_stream_stop(void_cross_device hdev);
+extern vatek_result usbdevice_stream_write(void_cross_device hdev, uint8_t *pbuf, int32_t len);
+extern vatek_result usbdevice_stream_read(void_cross_device hdev, uint8_t *pbuf, int32_t len);
 
 static cross_core udev_core =
 {
@@ -77,7 +77,7 @@ vatek_result cross_usb_device_open(husb_device husb, cross_device * *pcross)
 	if (is_vatek_success(nres))
 	{
 		uint32_t val = 0;
-		nres = udev_core.read_memory((hcross_device)husb, HALREG_SERVICE_MODE, &val);
+		nres = udev_core.read_memory((void_cross_device)husb, HALREG_SERVICE_MODE, &val);
 		if (is_vatek_success(nres))
 		{
 			hal_service_mode halservice = (hal_service_mode)val;
@@ -107,7 +107,7 @@ void cross_usb_device_close(cross_device * pcross)
 	delete pcross;
 }
 
-vatek_result usbdevice_stream_start(hcross_device hdev, cross_stream_mode streammode)
+vatek_result usbdevice_stream_start(void_cross_device hdev, cross_stream_mode streammode)
 {
 	vatek_result nres = vatek_unsupport;
 	if (streammode == stream_mode_output)
@@ -117,12 +117,12 @@ vatek_result usbdevice_stream_start(hcross_device hdev, cross_stream_mode stream
 	return nres;
 }
 
-vatek_result usbdevice_stream_stop(hcross_device hdev)
+vatek_result usbdevice_stream_stop(void_cross_device hdev)
 {
 	return usb_api_ll_set_dma((husb_device)hdev, 0);
 }
 
-vatek_result usbdevice_stream_write(hcross_device hdev, uint8_t *pbuf, int32_t len)
+vatek_result usbdevice_stream_write(void_cross_device hdev, uint8_t *pbuf, int32_t len)
 {
 	vatek_result nres = vatek_success;
 	usb_api_ll_lock((husb_device)hdev);
@@ -131,12 +131,12 @@ vatek_result usbdevice_stream_write(hcross_device hdev, uint8_t *pbuf, int32_t l
 	return nres;
 }
 
-vatek_result usbdevice_stream_read(hcross_device hdev, uint8_t *pbuf, int32_t len)
+vatek_result usbdevice_stream_read(void_cross_device hdev, uint8_t *pbuf, int32_t len)
 {
 	return vatek_unsupport;
 }
 
-vatek_result usbdevice_read_register(hcross_device hdev, int32_t addr, uint32_t *val)
+vatek_result usbdevice_read_register(void_cross_device hdev, int32_t addr, uint32_t *val)
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
@@ -158,7 +158,7 @@ vatek_result usbdevice_read_register(hcross_device hdev, int32_t addr, uint32_t 
 	return nres;
 }
 
-vatek_result usbdevice_write_register(hcross_device hdev, int32_t addr, uint32_t val)
+vatek_result usbdevice_write_register(void_cross_device hdev, int32_t addr, uint32_t val)
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
@@ -172,7 +172,7 @@ vatek_result usbdevice_write_register(hcross_device hdev, int32_t addr, uint32_t
 	return nres;
 }
 
-vatek_result usbdevice_read_memory(hcross_device hdev, int32_t addr, uint32_t *val)
+vatek_result usbdevice_read_memory(void_cross_device hdev, int32_t addr, uint32_t *val)
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
@@ -194,7 +194,7 @@ vatek_result usbdevice_read_memory(hcross_device hdev, int32_t addr, uint32_t *v
 	return nres;
 }
 
-vatek_result usbdevice_write_memory(hcross_device hdev, int32_t addr, uint32_t val)
+vatek_result usbdevice_write_memory(void_cross_device hdev, int32_t addr, uint32_t val)
 {
 	vatek_result nres = vatek_success;
 	husb_device husb = (husb_device)hdev;
@@ -208,7 +208,7 @@ vatek_result usbdevice_write_memory(hcross_device hdev, int32_t addr, uint32_t v
 	return nres;
 }
 
-vatek_result usbdevice_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen)
+vatek_result usbdevice_sendcmd(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen)
 {
 	vatek_result nres = vatek_success;
 	uint32_t buf[2];
@@ -259,17 +259,17 @@ vatek_result usbdevice_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, ui
 	return nres;
 }
 
-vatek_result usbdevice_write_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
+vatek_result usbdevice_write_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
 {
 	return usbdevice_sendcmd(hdev, CHIP_CMD_WRBUF, addr, buf, wlen);
 }
 
-vatek_result usbdevice_read_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
+vatek_result usbdevice_read_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
 {
 	return usbdevice_sendcmd(hdev, CHIP_CMD_RDBUF, addr, buf, wlen);
 }
 
-vatek_result usbdevice_free(hcross_device hdev)
+vatek_result usbdevice_free(void_cross_device hdev)
 {
 	return usb_api_ll_close(hdev);
 }

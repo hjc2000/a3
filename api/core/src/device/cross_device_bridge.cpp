@@ -1,40 +1,12 @@
-//----------------------------------------------------------------------------
-//
-// Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-// THE POSSIBILITY OF SUCH DAMAGE.
-//
-
 #include "./internal/cross_device_tool.h"
 
-extern vatek_result bridge_read_register(hcross_device hdev, int32_t addr, uint32_t *val);
-extern vatek_result bridge_write_register(hcross_device hdev, int32_t addr, uint32_t val);
-extern vatek_result bridge_read_memory(hcross_device hdev, int32_t addr, uint32_t *val);
-extern vatek_result bridge_write_memory(hcross_device hdev, int32_t addr, uint32_t val);
-extern vatek_result bridge_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
-extern vatek_result bridge_write_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-extern vatek_result bridge_read_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+extern vatek_result bridge_read_register(void_cross_device hdev, int32_t addr, uint32_t *val);
+extern vatek_result bridge_write_register(void_cross_device hdev, int32_t addr, uint32_t val);
+extern vatek_result bridge_read_memory(void_cross_device hdev, int32_t addr, uint32_t *val);
+extern vatek_result bridge_write_memory(void_cross_device hdev, int32_t addr, uint32_t val);
+extern vatek_result bridge_sendcmd(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
+extern vatek_result bridge_write_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+extern vatek_result bridge_read_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
 
 static cross_core bridge_core =
 {
@@ -56,7 +28,7 @@ vatek_result cross_bridge_open(hbridge_device hbridge, cross_device * *pcross)
 		if (is_vatek_success(nres))
 		{
 			uint32_t val = 0;
-			nres = bridge_core.read_memory((hcross_device)hbridge, HALREG_SERVICE_MODE, &val);
+			nres = bridge_core.read_memory((void_cross_device)hbridge, HALREG_SERVICE_MODE, &val);
 			if (is_vatek_success(nres))
 			{
 				hal_service_mode halservice = (hal_service_mode)val;
@@ -93,7 +65,7 @@ void cross_bridge_close(cross_device * pcross)
 	delete pcross;
 }
 
-vatek_result bridge_read_register(hcross_device hdev, int32_t addr, uint32_t *val)
+vatek_result bridge_read_register(void_cross_device hdev, int32_t addr, uint32_t *val)
 {
 	uint8_t buf[4];
 	vatek_result nres = bridge_device_bulk_transfer((hbridge_device)hdev, MOD_RD_REG, addr, (uint8_t *)buf, 1);
@@ -105,7 +77,7 @@ vatek_result bridge_read_register(hcross_device hdev, int32_t addr, uint32_t *va
 	return nres;
 }
 
-vatek_result bridge_write_register(hcross_device hdev, int32_t addr, uint32_t val)
+vatek_result bridge_write_register(void_cross_device hdev, int32_t addr, uint32_t val)
 {
 	uint8_t buf[4];
 	/* tip : when used bulk transfer buffer order is follow i2c order (_vatek_chip is big endian) */
@@ -116,7 +88,7 @@ vatek_result bridge_write_register(hcross_device hdev, int32_t addr, uint32_t va
 	return bridge_device_bulk_transfer((hbridge_device)hdev, MOD_WR_REG, addr, buf, 1);
 }
 
-vatek_result bridge_read_memory(hcross_device hdev, int32_t addr, uint32_t *val)
+vatek_result bridge_read_memory(void_cross_device hdev, int32_t addr, uint32_t *val)
 {
 	uint8_t buf[4];
 	vatek_result nres = bridge_device_bulk_transfer((hbridge_device)hdev, MOD_RD_MEM, addr, (uint8_t *)buf, 1);
@@ -128,7 +100,7 @@ vatek_result bridge_read_memory(hcross_device hdev, int32_t addr, uint32_t *val)
 	return nres;
 }
 
-vatek_result bridge_write_memory(hcross_device hdev, int32_t addr, uint32_t val)
+vatek_result bridge_write_memory(void_cross_device hdev, int32_t addr, uint32_t val)
 {
 	uint8_t buf[4];
 	buf[3] = val >> 24;
@@ -138,9 +110,9 @@ vatek_result bridge_write_memory(hcross_device hdev, int32_t addr, uint32_t val)
 	return bridge_device_bulk_transfer((hbridge_device)hdev, MOD_WR_MEM, addr, buf, 1);
 }
 
-extern vatek_result bridge_cmd_ip_transfer(hcross_device hdev, int32_t cmd, uint8_t *pbuf);
+extern vatek_result bridge_cmd_ip_transfer(void_cross_device hdev, int32_t cmd, uint8_t *pbuf);
 
-vatek_result bridge_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen)
+vatek_result bridge_sendcmd(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen)
 {
 	uint32_t bridgecmd = 0;
 
@@ -164,17 +136,17 @@ vatek_result bridge_sendcmd(hcross_device hdev, int32_t cmd, int32_t addr, uint8
 	return bridge_device_bulk_transfer((hbridge_device)hdev, bridgecmd, addr, vals, wlen);
 }
 
-vatek_result bridge_write_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
+vatek_result bridge_write_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
 {
 	return bridge_sendcmd((hbridge_device)hdev, CHIP_CMD_WRBUF, addr, buf, wlen);
 }
 
-vatek_result bridge_read_buffer(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
+vatek_result bridge_read_buffer(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen)
 {
 	return bridge_sendcmd((hbridge_device)hdev, CHIP_CMD_RDBUF, addr, buf, wlen);
 }
 
-vatek_result bridge_cmd_ip_transfer(hcross_device hdev, int32_t cmd, uint8_t *pbuf)
+vatek_result bridge_cmd_ip_transfer(void_cross_device hdev, int32_t cmd, uint8_t *pbuf)
 {
 	hbridge_device hhid = (hbridge_device)hdev;
 	hid_bridge_cmd * pcmd = bridge_device_get_command(hhid);

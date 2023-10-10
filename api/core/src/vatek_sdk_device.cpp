@@ -331,7 +331,7 @@ vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t *pbuf, int32_t
 {
 	vatek_result nres = vatek_badstatus;
 	vatek_device *pvatek = (vatek_device *)hchip;
-	hcross_device hcross = (hcross_device)pvatek->cross->hcross;
+	void_cross_device hcross = (void_cross_device)pvatek->cross->hcross;
 	cross_stream *pstream = pvatek->cross->stream;
 	if (pvatek->streammode == stream_mode_output)
 		nres = pstream->write_stream(hcross, pbuf, size);
@@ -342,7 +342,7 @@ vatek_result vatek_device_stream_stop(hvatek_chip hchip)
 {
 	vatek_result nres = vatek_badstatus;
 	vatek_device *pvatek = (vatek_device *)hchip;
-	hcross_device hcross = (hcross_device)pvatek->cross->hcross;
+	void_cross_device hcross = (void_cross_device)pvatek->cross->hcross;
 	cross_stream *pstream = pvatek->cross->stream;
 
 	if (pvatek->streammode != stream_mode_idle)

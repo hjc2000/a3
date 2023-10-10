@@ -25,8 +25,8 @@ enum cross_driver
 	cdriver_sim,
 };
 
-typedef void *hcross_device;
-typedef void *hcross_list;
+typedef void *void_cross_device;
+typedef void *void_cross_list;
 
 enum cross_stream_mode
 {
@@ -36,10 +36,10 @@ enum cross_stream_mode
 	stream_mode_output_nodma = 3,
 };
 
-typedef vatek_result(*fp_start_stream)(hcross_device hdev, cross_stream_mode mode);
-typedef vatek_result(*fp_read_stream)(hcross_device hdev, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fp_write_stream)(hcross_device hdev, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fp_stop_stream)(hcross_device hdev);
+typedef vatek_result(*fp_start_stream)(void_cross_device hdev, cross_stream_mode mode);
+typedef vatek_result(*fp_read_stream)(void_cross_device hdev, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fp_write_stream)(void_cross_device hdev, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fp_stop_stream)(void_cross_device hdev);
 
 struct cross_stream
 {
@@ -66,13 +66,13 @@ struct cross_usbbulk
 	fpbulk_read read;
 };
 
-typedef vatek_result(*fp_read_register)(hcross_device hdev, int32_t addr, uint32_t *val);
-typedef vatek_result(*fp_write_register)(hcross_device hdev, int32_t addr, uint32_t val);
-typedef vatek_result(*fp_read_memory)(hcross_device hdev, int32_t addr, uint32_t *val);
-typedef vatek_result(*fp_write_memory)(hcross_device hdev, int32_t addr, uint32_t val);
-typedef vatek_result(*fp_write_buffer)(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-typedef vatek_result(*fp_read_buffer)(hcross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-typedef vatek_result(*fp_sendcmd)(hcross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
+typedef vatek_result(*fp_read_register)(void_cross_device hdev, int32_t addr, uint32_t *val);
+typedef vatek_result(*fp_write_register)(void_cross_device hdev, int32_t addr, uint32_t val);
+typedef vatek_result(*fp_read_memory)(void_cross_device hdev, int32_t addr, uint32_t *val);
+typedef vatek_result(*fp_write_memory)(void_cross_device hdev, int32_t addr, uint32_t val);
+typedef vatek_result(*fp_write_buffer)(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+typedef vatek_result(*fp_read_buffer)(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+typedef vatek_result(*fp_sendcmd)(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
 
 struct cross_core
 {
@@ -103,7 +103,7 @@ public:
 	cross_device *next;
 	uint32_t bus;
 	cross_driver driver;
-	hcross_device hcross;
+	void_cross_device hcross;
 	hal_service_mode service;
 	cross_core *core;
 	cross_stream *stream;
