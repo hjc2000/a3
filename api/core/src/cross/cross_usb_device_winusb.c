@@ -165,7 +165,7 @@ vatek_result usb_api_ll_close(husb_device husb)
 	if (pusb->ref == 1)
 	{
 		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
-		int32_t r = WinUsb_Free(hdevice, 0);
+		int32_t r = WinUsb_Free(hdevice);
 		pusb->ref = 0;
 		if (r < 0)return vatek_hwfail;
 		return vatek_success;

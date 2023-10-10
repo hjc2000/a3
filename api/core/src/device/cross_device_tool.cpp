@@ -28,14 +28,14 @@
 
 #include "./internal/cross_device_tool.h"
 
-typedef struct _cross_handle
+struct cross_handle
 {
 	int32_t reference;
 	cross_device *root;
 	cross_device *last;
 	hbridge_list bridges;
 	husb_device_list usbdevices;
-}cross_handle, *Pcross_handle;
+};
 
 static cross_handle m_cdevices = { 0,NULL,NULL,NULL,NULL, };
 
