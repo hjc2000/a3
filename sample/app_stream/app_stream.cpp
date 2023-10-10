@@ -25,6 +25,13 @@ extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source
 // ./app_stream dvbt udp udp://127.0.0.1:40000
 int main(int argc, char *argv[])
 {
+	const char *cmd[] = {
+		"./app_stream",
+		"dvbt",
+		"file",
+		"qq.ts",
+	};
+
 	hvatek_chip hchip = NULL;
 	hvatek_usbstream hustream = NULL;
 	tsstream_source streamsource;
@@ -48,7 +55,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 	usbcmd.sync = usbstream_sync{ NULL, NULL };
 
-	nres = parser_cmd_source(argc, argv, &streamsource, &usbcmd);
+	nres = parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
 	/*
 		step 1 :
 		- initialized supported device and open
