@@ -62,10 +62,7 @@
 
 #define VATEK_VERSION 30900
 
-/// <summary>
-///     void * 类型
-/// </summary>
-typedef void *void_vatek_device_list;
+struct vatek_device_list;
 
 /// <summary>
 ///     void * 类型。

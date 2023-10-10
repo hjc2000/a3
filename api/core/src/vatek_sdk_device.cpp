@@ -6,7 +6,7 @@
 #include "device/internal/cross_device_tool.h"
 #include<Exception.h>
 
-vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, void_vatek_device_list *hdevices)
+vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, vatek_device_list * *hdevices)
 {
 	cross_device *newdevs = NULL;
 	vatek_result nres = cross_devices_create(&newdevs);
@@ -52,7 +52,7 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, void
 	return nres;
 }
 
-vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, void_vatek_device_list *hdevices)
+vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, vatek_device_list * *hdevices)
 {
 	cross_device *newdevs = NULL;
 	vatek_result nres = cross_devices_create_by_usbid(vid, pid, &newdevs);
@@ -87,7 +87,7 @@ vatek_result vatek_device_list_enum_by_usbid(uint16_t vid, uint16_t pid, void_va
 	return nres;
 }
 
-uint32_t vatek_device_list_get_bus(void_vatek_device_list hdevices, int32_t idx)
+uint32_t vatek_device_list_get_bus(vatek_device_list * hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -95,7 +95,7 @@ uint32_t vatek_device_list_get_bus(void_vatek_device_list hdevices, int32_t idx)
 	return DEVICE_BUS_UNKNOWN;
 }
 
-const char *vatek_device_list_get_name(void_vatek_device_list hdevices, int32_t idx)
+const char *vatek_device_list_get_name(vatek_device_list * hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -103,7 +103,7 @@ const char *vatek_device_list_get_name(void_vatek_device_list hdevices, int32_t 
 	return "_unknown";
 }
 
-hal_service_mode vatek_device_list_get_service(void_vatek_device_list hdevices, int32_t idx)
+hal_service_mode vatek_device_list_get_service(vatek_device_list * hdevices, int32_t idx)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	if (idx < pdevices->nums)
@@ -111,7 +111,7 @@ hal_service_mode vatek_device_list_get_service(void_vatek_device_list hdevices, 
 	return service_unknown;
 }
 
-vatek_result vatek_device_open(void_vatek_device_list hdevices, int32_t idx, hvatek_chip *hchip)
+vatek_result vatek_device_open(vatek_device_list * hdevices, int32_t idx, hvatek_chip *hchip)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	vatek_result nres = vatek_badparam;
@@ -129,7 +129,7 @@ vatek_result vatek_device_open(void_vatek_device_list hdevices, int32_t idx, hva
 	return vatek_result::vatek_success;
 }
 
-void vatek_device_list_free(void_vatek_device_list hdevices)
+void vatek_device_list_free(vatek_device_list * hdevices)
 {
 	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	cross_devices_free(pdevices->cross);

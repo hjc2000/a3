@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 		nres = vatek_storage_romfile_create(szromfile, &promfile);
 		if (is_vatek_success(nres))
 		{
-			void_vatek_device_list hdevlist = NULL;
+			vatek_device_list *hdevlist = NULL;
 			hvatek_chip hchip = NULL;
 
 			/*
