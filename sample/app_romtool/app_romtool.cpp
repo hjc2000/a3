@@ -89,24 +89,35 @@ int main(int argc, char *argv[])
 						else _disp_l("update rom file finish - %d", nres);
 						vatek_storage_close(hstorage);
 					}
-					else _disp_err("open storage handle fail : %d", nres);
+					else
+						_disp_err("open storage handle fail : %d", nres);
 					vatek_storage_free_handle(pstorage);
 				}
-				else _disp_err("create storage handle fail : %d", nres);
+				else
+					_disp_err("create storage handle fail : %d", nres);
 			}
 
 			/*
 				step 4 :
 				clean all handle and resources.
 			*/
-			if (hchip)vatek_device_close_reboot(hchip);
+			if (hchip)
+				vatek_device_close_reboot(hchip);
 			//if(hchip)vatek_device_close(hchip);
-			if (hdevlist)vatek_device_list_free(hdevlist);
+			if (hdevlist)
+				vatek_device_list_free(hdevlist);
+
 			vatek_storage_romfile_free(promfile);
 		}
-		else _disp_err("open rom file fail : %d [bad format]", nres);
+		else
+		{
+			_disp_err("open rom file fail : %d [bad format]", nres);
+		}
 	}
-	else if (nres = vatek_badparam)_disp_err("bad romfile param : %s", argv[1]);
+	else if (nres == vatek_badparam)
+	{
+		_disp_err("bad romfile param : %s", argv[1]);
+	}
 
 	printf_app_end();
 	cross_os_sleep(10);

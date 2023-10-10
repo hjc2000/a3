@@ -174,6 +174,5 @@ vatek_result cross_devices_get_size(cross_device *pcross);
 vatek_result cross_devices_free(cross_device *pcross);
 
 vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal);
-void cdevice_free(cross_device *pcross);
 
 #endif

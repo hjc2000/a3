@@ -90,7 +90,7 @@ void cross_bridge_close(cross_device * pcross)
 	hbridge_device hbridge = (hbridge_device)pcross->hcross;
 	bridge_device_unlock(hbridge);
 	bridge_device_close(hbridge);
-	cdevice_free(pcross);
+	delete pcross;
 }
 
 vatek_result bridge_read_register(hcross_device hdev, int32_t addr, uint32_t *val)

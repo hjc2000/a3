@@ -199,7 +199,7 @@ vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal)
 	vatek_result nres = vatek_unsupport;
 	if (hal == service_rescue || hal == service_broadcast || hal == service_transform)
 	{
-		cross_device *newdev = (cross_device *)malloc(sizeof(cross_device));
+		cross_device *newdev = new cross_device;
 		nres = vatek_memfail;
 		if (newdev)
 		{
@@ -210,9 +210,4 @@ vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal)
 	}
 
 	return nres;
-}
-
-void cdevice_free(cross_device *pcross)
-{
-	free(pcross);
 }

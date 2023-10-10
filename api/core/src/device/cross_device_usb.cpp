@@ -104,7 +104,7 @@ vatek_result cross_usb_device_open(husb_device husb, cross_device * *pcross)
 void cross_usb_device_close(cross_device * pcross)
 {
 	usb_api_ll_close((husb_device)pcross->hcross);
-	cdevice_free(pcross);
+	delete pcross;
 }
 
 vatek_result usbdevice_stream_start(hcross_device hdev, cross_stream_mode streammode)
