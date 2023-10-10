@@ -109,7 +109,7 @@ typedef enum _hal_service_mode
 /// <summary>
 ///		芯片信息。
 /// </summary>
-typedef struct _chip_info
+struct chip_info
 {
 	chip_status status;				/*!< chip status */
 	uint32_t errcode;				/*!< if chip status fail set error code */
@@ -119,7 +119,7 @@ typedef struct _chip_info
 	uint32_t peripheral_en;			/*!< support peripheral */
 	uint32_t input_support;			/*!< support input mode */
 	uint32_t output_support;		/*!< support output mode */
-}chip_info;
+};
 
 typedef chip_info *Pchip_info;
 

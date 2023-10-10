@@ -36,11 +36,11 @@ typedef struct _win_smem
 	char sztag[64];
 	int32_t is_create;
 	int32_t len;
-	uint8_t* ptr;
+	uint8_t *ptr;
 	HANDLE hsmem;
-}win_smem,*Pwin_smem;
+}win_smem, *Pwin_smem;
 
-vatek_result cross_os_create_smem(const char* tag, hcross_smem* hsmem, int32_t size)
+vatek_result cross_os_create_smem(const char *tag, hcross_smem *hsmem, int32_t size)
 {
 	vatek_result nres = vatek_memfail;
 	Pwin_smem newsmem = (Pwin_smem)malloc(sizeof(win_smem));
@@ -52,7 +52,7 @@ vatek_result cross_os_create_smem(const char* tag, hcross_smem* hsmem, int32_t s
 		nres = vatek_hwfail;
 		if (newsmem->hsmem != INVALID_HANDLE_VALUE)
 		{
-			newsmem->ptr = MapViewOfFile(newsmem->hsmem, FILE_MAP_ALL_ACCESS, 0, 0,size);
+			newsmem->ptr = (uint8_t *)MapViewOfFile(newsmem->hsmem, FILE_MAP_ALL_ACCESS, 0, 0, size);
 			if (newsmem->ptr != NULL)
 			{
 				newsmem->is_create = 1;
@@ -69,7 +69,7 @@ vatek_result cross_os_create_smem(const char* tag, hcross_smem* hsmem, int32_t s
 	return nres;
 }
 
-vatek_result cross_os_open_smem(const char* tag, hcross_smem* hsmem,int32_t size)
+vatek_result cross_os_open_smem(const char *tag, hcross_smem *hsmem, int32_t size)
 {
 	vatek_result nres = vatek_memfail;
 	Pwin_smem newsmem = (Pwin_smem)malloc(sizeof(win_smem));
@@ -81,7 +81,7 @@ vatek_result cross_os_open_smem(const char* tag, hcross_smem* hsmem,int32_t size
 		nres = vatek_hwfail;
 		if (newsmem->hsmem != INVALID_HANDLE_VALUE)
 		{
-			newsmem->ptr = MapViewOfFile(newsmem->hsmem, FILE_MAP_ALL_ACCESS, 0, 0, size);
+			newsmem->ptr = (uint8_t *)MapViewOfFile(newsmem->hsmem, FILE_MAP_ALL_ACCESS, 0, 0, size);
 			if (newsmem->ptr != NULL)
 			{
 				newsmem->is_create = 1;
@@ -98,7 +98,7 @@ vatek_result cross_os_open_smem(const char* tag, hcross_smem* hsmem,int32_t size
 	return nres;
 }
 
-uint8_t* cross_os_get_smem(hcross_smem hsmem)
+uint8_t *cross_os_get_smem(hcross_smem hsmem)
 {
 	Pwin_smem psmem = (Pwin_smem)hsmem;
 	return psmem->ptr;

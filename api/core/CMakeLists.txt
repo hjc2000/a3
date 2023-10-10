@@ -187,16 +187,16 @@ set(core_SRC_MUX
     src/mux/mux_handle_core.c
     src/mux/mux_handle_raw.c
     src/mux/mux_packet_base.c
-    src/mux/mux_packet_pes.c
-    src/mux/mux_rule.c
+    src/mux/mux_packet_pes.cpp
+    src/mux/mux_rule.cpp
     src/mux/mux_spec.c
     src/mux/mux_time.c
     src/mux/mux_tool_tick.c)
 
 set(core_SRC_SERVICE
-    src/service/service_base.c
-    src/service/service_broadcast.c
-    src/service/service_transform.c)
+    src/service/service_base.cpp
+    src/service/service_broadcast.cpp
+    src/service/service_transform.cpp)
 
 set(core_SRC_SDK
     src/cross_os_api.cpp
@@ -216,7 +216,7 @@ if(MSVC)
         src/cross/os/win/win_os_event_api.c
         src/cross/os/win/win_os_mutex_api.c
         src/cross/os/win/win_os_process.c
-        src/cross/os/win/win_os_smem_api.c
+        src/cross/os/win/win_os_smem_api.cpp
         src/cross/os/win/win_os_sys_api.c
         src/cross/os/win/win_os_thread_api.c
         src/cross/os/win/win_os_time_api.c
