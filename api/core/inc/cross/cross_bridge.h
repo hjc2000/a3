@@ -33,35 +33,38 @@ extern "C" {
 	///		调用 bridge_device_list_enum_usb 函数扫描 USB 设备。会先用新的供应商 ID
 	///		查找一遍，如果没有找到设备，再用老的供应商 ID 查找一遍。
 	/// </summary>
-	/// <param name="hblist"></param>
+	/// <param name="root_node"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_enum_usb_with_pid_and_old_pid(hbridge_device_list_node *hblist);
+	HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(hbridge_device_list_node *hblist);
 
 	/// <summary>
 	///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
 	/// </summary>
-	/// <param name="vid"></param>
-	/// <param name="pid"></param>
-	/// <param name="hblist">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 hblist</param>
-	/// <returns>找到的设备的数量，也等于 hblist 指向的链表的长度</returns>
-	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list_node *hblist);
+	/// <param name="vid">供应商ID</param>
+	/// <param name="pid">产品ID</param>
+	/// <param name="root_node">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 root_node</param>
+	/// <returns>找到的设备的数量，即从 root_node 开始到最后一个节点一共有多少个节点</returns>
+	HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_device_list_node *root_node);
 
 	/// <summary>
 	///		从链表中获取指定索引值的设备
 	/// </summary>
-	/// <param name="hblist"></param>
+	/// <param name="root_node">需要传进来链表的根节点</param>
 	/// <param name="idx"></param>
 	/// <param name="hbridge"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_get(hbridge_device_list_node hblist, int32_t idx, hbridge_device *hbridge);
+	HAL_API vatek_result bridge_device_list_get(hbridge_device_list_node root_node, int32_t idx, hbridge_device *hbridge);
 	HAL_API const char *bridge_device_list_get_name(hbridge_device_list_node hblist, int32_t idx);
 
 	/// <summary>
-	///		释放 hbridges 指向的链表。此链表的节点储存查找到的设备的信息。
+	///		释放从 root_node 开始的一连串链表结点
 	/// </summary>
-	/// <param name="hbridges"></param>
+	/// <param name="root_node">
+	///		链表的根节点。不能传非根节点，否则会造成内存泄漏，因为 hbridge_device_list_node 是单向
+	///		链表的节点。
+	/// </param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_free(hbridge_device_list_node hbridges);
+	HAL_API vatek_result bridge_device_list_free(hbridge_device_list_node root_node);
 
 	HAL_API vatek_result bridge_device_open(hbridge_device hbridge);
 	HAL_API const char *bridge_device_get_name(hbridge_device hbridge);

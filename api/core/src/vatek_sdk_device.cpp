@@ -4,6 +4,7 @@
 #include <core/base/output_rfmixer.h>
 #include <service/ui/ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"
+#include<Exception.h>
 
 extern vatek_result vatek_device_malloc(cross_device *pcross, vatek_device **pvatek);
 extern void vatek_device_free(vatek_device *pvatek);
@@ -23,38 +24,38 @@ vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, hvat
 	{
 		int32_t len = sizeof(vatek_device_list) + (sizeof(cross_device *) * (nres + 1));
 		vatek_device_list *newlist = (vatek_device_list *)malloc(len);
-		nres = vatek_memfail;
-		if (newlist)
+		if (!newlist)
 		{
-			int32_t pos = 0;
-			nres = vatek_success;
-			memset((uint8_t *)newlist, 0, len);
-			newlist->listdevices = (cross_device **)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
-			newlist->cross = newdevs;
-			while (newdevs)
-			{
-				if ((newdevs->bus & bus))
-				{
-					if (service == service_unknown ||
-						service == newdevs->service)
-					{
-						newlist->listdevices[pos] = newdevs;
-						pos++;
-					}
-				}
-				newdevs = newdevs->next;
-			}
+			throw Exception();
+		}
 
-			if (!pos)
+		int32_t pos = 0;
+		nres = vatek_success;
+		memset((uint8_t *)newlist, 0, len);
+		newlist->listdevices = (cross_device **)&((uint8_t *)newlist)[sizeof(vatek_device_list)];
+		newlist->cross = newdevs;
+		while (newdevs)
+		{
+			if ((newdevs->bus & bus))
 			{
-				free(newlist);
+				if (service == service_unknown || service == newdevs->service)
+				{
+					newlist->listdevices[pos] = newdevs;
+					pos++;
+				}
 			}
-			else
-			{
-				newlist->nums = pos;
-				*hdevices = newlist;
-				nres = (vatek_result)pos;
-			}
+			newdevs = newdevs->next;
+		}
+
+		if (!pos)
+		{
+			free(newlist);
+		}
+		else
+		{
+			newlist->nums = pos;
+			*hdevices = newlist;
+			nres = (vatek_result)pos;
 		}
 	}
 

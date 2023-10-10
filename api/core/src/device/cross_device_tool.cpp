@@ -31,7 +31,7 @@ static cross_handle m_cdevices{};
 /// <returns></returns>
 vatek_result cross_devices_create(cross_device **pcross)
 {
-	vatek_result nres = vatek_success;
+	int nres = vatek_success;
 	if (!m_cdevices.root)
 	{
 		int32_t i = 0;
@@ -100,7 +100,7 @@ vatek_result cross_devices_create(cross_device **pcross)
 		nres = vatek_success;
 	}
 
-	return nres;
+	return (vatek_result)nres;
 }
 
 vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross)
