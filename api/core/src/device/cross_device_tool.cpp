@@ -38,7 +38,7 @@ vatek_result cross_devices_create(cross_device **pcross)
 		int32_t nums = 0;
 		cross_device *newcross = NULL;
 
-		nres = bridge_device_list_enum_default(&m_cdevices.bridges);
+		nres = bridge_device_list_enum_usb_with_pid_and_old_pid(&m_cdevices.bridges);
 		if (nres > vatek_success)
 		{
 			nums = nres;

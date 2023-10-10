@@ -172,7 +172,7 @@ vatek_result bridge_device_free(void)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_enum_default(hbridge_device_list_node *hblist)
+vatek_result bridge_device_list_enum_usb_with_pid_and_old_pid(hbridge_device_list_node *hblist)
 {
 	/* bridge_device_list_enum_usb 函数如果没有发生错误，会返回找到的设备的数量，发生错误会
 	* 返回错误代码。
