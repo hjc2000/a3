@@ -73,15 +73,15 @@ static HidD_SetNumInputBuffers_ HidD_SetNumInputBuffers;
 
 /// <summary>
 ///		储存 windows 下的 HID（Human Interface Device，即人机交互设备）的信息的
-///		链表。
+///		链表节点。
 /// </summary>
-struct win_hid_device
+struct win_hid_device_list_node
 {
-	win_hid_device *pnext;
+	win_hid_device_list_node *pnext;
 	uint16_t hid_vid;
 	uint16_t hid_pid;
 	HANDLE hid_handle;
-	hcross_mutex lock_cmd;
+	hcross_mutex _mutex;
 	char hid_path[MAX_PATH];
 	OVERLAPPED hid_overlapped;
 	uint8_t rawbuf_tx[HID_PACKET_BUFFER_LEN];
@@ -94,8 +94,8 @@ const GUID hid_class_guid = { 0x4d1e55b2, 0xf16f, 0x11cf,{ 0x88, 0xcb, 0x00, 0x1
 
 static HMODULE hid_api_lib = NULL;
 
-extern vatek_result win_hid_api_write(win_hid_device *pdevice, uint8_t *ppacket);
-extern vatek_result win_hid_api_read(win_hid_device *pdevice, uint8_t *ppacket);
+extern vatek_result win_hid_api_write(win_hid_device_list_node *pdevice, uint8_t *ppacket);
+extern vatek_result win_hid_api_read(win_hid_device_list_node *pdevice, uint8_t *ppacket);
 
 /// <summary>
 ///		加载 hid.dll 并加载其中的函数。加载成功返回 0，加载失败返回 vatek_memfail
@@ -179,8 +179,8 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_dev
 		int32_t index = 0;
 		int32_t datalen = -1;
 		int32_t nums = 0;
-		win_hid_device *proot = NULL;
-		win_hid_device *pnext = NULL;
+		win_hid_device_list_node *proot = NULL;
+		win_hid_device_list_node *pnext = NULL;
 		SP_DEVICE_INTERFACE_DETAIL_DATA_A *intf_detail_info = NULL;
 
 		nres = vatek_success;
@@ -236,11 +236,11 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_dev
 						bres = HidD_GetAttributes(hhid, &hidattr);
 						if (bres && (vid == hidattr.VendorID) && (pid == hidattr.ProductID))
 						{
-							win_hid_device *pnewhid = (win_hid_device *)malloc(sizeof(win_hid_device));
+							win_hid_device_list_node *pnewhid = (win_hid_device_list_node *)malloc(sizeof(win_hid_device_list_node));
 							nres = vatek_memfail;
 							if (pnewhid)
 							{
-								memset(pnewhid, 0, sizeof(win_hid_device));
+								memset(pnewhid, 0, sizeof(win_hid_device_list_node));
 								strncpy_s(&pnewhid->hid_path[0], MAX_PATH, &intf_detail_info->DevicePath[0], MAX_PATH);
 								pnewhid->hid_vid = hidattr.VendorID;
 								pnewhid->hid_pid = hidattr.ProductID;
@@ -271,21 +271,22 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, hbridge_dev
 	return nres;
 }
 
-vatek_result bridge_device_list_free(hbridge_device_list_node hbridges)
+vatek_result bridge_device_list_free(hbridge_device_list_node root_node)
 {
-	win_hid_device *proot = (win_hid_device *)hbridges;
+	win_hid_device_list_node *proot = (win_hid_device_list_node *)root_node;
 
 	while (proot)
 	{
-		if (proot->hid_handle != NULL)return vatek_badstatus;
+		if (proot->hid_handle != NULL)
+			return vatek_badstatus;
 		proot = proot->pnext;
 	}
 
-	proot = (win_hid_device *)hbridges;
+	proot = (win_hid_device_list_node *)root_node;
 	while (proot)
 	{
-		win_hid_device *pnext = proot->pnext;
-		cross_os_free_mutex(proot->lock_cmd);
+		win_hid_device_list_node *pnext = proot->pnext;
+		cross_os_free_mutex(proot->_mutex);
 		free(proot);
 		proot = pnext;
 	}
@@ -295,7 +296,7 @@ vatek_result bridge_device_list_free(hbridge_device_list_node hbridges)
 
 vatek_result bridge_device_list_get(hbridge_device_list_node hblist, int32_t idx, hbridge_device *hbridge)
 {
-	win_hid_device *proot = (win_hid_device *)hblist;
+	win_hid_device_list_node *proot = (win_hid_device_list_node *)hblist;
 	int32_t nums = 0;
 	while (proot)
 	{
@@ -318,7 +319,7 @@ const char *bridge_device_list_get_name(hbridge_device_list_node hblist, int32_t
 	hbridge_device hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
 	if (is_vatek_success(nres))
-		return &((win_hid_device *)hbridge)->hid_path[0];
+		return &((win_hid_device_list_node *)hbridge)->hid_path[0];
 
 	return NULL;
 }
@@ -326,7 +327,7 @@ const char *bridge_device_list_get_name(hbridge_device_list_node hblist, int32_t
 vatek_result bridge_device_open(hbridge_device hbridge)
 {
 	vatek_result nres = vatek_badstatus;
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	if (phid->hid_handle == NULL)
 	{
 		hcross_mutex hlock;
@@ -352,7 +353,7 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 					memset(&phid->rawbuf_tx[0], 0, HID_PACKET_BUFFER_LEN);
 					memset(&phid->rawbuf_rx[0], 0, HID_PACKET_BUFFER_LEN);
 					memcpy(&pcmd->tag[0], &hid_bridge_tag[0], 4);
-					phid->lock_cmd = hlock;
+					phid->_mutex = hlock;
 					return vatek_success;
 				}
 
@@ -370,54 +371,54 @@ vatek_result bridge_device_open(hbridge_device hbridge)
 
 void bridge_device_lock_command(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
-	cross_os_lock_mutex(phid->lock_cmd);
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
+	cross_os_lock_mutex(phid->_mutex);
 }
 
 void bridge_device_unlock_command(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
-	cross_os_release_mutex(phid->lock_cmd);
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
+	cross_os_release_mutex(phid->_mutex);
 }
 
 const char *bridge_device_get_name(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return &phid->hid_path[0];
 }
 
 vatek_result bridge_device_close(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	if (phid->hid_handle != NULL)
 	{
-		cross_os_free_mutex(phid->lock_cmd);
+		cross_os_free_mutex(phid->_mutex);
 		CloseHandle(phid->hid_overlapped.hEvent);
 		CloseHandle(phid->hid_handle);
 	}
 
 	phid->hid_overlapped.hEvent = NULL;
 	phid->hid_handle = NULL;
-	phid->lock_cmd = NULL;
+	phid->_mutex = NULL;
 	return vatek_success;
 }
 
 
 Phid_bridge_cmd bridge_device_get_command(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return (Phid_bridge_cmd)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 }
 
 Phid_bridge_result bridge_device_get_result(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return (Phid_bridge_result)&phid->rawbuf_rx[HID_PACKET_DATA_OFFSET];
 }
 
 vatek_result bridge_device_send_bridge_command(hbridge_device hbridge)
 {
-	win_hid_device *phid = (win_hid_device *)hbridge;
+	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	vatek_result nres = win_hid_api_write(phid, &phid->rawbuf_tx[HID_PACKET_START_OFFSET]);
 	if (is_vatek_success(nres))
 	{
@@ -434,7 +435,7 @@ vatek_result bridge_device_send_bridge_command(hbridge_device hbridge)
 	return nres;
 }
 
-vatek_result win_hid_api_write(win_hid_device *pdevice, uint8_t *ppacket)
+vatek_result win_hid_api_write(win_hid_device_list_node *pdevice, uint8_t *ppacket)
 {
 	uint32_t nwrite = 0;
 	vatek_result nres = vatek_badstatus;
@@ -459,7 +460,7 @@ vatek_result win_hid_api_write(win_hid_device *pdevice, uint8_t *ppacket)
 	return nres;
 }
 
-vatek_result win_hid_api_read(win_hid_device *pdevice, uint8_t *ppacket)
+vatek_result win_hid_api_read(win_hid_device_list_node *pdevice, uint8_t *ppacket)
 {
 	uint32_t nread = 0;
 	vatek_result nres = vatek_badstatus;

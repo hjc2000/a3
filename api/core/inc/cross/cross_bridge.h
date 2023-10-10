@@ -30,12 +30,12 @@ extern "C" {
 
 	/// <summary>
 	///		会根据不同的系统在编译时选择不同的版本。
-	///		调用 bridge_device_list_enum_usb 函数扫描 USB 设备。会先用新的供应商 ID
-	///		查找一遍，如果没有找到设备，再用老的供应商 ID 查找一遍。
+	///		* 调用 bridge_device_list_enum_usb 函数扫描 USB 设备。
+	///		* 会先用新的供应商 ID查找一遍，如果没有找到设备，再用老的供应商 ID 查找一遍。
 	/// </summary>
-	/// <param name="root_node"></param>
-	/// <returns></returns>
-	HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(hbridge_device_list_node *hblist);
+	/// <param name="root_node">找到的设备会被放到链表中，最后将根节点赋值给 root_node</param>
+	/// <returns>总共查找到多少个设备</returns>
+	HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(hbridge_device_list_node *root_node);
 
 	/// <summary>
 	///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
@@ -60,8 +60,8 @@ extern "C" {
 	///		释放从 root_node 开始的一连串链表结点
 	/// </summary>
 	/// <param name="root_node">
-	///		链表的根节点。不能传非根节点，否则会造成内存泄漏，因为 hbridge_device_list_node 是单向
-	///		链表的节点。
+	///		链表的根节点。
+	///		* 不能传非根节点，否则会造成内存泄漏，因为 hbridge_device_list_node 是单向链表的节点。
 	/// </param>
 	/// <returns></returns>
 	HAL_API vatek_result bridge_device_list_free(hbridge_device_list_node root_node);
