@@ -200,6 +200,7 @@ vatek_result cross_devices_get_size(cross_device *pcross)
 		nums++;
 		ptrdev = ptrdev->next;
 	}
+
 	return (vatek_result)nums;
 }
 
