@@ -11,8 +11,14 @@
 extern "C" {
 	#endif
 
-	/* cross_os_normal_api */
-	HAL_API int32_t cross_os_get_ch_no_wait(void);
+	/// <summary>
+	///		尝试从键盘缓冲区中获取一个字符。
+	///		* 此函数不会等待用户输入，如果键盘缓冲区中有字符，就读取，并返回此字符，
+	///		  如果键盘缓冲区中没有字符，则返回 -1。
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns></returns>
+	HAL_API int32_t try_getchar(void);
 	HAL_API void cross_os_printf(const char *fmt, ...);
 	HAL_API void cross_os_error(const char *fmt, ...);
 

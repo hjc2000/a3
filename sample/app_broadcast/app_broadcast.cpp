@@ -509,7 +509,7 @@ int main(int argc, char *argv[])
 			}
 			if (!is_vatek_success(nres))
 				break;
-			if (cross_os_get_ch_no_wait() != -1)
+			if (try_getchar() != -1)
 				is_stop = 1;
 			else
 				cross_os_sleep(1);

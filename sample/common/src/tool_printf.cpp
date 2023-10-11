@@ -37,10 +37,10 @@ void printf_bridge_info(Pbdevice_info pbinfo)
 
 void printf_app_end(void)
 {
-	while (cross_os_get_ch_no_wait() != -1);
+	while (try_getchar() != -1);
 	_disp_l("=====================================\r\n");
 	_disp_l("demo finished. press any key to quit");
-	while (cross_os_get_ch_no_wait() == -1);
+	while (try_getchar() == -1);
 }
 
 void printf_bridge_avsource(const char* name,Pbridge_source psource)

@@ -28,7 +28,7 @@
 
 #include "internal/win_os_common.h"
 
-int32_t cross_os_get_ch_no_wait(void)
+int32_t try_getchar(void)
 {
 	int nchar = -1;
 	if (_kbhit())
