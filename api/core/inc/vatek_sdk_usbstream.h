@@ -106,8 +106,6 @@ struct usbstream_async
 	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
 };
 
-typedef usbstream_async *Pusbstream_async;
-
 struct usbstream_param
 {
 	usbstream_mode mode;
