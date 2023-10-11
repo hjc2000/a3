@@ -36,19 +36,6 @@ vatek_result cross_os_get_time(struct timespec *tp)
 	return (vatek_result)0;
 }
 
-uint64_t cross_os_get_time_us()
-{
-	LARGE_INTEGER curtime;
-	init_queryperformance();
-	QueryPerformanceCounter(&curtime);
-	return ((uint64_t)(curtime.QuadPart * TIME_SECOND_TO_US) / qf_freq.QuadPart);
-}
-
-uint64_t cross_os_time_to_us(struct timespec *tp)
-{
-	return (tp->tv_sec * 1000000) + (tp->tv_nsec / 1000);
-}
-
 vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse)
 {
 	struct timespec curtime;

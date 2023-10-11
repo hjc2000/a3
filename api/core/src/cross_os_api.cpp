@@ -79,3 +79,14 @@ void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend)
 		tp->tv_nsec -= TIME_SECOND_TO_NS;
 	}
 }
+
+uint64_t cross_os_time_to_us(struct timespec *tp)
+{
+	return (tp->tv_sec * 1000000) + (tp->tv_nsec / 1000);
+}
+
+uint64_t cross_os_get_time_us()
+{
+	auto now = steady_clock::now().time_since_epoch();
+	return duration_cast<microseconds>(now).count();
+}
