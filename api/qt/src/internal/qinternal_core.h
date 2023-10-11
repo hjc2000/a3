@@ -133,7 +133,7 @@ protected:
 	virtual Pbroadcast_info getServiceInfo() = 0;
 
 private:
-	static void service_handler(Pcross_thread_param param);
+	static void service_handler(cross_thread_param * param);
 };
 
 #endif

@@ -61,7 +61,7 @@ extern uint32_t cstream_udp_get_bitrate(hcstream hstream);
 extern void cstream_udp_stop(hcstream hstream);
 extern void cstream_udp_close(hcstream hstream);
 
-extern void udp_recv_handle(Pcross_thread_param param);
+extern void udp_recv_handle(cross_thread_param * param);
 extern uint8_t* get_write_buffer(Phandle_udp pudp);
 extern void commit_write_buffer(Phandle_udp pudp);
 extern uint8_t* get_valid_buffer(Phandle_udp pudp);
@@ -191,7 +191,7 @@ void cstream_udp_close(hcstream hstream)
 }
 
 
-void udp_recv_handle(Pcross_thread_param param)
+void udp_recv_handle(cross_thread_param * param)
 {
 	Phandle_udp pudp = (Phandle_udp)param->userparam;
 	vatek_result nres = vatek_success;

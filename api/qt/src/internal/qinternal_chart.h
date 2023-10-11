@@ -143,7 +143,7 @@ protected:
 
 	void drawPingPong(int32_t idx);
 
-	static void asyncDrawHandler(Pcross_thread_param param);
+	static void asyncDrawHandler(cross_thread_param * param);
 };
 
 class qchartpattern_base : public qtvChartPattern, public qchartdraw_pingpong

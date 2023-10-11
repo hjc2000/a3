@@ -95,7 +95,7 @@ void qchartdraw_pingpong::stopAsyncDraw()
 	m_isrunning = 0;
 }
 
-void qchartdraw_pingpong::asyncDrawHandler(Pcross_thread_param param)
+void qchartdraw_pingpong::asyncDrawHandler(cross_thread_param * param)
 {
 	qchartdraw_pingpong* pp = (qchartdraw_pingpong*)param->userparam;
 	while (pp->m_isrunning == 1)

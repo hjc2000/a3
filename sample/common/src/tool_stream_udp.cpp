@@ -44,7 +44,7 @@ typedef struct _handle_udp
 ///		接收 UDP 流的线程函数
 /// </summary>
 /// <param name="param"></param>
-extern void recv_handle(Pcross_thread_param param);
+extern void recv_handle(cross_thread_param * param);
 
 extern uint8_t *get_write_buffer(Phandle_udp pudp);
 extern void commit_write_buffer(Phandle_udp pudp);
@@ -167,7 +167,7 @@ void udp_stream_free(hstream_source hsource)
 	udp_stream_stop(hsource);
 }
 
-void recv_handle(Pcross_thread_param param)
+void recv_handle(cross_thread_param * param)
 {
 	Phandle_udp pudp = (Phandle_udp)param->userparam;
 	vatek_result nres = vatek_success;

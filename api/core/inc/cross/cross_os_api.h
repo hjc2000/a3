@@ -99,9 +99,7 @@ extern "C" {
 		vatek_result result;
 	};
 
-	typedef cross_thread_param *Pcross_thread_param;
-
-	typedef void (*fpcross_thread_function)(Pcross_thread_param param);
+	typedef void (*fpcross_thread_function)(cross_thread_param *param);
 
 	HAL_API void_cross_thread cross_os_create_thread(fpcross_thread_function fpfun, void *userparam);
 	HAL_API vatek_result cross_os_join_thread(void_cross_thread hthread);

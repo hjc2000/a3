@@ -1,31 +1,3 @@
-//----------------------------------------------------------------------------
-//
-// Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-// THE POSSIBILITY OF SUCH DAMAGE.
-//
-
 #include <vatek_sdk_usbstream.h>
 #include <vatek_sdk_transform.h>
 
@@ -62,8 +34,8 @@ struct handle_usbstream
 	handle_async *async;
 };
 
-extern void usbstream_sync_handler(Pcross_thread_param param);
-extern void usbstream_async_handler(Pcross_thread_param param);
+extern void usbstream_sync_handler(cross_thread_param * param);
+extern void usbstream_async_handler(cross_thread_param * param);
 
 extern vatek_result usbstream_update_stream(handle_usbstream *pustream);
 extern vatek_result usbstream_commit_stream(handle_usbstream *pustream);
@@ -305,7 +277,7 @@ void vatek_usbstream_close(hvatek_usbstream husstream)
 	free(pustream);
 }
 
-void usbstream_sync_handler(Pcross_thread_param param)
+void usbstream_sync_handler(cross_thread_param * param)
 {
 	handle_usbstream *pustream = (handle_usbstream *)param->userparam;
 	vatek_result nres = vatek_success;
@@ -345,7 +317,7 @@ void usbstream_sync_handler(Pcross_thread_param param)
 	else pustream->status = usbstream_status_stop;
 }
 
-void usbstream_async_handler(Pcross_thread_param param)
+void usbstream_async_handler(cross_thread_param * param)
 {
 	handle_usbstream *pustream = (handle_usbstream *)param->userparam;
 	vatek_result nres = vatek_success;

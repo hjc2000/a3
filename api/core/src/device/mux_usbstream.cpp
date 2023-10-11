@@ -31,7 +31,7 @@
 #define USTREAM_EN_PCR_ALIGN_SLICE		1
 #define USBSTREAM_SLICE_PACKET_NUMS (CHIP_STREAM_SLICE_LEN/CHIP_TS_PACKET_LEN)
 
-extern void usbmuxer_handler(Pcross_thread_param param);
+extern void usbmuxer_handler(cross_thread_param * param);
 extern vatek_result usbmuxer_set_tick(Pusbmux_param pparam, Pumuxer_tick ptick);
 
 #if USTREAM_EN_PCR_ALIGN_SLICE
@@ -218,7 +218,7 @@ vatek_result usbstream_muxer_mux(Pusbstream_slice pslice, Phandle_muxer pmuxer)
 	return nres;
 }
 
-void usbmuxer_handler(Pcross_thread_param param)
+void usbmuxer_handler(cross_thread_param * param)
 {
 	Phandle_muxer pmuxer = (Phandle_muxer)param->userparam;
 	Pusbmux_source psource = pmuxer->source;

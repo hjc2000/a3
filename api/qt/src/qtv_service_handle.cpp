@@ -173,7 +173,7 @@ void qi_servicehandle::internalUnlock()
 	cross_os_release_mutex(m_hlock);
 }
 
-void qi_servicehandle::service_handler(Pcross_thread_param param)
+void qi_servicehandle::service_handler(cross_thread_param * param)
 {
 	qi_servicehandle* core = (qi_servicehandle*)param->userparam;
 	vatek_result nres = vatek_success;
