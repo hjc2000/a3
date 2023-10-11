@@ -2,7 +2,7 @@
 #ifndef _TOOL_STREAM_
 #define _TOOL_STREAM_
 
-#include <base/output_modulator.h>
+#include <output_modulator.h>
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 #include<memory>

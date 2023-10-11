@@ -29,9 +29,9 @@
 #ifndef _STORAGE_BROADCAST_
 #define _STORAGE_BROADCAST_
 
-#include <base/binary_rom.h>
-#include <base/stream_base.h>
-#include <base/output_base.h>
+#include <binary_rom.h>
+#include <stream_base.h>
+#include <output_base.h>
 
 #define BIN_SECTION_BROADCAST		(BIN_SECTION_TAG | 0x10)
 #define BROADCAST_RAWDATA_LEN	    1024*3

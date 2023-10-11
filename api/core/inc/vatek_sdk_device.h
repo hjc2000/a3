@@ -30,10 +30,10 @@
 #define _VATEK_SDK_DEVICE_
 
 #include <vatek_base.h>
-#include <base/chip_define.h>
-#include <base/output_modulator.h>
-#include <base/calibration_define.h>
-#include <base/device_usb.h>
+#include <chip_define.h>
+#include <output_modulator.h>
+#include <calibration_define.h>
+#include <device_usb.h>
 
 /// <summary>
 ///		查找设备

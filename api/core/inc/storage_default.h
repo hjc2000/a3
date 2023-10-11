@@ -1,6 +1,6 @@
 #include <storage/storage_config.h>
-#include <base/media_audio.h>
-#include <base/media_video.h>
+#include <media_audio.h>
+#include <media_video.h>
 
 /* default value */
 

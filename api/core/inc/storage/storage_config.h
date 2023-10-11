@@ -29,7 +29,7 @@
 #ifndef _STORAGE_CONFIG_
 #define _STORAGE_CONFIG_
 
-#include <base/binary_rom.h>
+#include <binary_rom.h>
 
 #define BIN_SECTION_CONFIG		(BIN_SECTION_TAG | 0x40)
 

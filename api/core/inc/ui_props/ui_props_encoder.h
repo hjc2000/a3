@@ -30,7 +30,7 @@
 #define _UI_PROPS_ENCODER_
 
 #include <ui_props_define.h>
-#include <base/stream_encoder.h>
+#include <stream_encoder.h>
 
 HALREG_S(ENCODER_MODE, 8)
 HALREG_S(ENCODER_FLAGS, 32)

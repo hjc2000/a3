@@ -29,7 +29,7 @@
 #ifndef _UI_PROPS_STREAM_
 #define _UI_PROPS_STREAM_
 
-#include <base/stream_base.h>
+#include <stream_base.h>
 #include <ui_props/ui_props_encoder.h>
 
 /* stream : usb stream mode*/

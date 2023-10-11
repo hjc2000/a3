@@ -30,8 +30,8 @@
 #define _UI_PROPS_MODULATOR_
 
 #include <ui_props_define.h>
-#include <base/chip_define.h>
-#include <base/output_modulator.h>
+#include <chip_define.h>
+#include <output_modulator.h>
 
 /* output : modulator common */
 HALREG_S(MOD_MODE, 8)

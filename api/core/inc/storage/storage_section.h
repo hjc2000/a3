@@ -29,7 +29,7 @@
 #ifndef _STORAGE_SECTION_
 #define _STORAGE_SECTION_
 
-#include <base/binary_rom.h>
+#include <binary_rom.h>
 #include <storage/storage_broadcast.h>
 #include <storage/storage_transform.h>
 #include <storage/storage_r2tune.h>

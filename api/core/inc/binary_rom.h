@@ -30,7 +30,7 @@
 #define _BINARY_ROM_
 
 #include <vatek_base.h>
-#include <base/chip_define.h>
+#include <chip_define.h>
 
 #define BINARY_SECTION_SIZE				4096
 #define BINARY_SECTION_LEN(len)			(((len + (BINARY_SECTION_SIZE - 1)) / BINARY_SECTION_SIZE) * BINARY_SECTION_SIZE)

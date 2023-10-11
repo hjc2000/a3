@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <base/stream_encoder.h>
+#include <stream_encoder.h>
 #include <ui_props/ui_props_encoder.h>
 #include <ui_props_api.h>
 

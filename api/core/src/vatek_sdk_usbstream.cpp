@@ -1,7 +1,7 @@
 #include <vatek_sdk_usbstream.h>
 #include <vatek_sdk_transform.h>
 
-#include <base/output_rfmixer.h>
+#include <output_rfmixer.h>
 #include <tools/tool_helpful.h>
 #include <cross_os_api.h>
 

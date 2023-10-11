@@ -30,8 +30,8 @@
 #define _VATEK_SDK_STORAGE_
 
 #include <stdio.h>
-#include <base/binary_rom.h>
-#include <base/output_rfmixer.h>
+#include <binary_rom.h>
+#include <output_rfmixer.h>
 #include <storage/storage_config.h>
 #include <storage/storage_broadcast.h>
 #include <storage/storage_transform.h>

@@ -29,9 +29,9 @@
 #ifndef _UI_PROPS_OUTPUT_
 #define _UI_PROPS_OUTPUT_
 
-#include <base/output_base.h>
-#include <base/output_rfmixer.h>
-#include <base/calibration_define.h>
+#include <output_base.h>
+#include <output_rfmixer.h>
+#include <calibration_define.h>
 #include <ui_props/ui_props_modulator.h>
 
 HALREG_S(R2_PARAM_I, 16)

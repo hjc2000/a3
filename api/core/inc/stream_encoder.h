@@ -30,8 +30,8 @@
 #define _STREAM_ENCODER_
 
 #include <vatek_base.h>
-#include <base/media_video.h>
-#include <base/media_audio.h>
+#include <media_video.h>
+#include <media_audio.h>
 
 /**
  * @ingroup encoder_props

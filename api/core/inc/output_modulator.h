@@ -34,7 +34,7 @@
 #include <hal/halreg_output.h>
 #include <ui_props_api.h>
 #include <ui_props_api.h>
-#include <base/output_rfmixer.h>
+#include <output_rfmixer.h>
 
 /// <summary>
 ///     调制器调制方式

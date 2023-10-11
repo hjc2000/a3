@@ -30,9 +30,9 @@
 #define _CROSS_STREAM_
 
 #include <cross_os_api.h>
-#include <base/media_video.h>
-#include <base/media_audio.h>
-#include <base/output_modulator.h>
+#include <media_video.h>
+#include <media_audio.h>
+#include <output_modulator.h>
 
 typedef void* hcross_stream;
 

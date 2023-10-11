@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <base/output_rfmixer.h>
+#include <output_rfmixer.h>
 #include <vatek_sdk_device.h>
 #include <ui_props/ui_props_output.h>
 

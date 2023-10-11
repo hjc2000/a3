@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <base/chip_define.h>
+#include <chip_define.h>
 //#include <cross_os_api.h>
 
 chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode)

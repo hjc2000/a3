@@ -29,7 +29,7 @@
 #ifndef _OUTPUT_BASE_
 #define _OUTPUT_BASE_
 
-#include <base/output_modulator.h>
+#include <output_modulator.h>
 #include <hal/halreg_output.h>
 
 

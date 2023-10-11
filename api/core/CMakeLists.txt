@@ -20,17 +20,17 @@ set(core_INC_BRIDGE
 set(core_INC_CORE
     inc/vatek_base.h
     inc/storage_default.h
-    inc/base/binary_rom.h
-    inc/base/chip_define.h
-    inc/base/device_usb.h
-    inc/base/media_audio.h
-    inc/base/media_video.h
-    inc/base/output_base.h
-    inc/base/output_modulator.h
-    inc/base/output_rfmixer.h
-    inc/base/stream_base.h
-    inc/base/stream_encoder.h
-    inc/base/calibration_define.h
+    inc/binary_rom.h
+    inc/chip_define.h
+    inc/device_usb.h
+    inc/media_audio.h
+    inc/media_video.h
+    inc/output_base.h
+    inc/output_modulator.h
+    inc/output_rfmixer.h
+    inc/stream_base.h
+    inc/stream_encoder.h
+    inc/calibration_define.h
     inc/hal/halreg_define.h
     inc/hal/halreg_mux.h
     inc/hal/halreg_output.h

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <base/device_usb.h>
+#include <device_usb.h>
 #include <tools/tool_bufstream.h>
 
 const char usbbulk_raw_tag[USBBULK_TAG_LEN] = { 'V','A','T','E','K','-','2','\0', };

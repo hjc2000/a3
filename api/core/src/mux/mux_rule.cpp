@@ -27,7 +27,7 @@
 //
 
 #include <mux_rule.h>
-#include <base/binary_rom.h>
+#include <binary_rom.h>
 #include <tools/tool_crc32.h>
 #include <tools/tool_bufstream.h>
 #include <stdio.h>

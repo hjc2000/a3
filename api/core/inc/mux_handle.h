@@ -33,7 +33,7 @@
 #include <mux_epg.h>
 #include <mux_spec.h>
 #include <mux_rule.h>
-#include <base/stream_encoder.h>
+#include <stream_encoder.h>
 
 typedef void* hmux_core;
 typedef void* hmux_broadcast;

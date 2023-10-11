@@ -31,8 +31,8 @@
 
 #include <vatek_base.h>
 #include <tools/tool_helpful.h>
-#include <base/media_audio.h>
-#include <base/media_video.h>
+#include <media_audio.h>
+#include <media_video.h>
 #include <hal/halreg_mux.h>
 
 #define TS_PACKET_LEN										188

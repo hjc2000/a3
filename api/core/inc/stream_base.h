@@ -29,10 +29,10 @@
 #ifndef _STREAM_BASE_
 #define _STREAM_BASE_
 
-#include <base/stream_encoder.h>
+#include <stream_encoder.h>
 #include <hal/halreg_stream.h>
 #include <ui_props_define.h>
-#include <base/chip_define.h>
+#include <chip_define.h>
 
 typedef enum _stream_mode
 {

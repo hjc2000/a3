@@ -29,7 +29,7 @@
 #ifndef _TOOL_OFDM_
 #define _TOOL_OFDM_
 
-#include <base/output_modulator.h>
+#include <output_modulator.h>
 #include <mux_define.h>
 #include <ui_props_define.h>
 

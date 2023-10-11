@@ -29,8 +29,8 @@
 #ifndef _UI_PROPS_CHIP_
 #define _UI_PROPS_CHIP_
 
-#include <base/chip_define.h>
-#include <base/binary_rom.h>
+#include <chip_define.h>
+#include <binary_rom.h>
 #include <service_base.h>
 #include <ui_props_define.h>
 #include <hal/halservice_base.h>

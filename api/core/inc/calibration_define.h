@@ -30,7 +30,7 @@
 #define _CALIBRATION_DEFINE_
 
 #include <hal/halreg_calibration.h>
-#include <base/output_rfmixer.h>
+#include <output_rfmixer.h>
 
 typedef struct _calibration_dac
 {
