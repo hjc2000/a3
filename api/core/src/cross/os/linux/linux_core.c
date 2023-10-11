@@ -31,27 +31,14 @@ void cross_os_error(const char* fmt, ...)
     while(1);
 }
 
-int32_t cross_os_get_ch_no_wait(void)
-{
-	int nchar = -1;
-    enable_raw_mode();
-    nchar = kbhit();
-    disable_raw_mode();
-    if(nchar)
-    {
-        nchar = getch();
-		if (nchar == 8)nchar = 0x7F;
-    }else nchar = -1;
-	return nchar;
-}
-
 void cross_os_get_current_path(char* path, int32_t buflen)
 {
     char* lastslash = NULL;
     char* ptrpath = getcwd(path,buflen);
     while (*ptrpath != '\0')
     {
-        if(*ptrpath == '/')lastslash = ptrpath;
+        if(*ptrpath == '/')
+            lastslash = ptrpath;
         ptrpath++;
     }
 
