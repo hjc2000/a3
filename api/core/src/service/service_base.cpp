@@ -1,5 +1,5 @@
 #include <service_base.h>
-#include <ui/ui_service_base.h>
+#include <ui_service_base.h>
 
 vatek_result broadcast_info_set(void_vatek_chip hchip, Pbroadcast_info pinfo)
 {

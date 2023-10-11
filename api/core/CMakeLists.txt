@@ -97,9 +97,9 @@ set(core_INC_SERVICE
     inc/service_base.h
     inc/service_broadcast.h
     inc/service_transform.h
-    inc/ui/ui_service_base.h
-    inc/ui/ui_service_broadcast.h
-    inc/ui/ui_service_transform.h)
+    inc/ui_service_base.h
+    inc/ui_service_broadcast.h
+    inc/ui_service_transform.h)
 
 set(core_INC_SDK
     inc/vatek_sdk_bridge.h

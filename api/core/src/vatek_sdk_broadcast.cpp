@@ -31,7 +31,7 @@
 #include <vatek_sdk_device.h>
 
 #include <cross/cross_os_api.h>
-#include <ui/ui_service_broadcast.h>
+#include <ui_service_broadcast.h>
 
 typedef struct _handle_broadcast
 {
@@ -47,13 +47,13 @@ typedef struct _handle_broadcast
 	Pbroadcast_auxstream paux;
 	uint32_t auxpackets;
 	uint8_t usbbuffer[CHIP_STREAM_SLICE_LEN];
-}handle_broadcast,*Phandle_broadcast;
+}handle_broadcast, *Phandle_broadcast;
 
 extern vatek_result broadcast_usb_start_aux(Phandle_broadcast pbc, Pbroadcast_auxstream paux);
 
 vatek_result vatek_broadcast_check_auxstream(void_vatek_chip hchip)
 {
-	chip_info * pinfo = vatek_device_get_info(hchip);
+	chip_info *pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;
 	if (vatek_device_get_bus(hchip) == DEVICE_BUS_USB)
 	{
@@ -63,20 +63,20 @@ vatek_result vatek_broadcast_check_auxstream(void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_broadcast_open(void_vatek_chip hchip,hvatek_broadcast* hbc)
+vatek_result vatek_broadcast_open(void_vatek_chip hchip, hvatek_broadcast *hbc)
 {
-	chip_info * pinfo = vatek_device_get_info(hchip);
+	chip_info *pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_success;
-	if(pinfo->hal_service != service_broadcast)nres = vatek_unsupport;
+	if (pinfo->hal_service != service_broadcast)nres = vatek_unsupport;
 	else
 	{
 		Phandle_broadcast newbc = (Phandle_broadcast)malloc(sizeof(handle_broadcast));
 		nres = vatek_memfail;
-		if(newbc)
+		if (newbc)
 		{
-			memset(newbc,0,sizeof(handle_broadcast));
+			memset(newbc, 0, sizeof(handle_broadcast));
 			nres = rfmixer_check_support(hchip);
-			if(is_vatek_success(nres))newbc->is_rfmixer = 1;
+			if (is_vatek_success(nres))newbc->is_rfmixer = 1;
 			else nres = vatek_success;
 			nres = vatek_broadcast_check_auxstream(hchip);
 			if (is_vatek_success(nres))newbc->is_aux = 1;
@@ -91,7 +91,7 @@ vatek_result vatek_broadcast_open(void_vatek_chip hchip,hvatek_broadcast* hbc)
 void vatek_broadcast_close(hvatek_broadcast hbc)
 {
 	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
-	if(is_vatek_success(chip_status_check(pbc->hchip,chip_status_running)))
+	if (is_vatek_success(chip_status_check(pbc->hchip, chip_status_running)))
 		vatek_broadcast_stop(hbc);
 	free(pbc);
 }
@@ -99,8 +99,8 @@ void vatek_broadcast_close(hvatek_broadcast hbc)
 vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcparam, Pbroadcast_auxstream paux, r2_param r2param)
 {
 	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
-	vatek_result nres = chip_status_check(pbc->hchip,chip_status_waitcmd);
-	if(is_vatek_success(nres))
+	vatek_result nres = chip_status_check(pbc->hchip, chip_status_waitcmd);
+	if (is_vatek_success(nres))
 	{
 		if (paux && pbc->is_aux)
 		{
@@ -123,9 +123,9 @@ vatek_result vatek_broadcast_start(hvatek_broadcast hbc, Pbroadcast_param pbcpar
 			if (is_vatek_success(nres))
 				nres = chip_send_command(pbc->hchip, BC_START, HALREG_BROADCAST_CNTL, HALREG_SYS_ERRCODE);
 		}
-		
+
 		if (is_vatek_success(nres))
-		{	
+		{
 			nres = broadcast_info_get(pbc->hchip, &pbc->info);
 			if (pbc->paux)
 				nres = vatek_chip_read_memory(pbc->hchip, HALREG_AUXDATA_PACKETNUMS, &pbc->auxpackets);
@@ -146,7 +146,7 @@ Pbroadcast_info vatek_broadcast_get_info(hvatek_broadcast hbc)
 vatek_result vatek_broadcast_stop(hvatek_broadcast hbc)
 {
 	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
-	vatek_result nres = chip_status_check(pbc->hchip,chip_status_running);
+	vatek_result nres = chip_status_check(pbc->hchip, chip_status_running);
 	if (is_vatek_success(nres) && pbc->is_rfmixer)
 		nres = rfmixer_stop(pbc->hchip, HALREG_BROADCAST_CNTL);
 	if (is_vatek_success(nres))
@@ -154,11 +154,11 @@ vatek_result vatek_broadcast_stop(hvatek_broadcast hbc)
 	return nres;
 }
 
-vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info* pinfo)
+vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info *pinfo)
 {
 	Phandle_broadcast pbc = (Phandle_broadcast)hbc;
-	vatek_result nres = chip_status_check(pbc->hchip,chip_status_running);
-	if(is_vatek_success(nres))
+	vatek_result nres = chip_status_check(pbc->hchip, chip_status_running);
+	if (is_vatek_success(nres))
 	{
 		nres = broadcast_status_get(pbc->hchip, &pbc->info.status);
 		if (is_vatek_success(nres))

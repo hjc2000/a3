@@ -27,7 +27,7 @@
 //
 
 #include <service_broadcast.h>
-#include <ui/ui_service_broadcast.h>
+#include <ui_service_broadcast.h>
 
 vatek_result broadcast_param_set(void_vatek_chip hchip, Pbroadcast_param pbc)
 {
