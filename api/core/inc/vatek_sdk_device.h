@@ -62,7 +62,7 @@ HAL_API vatek_result vatek_device_polling(hvatek_chip hchip);
 HAL_API void vatek_device_stop(hvatek_chip hchip);
 
 HAL_API uint32_t vatek_device_get_bus(hvatek_chip hchip);
-HAL_API Pchip_info vatek_device_get_info(hvatek_chip hchip);
+HAL_API chip_info * vatek_device_get_info(hvatek_chip hchip);
 HAL_API const char *vatek_device_get_name(hvatek_chip hchip);
 HAL_API vatek_result vatek_device_close(hvatek_chip hchip);
 

@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					Pchip_info pinfo = vatek_device_get_info(hchip);
+					chip_info * pinfo = vatek_device_get_info(hchip);
 					printf_chip_info(pinfo);
 					nres = streamsource.start(streamsource.hsource);
 				}

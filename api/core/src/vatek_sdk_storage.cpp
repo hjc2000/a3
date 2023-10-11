@@ -1013,7 +1013,7 @@ vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle
 		}
 		else if (bus == DEVICE_BUS_USB)
 		{
-			Pchip_info pinfo = vatek_device_get_info(hchip);
+			chip_info * pinfo = vatek_device_get_info(hchip);
 			if (pinfo->peripheral_en & PERIPHERAL_USBBULK)
 			{
 				psentry->mode = hstorage_usbbulk;

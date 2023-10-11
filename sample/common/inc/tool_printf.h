@@ -15,7 +15,7 @@ extern "C"
 {
 #endif
 
-	void printf_chip_info(Pchip_info pchip);
+	void printf_chip_info(chip_info * pchip);
 	void printf_bridge_info(Pbdevice_info pbinfo);
 	void printf_bridge_avsource(const char *name, Pbridge_source psource);
 	void printf_app_end(void);

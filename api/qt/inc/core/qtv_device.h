@@ -55,7 +55,7 @@ class QTV_DECL qtvDevice : public QObject
 	Q_OBJECT
 public:
 	virtual hvatek_chip _handle() = 0;
-	virtual Pchip_info _chip_info() = 0;
+	virtual chip_info * _chip_info() = 0;
 	virtual uint16_t _chip_bus() = 0;
 	virtual hal_service_mode _chip_service() = 0;
 	virtual qtvBridge* _bridge() = 0;

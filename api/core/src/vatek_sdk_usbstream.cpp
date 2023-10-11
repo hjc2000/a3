@@ -83,7 +83,7 @@ extern void usbstream_async_free(Phandle_async pasync);
 
 vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream)
 {
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;
 	if(pinfo->hal_service == service_transform && 
 	   vatek_device_get_bus(hchip) == DEVICE_BUS_USB)

@@ -64,7 +64,7 @@ public:
 	~qi_device();
 
 	hvatek_chip _handle() override { return m_hchip; }
-	Pchip_info _chip_info() override { return vatek_device_get_info(m_hchip); }
+	chip_info * _chip_info() override { return vatek_device_get_info(m_hchip); }
 	uint16_t _chip_bus() override { return vatek_device_get_bus(m_hchip); }
 	hal_service_mode _chip_service() override { return _chip_info()->hal_service; }
 	qtvBridge* _bridge() override { return m_bridge; }

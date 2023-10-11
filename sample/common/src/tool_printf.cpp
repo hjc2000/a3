@@ -9,7 +9,7 @@
 #include <bridge/ui/ui_bridge_source.h>
 
 
-void printf_chip_info(Pchip_info pchip)
+void printf_chip_info(chip_info * pchip)
 {
 	_disp_l("-------------------------------------");
 	_disp_l("	   Chip Information");

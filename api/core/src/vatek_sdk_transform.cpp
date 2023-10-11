@@ -48,7 +48,7 @@ extern vatek_result transform_check_status(hvatek_chip hchip,chip_status status)
 vatek_result vatek_transform_open(hvatek_chip hchip, hvatek_transform* htr)
 {
 	vatek_result nres = vatek_unsupport;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	if(pinfo->hal_service == service_transform)
 	{
 		Phandle_transform newtr = (Phandle_transform)malloc(sizeof(handle_transform));
@@ -294,7 +294,7 @@ void vatek_transform_close(hvatek_transform htr)
 
 vatek_result transform_check_status(hvatek_chip hchip,chip_status status)
 {
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_success;
 	if(!is_chip_status_valid(pinfo->status))nres = vatek_hwfail;
 	else if(pinfo->status != status)nres = vatek_badstatus;

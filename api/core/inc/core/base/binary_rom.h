@@ -37,9 +37,10 @@
 
 /**
  * @ingroup storage_props
- * firmware file type 
+ * firmware file type
  */
-typedef enum _binary_type{
+typedef enum _binary_type
+{
 	binary_unknown = -1,
 	binary_loader = 0,
 	binary_app = 1,
@@ -50,7 +51,8 @@ typedef enum _binary_type{
  * @ingroup storage_props
  * firmware file support chip platform
  */
-typedef enum _binary_chip_arch{
+typedef enum _binary_chip_arch
+{
 	chip_arch_unknown = -1,
 	chip_arch_ax = 0x000FA0A,
 	chip_arch_bx = 0x000FA0B,
@@ -67,7 +69,8 @@ typedef enum _binary_chip_arch{
 #define LOADER_SIZE						0x10000
 #define VECTOR_SIZE						0x2000
 
-typedef struct _loader_header{
+typedef struct _loader_header
+{
 	uint8_t bin_size[4];		/*!< hardware get loader len in word size */
 	uint32_t magic_tag;			/*!< tag [0xAF551229] */
 	uint32_t major_version;		/*!< version major */
@@ -75,7 +78,7 @@ typedef struct _loader_header{
 	binary_chip_arch chip_arch;	/*!< support chip platform */
 }loader_header;
 
-typedef loader_header* Ploader_header;
+typedef loader_header *Ploader_header;
 
 /**
  * @ingroup storage_props
@@ -93,7 +96,8 @@ typedef loader_header* Ploader_header;
 #define BIN_SECTION_TAG					0xA7B60000
 #define BIN_SECTION_MASK				0xFFFF0000
 
-typedef struct _app_header{
+typedef struct _app_header
+{
 	uint32_t bin_size;				/*!< app file total size */
 	uint32_t magic_tag;				/*!< tag [0xAF550122] */
 	uint32_t major_version;			/*!< version major */
@@ -103,11 +107,11 @@ typedef struct _app_header{
 	uint32_t crc32;					/*!< app binary crc */
 }app_header;
 
-typedef app_header* Papp_header;
+typedef app_header *Papp_header;
 
 /**
  * @ingroup storage_props
- * chip hardware config 
+ * chip hardware config
  */
 
 #define CHIP_CFGV0_TAG					0x200506FF		/* enable dac extend R mode and status led only */
@@ -138,7 +142,7 @@ typedef struct _chip_config
 	uint32_t vendor_functions;
 }chip_config;
 
-typedef chip_config* Pchip_config;
+typedef chip_config *Pchip_config;
 
 /**
  * @ingroup storage_props
@@ -153,13 +157,14 @@ typedef chip_config* Pchip_config;
 
 #define is_section_valid(tag)			((tag & BIN_SECTION_MASK) == BIN_SECTION_TAG)
 
-typedef struct _bin_section_header{
+typedef struct _bin_section_header
+{
 	uint32_t tag;
 	uint32_t len;
 	uint32_t crc32;
 }bin_section_header;
 
-typedef bin_section_header* Pbin_section_header;
+typedef bin_section_header *Pbin_section_header;
 
 #define RESOURCE_COLOR_LEN				256
 #define RESOURCE_RAW_TAG				0xFAF80122
@@ -183,15 +188,16 @@ typedef bin_section_header* Pbin_section_header;
 #define RESIDX_SIZE_Y					3
 #define RESIDX_SIZE_UV					4
 
-typedef struct _bin_resource_section{
+typedef struct _bin_resource_section
+{
 	uint32_t width;							/*!< image width */
 	uint32_t height;						/*!< image height */
 	uint32_t index;							/*!< image index */
 	uint32_t bkcolor;						/*!< background color */
 	uint32_t table[RESOURCE_COLOR_LEN];		/*!< color table */
-	uint8_t* rawpixel;						/*!< raw buffer */
+	uint8_t *rawpixel;						/*!< raw buffer */
 }bin_resource_section;
 
-typedef bin_resource_section* Pbin_resource_section;
+typedef bin_resource_section *Pbin_resource_section;
 
 #endif

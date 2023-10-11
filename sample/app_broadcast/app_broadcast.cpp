@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 	hvatek_chip hchip = NULL;
 	hvatek_broadcast hbc = NULL;
 	vatek_result nres = vatek_badparam;
-	Pchip_info pinfo = NULL;
+	chip_info * pinfo = NULL;
 	hmux_core hmux = NULL;
 	Pbroadcast_auxstream pauxstream = NULL;
 

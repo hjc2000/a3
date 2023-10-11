@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	hvatek_chip hchip = NULL;
 	hvatek_bridge hbridge = NULL;
 	vatek_result nres = vatek_success;
-	Pchip_info pinfo = NULL;
+	chip_info * pinfo = NULL;
 	Pbdevice_info pbinfo = NULL;
 	/*
 		step 1 :

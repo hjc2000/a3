@@ -142,7 +142,7 @@ uint32_t vatek_device_get_bus(hvatek_chip hchip)
 	return pcross->bus;
 }
 
-Pchip_info vatek_device_get_info(hvatek_chip hchip)
+chip_info * vatek_device_get_info(hvatek_chip hchip)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	pvatek->info.status = chip_status_get(hchip, &pvatek->info.errcode);
@@ -158,7 +158,7 @@ const char *vatek_device_get_name(hvatek_chip hchip)
 vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
 	{
@@ -177,7 +177,7 @@ vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz)
 vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, uint32_t freqkhz)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_waitcmd)
 	{
@@ -201,7 +201,7 @@ vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, u
 vatek_result vatek_device_polling(hvatek_chip hchip)
 {
 	vatek_result nres = vatek_badstatus;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
 		nres = vatek_success;
 	return nres;
@@ -210,7 +210,7 @@ vatek_result vatek_device_polling(hvatek_chip hchip)
 void vatek_device_stop(hvatek_chip hchip)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_badstatus;
 	if (pinfo->status == chip_status_running)
 	{
@@ -254,7 +254,7 @@ vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_para
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_badstatus;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
 	{
 		nres = vatek_unsupport;
@@ -271,7 +271,7 @@ vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_badstatus;
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
 	{
 		nres = vatek_unsupport;
@@ -304,7 +304,7 @@ vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod,
 
 	if (pstream)
 	{
-		Pchip_info pchipinfo = vatek_device_get_info(hchip);
+		chip_info * pchipinfo = vatek_device_get_info(hchip);
 		if (pchipinfo->hal_service == service_transform)
 		{
 			nres = vatek_badstatus;

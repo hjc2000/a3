@@ -53,7 +53,7 @@ extern vatek_result broadcast_usb_start_aux(Phandle_broadcast pbc, Pbroadcast_au
 
 vatek_result vatek_broadcast_check_auxstream(hvatek_chip hchip)
 {
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;
 	if (vatek_device_get_bus(hchip) == DEVICE_BUS_USB)
 	{
@@ -65,7 +65,7 @@ vatek_result vatek_broadcast_check_auxstream(hvatek_chip hchip)
 
 vatek_result vatek_broadcast_open(hvatek_chip hchip,hvatek_broadcast* hbc)
 {
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_success;
 	if(pinfo->hal_service != service_broadcast)nres = vatek_unsupport;
 	else

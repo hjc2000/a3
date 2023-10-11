@@ -37,7 +37,7 @@ qi_servicehandle::qi_servicehandle(hvatek_chip hchip) :
 	m_status(qstatus_idle),
 	m_encalibration(0)
 {
-	Pchip_info pinfo = vatek_device_get_info(hchip);
+	chip_info * pinfo = vatek_device_get_info(hchip);
 	if (!is_vatek_success(cross_os_create_mutex(&m_hlock)))
 		VERR("create mutex fail");
 

@@ -304,7 +304,7 @@ void qtvPropertyCollection::setValid(bool bvalid)
 	}
 }
 
-qtvPropertyCollection* qtvPropertyCollection::createChipInformation(Pchip_info pinfo)
+qtvPropertyCollection* qtvPropertyCollection::createChipInformation(chip_info * pinfo)
 {
 	return new qi_properties_simple(_ui_struct(chip_info), (uint8_t*)pinfo);
 }

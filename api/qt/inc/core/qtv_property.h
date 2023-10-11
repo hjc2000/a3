@@ -70,7 +70,7 @@ public:
 	virtual void resetProperties() = 0;
 	virtual vatek_result setAdvance(bool isenable) { return vatek_unsupport; }
 
-	static qtvPropertyCollection* createChipInformation(Pchip_info pinfo);
+	static qtvPropertyCollection* createChipInformation(chip_info * pinfo);
 	static qtvPropertyCollection* createProperties(const Pui_prop_item props, uint8_t* raw, const Pui_prop_item advprops = nullptr, uint8_t* advraw = nullptr);
 
 protected:

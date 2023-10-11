@@ -40,86 +40,90 @@
 #include <qDebug>
 #include <windows.h>
 #include <conio.h>
-const char* vatek_romtool::imageTempFile = "~tmpimage.vimage";
+const char *vatek_romtool::imageTempFile = "~tmpimage.vimage";
 vatek_romtool::vatek_romtool(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::vatek_romtool),
-    m_rstatus(romtool_idle),
-    m_device(NULL)
+	QMainWindow(parent),
+	ui(new Ui::vatek_romtool),
+	m_rstatus(romtool_idle),
+	m_device(NULL)
 {
-    ui->setupUi(this);
-    ui->listorage->attachStacked(ui->stcontext);
+	ui->setupUi(this);
+	ui->listorage->attachStacked(ui->stcontext);
 
-    QScreen* screen = QGuiApplication::primaryScreen();     //¿Ã¹õ¤j¤p
-    QRect mm = screen->availableGeometry();
-    int screen_width = mm.width();
-    int screen_height = mm.height();
-    qDebug() << screen_width << screen_height;
+	QScreen *screen = QGuiApplication::primaryScreen();     //ï¿½Ã¹ï¿½ï¿½jï¿½p
+	QRect mm = screen->availableGeometry();
+	int screen_width = mm.width();
+	int screen_height = mm.height();
+	qDebug() << screen_width << screen_height;
 
-    HDC hd = GetDC(NULL);                                           // Àò¨úDPI
-    int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
-    int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
-    double objectRate = horDPI / 96.0;
+	HDC hd = GetDC(NULL);                                           // ï¿½ï¿½ï¿½DPI
+	int horDPI = GetDeviceCaps(hd, LOGPIXELSX);
+	int verticalDPI = GetDeviceCaps(hd, LOGPIXELSY);
+	double objectRate = horDPI / 96.0;
 
-    setWindowFlags(Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+	setWindowFlags(Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 
-    if (screen_width >= 1920) {
-        if (objectRate >= 1.5) {
-            setMinimumSize(screen_width, screen_height - 40);
-        }
-        else {
-            setMinimumSize(screen_width / 1.7, screen_height / 1.5);
-        }
-    }
-    else {
-        setMinimumSize(screen_width / 1.5, screen_height / 1.3);
-    }
+	if (screen_width >= 1920)
+	{
+		if (objectRate >= 1.5)
+		{
+			setMinimumSize(screen_width, screen_height - 40);
+		}
+		else
+		{
+			setMinimumSize(screen_width / 1.7, screen_height / 1.5);
+		}
+	}
+	else
+	{
+		setMinimumSize(screen_width / 1.5, screen_height / 1.3);
+	}
 
 	statusBar()->setSizeGripEnabled(false);
-    connect(ui->actionDevice, SIGNAL(triggered()), this, SLOT(recvOpenDevice()));
-    connect(ui->actionImage, SIGNAL(triggered()), this, SLOT(recvOpenImage()));
-    connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(recvCloseHandle()));
-    connect(ui->actionUpdate, SIGNAL(triggered()), this, SLOT(recvUpdateResource()));
-    connect(ui->actionExport, SIGNAL(triggered()), this, SLOT(recvExport()));
-    connect(ui->actionUpdateDevice, SIGNAL(triggered()), this, SLOT(recvWriteImage()));
-    setStatus(m_rstatus);
+	connect(ui->actionDevice, SIGNAL(triggered()), this, SLOT(recvOpenDevice()));
+	connect(ui->actionImage, SIGNAL(triggered()), this, SLOT(recvOpenImage()));
+	connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(recvCloseHandle()));
+	connect(ui->actionUpdate, SIGNAL(triggered()), this, SLOT(recvUpdateResource()));
+	connect(ui->actionExport, SIGNAL(triggered()), this, SLOT(recvExport()));
+	connect(ui->actionUpdateDevice, SIGNAL(triggered()), this, SLOT(recvWriteImage()));
+	setStatus(m_rstatus);
 }
 
 vatek_romtool::~vatek_romtool()
 {
-    recvCloseHandle();
-    disconnect(ui->actionDevice, SIGNAL(triggered()), this, SLOT(recvOpenDevice()));
-    disconnect(ui->actionImage, SIGNAL(triggered()), this, SLOT(recvOpenImage()));
-    disconnect(ui->actionClose, SIGNAL(triggered()), this, SLOT(recvCloseHandle()));
-    disconnect(ui->actionUpdate, SIGNAL(triggered()), this, SLOT(recvUpdateResource()));
-    disconnect(ui->actionExport, SIGNAL(triggered()), this, SLOT(recvExport()));
-    disconnect(ui->actionUpdateDevice, SIGNAL(triggered()), this, SLOT(recvWriteImage()));
-    delete ui;
+	recvCloseHandle();
+	disconnect(ui->actionDevice, SIGNAL(triggered()), this, SLOT(recvOpenDevice()));
+	disconnect(ui->actionImage, SIGNAL(triggered()), this, SLOT(recvOpenImage()));
+	disconnect(ui->actionClose, SIGNAL(triggered()), this, SLOT(recvCloseHandle()));
+	disconnect(ui->actionUpdate, SIGNAL(triggered()), this, SLOT(recvUpdateResource()));
+	disconnect(ui->actionExport, SIGNAL(triggered()), this, SLOT(recvExport()));
+	disconnect(ui->actionUpdateDevice, SIGNAL(triggered()), this, SLOT(recvWriteImage()));
+	delete ui;
 }
 
 void vatek_romtool::recvOpenDevice()
 {
-    if (!m_device)
-    {
-        m_device = storageDevice::openStorageDevice(1);
-        if (!m_device)QMessageBox::warning(this, "vatek_romtool", "can not found valid device.");
-        else
-        {
-            progressDlg newprog(m_device, this);
-            vatek_result nres = newprog.runAction(saction_open, m_device);
-            if (is_vatek_success(nres))
-            {
-                ui->listorage->refreshStorage(m_device->_hstorage());
-                setStatus(romtool_device);
-            }
-            else
-            {
-                QMessageBox::warning(this, "vatek_romtool", QString::asprintf("open device fail : %d", nres));
-                storageDevice::closeStorageDevice(m_device);
-                m_device = NULL;
-            }
-        }
-    }
+	if (!m_device)
+	{
+		m_device = storageDevice::openStorageDevice(1);
+		if (!m_device)QMessageBox::warning(this, "vatek_romtool", "can not found valid device.");
+		else
+		{
+			progressDlg newprog(m_device, this);
+			vatek_result nres = newprog.runAction(saction_open, m_device);
+			if (is_vatek_success(nres))
+			{
+				ui->listorage->refreshStorage(m_device->_hstorage());
+				setStatus(romtool_device);
+			}
+			else
+			{
+				QMessageBox::warning(this, "vatek_romtool", QString::asprintf("open device fail : %d", nres));
+				storageDevice::closeStorageDevice(m_device);
+				m_device = NULL;
+			}
+		}
+	}
 }
 
 
@@ -136,13 +140,13 @@ void vatek_romtool::recvUpdateResource()
 
 void vatek_romtool::recvCloseHandle()
 {
-    if (m_device)
-    {
-        ui->listorage->refreshStorage(NULL);
-        storageDevice::closeStorageDevice(m_device);
-        m_device = NULL;
-        setStatus(romtool_idle);
-    }
+	if (m_device)
+	{
+		ui->listorage->refreshStorage(NULL);
+		storageDevice::closeStorageDevice(m_device);
+		m_device = NULL;
+		setStatus(romtool_idle);
+	}
 }
 
 void vatek_romtool::recvExport()
@@ -150,140 +154,153 @@ void vatek_romtool::recvExport()
 
 }
 
-void vatek_romtool::recvservice(QString& fimg) {
-    hvatek_devices hdevlist = NULL;
-    hvatek_chip hchip = NULL;
-    vatek_result nres = vatek_success;
-    QMessageBox msg(this);
+void vatek_romtool::recvservice(QString &fimg)
+{
+	hvatek_devices hdevlist = NULL;
+	hvatek_chip hchip = NULL;
+	vatek_result nres = vatek_success;
+	QMessageBox msg(this);
 
-    if (m_hstorage)
-    {
-        QString szfilename;
-        Papp_header papp = NULL;
-        vatek_result nres = vatek_storage_get_app(m_hstorage, &papp);
-        if (is_vatek_success(nres))
-        {
-            const char* szapp = "app2_broadcast";
-            if (papp->service_mode == service_transform) {
-                szapp = "app2_transform";
-                if (nres == vatek_success)
-                    nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_transform, &hdevlist);
-                //if (nres == vatek_success)
-                //    nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist);
-                if (hdevlist) {
-                    if (is_vatek_success(nres))
-                    {
-                        nres = vatek_device_open(hdevlist, 0, &hchip);
-                        Pchip_info pinfo = vatek_device_get_info(hchip);
+	if (m_hstorage)
+	{
+		QString szfilename;
+		Papp_header papp = NULL;
+		vatek_result nres = vatek_storage_get_app(m_hstorage, &papp);
+		if (is_vatek_success(nres))
+		{
+			const char *szapp = "app2_broadcast";
+			if (papp->service_mode == service_transform)
+			{
+				szapp = "app2_transform";
+				if (nres == vatek_success)
+					nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_transform, &hdevlist);
+				//if (nres == vatek_success)
+				//    nres = vatek_device_list_enum(DEVICE_BUS_USB, service_transform, &hdevlist);
+				if (hdevlist)
+				{
+					if (is_vatek_success(nres))
+					{
+						nres = vatek_device_open(hdevlist, 0, &hchip);
+						chip_info *pinfo = vatek_device_get_info(hchip);
 
-                        if (pinfo->hal_service == papp->service_mode) {
-                            if (!fimg.isEmpty())
-                            {
-                                QByteArray ba = fimg.toLocal8Bit();
-                                const char* c_str2 = ba.data();
-                                Promfile_handle prom = NULL;
-                                vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
-                                //2.³]¸m®ø®§¹ï¸Ü®ØÄÝ©Ê
-                                msg.setWindowTitle("Information");
-                                msg.setText("Sure write image file to device?");
-                                msg.setIcon(QMessageBox::Information);
-                                msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+						if (pinfo->hal_service == papp->service_mode)
+						{
+							if (!fimg.isEmpty())
+							{
+								QByteArray ba = fimg.toLocal8Bit();
+								const char *c_str2 = ba.data();
+								Promfile_handle prom = NULL;
+								vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
+								//2.ï¿½]ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü®ï¿½ï¿½Ý©ï¿½
+								msg.setWindowTitle("Information");
+								msg.setText("Sure write image file to device?");
+								msg.setIcon(QMessageBox::Information);
+								msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
-                                switch (msg.exec()) {
-                                case (QMessageBox::Ok):
-                                {
-                                    if (is_vatek_success(nres))
-                                    {
-                                        progressDlg newprog(m_device, this);
-                                        nres = newprog.runAction(saction_writeimage, prom, m_device);
-                                        vatek_storage_romfile_free(prom);
-                                    }
-                                    if (!is_vatek_success(nres))
-                                        QMessageBox::warning(this, "vatek_tomtool", QString::asprintf("write image fail : %d", nres));
-                                    else {
-                                        if (hdevlist)vatek_device_list_free(hdevlist);
-                                        recvCloseHandle();
-                                    }
-                                }
+								switch (msg.exec())
+								{
+								case (QMessageBox::Ok):
+									{
+										if (is_vatek_success(nres))
+										{
+											progressDlg newprog(m_device, this);
+											nres = newprog.runAction(saction_writeimage, prom, m_device);
+											vatek_storage_romfile_free(prom);
+										}
+										if (!is_vatek_success(nres))
+											QMessageBox::warning(this, "vatek_tomtool", QString::asprintf("write image fail : %d", nres));
+										else
+										{
+											if (hdevlist)vatek_device_list_free(hdevlist);
+											recvCloseHandle();
+										}
+									}
 
-                                case (QMessageBox::Cancel):
-                                {
-                                    break;
-                                }
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    QMessageBox::warning(this, "Romtool", QString::asprintf("Error file format"));
-                }
-            }
-            else {
+								case (QMessageBox::Cancel):
+									{
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					QMessageBox::warning(this, "Romtool", QString::asprintf("Error file format"));
+				}
+			}
+			else
+			{
 
-                //if (nres == vatek_success)
-                //    nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_broadcast, &hdevlist);
-                if (nres == vatek_success)
-                    nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist);
-                if (hdevlist) {
-                    if (is_vatek_success(nres))
-                    {
-                        nres = vatek_device_open(hdevlist, 0, &hchip);
-                        Pchip_info pinfo = vatek_device_get_info(hchip);                     
-                        if (pinfo->hal_service == papp->service_mode) {
-                            if (!fimg.isEmpty())
-                            {
-                                QByteArray ba = fimg.toLocal8Bit();
-                                const char* c_str2 = ba.data();
-                                Promfile_handle prom = NULL;
-                                vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
-                                //2.³]¸m®ø®§¹ï¸Ü®ØÄÝ©Ê
-                                msg.setWindowTitle("Information");
-                                msg.setText("Sure write image file to device?");
-                                msg.setIcon(QMessageBox::Information);
-                                msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+				//if (nres == vatek_success)
+				//    nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_broadcast, &hdevlist);
+				if (nres == vatek_success)
+					nres = vatek_device_list_enum(DEVICE_BUS_ALL, service_broadcast, &hdevlist);
+				if (hdevlist)
+				{
+					if (is_vatek_success(nres))
+					{
+						nres = vatek_device_open(hdevlist, 0, &hchip);
+						chip_info *pinfo = vatek_device_get_info(hchip);
+						if (pinfo->hal_service == papp->service_mode)
+						{
+							if (!fimg.isEmpty())
+							{
+								QByteArray ba = fimg.toLocal8Bit();
+								const char *c_str2 = ba.data();
+								Promfile_handle prom = NULL;
+								vatek_result nres = vatek_storage_romfile_create(ba.data(), &prom);
+								//2.ï¿½]ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü®ï¿½ï¿½Ý©ï¿½
+								msg.setWindowTitle("Information");
+								msg.setText("Sure write image file to device?");
+								msg.setIcon(QMessageBox::Information);
+								msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
-                                switch (msg.exec()) {
-                                case (QMessageBox::Ok):
-                                {
-                                    if (is_vatek_success(nres))
-                                    {
-                                        progressDlg newprog(m_device, this);
-                                        nres = newprog.runAction(saction_writeimage, prom, m_device);
-                                        vatek_storage_romfile_free(prom);
-                                    }
-                                    if (!is_vatek_success(nres))
-                                        QMessageBox::warning(this, "vatek_tomtool", QString::asprintf("write image fail : %d", nres));
-                                    else {
-                                        if (hdevlist)vatek_device_list_free(hdevlist);
-                                        recvCloseHandle();
-                                    }
-                                }
+								switch (msg.exec())
+								{
+								case (QMessageBox::Ok):
+									{
+										if (is_vatek_success(nres))
+										{
+											progressDlg newprog(m_device, this);
+											nres = newprog.runAction(saction_writeimage, prom, m_device);
+											vatek_storage_romfile_free(prom);
+										}
+										if (!is_vatek_success(nres))
+											QMessageBox::warning(this, "vatek_tomtool", QString::asprintf("write image fail : %d", nres));
+										else
+										{
+											if (hdevlist)vatek_device_list_free(hdevlist);
+											recvCloseHandle();
+										}
+									}
 
-                                case (QMessageBox::Cancel):
-                                {
-                                    break;
-                                }
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    QMessageBox::warning(this, "Romtool", QString::asprintf("Error file format"));
-                }
-            }
-        }
-        else QMessageBox::warning(this, windowTitle(), "can not found current application and loader");
-    }
+								case (QMessageBox::Cancel):
+									{
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					QMessageBox::warning(this, "Romtool", QString::asprintf("Error file format"));
+				}
+			}
+		}
+		else QMessageBox::warning(this, windowTitle(), "can not found current application and loader");
+	}
 }
 
 void vatek_romtool::recvWriteImage()
 {
 
-    QString szimg = QFileDialog::getOpenFileName(this, "Open Image File", ".", "v2Image (*.v2img);");
-    vatek_romtool::openRomImage(szimg);
-   
+	QString szimg = QFileDialog::getOpenFileName(this, "Open Image File", ".", "v2Image (*.v2img);");
+	vatek_romtool::openRomImage(szimg);
+
 }
 
 void vatek_romtool::setStatus(romtool_status status)
@@ -296,31 +313,31 @@ void vatek_romtool::setStatus(romtool_status status)
 	ui->actionUpdateDevice->setEnabled(status == romtool_device);
 }
 
-vatek_result vatek_romtool::openRomImage(QString& fimg)
+vatek_result vatek_romtool::openRomImage(QString &fimg)
 {
-    Pstorage_handle pstorage = NULL;
+	Pstorage_handle pstorage = NULL;
 
-    // 20220803 - fix chinese path
-    vatek_result nres = vatek_storage_open_file_handle(fimg.toLocal8Bit(), &pstorage, storage_handler, this);
-    
-    if (is_vatek_success(nres))
-    {
-        hvatek_storage hstorage = NULL;
-        nres = vatek_storage_open(pstorage, &hstorage, 1);
-        if (is_vatek_success(nres))
-        {
-            m_hstorage = hstorage;
-            recvservice(fimg);
-        }
+	// 20220803 - fix chinese path
+	vatek_result nres = vatek_storage_open_file_handle(fimg.toLocal8Bit(), &pstorage, storage_handler, this);
+
+	if (is_vatek_success(nres))
+	{
+		hvatek_storage hstorage = NULL;
+		nres = vatek_storage_open(pstorage, &hstorage, 1);
+		if (is_vatek_success(nres))
+		{
+			m_hstorage = hstorage;
+			recvservice(fimg);
+		}
 
 
-        if (!is_vatek_success(nres))
-            vatek_storage_free_handle(pstorage);
-    }
+		if (!is_vatek_success(nres))
+			vatek_storage_free_handle(pstorage);
+	}
 
-    if (!is_vatek_success(nres))
-        QMessageBox::warning(this, windowTitle(), QString::asprintf("open image fail : %d", nres));
-    return nres;
+	if (!is_vatek_success(nres))
+		QMessageBox::warning(this, windowTitle(), QString::asprintf("open image fail : %d", nres));
+	return nres;
 }
 
 //void vatek_romtool::closeRom()
@@ -335,7 +352,7 @@ vatek_result vatek_romtool::openRomImage(QString& fimg)
 //    refreshUIStatus();
 //}
 
-void vatek_romtool::storage_handler(rom_progress_msg msg, void* progressval, void* param)
+void vatek_romtool::storage_handler(rom_progress_msg msg, void *progressval, void *param)
 {
-    vatek_romtool* promtool = (vatek_romtool*)param;
+	vatek_romtool *promtool = (vatek_romtool *)param;
 }

@@ -34,63 +34,64 @@
 #include <vatek_sdk_device.h>
 #include <storage_device.h>
 
-namespace Ui {
-class vatek_romtool;
+namespace Ui
+{
+	class vatek_romtool;
 }
 
 typedef enum _romtool_status
 {
-    romtool_idle,
-    romtool_device,
-    romtool_image,
+	romtool_idle,
+	romtool_device,
+	romtool_image,
 }romtool_status;
 
 class vatek_romtool : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit vatek_romtool(QWidget *parent = nullptr);
-    ~vatek_romtool();
+	explicit vatek_romtool(QWidget *parent = nullptr);
+	~vatek_romtool();
 
-    void setStatus(romtool_status status);
-    void closeRom();
+	void setStatus(romtool_status status);
+	void closeRom();
 
 protected:
-    romtool_status m_rstatus;
-    storageDevice* m_device;
+	romtool_status m_rstatus;
+	storageDevice *m_device;
 
-    typedef enum _sinfo_mode
-    {
-        smode_hex,
-        smode_arch,
-        smode_service,
-        smode_build,
-    }sinfo_mode;
+	typedef enum _sinfo_mode
+	{
+		smode_hex,
+		smode_arch,
+		smode_service,
+		smode_build,
+	}sinfo_mode;
 
-    typedef struct _sinfo_item
-    {
-        const char* name;
-        sinfo_mode mode;
-        int32_t offect;
-    }sinfo_item, * Psinfo_item;
+	typedef struct _sinfo_item
+	{
+		const char *name;
+		sinfo_mode mode;
+		int32_t offect;
+	}sinfo_item, *Psinfo_item;
 
 private:
-    Ui::vatek_romtool *ui;
-    hvatek_storage m_hstorage;
-    vatek_result openRomImage(QString& fimg);
+	Ui::vatek_romtool *ui;
+	hvatek_storage m_hstorage;
+	vatek_result openRomImage(QString &fimg);
 
-    static void storage_handler(rom_progress_msg msg, void* progressval, void* param);
-    static const char* imageTempFile;
+	static void storage_handler(rom_progress_msg msg, void *progressval, void *param);
+	static const char *imageTempFile;
 
 private Q_SLOTS:
-    void recvOpenDevice();
-    void recvOpenImage();
-    void recvWriteImage();
-    void recvUpdateResource();
-    void recvExport();
-    void recvCloseHandle();
-    void recvservice(QString& fimg);
+	void recvOpenDevice();
+	void recvOpenImage();
+	void recvWriteImage();
+	void recvUpdateResource();
+	void recvExport();
+	void recvCloseHandle();
+	void recvservice(QString &fimg);
 };
 
 #endif // VATEK_ROMTOOL_H
