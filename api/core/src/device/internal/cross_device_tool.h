@@ -49,11 +49,11 @@ struct cross_stream
 	fp_stop_stream stop_stream;
 };
 
-typedef vatek_result(*fpbulk_get_size)(husb_device husb);
-typedef vatek_result(*fpbulk_send_command)(husb_device husb, Pusbbulk_command pcmd);
-typedef vatek_result(*fpbulk_get_result)(husb_device husb, Pusbbulk_result presult);
-typedef vatek_result(*fpbulk_write)(husb_device husb, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fpbulk_read)(husb_device husb, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fpbulk_get_size)(void_usb_device husb);
+typedef vatek_result(*fpbulk_send_command)(void_usb_device husb, Pusbbulk_command pcmd);
+typedef vatek_result(*fpbulk_get_result)(void_usb_device husb, Pusbbulk_result presult);
+typedef vatek_result(*fpbulk_write)(void_usb_device husb, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fpbulk_read)(void_usb_device husb, uint8_t *pbuf, int32_t len);
 
 /* interface for bulk stream used to updated rom or broadcast write aux stream*/
 
@@ -111,7 +111,7 @@ public:
 		if (driver == cdriver_bridge)
 			return bridge_device_get_name((hbridge_device)hcross);
 		else if (driver == cdriver_usb)
-			return usb_api_ll_get_name((husb_device)hcross);
+			return usb_api_ll_get_name((void_usb_device)hcross);
 
 		return "_unknown";
 	}
@@ -124,10 +124,10 @@ public:
 		return NULL;
 	}
 
-	husb_device cross_get_usb_device_handle()
+	void_usb_device cross_get_usb_device_handle()
 	{
 		if (driver == cdriver_usb)
-			return (husb_device)hcross;
+			return (void_usb_device)hcross;
 		return NULL;
 	}
 };
@@ -156,7 +156,7 @@ public:
 vatek_result cross_devices_create(cross_device **pcross);
 vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross);
 vatek_result cross_bridge_open(hbridge_device hbridge, cross_device **pcross);
-vatek_result cross_usb_device_open(husb_device husb, cross_device **pcross);
+vatek_result cross_usb_device_open(void_usb_device husb, cross_device **pcross);
 
 void cross_bridge_close(cross_device *pcross);
 void cross_usb_device_close(cross_device *pcross);
