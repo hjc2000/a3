@@ -194,11 +194,10 @@ vatek_result cross_devices_free(cross_device *pcross)
 vatek_result cross_devices_get_size(cross_device *pcross)
 {
 	int32_t nums = 0;
-	cross_device *ptrdev = pcross;
-	while (ptrdev)
+	while (pcross)
 	{
 		nums++;
-		ptrdev = ptrdev->next;
+		pcross = pcross->next;
 	}
 
 	return (vatek_result)nums;

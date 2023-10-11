@@ -19,6 +19,7 @@ set(core_INC_BRIDGE
 
 set(core_INC_CORE
     inc/core/vatek_base.h
+    inc/core/storage_default.h
     inc/core/base/binary_rom.h
     inc/core/base/chip_define.h
     inc/core/base/device_usb.h
