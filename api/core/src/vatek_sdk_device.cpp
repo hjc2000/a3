@@ -113,11 +113,10 @@ hal_service_mode vatek_device_list_get_service(vatek_device_list *hdevices, int3
 
 vatek_result vatek_device_open(vatek_device_list *hdevices, int32_t idx, void_vatek_chip *hchip)
 {
-	vatek_device_list *pdevices = (vatek_device_list *)hdevices;
 	vatek_result nres = vatek_badparam;
-	if (idx < pdevices->nums)
+	if (idx < hdevices->nums)
 	{
-		cross_device *pcross = pdevices->listdevices[idx];
+		cross_device *pcross = hdevices->listdevices[idx];
 		vatek_device *pvatek = new vatek_device{ pcross };
 		nres = chip_info_get((void_vatek_chip)pvatek, &pvatek->info);
 		if (is_vatek_success(nres))
