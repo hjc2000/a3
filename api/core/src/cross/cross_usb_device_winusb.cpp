@@ -447,7 +447,7 @@ void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len)
 
 VOID
 CloseDevice(
-	_Inout_ PDEVICE_DATA DeviceData
+	_Inout_ DEVICE_DATA * DeviceData
 )
 {
 	if (FALSE == DeviceData->HandlesOpen)

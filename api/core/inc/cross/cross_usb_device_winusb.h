@@ -18,21 +18,19 @@
 typedef void *husb_device;
 typedef void *void_usb_device_list;
 
-typedef struct _DEVICE_DATA
+struct DEVICE_DATA
 {
-
 	BOOL                    HandlesOpen;
 	WINUSB_INTERFACE_HANDLE WinusbHandle;
 	HANDLE                  DeviceHandle;
 	TCHAR                   DevicePath[MAX_PATH];
+};
 
-} DEVICE_DATA, *PDEVICE_DATA;
-
-typedef struct _PIPE_ID
+struct PIPE_ID
 {
 	UCHAR  PipeInId;
 	UCHAR  PipeOutId;
-} PIPE_ID;
+};
 
 #define _usb_table_start	static const  usbdevice_id usb_device_ids[] = {
 #define _usb_broadcast(pid)	{ usb_type_broadcast	,USBDEV_VID	,pid,},
@@ -64,7 +62,7 @@ RetrieveDevicePath(
 
 VOID
 CloseDevice(
-	_Inout_ PDEVICE_DATA DeviceData
+	_Inout_ DEVICE_DATA *DeviceData
 );
 
 #ifdef __cplusplus
