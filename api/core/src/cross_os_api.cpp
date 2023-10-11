@@ -52,7 +52,7 @@ void cross_os_wait_unit(timespec *target)
 	cross_os_usleep((uint32_t)curtick);
 }
 
-void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
+void cross_os_time_plus_ms(timespec *tp, int32_t ms)
 {
 	if (ms >= 1000)
 	{
@@ -68,7 +68,7 @@ void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
 	}
 }
 
-void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend)
+void cross_os_time_plus_time(timespec *tp, timespec *tappend)
 {
 	tp->tv_nsec += tappend->tv_nsec;
 	tp->tv_sec += tappend->tv_sec;
@@ -80,7 +80,7 @@ void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend)
 	}
 }
 
-uint64_t cross_os_time_to_us(struct timespec *tp)
+uint64_t cross_os_time_to_us(timespec *tp)
 {
 	return (tp->tv_sec * 1000000) + (tp->tv_nsec / 1000);
 }

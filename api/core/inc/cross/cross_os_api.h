@@ -68,8 +68,8 @@ extern "C" {
 	/// <returns></returns>
 	HAL_API void cross_os_usleep(uint32_t us);
 	HAL_API void cross_os_wait_unit(timespec *target);
-	HAL_API void cross_os_time_plus_ms(struct timespec *tp, int32_t ms);
-	HAL_API void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend);
+	HAL_API void cross_os_time_plus_ms(timespec *tp, int32_t ms);
+	HAL_API void cross_os_time_plus_time(timespec *tp, timespec *tappend);
 
 	/// <summary>
 	///		获取当前 UTC 时间
@@ -83,9 +83,9 @@ extern "C" {
 	/// </summary>
 	/// <returns></returns>
 	HAL_API uint64_t cross_os_get_time_us();
-	HAL_API uint64_t cross_os_time_to_us(struct timespec *tp);
+	HAL_API uint64_t cross_os_time_to_us(timespec *tp);
 
-	HAL_API vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse);
+	HAL_API vatek_result cross_os_time_eclipse(timespec *st, timespec *eclipse);
 
 	/* cross_os_thread_api */
 	typedef void *hcross_thread;
