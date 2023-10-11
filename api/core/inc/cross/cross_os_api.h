@@ -33,17 +33,15 @@ extern "C" {
 	typedef void *hcross_ffind;
 	#define FF_TYPE_FOLDER	0x00000001
 
-	typedef struct _cross_ffind
+	struct cross_ffind
 	{
 		uint32_t ff_type;
 		char *filename;
 		char *fullpath;
-	}cross_ffind;
+	};
 
-	typedef cross_ffind *Pcross_ffind;
-
-	HAL_API vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, Pcross_ffind *pfind);
-	HAL_API vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind *pfind);
+	HAL_API vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cross_ffind **pfind);
+	HAL_API vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind **pfind);
 	HAL_API void cross_os_findfile_close(hcross_ffind hffind);
 
 	/// <summary>
@@ -52,7 +50,12 @@ extern "C" {
 	/// <param name="ms"></param>
 	/// <returns></returns>
 	HAL_API void cross_os_sleep(int32_t ms);
-	HAL_API void cross_os_yield();			/*  relinquish the CPU */
+
+	/// <summary>
+	///		让出 CPU
+	/// </summary>
+	/// <returns></returns>
+	HAL_API void cross_os_yield();
 
 	/// <summary>
 	///		获取 UTC 的毫秒数

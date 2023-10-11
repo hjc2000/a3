@@ -58,9 +58,9 @@ void cross_os_get_current_path(char *path, int32_t buflen)
 	}
 }
 
-extern void ffind_put_result(Pwin_ffind pff, Pcross_ffind *pfind);
+extern void ffind_put_result(Pwin_ffind pff, cross_ffind * *pfind);
 
-vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, Pcross_ffind *pfind)
+vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cross_ffind * *pfind)
 {
 	Pwin_ffind newffind = (Pwin_ffind)malloc(sizeof(win_ffind));
 	vatek_result nres = vatek_memfail;
@@ -91,7 +91,7 @@ vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, Pcr
 	return nres;
 }
 
-vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind *pfind)
+vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind * *pfind)
 {
 	vatek_result nres = vatek_success;
 	Pwin_ffind pff = (Pwin_ffind)hffind;
@@ -140,7 +140,7 @@ vatek_result cross_os_dll_valid(const char *name)
 	return vatek_badparam;
 }
 
-void ffind_put_result(Pwin_ffind pff, Pcross_ffind *pfind)
+void ffind_put_result(Pwin_ffind pff, cross_ffind * *pfind)
 {
 	sprintf(&pff->full_path[0], "%s%s", &pff->path[0], &pff->winfind.cFileName[0]);
 	pff->findptr.fullpath = &pff->full_path[0];

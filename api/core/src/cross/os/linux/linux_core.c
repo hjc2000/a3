@@ -71,12 +71,12 @@ void cross_os_get_current_path(char* path, int32_t buflen)
     }
 }
 
-vatek_result cross_os_findfile_first(hcross_ffind* hffind,const char* path, Pcross_ffind* pfind)
+vatek_result cross_os_findfile_first(hcross_ffind* hffind,const char* path, cross_ffind ** pfind)
 {
     return vatek_unsupport;
 }
 
-vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind* pfind)
+vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind ** pfind)
 {
     return vatek_unsupport;
 }
