@@ -4,9 +4,6 @@
 #include <unistd.h>
 #include <sched.h>
 
-#define TIME_SECOND_TO_NS		    1000000000
-#define TIME_SECOND_TO_US		    1000000
-
 void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
 {
 	if (ms >= 1000)

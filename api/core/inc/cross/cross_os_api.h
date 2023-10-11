@@ -7,6 +7,9 @@
 
 #include <core/vatek_base.h>
 
+#define TIME_SECOND_TO_NS		1000000000
+#define TIME_SECOND_TO_US		1000000
+
 #ifdef __cplusplus
 extern "C" {
 	#endif

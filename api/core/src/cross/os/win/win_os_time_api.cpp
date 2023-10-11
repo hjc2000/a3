@@ -5,10 +5,6 @@
 using namespace std;
 using namespace std::chrono;
 
-
-#define TIME_SECOND_TO_NS		1000000000
-#define TIME_SECOND_TO_US		1000000
-
 #pragma comment(lib,"Winmm.lib") 
 
 static int32_t qf_init = 0;
