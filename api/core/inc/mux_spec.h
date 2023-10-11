@@ -29,7 +29,7 @@
 #ifndef _MUX_SPEC_
 #define _MUX_SPEC_
 
-#include <ui/ui_props_mux.h>
+#include <ui_props_mux.h>
 #include <spec/spec_iso_13818.h>
 #include <spec/spec_dvb.h>
 #include <spec/spec_arib.h>

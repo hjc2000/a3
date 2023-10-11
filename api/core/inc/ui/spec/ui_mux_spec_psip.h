@@ -29,7 +29,7 @@
 #ifndef _UI_MUX_SPEC_PSIP_
 #define _UI_MUX_SPEC_PSIP_
 
-#include <ui/ui_props_mux.h>
+#include <ui_props_mux.h>
 #include <spec/spec_psip.h>
 
 _mux_string_start(mux_spec_psip)

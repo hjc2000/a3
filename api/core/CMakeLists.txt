@@ -89,9 +89,9 @@ set(core_INC_MUX
     inc/ui/spec/ui_mux_spec_dvb.h
     inc/ui/spec/ui_mux_spec_iso.h
     inc/ui/spec/ui_mux_spec_psip.h
-    inc/ui/ui_props_mux.h
-    inc/ui/ui_tool_arib.h
-    inc/ui/ui_tool_country.h)
+    inc/ui_props_mux.h
+    inc/ui_tool_arib.h
+    inc/ui_tool_country.h)
 
 set(core_INC_SERVICE
     inc/service_base.h
