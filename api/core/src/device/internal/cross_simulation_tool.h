@@ -1,7 +1,7 @@
 #ifndef _CROSS_SIMULATION_TOOL_
 #define _CROSS_SIMULATION_TOOL_
 
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 #include <core/base/chip_define.h>
 
 typedef void* hsim_service;

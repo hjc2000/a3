@@ -26,9 +26,9 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 #include <stdio.h>
-#include <cross/cross_usb_device_winusb.h>
+#include <cross_usb_device_winusb.h>
 #include <cfgmgr32.h>
 
 #pragma comment(lib,"winusb.lib")

@@ -29,7 +29,7 @@
 #ifndef _CROSS_STREAM_
 #define _CROSS_STREAM_
 
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 #include <core/base/media_video.h>
 #include <core/base/media_audio.h>
 #include <core/base/output_modulator.h>

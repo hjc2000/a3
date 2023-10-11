@@ -33,7 +33,7 @@
 
 #include <vatek_sdk_device.h>
 #include <vatek_sdk_storage.h>
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 
 #include "../common/inc/tool_printf.h"
 

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 
 #ifdef _WIN32
 #ifndef _WIN32_WINNT

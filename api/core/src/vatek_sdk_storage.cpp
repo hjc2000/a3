@@ -31,8 +31,8 @@
 #include <vatek_sdk_device.h>
 #include <vatek_sdk_bridge.h>
 
-#include <cross/cross_bridge.h>
-#include <cross/cross_os_api.h>
+#include <cross_bridge.h>
+#include <cross_os_api.h>
 #include <core/tools/tool_crc32.h>
 #include <core/hal/halservice_rescure.h>
 #include <core/storage/storage_section.h>

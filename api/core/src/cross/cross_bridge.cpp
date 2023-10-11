@@ -1,5 +1,5 @@
-#include <cross/cross_bridge.h>
-#include <cross/cross_os_api.h>
+#include <cross_bridge.h>
+#include <cross_os_api.h>
 
 vatek_result bridge_device_lock(hbridge_device hbridge)
 {

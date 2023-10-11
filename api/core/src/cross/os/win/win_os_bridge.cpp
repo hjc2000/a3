@@ -1,5 +1,5 @@
-#include <cross/cross_bridge.h>
-#include <cross/cross_os_api.h>
+#include <cross_bridge.h>
+#include <cross_os_api.h>
 
 #include <windows.h>
 #include <setupapi.h>

@@ -1,6 +1,6 @@
 #include "../inc/tool_stream.h"
 #include "../inc/tool_printf.h"
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 #include <mux_define.h>
 
 

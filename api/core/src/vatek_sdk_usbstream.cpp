@@ -3,7 +3,7 @@
 
 #include <core/base/output_rfmixer.h>
 #include <core/tools/tool_helpful.h>
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 
 #define US_DEF_PREPARE_TIME				10
 #define US_CIRCLEBUF_SIZE				(2*1024*1024)

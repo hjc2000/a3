@@ -2,9 +2,9 @@
 #ifndef _CROSS_DEVICE_TOOL_
 #define _CROSS_DEVICE_TOOL_
 
-#include <cross/cross_os_api.h>
-#include <cross/cross_bridge.h>
-#include <cross/cross_usb_device_winusb.h>
+#include <cross_os_api.h>
+#include <cross_bridge.h>
+#include <cross_usb_device_winusb.h>
 #include <core/base/chip_define.h>
 
 #define CHIP_CMD_RDREG          0x00000001

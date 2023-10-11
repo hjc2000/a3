@@ -6,7 +6,7 @@
 #include <vatek_sdk_usbmux.h>
 #include <mux_handle.h>
 #include <mux_packet.h>
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 
 #define HUSBPES_FRAME_LEN			(1 << 12)
 #define HUSBPES_FRAME_MASK			(HUSBPES_FRAME_LEN - 1)

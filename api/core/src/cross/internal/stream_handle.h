@@ -1,7 +1,7 @@
 #ifndef _STREAM_HANDLE_
 #define _STREAM_HANDLE_
 
-#include <cross/cross_stream.h>
+#include <cross_stream.h>
 #include <mux_define.h>
 
 #define TSSLICE_BUFFER_LEN			CHIP_STREAM_SLICE_LEN

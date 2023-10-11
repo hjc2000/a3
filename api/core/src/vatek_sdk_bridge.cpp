@@ -32,7 +32,7 @@
 //----------------------------------------------------------------------------
 
 #include <vatek_sdk_bridge.h>
-#include <cross/cross_bridge.h>
+#include <cross_bridge.h>
 #include "device/internal/cross_device_tool.h"
 
 struct bridge_handle

@@ -2,7 +2,7 @@
 #ifndef _CROSS_OS_WIN_TOOL_
 #define _CROSS_OS_WIN_TOOL_
 
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 #include <windows.h>
 #include <conio.h>
 #include <stdio.h>

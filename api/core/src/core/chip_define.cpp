@@ -27,7 +27,7 @@
 //
 
 #include <core/base/chip_define.h>
-//#include <cross/cross_os_api.h>
+//#include <cross_os_api.h>
 
 chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode)
 {

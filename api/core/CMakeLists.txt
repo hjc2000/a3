@@ -68,10 +68,10 @@ set(core_INC_CORE
     inc/core/ui_props/ui_props_stream.h)
 
 set(core_INC_CROSS
-    inc/cross/cross_bridge.h
-    inc/cross/cross_os_api.h
-    inc/cross/cross_stream.h
-    inc/cross/cross_usb_device_winusb.h)
+    inc/cross_bridge.h
+    inc/cross_os_api.h
+    inc/cross_stream.h
+    inc/cross_usb_device_winusb.h)
 
 set(core_INC_MUX
     inc/mux_define.h
@@ -222,7 +222,6 @@ set(sdk2_HEADERS
 if(MSVC)
     source_group("inc/bridge" FILES ${core_INC_BRIDGE})
     source_group("inc/core" FILES ${core_INC_CORE})
-    source_group("inc/cross" FILES ${core_INC_CROSS})
     source_group("inc" FILES ${core_INC_MUX})
     source_group("inc" FILES ${core_INC_SERVICE})
     source_group("inc" FILES ${core_INC_SDK})

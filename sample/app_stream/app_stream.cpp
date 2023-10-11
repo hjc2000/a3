@@ -1,6 +1,6 @@
 ﻿#include <vatek_sdk_usbstream.h>
 #include <vatek_sdk_device.h>
-#include <cross/cross_os_api.h>
+#include <cross_os_api.h>
 
 #include "../common/inc/tool_printf.h"
 #include "../common/inc/tool_tspacket.h"
