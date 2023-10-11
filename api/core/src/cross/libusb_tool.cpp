@@ -1,7 +1,6 @@
-
 #include "./internal/libusb_tools.h"
 
-static libusb_context* cross_libusb_context = NULL;
+static libusb_context *cross_libusb_context = NULL;
 static int32_t libusb_ref = 0;
 
 vatek_result libusb_tool_init()
@@ -10,9 +9,12 @@ vatek_result libusb_tool_init()
 	if (!libusb_ref)
 	{
 		nres = (vatek_result)libusb_init(&cross_libusb_context);
-		if (!is_vatek_success(nres))nres = vatek_hwfail;
-		else libusb_ref++;
+		if (!is_vatek_success(nres))
+			nres = vatek_hwfail;
+		else
+			libusb_ref++;
 	}
+
 	return nres;
 }
 
@@ -26,7 +28,7 @@ void libusb_tool_free()
 	}
 }
 
-struct libusb_context* libusb_tool_get_context()
+struct libusb_context *libusb_tool_get_context()
 {
 	return cross_libusb_context;
 }
