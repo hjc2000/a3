@@ -5,16 +5,16 @@
 #include <core/ui/ui_props/ui_props_chip.h>
 #include <core/ui/ui_props_api.h>
 #include <vatek_sdk_bridge.h>
-#include <bridge/ui/ui_bridge_base.h>
-#include <bridge/ui/ui_bridge_source.h>
+#include <bridge/ui_bridge_base.h>
+#include <bridge/ui_bridge_source.h>
 
 
-void printf_chip_info(chip_info * pchip)
+void printf_chip_info(chip_info *pchip)
 {
 	_disp_l("-------------------------------------");
 	_disp_l("	   Chip Information");
 	_disp_l("-------------------------------------");
-	_disp_l("%-20s : %s", "Chip Status", ui_enum_get_str(chip_status,pchip->status));
+	_disp_l("%-20s : %s", "Chip Status", ui_enum_get_str(chip_status, pchip->status));
 	_disp_l("%-20s : %08x", "FW Version", pchip->version);
 	_disp_l("%-20s : %08x", "Chip  ID", pchip->chip_module);
 	_disp_l("%-20s : %08x", "Service", pchip->hal_service);
@@ -43,14 +43,14 @@ void printf_app_end(void)
 	while (try_getchar() == -1);
 }
 
-void printf_bridge_avsource(const char* name,Pbridge_source psource)
+void printf_bridge_avsource(const char *name, Pbridge_source psource)
 {
-	_disp_l("-- source : [%08x:%s] - %s",psource->source_id, name,ui_enum_get_str(bridge_status,psource->status));
+	_disp_l("-- source : [%08x:%s] - %s", psource->source_id, name, ui_enum_get_str(bridge_status, psource->status));
 	if (psource->status == bstatus_active || psource->status == bstatus_active_protect)
 	{
 		Pbridge_video_info pvinfo = &psource->video_info;
 		Pbridge_audio_info painfo = &psource->audio_info;
-		_disp_l("%-20s : %s", "resolution", ui_enum_get_str(video_resolution,pvinfo->resolution));
+		_disp_l("%-20s : %s", "resolution", ui_enum_get_str(video_resolution, pvinfo->resolution));
 		_disp_l("%-20s : %s", "framerate", ui_enum_get_str(video_framerate, pvinfo->framerate));
 		_disp_l("%-20s : %s", "aspectrate", ui_enum_get_str(video_aspect_rate, pvinfo->aspectrate));
 		_disp_l("%-20s : %d", "offset_x", pvinfo->offset_x);
@@ -63,8 +63,10 @@ void printf_bridge_avsource(const char* name,Pbridge_source psource)
 	}
 }
 
-void printf_logo(const char** logo) {
-	while (*logo) {
+void printf_logo(const char **logo)
+{
+	while (*logo)
+	{
 		printf("%s", *logo++);
 	}
 }
@@ -79,16 +81,19 @@ void printf_modulation_param(usbstream_param usbcmd)
 	_disp_l("%-20s : %d", "Bandwidth / Symbolrate", usbcmd.modulator.bandwidth_symbolrate);
 	_disp_l("%-20s : %s", "IF mode", ui_enum_get_str(dac_ifmode, usbcmd.modulator.ifmode));
 	_disp_l("%-20s : %d", "IF mode offset", usbcmd.modulator.iffreq_offset);
-	if (usbcmd.modulator.type == modulator_atsc) {
-		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(atsc_qam,usbcmd.modulator.mod.atsc.constellation));
+	if (usbcmd.modulator.type == modulator_atsc)
+	{
+		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(atsc_qam, usbcmd.modulator.mod.atsc.constellation));
 	}
-	else if (usbcmd.modulator.type == modulator_dvb_t) {
+	else if (usbcmd.modulator.type == modulator_dvb_t)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(dvb_t_qam, usbcmd.modulator.mod.dvb_t.constellation));
 		_disp_l("%-20s : %s", "FFT", ui_enum_get_str(fft_mode, usbcmd.modulator.mod.dvb_t.fft));
 		_disp_l("%-20s : %s", "Guard Interval", ui_enum_get_str(guard_interval, usbcmd.modulator.mod.dvb_t.guardinterval));
 		_disp_l("%-20s : %s", "Code Rate", ui_enum_get_str(code_rate, usbcmd.modulator.mod.dvb_t.coderate));
 	}
-	else if (usbcmd.modulator.type == modulator_isdb_t) {
+	else if (usbcmd.modulator.type == modulator_isdb_t)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(isdb_t_qam, usbcmd.modulator.mod.isdb_t.constellation));
 		_disp_l("%-20s : %s", "FFT", ui_enum_get_str(fft_mode, usbcmd.modulator.mod.isdb_t.fft));
 		_disp_l("%-20s : %s", "Guard Interval", ui_enum_get_str(guard_interval, usbcmd.modulator.mod.isdb_t.guardinterval));
@@ -96,23 +101,28 @@ void printf_modulation_param(usbstream_param usbcmd)
 		_disp_l("%-20s : %s", "Time Interleaved", ui_enum_get_str(isdb_t_time_interleaved, usbcmd.modulator.mod.isdb_t.timeinterleaved));
 		_disp_l("%-20s : %08x", "ISDB-T Flags", usbcmd.modulator.mod.isdb_t.isdb_t_flags);
 	}
-	else if (usbcmd.modulator.type == modulator_dtmb) {
+	else if (usbcmd.modulator.type == modulator_dtmb)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(dtmb_qam, usbcmd.modulator.mod.dtmb.constellation));
 		_disp_l("%-20s : %s", "Time Interleaved", ui_enum_get_str(dtmb_time_interleaved, usbcmd.modulator.mod.dtmb.timeinterleaved));
 		_disp_l("%-20s : %s", "Code Rate", ui_enum_get_str(dtmb_code_rate, usbcmd.modulator.mod.dtmb.coderate));
 		_disp_l("%-20s : %s", "Carrier Mode", ui_enum_get_str(dtmb_carrier_mode, usbcmd.modulator.mod.dtmb.carriermode));
 		_disp_l("%-20s : %s", "Frame Header", ui_enum_get_str(dtmb_frame_header, usbcmd.modulator.mod.dtmb.framesync));
 	}
-	else if (usbcmd.modulator.type == modulator_j83a) {
+	else if (usbcmd.modulator.type == modulator_j83a)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(j83a_qam, usbcmd.modulator.mod.j83a.constellation));
 	}
-	else if (usbcmd.modulator.type == modulator_j83b) {
+	else if (usbcmd.modulator.type == modulator_j83b)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(j83b_qam, usbcmd.modulator.mod.j83b.constellation));
 	}
-	else if (usbcmd.modulator.type == modulator_j83c) {
+	else if (usbcmd.modulator.type == modulator_j83c)
+	{
 		_disp_l("%-20s : %s", "Constellation", ui_enum_get_str(j83c_qam, usbcmd.modulator.mod.j83c.constellation));
 	}
-	else if (usbcmd.modulator.type == modulator_dvb_t2) {
+	else if (usbcmd.modulator.type == modulator_dvb_t2)
+	{
 		_disp_l("%-20s : %s", "Version", ui_enum_get_str(t2_version, usbcmd.modulator.mod.dvb_t2.version));
 		_disp_l("%-20s : %08x", "T2 Flags", usbcmd.modulator.mod.dvb_t2.t2_flags);
 		_disp_l("%-20s : %s", "L1 Constellation", ui_enum_get_str(constellation_t2_l1, usbcmd.modulator.mod.dvb_t2.l1_constellation));
@@ -137,5 +147,5 @@ void printf_modulation_param(usbstream_param usbcmd)
 void printf_stream_info(broadcast_info info)
 {
 	//_disp_l("usbstream - A3 Status:%s", ui_enum_get_str(broadcast_status, pinfo->info.status));
-	
+
 }

@@ -14,8 +14,8 @@ set(core_INC_BRIDGE
     inc/bridge/bridge_rfmixer.h
     inc/bridge/bridge_source.h
     inc/bridge/bridge_usb.h
-    inc/bridge/ui/ui_bridge_base.h
-    inc/bridge/ui/ui_bridge_source.h)
+    inc/bridge/ui_bridge_base.h
+    inc/bridge/ui_bridge_source.h)
 
 set(core_INC_CORE
     inc/core/vatek_base.h
