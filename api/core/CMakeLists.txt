@@ -66,19 +66,11 @@ set(core_INC_CORE
     inc/core/ui/ui_props/ui_props_output.h
     inc/core/ui/ui_props/ui_props_stream.h)
 
-if(MSVC)
-	set(core_INC_CROSS
-    		inc/cross/cross_bridge.h
-    		inc/cross/cross_os_api.h
-    		inc/cross/cross_stream.h
-    		inc/cross/cross_usb_device_winusb.h)
-elseif(UNIX)
-	set(core_INC_CROSS
-    		inc/cross/cross_bridge.h
-    		inc/cross/cross_os_api.h
-    		inc/cross/cross_stream.h
-    		inc/cross/cross_usb_device.h)
-endif()
+set(core_INC_CROSS
+    inc/cross/cross_bridge.h
+    inc/cross/cross_os_api.h
+    inc/cross/cross_stream.h
+    inc/cross/cross_usb_device_winusb.h)
 
 set(core_INC_MUX
     inc/mux/mux_define.h
@@ -146,30 +138,17 @@ set(core_SRC_CORE
     src/core/tool_output.cpp
     src/core/ui_props_api.cpp)
 
-if(MSVC)
-	set(core_SRC_CROSS
-    		src/cross/cross_bridge.cpp
-    		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_socket.cpp
-    		src/cross/cross_stream.cpp
-    		src/cross/cross_stream_file.cpp
-    		src/cross/cross_stream_test.cpp
-    		src/cross/cross_stream_udp.cpp
-    		src/cross/cross_stream_mux.cpp
-    		src/cross/cross_usb_device_winusb.cpp
-    )
-elseif(UNIX)
-	set(core_SRC_CROSS
-    		src/cross/cross_bridge.cpp
-    		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_socket.cpp
-    		src/cross/cross_stream.cpp
-    		src/cross/cross_stream_file.cpp
-    		src/cross/cross_stream_test.cpp
-    		src/cross/cross_stream_udp.cpp
-    		src/cross/cross_stream_mux.cpp
-    )
-endif()
+set(core_SRC_CROSS
+    src/cross/cross_bridge.cpp
+    src/cross/cross_bridge_board.cpp
+    src/cross/cross_os_socket.cpp
+    src/cross/cross_stream.cpp
+    src/cross/cross_stream_file.cpp
+    src/cross/cross_stream_test.cpp
+    src/cross/cross_stream_udp.cpp
+    src/cross/cross_stream_mux.cpp
+    src/cross/cross_usb_device_winusb.cpp
+)
 
 set(core_SRC_DEVICE
     src/device/cross_device_bridge.cpp

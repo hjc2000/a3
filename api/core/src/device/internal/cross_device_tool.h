@@ -4,7 +4,7 @@
 
 #include <cross/cross_os_api.h>
 #include <cross/cross_bridge.h>
-#include <cross/cross_usb_device.h>
+#include <cross/cross_usb_device_winusb.h>
 #include <core/base/chip_define.h>
 
 #define CHIP_CMD_RDREG          0x00000001
