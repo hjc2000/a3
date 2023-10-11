@@ -279,7 +279,7 @@ void vatek_usbstream_close(hvatek_usbstream husstream)
 
 void usbstream_sync_handler(cross_thread_param * param)
 {
-	handle_usbstream *pustream = (handle_usbstream *)param->userparam;
+	handle_usbstream *pustream = (handle_usbstream *)param->void_userparam;
 	vatek_result nres = vatek_success;
 	fpsync_get_buffer fpgetbuf = pustream->sync.getbuffer;
 	void *fpparam = pustream->sync.void_param;
@@ -319,7 +319,7 @@ void usbstream_sync_handler(cross_thread_param * param)
 
 void usbstream_async_handler(cross_thread_param * param)
 {
-	handle_usbstream *pustream = (handle_usbstream *)param->userparam;
+	handle_usbstream *pustream = (handle_usbstream *)param->void_userparam;
 	vatek_result nres = vatek_success;
 	handle_async *pasync = pustream->async;
 	pustream->stream_packets = 0;

@@ -95,7 +95,7 @@ extern "C" {
 
 	struct cross_thread_param
 	{
-		void *userparam;
+		void *void_userparam;
 		vatek_result result;
 	};
 

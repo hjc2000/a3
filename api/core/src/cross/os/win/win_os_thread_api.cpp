@@ -39,7 +39,7 @@ void_cross_thread cross_os_create_thread(fpcross_thread_function fpfun, void* us
 {
 	Pwin_thread newthread = (Pwin_thread)malloc(sizeof(win_thread));
 	memset(newthread, 0, sizeof(win_thread));
-	newthread->param.userparam = userparam;
+	newthread->param.void_userparam = userparam;
 
 	newthread->hhandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fpfun, &newthread->param, 0, &newthread->threadid);
 	if (newthread->hhandle != INVALID_HANDLE_VALUE)

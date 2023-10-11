@@ -169,7 +169,7 @@ void udp_stream_free(hstream_source hsource)
 
 void recv_handle(cross_thread_param * param)
 {
-	Phandle_udp pudp = (Phandle_udp)param->userparam;
+	Phandle_udp pudp = (Phandle_udp)param->void_userparam;
 	vatek_result nres = vatek_success;
 	socket_protocol nprotocol = cross_os_get_protocol_socket(pudp->hsocket);
 	int32_t framelen = UDP_FRAME_LEN;

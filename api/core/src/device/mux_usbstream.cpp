@@ -220,7 +220,7 @@ vatek_result usbstream_muxer_mux(Pusbstream_slice pslice, Phandle_muxer pmuxer)
 
 void usbmuxer_handler(cross_thread_param * param)
 {
-	Phandle_muxer pmuxer = (Phandle_muxer)param->userparam;
+	Phandle_muxer pmuxer = (Phandle_muxer)param->void_userparam;
 	Pusbmux_source psource = pmuxer->source;
 	vatek_result nres = vatek_success;
 
