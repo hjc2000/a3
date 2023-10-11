@@ -22,7 +22,7 @@ extern void udp_stream_free(hstream_source hsource);
 typedef struct _handle_udp
 {
 	hcross_socket hsocket;
-	hcross_thread hrecv;
+	void_cross_thread hrecv;
 	void_cross_mutex hlock;
 	int32_t buf_rptr;
 	int32_t buf_wptr;

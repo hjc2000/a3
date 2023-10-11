@@ -41,7 +41,7 @@ typedef struct _handle_muxer
 	hvatek_usbstream hustream;
 	Pusbmux_source source;
 	usbmux_status status;
-	hcross_thread hthread;
+	void_cross_thread hthread;
 	void_cross_mutex hlock;
 	umuxer_tick streamtick;
 	int32_t latencyms;

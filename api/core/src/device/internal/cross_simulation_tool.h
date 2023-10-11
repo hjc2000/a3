@@ -35,7 +35,7 @@ typedef struct _sim_handle
 	uint8_t* mapmem;
 	void_cross_mutex lock;
 	sim_status status;
-	hcross_thread hsimrun;
+	void_cross_thread hsimrun;
 	FILE* fstream;
 	chip_info info;
 	hsim_service hservice;

@@ -45,7 +45,7 @@ typedef struct _handle_udp
 {
 	cstream_handler handle;
 	hcross_socket hsocket;
-	hcross_thread hrecv;
+	void_cross_thread hrecv;
 	void_cross_mutex hlock;
 	int32_t buf_rptr;
 	int32_t buf_wptr;

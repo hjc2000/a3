@@ -58,7 +58,7 @@ typedef struct _handle_usbstream
 	hvatek_transform htransform;
 	transform_broadcast broadcast;
 	int32_t is_support_r2;
-	hcross_thread hthread;
+	void_cross_thread hthread;
 	Ptransform_info info;
 	uint32_t stream_tick;
 	uint32_t stream_packets;

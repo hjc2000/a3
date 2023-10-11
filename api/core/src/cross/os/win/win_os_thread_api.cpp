@@ -35,7 +35,7 @@ typedef struct _win_thread
 	DWORD threadid;
 }win_thread, *Pwin_thread;
 
-hcross_thread cross_os_create_thread(fpcross_thread_function fpfun, void* userparam)
+void_cross_thread cross_os_create_thread(fpcross_thread_function fpfun, void* userparam)
 {
 	Pwin_thread newthread = (Pwin_thread)malloc(sizeof(win_thread));
 	memset(newthread, 0, sizeof(win_thread));
@@ -49,7 +49,7 @@ hcross_thread cross_os_create_thread(fpcross_thread_function fpfun, void* userpa
 	return NULL;
 }
 
-vatek_result cross_os_free_thread(hcross_thread hthread)
+vatek_result cross_os_free_thread(void_cross_thread hthread)
 {
 	Pwin_thread winthread = (Pwin_thread)hthread;
 	vatek_result nres = cross_os_join_thread(hthread);
@@ -58,7 +58,7 @@ vatek_result cross_os_free_thread(hcross_thread hthread)
 	return nres;
 }
 
-vatek_result cross_os_join_thread(hcross_thread hthread)
+vatek_result cross_os_join_thread(void_cross_thread hthread)
 {
 	Pwin_thread winthread = (Pwin_thread)hthread;
 	uint32_t nres = WaitForSingleObject(winthread->hhandle, 1000);
@@ -73,7 +73,7 @@ vatek_result cross_os_join_thread(hcross_thread hthread)
 	return vatek_unknown;
 }
 
-vatek_result cross_os_get_thread_result(hcross_thread hthread)
+vatek_result cross_os_get_thread_result(void_cross_thread hthread)
 {
 	Pwin_thread winthread = (Pwin_thread)hthread;
 	return winthread->param.result;

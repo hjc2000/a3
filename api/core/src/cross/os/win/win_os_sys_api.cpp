@@ -60,7 +60,7 @@ void cross_os_get_current_path(char *path, int32_t buflen)
 
 extern void ffind_put_result(Pwin_ffind pff, cross_ffind * *pfind);
 
-vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cross_ffind * *pfind)
+vatek_result cross_os_findfile_first(void_cross_ffind *hffind, const char *path, cross_ffind * *pfind)
 {
 	Pwin_ffind newffind = (Pwin_ffind)malloc(sizeof(win_ffind));
 	vatek_result nres = vatek_memfail;
@@ -79,7 +79,7 @@ vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cro
 		{
 			nres = vatek_success;
 			if (newffind->winfind.cFileName[0] == '.')
-				nres = cross_os_findfile_next((hcross_ffind)newffind, pfind);
+				nres = cross_os_findfile_next((void_cross_ffind)newffind, pfind);
 			else ffind_put_result(newffind, pfind);
 
 			if (is_vatek_success(nres))*hffind = newffind;
@@ -91,7 +91,7 @@ vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cro
 	return nres;
 }
 
-vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind * *pfind)
+vatek_result cross_os_findfile_next(void_cross_ffind hffind, cross_ffind * *pfind)
 {
 	vatek_result nres = vatek_success;
 	Pwin_ffind pff = (Pwin_ffind)hffind;
@@ -110,7 +110,7 @@ vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind * *pfind)
 	return nres;
 }
 
-void cross_os_findfile_close(hcross_ffind hffind)
+void cross_os_findfile_close(void_cross_ffind hffind)
 {
 	Pwin_ffind pffind = (Pwin_ffind)hffind;
 	FindClose(pffind->hfind);

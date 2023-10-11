@@ -30,7 +30,7 @@ extern "C" {
 	HAL_API void cross_os_get_current_path(char *path, int32_t buflen);
 	HAL_API void cross_os_append_path(char *path, const char *append);
 
-	typedef void *hcross_ffind;
+	typedef void *void_cross_ffind;
 	#define FF_TYPE_FOLDER	0x00000001
 
 	struct cross_ffind
@@ -40,9 +40,9 @@ extern "C" {
 		char *fullpath;
 	};
 
-	HAL_API vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, cross_ffind **pfind);
-	HAL_API vatek_result cross_os_findfile_next(hcross_ffind hffind, cross_ffind **pfind);
-	HAL_API void cross_os_findfile_close(hcross_ffind hffind);
+	HAL_API vatek_result cross_os_findfile_first(void_cross_ffind *hffind, const char *path, cross_ffind **pfind);
+	HAL_API vatek_result cross_os_findfile_next(void_cross_ffind hffind, cross_ffind **pfind);
+	HAL_API void cross_os_findfile_close(void_cross_ffind hffind);
 
 	/// <summary>
 	///		睡眠指定的毫秒数
@@ -91,7 +91,7 @@ extern "C" {
 	HAL_API vatek_result cross_os_time_eclipse(timespec *st, timespec *eclipse);
 
 	/* cross_os_thread_api */
-	typedef void *hcross_thread;
+	typedef void *void_cross_thread;
 
 	struct cross_thread_param
 	{
@@ -103,10 +103,10 @@ extern "C" {
 
 	typedef void (*fpcross_thread_function)(Pcross_thread_param param);
 
-	HAL_API hcross_thread cross_os_create_thread(fpcross_thread_function fpfun, void *userparam);
-	HAL_API vatek_result cross_os_join_thread(hcross_thread hthread);
-	HAL_API vatek_result cross_os_free_thread(hcross_thread hthread);
-	HAL_API vatek_result cross_os_get_thread_result(hcross_thread hthread);
+	HAL_API void_cross_thread cross_os_create_thread(fpcross_thread_function fpfun, void *userparam);
+	HAL_API vatek_result cross_os_join_thread(void_cross_thread hthread);
+	HAL_API vatek_result cross_os_free_thread(void_cross_thread hthread);
+	HAL_API vatek_result cross_os_get_thread_result(void_cross_thread hthread);
 
 	/* cross_os_mutex_api */
 	typedef void *void_cross_mutex;
