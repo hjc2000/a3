@@ -5,7 +5,7 @@
 #ifndef _CROSS_OS_API_
 #define _CROSS_OS_API_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 #define TIME_SECOND_TO_NS		1000000000
 #define TIME_SECOND_TO_US		1000000

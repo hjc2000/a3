@@ -29,7 +29,7 @@
 #ifndef _BRIDGE_BASE_
 #define _BRIDGE_BASE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 #define BBRIDGE_TAG_MASK						0xFFF00000		/* bridge driver valid tag						*/	
 #define BBRIDGE_TAG_TYPE_MASK					0xFFFFF000		/* bridge driver type [source|_demod|_rfmixer]	*/

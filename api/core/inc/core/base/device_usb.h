@@ -29,7 +29,7 @@
 #ifndef _DEVICE_USB_BASE_
 #define _DEVICE_USB_BASE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 #define USBDEV_VID								0x2C42
 #define USBDEV_VID_OLD							0x1934

@@ -29,7 +29,7 @@
 #ifndef _MUX_DEFINE_
 #define _MUX_DEFINE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/tools/tool_helpful.h>
 #include <core/base/media_audio.h>
 #include <core/base/media_video.h>

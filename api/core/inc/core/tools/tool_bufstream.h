@@ -29,7 +29,7 @@
 #ifndef _TOOL_BUFSTREAM_
 #define _TOOL_BUFSTREAM_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 typedef struct _bufstream
 {

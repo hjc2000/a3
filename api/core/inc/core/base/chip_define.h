@@ -1,7 +1,7 @@
 #ifndef _CHIP_DEFINE_
 #define _CHIP_DEFINE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/hal/halservice_base.h>
 
 #define DEVICE_BUS_UNKNOWN		0x00000000

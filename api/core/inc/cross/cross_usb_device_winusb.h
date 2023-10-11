@@ -1,7 +1,7 @@
 #ifndef _CROSS_USB_DEVICE_WINUSB_
 #define _CROSS_USB_DEVICE_WINUSB_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/base/device_usb.h>
 
 #include <initguid.h>

@@ -29,7 +29,7 @@
 #ifndef _BINARY_ROM_
 #define _BINARY_ROM_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/base/chip_define.h>
 
 #define BINARY_SECTION_SIZE				4096

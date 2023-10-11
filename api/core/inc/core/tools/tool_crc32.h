@@ -29,7 +29,7 @@
 #ifndef _TOOL_CRC32_
 #define _TOOL_CRC32_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 #ifdef __cplusplus
 extern "C" {

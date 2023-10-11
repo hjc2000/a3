@@ -27,7 +27,7 @@
 //
 
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include "device/internal/cross_device_tool.h"
 #include <stdarg.h>
 #if _MSC_VER

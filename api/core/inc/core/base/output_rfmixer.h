@@ -29,10 +29,11 @@
 #ifndef _OUTPUT_RFMIXER_
 #define _OUTPUT_RFMIXER_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/hal/halreg_rfmixer.h>
 
-typedef enum _rfmixer_status{
+typedef enum _rfmixer_status
+{
 	rfmixer_unsupport = -2,
 	rfmixer_fail = -1,
 	rfmixer_idle = 0,
@@ -77,7 +78,7 @@ typedef struct _r2_tune
 	uint16_t qoffset;
 	uint16_t imgoffset;
 	uint16_t phaseoffset;
-}r2_tune,*Pr2_tune;
+}r2_tune, *Pr2_tune;
 
 typedef struct _r2_tune_rule
 {
@@ -86,24 +87,26 @@ typedef struct _r2_tune_rule
 	uint16_t gpiocntl;
 }r2_tune_rule;
 
-typedef r2_tune_rule* Pr2_tune_rule;
+typedef r2_tune_rule *Pr2_tune_rule;
 
 typedef r2_tune r2_default_rule;
-typedef r2_default_rule* Pr2_default_rule;
+typedef r2_default_rule *Pr2_default_rule;
 
-typedef struct _r2_tune_item{
+typedef struct _r2_tune_item
+{
 	uint32_t tag;
 	uint32_t freq;
 	r2_tune_rule rule[2];
 }r2_tune_item;
 
-typedef r2_tune_item* Pr2_tune_item;
+typedef r2_tune_item *Pr2_tune_item;
 
 #define R2_FLAG_SET_IQSWAP(flag,a)		flag = ((flag & 0xFFFFFF00) | (a & 0xFF))
 #define R2_FLAG_GET_IQSWAP(a)			(a & 0xFF)
 #define R2_FLAG_EN_CALIBRATION(flag)	((flag & R2FLAG_EN_CALIBRATION) != 0)
 
-typedef struct _r2_tune_handle{
+typedef struct _r2_tune_handle
+{
 	uint32_t tag;
 	uint32_t items_num;
 	uint32_t r2_flags_0;
@@ -111,7 +114,7 @@ typedef struct _r2_tune_handle{
 	r2_tune_item rules[R2_TUNE_NUMS];
 }r2_tune_handle;
 
-typedef r2_tune_handle* Pr2_tune_handle;
+typedef r2_tune_handle *Pr2_tune_handle;
 
 typedef enum _r2_cntl_mode
 {
@@ -124,47 +127,48 @@ typedef enum _r2_cntl_mode
 #define is_current_r2_cntl_mode(cntl)	(cntl >= r2_cntl_path_0 && cntl <= r2_cntl_param)
 #define is_current_r2_param(cntl)		(cntl == r2_cntl_param)
 
-typedef struct _r2_param{
+typedef struct _r2_param
+{
 	r2_cntl_mode mode;
 	uint32_t r2_flags;
 	uint32_t freqkhz;
 	r2_tune_rule rule;
 }r2_param;
 
-typedef r2_param* Pr2_param;
+typedef r2_param *Pr2_param;
 
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
 	HAL_API vatek_result rfmixer_check_support(void_vatek_chip hchip);
-	HAL_API vatek_result rfmixer_start(void_vatek_chip hchip,uint32_t cntl,uint32_t freqkhz);
-	HAL_API vatek_result rfmixer_stop(void_vatek_chip hchip,uint32_t cntl);
+	HAL_API vatek_result rfmixer_start(void_vatek_chip hchip, uint32_t cntl, uint32_t freqkhz);
+	HAL_API vatek_result rfmixer_stop(void_vatek_chip hchip, uint32_t cntl);
 
 	HAL_API rfmixer_status rfmixer_get_status(void_vatek_chip hchip);
-	HAL_API vatek_result rfmixer_set_status(void_vatek_chip hchip,rfmixer_status status);
+	HAL_API vatek_result rfmixer_set_status(void_vatek_chip hchip, rfmixer_status status);
 
 	HAL_API vatek_result rfmixer_r2_check_support(void_vatek_chip hchip);
 
 	HAL_API void rfmixer_r2_reset_tune_table(Pr2_tune_handle pr2tune);
-	HAL_API vatek_result rfmixer_r2_add_tune_table(Pr2_tune_handle pr2tune, uint32_t freq, Pr2_tune_item* pitem);
+	HAL_API vatek_result rfmixer_r2_add_tune_table(Pr2_tune_handle pr2tune, uint32_t freq, Pr2_tune_item *pitem);
 	HAL_API vatek_result rfmixer_r2_del_tune_table(Pr2_tune_handle pr2tune, uint32_t freq);
 
-	HAL_API vatek_result rfmixer_r2_get_default(void_vatek_chip hchip,Pr2_default_rule pr2def);
-	HAL_API vatek_result rfmixer_r2_set_default(void_vatek_chip hchip,Pr2_default_rule pr2def);
+	HAL_API vatek_result rfmixer_r2_get_default(void_vatek_chip hchip, Pr2_default_rule pr2def);
+	HAL_API vatek_result rfmixer_r2_set_default(void_vatek_chip hchip, Pr2_default_rule pr2def);
 
-	HAL_API vatek_result rfmixer_r2_get_param(void_vatek_chip hchip,Pr2_param pr2);
-	HAL_API vatek_result rfmixer_r2_set_param(void_vatek_chip hchip,Pr2_param pr2);
+	HAL_API vatek_result rfmixer_r2_get_param(void_vatek_chip hchip, Pr2_param pr2);
+	HAL_API vatek_result rfmixer_r2_set_param(void_vatek_chip hchip, Pr2_param pr2);
 
-	HAL_API vatek_result rfmixer_r2_start(void_vatek_chip hchip,uint32_t cntl,Pr2_param pr2param);
-	HAL_API vatek_result rfmixer_r2_stop(void_vatek_chip hchip,uint32_t cntl);
+	HAL_API vatek_result rfmixer_r2_start(void_vatek_chip hchip, uint32_t cntl, Pr2_param pr2param);
+	HAL_API vatek_result rfmixer_r2_stop(void_vatek_chip hchip, uint32_t cntl);
 	HAL_API vatek_result rfmixer_r2_adjust_pagain(void_vatek_chip hchip, int8_t gain);
 
 	HAL_API uint16_t rfmixer_r2_int2tune(int32_t val, int32_t idx);
 	HAL_API int32_t rfmixer_r2_tune2int(uint16_t val, int32_t idx);
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 

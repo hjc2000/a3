@@ -29,7 +29,7 @@
 #ifndef _OUTPUT_MODULATOR_
 #define _OUTPUT_MODULATOR_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/hal/halreg_define.h>
 #include <core/hal/halreg_output.h>
 #include <core/ui/ui_props_api.h>

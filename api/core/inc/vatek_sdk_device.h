@@ -29,7 +29,7 @@
 #ifndef _VATEK_SDK_DEVICE_
 #define _VATEK_SDK_DEVICE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/base/chip_define.h>
 #include <core/base/output_modulator.h>
 #include <core/base/calibration_define.h>

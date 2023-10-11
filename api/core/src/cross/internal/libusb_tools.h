@@ -2,7 +2,7 @@
 #ifndef _LUBUSB_TOOL_
 #define _LUBUSB_TOOL_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <libusb-1.0/libusb.h>
 
 #if CC_ANDROID

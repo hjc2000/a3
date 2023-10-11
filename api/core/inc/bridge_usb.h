@@ -29,7 +29,7 @@
 #ifndef _BRIDGE_USB_
 #define _BRIDGE_USB_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 // 旧的供应商 ID
 #define USB_BRIDGE_VID_OLD          0x1934

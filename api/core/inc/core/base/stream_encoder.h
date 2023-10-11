@@ -29,7 +29,7 @@
 #ifndef _STREAM_ENCODER_
 #define _STREAM_ENCODER_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/base/media_video.h>
 #include <core/base/media_audio.h>
 

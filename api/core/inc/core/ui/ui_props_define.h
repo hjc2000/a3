@@ -29,7 +29,7 @@
 #ifndef _UI_PROPS_DEFINE_
 #define _UI_PROPS_DEFINE_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 #include <core/hal/halreg_define.h>
 
 typedef struct _ui_hal_param

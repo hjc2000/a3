@@ -29,7 +29,7 @@
 #ifndef _TOOL_HELPFUL_
 #define _TOOL_HELPFUL_
 
-#include <core/vatek_base.h>
+#include <vatek_base.h>
 
 #define _V_ALIGN_WORD(n)	(((n + 3) >> 2)<< 2)
 
