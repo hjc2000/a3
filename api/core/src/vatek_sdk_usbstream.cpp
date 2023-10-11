@@ -72,7 +72,7 @@ extern void usbstream_async_handler(Pcross_thread_param param);
 extern vatek_result usbstream_update_stream(Phandle_usbstream pustream);
 extern vatek_result usbstream_commit_stream(Phandle_usbstream pustream);
 
-extern vatek_result usbstream_async_create(Phandle_async* pasync,Pusbstream_param puparam);
+extern vatek_result usbstream_async_create(Phandle_async* pasync,usbstream_param * puparam);
 extern vatek_result usbstream_async_get_slice(Phandle_async pasync);
 extern void usbstream_async_commit_slice(Phandle_async pasync);
 
@@ -118,10 +118,10 @@ vatek_result vatek_usbstream_open(void_vatek_chip hchip, hvatek_usbstream* husst
 	return nres;
 }
 
-vatek_result vatek_usbstream_start(hvatek_usbstream husstream, Pusbstream_param puparam)
+vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param * puparam)
 {
 	vatek_result nres = vatek_badstatus;
-	Pusbstream_param pustream_new = puparam;
+	usbstream_param * pustream_new = puparam;
 
 	Phandle_usbstream pustream = (Phandle_usbstream)husstream;
 	if (pustream->status == usbstream_status_idle)
@@ -470,7 +470,7 @@ vatek_result usbstream_commit_stream(Phandle_usbstream pustream)
 	return nres;
 }
 
-vatek_result usbstream_async_create(Phandle_async* pasync,Pusbstream_param puparam)
+vatek_result usbstream_async_create(Phandle_async* pasync,usbstream_param * puparam)
 {
 	vatek_result nres = vatek_badparam;
 	if(puparam->mode == ustream_mode_async)

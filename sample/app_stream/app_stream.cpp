@@ -20,7 +20,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// <param name="stream_source"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
-extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, Pusbstream_param pustream);
+extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, usbstream_param * pustream);
 
 int main(int argc, char *argv[])
 {
@@ -220,7 +220,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
-vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, Pusbstream_param pustream)
+vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, usbstream_param * pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
 
