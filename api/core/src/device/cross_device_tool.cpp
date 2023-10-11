@@ -204,7 +204,7 @@ vatek_result cross_devices_get_size(cross_device *pcross)
 	return (vatek_result)nums;
 }
 
-vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal)
+vatek_result cross_device_malloc(cross_device **pcross, hal_service_mode hal)
 {
 	vatek_result nres = vatek_unsupport;
 	if (hal == service_rescue || hal == service_broadcast || hal == service_transform)

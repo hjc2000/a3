@@ -164,6 +164,6 @@ void cross_usb_device_close(cross_device *pcross);
 vatek_result cross_devices_get_size(cross_device *pcross);
 vatek_result cross_devices_free(cross_device *pcross);
 
-vatek_result cdevice_malloc(cross_device **pcross, hal_service_mode hal);
+vatek_result cross_device_malloc(cross_device **pcross, hal_service_mode hal);
 
 #endif

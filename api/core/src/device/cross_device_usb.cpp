@@ -82,7 +82,7 @@ vatek_result cross_usb_device_open(void_usb_device husb, cross_device * *pcross)
 		{
 			hal_service_mode halservice = (hal_service_mode)val;
 			cross_device * newdev = NULL;
-			nres = cdevice_malloc(&newdev, halservice);
+			nres = cross_device_malloc(&newdev, halservice);
 			if (is_vatek_success(nres))
 			{
 				newdev->driver = cdriver_usb;

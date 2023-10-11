@@ -33,7 +33,7 @@ vatek_result cross_bridge_open(hbridge_device hbridge, cross_device * *pcross)
 			{
 				hal_service_mode halservice = (hal_service_mode)val;
 				cross_device * newdev = NULL;
-				nres = cdevice_malloc(&newdev, halservice);
+				nres = cross_device_malloc(&newdev, halservice);
 				if (is_vatek_success(nres))
 				{
 					newdev->driver = cdriver_bridge;
