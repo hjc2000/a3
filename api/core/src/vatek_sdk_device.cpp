@@ -165,11 +165,22 @@ vatek_result vatek_device_start_sine(void_vatek_chip hchip, uint32_t freqkhz)
 		{
 			nres = rfmixer_start(hchip, HALREG_SERVICE_BASE_CNTL, freqkhz);
 		}
-		else nres = vatek_success;
+		else
+		{
+			nres = vatek_success;
+		}
 
 		if (is_vatek_success(nres))
-			nres = chip_send_command(hchip, BASE_CMD_TEST_START_SINE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
+		{
+			nres = chip_send_command(
+				hchip,
+				BASE_CMD_TEST_START_SINE,
+				HALREG_SERVICE_BASE_CNTL,
+				HALREG_SYS_ERRCODE
+			);
+		}
 	}
+
 	return nres;
 }
 
@@ -184,16 +195,24 @@ vatek_result vatek_device_start_test(void_vatek_chip hchip, Pmodulator_param pmo
 		{
 			nres = rfmixer_start(hchip, HALREG_SERVICE_BASE_CNTL, freqkhz);
 		}
-
-		else nres = vatek_success;
+		else
+			nres = vatek_success;
 
 		if (is_vatek_success(nres))
 		{
 			nres = modulator_param_set(hchip, pmod);
 			if (is_vatek_success(nres))
-				nres = chip_send_command(hchip, BASE_CMD_TEST_START_SINE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
+			{
+				nres = chip_send_command(
+					hchip,
+					BASE_CMD_TEST_START_SINE,
+					HALREG_SERVICE_BASE_CNTL,
+					HALREG_SYS_ERRCODE
+				);
+			}
 		}
 	}
+
 	return nres;
 }
 
@@ -203,6 +222,7 @@ vatek_result vatek_device_polling(void_vatek_chip hchip)
 	chip_info *pinfo = vatek_device_get_info(hchip);
 	if (pinfo->status == chip_status_running)
 		nres = vatek_success;
+
 	return nres;
 }
 
@@ -216,10 +236,19 @@ void vatek_device_stop(void_vatek_chip hchip)
 		if (pinfo->peripheral_en & PERIPHERAL_FINTEKR2)
 		{
 			nres = rfmixer_stop(hchip, HALREG_SERVICE_BASE_CNTL);
-			if (!is_vatek_success(nres))VWAR("rfmixer_stop fail : %d", nres);
+			if (!is_vatek_success(nres))
+				VWAR("rfmixer_stop fail : %d", nres);
 		}
-		nres = chip_send_command(hchip, BASE_CMD_STOP, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
-		if (!is_vatek_success(nres))VWAR("stop fail : %d", nres);
+
+		nres = chip_send_command(
+			hchip,
+			BASE_CMD_STOP,
+			HALREG_SERVICE_BASE_CNTL,
+			HALREG_SYS_ERRCODE
+		);
+
+		if (!is_vatek_success(nres))
+			VWAR("stop fail : %d", nres);
 	}
 }
 
@@ -246,6 +275,7 @@ vatek_result vatek_device_calibration_load(void_vatek_chip hchip, Pcalibration_p
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 		nres = calibration_get(hchip, pcalibration);
+
 	return nres;
 }
 
@@ -263,6 +293,7 @@ vatek_result vatek_device_calibration_apply(void_vatek_chip hchip, Pcalibration_
 		nres = rfmixer_r2_adjust_pagain(hchip, pcalibration->r2_power);
 
 	}
+
 	return nres;
 }
 
@@ -277,6 +308,7 @@ vatek_result vatek_device_r2_apply(void_vatek_chip hchip, int r2_power)
 		if (pvatek->info.peripheral_en & PERIPHERAL_CALIBRATION)
 			nres = rfmixer_r2_adjust_pagain(hchip, r2_power);
 	}
+
 	return nres;
 }
 
@@ -292,6 +324,7 @@ vatek_result vatek_device_calibration_save(void_vatek_chip hchip, Pcalibration_p
 			nres = chip_send_command(hchip, BASE_CMD_CALIBRATION_SAVE, HALREG_SERVICE_BASE_CNTL, HALREG_SYS_ERRCODE);
 		cross_os_sleep(200);
 	}
+
 	return nres;
 }
 
@@ -316,13 +349,21 @@ vatek_result vatek_device_stream_start(void_vatek_chip hchip, Pmodulator_param p
 			cross_stream_mode mode = stream_mode_output;
 			/* _isdb-t must disable usb_dma because chip memory bandwidth limited.
 				DVB-T2 only remux set output_nodma*/
-			if (pmod->type == modulator_isdb_t || pmod->type == modulator_dtmb || (stream_mode == stream_remux && pmod->type == modulator_dvb_t2))
+			if (pmod->type == modulator_isdb_t ||
+				pmod->type == modulator_dtmb ||
+				(stream_mode == stream_remux && pmod->type == modulator_dvb_t2))
+			{
 				mode = stream_mode_output_nodma;
+			}
+
 			nres = pstream->start_stream(pvatek->cross->hcross, mode);
 			if (is_vatek_success(nres))
+			{
 				pvatek->streammode = stream_mode_output;
+			}
 		}
 	}
+
 	return nres;
 }
 
@@ -333,7 +374,10 @@ vatek_result vatek_device_stream_write(void_vatek_chip hchip, uint8_t *pbuf, int
 	void_cross_device hcross = (void_cross_device)pvatek->cross->hcross;
 	cross_stream *pstream = pvatek->cross->stream;
 	if (pvatek->streammode == stream_mode_output)
+	{
 		nres = pstream->write_stream(hcross, pbuf, size);
+	}
+
 	return nres;
 }
 
@@ -349,6 +393,7 @@ vatek_result vatek_device_stream_stop(void_vatek_chip hchip)
 		nres = pstream->stop_stream(hcross);
 		pvatek->streammode = stream_mode_idle;
 	}
+
 	return nres;
 }
 
@@ -373,8 +418,10 @@ vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command p
 			int32_t bufdir = USBBUF_DIR_NULL;
 			if (pcmd->mode == usbbulk_flash)
 			{
-				if (pcmd->_h.flash.mode == usbflash_write)bufdir = USBBUF_DIR_OUT;
-				else if (pcmd->_h.flash.mode == usbflash_read)bufdir = USBBUF_DIR_IN;
+				if (pcmd->_h.flash.mode == usbflash_write)
+					bufdir = USBBUF_DIR_OUT;
+				else if (pcmd->_h.flash.mode == usbflash_read)
+					bufdir = USBBUF_DIR_IN;
 			}
 			else if (pcmd->mode == usbbulk_aux)
 			{
@@ -384,8 +431,11 @@ vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command p
 
 			if (bufdir != USBBUF_DIR_NULL && pbuf && len)
 			{
-				if (bufdir == USBBUF_DIR_OUT)nres = pbulk->write(husb, pbuf, len);
-				else if (bufdir == USBBUF_DIR_IN)nres = pbulk->read(husb, pbuf, len);
+				if (bufdir == USBBUF_DIR_OUT)
+					nres = pbulk->write(husb, pbuf, len);
+				else if (bufdir == USBBUF_DIR_IN)
+					nres = pbulk->read(husb, pbuf, len);
+
 				if (is_vatek_success(nres))
 					nres = pbulk->get_result(husb, presult);
 			}
