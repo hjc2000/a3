@@ -29,7 +29,7 @@
 #ifndef _UI_BRIDGE_BASE_
 #define _UI_BRIDGE_BASE_
 
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 #include <bridge_base.h>
 
 _ui_enum_start(bridge_status)

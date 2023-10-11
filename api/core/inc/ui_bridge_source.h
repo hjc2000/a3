@@ -29,8 +29,8 @@
 #ifndef UI_BRIDGE_SOURCE
 #define UI_BRIDGE_SOURCE
 
-#include <core/ui/ui_props_define.h>
-#include <core/ui/ui_props/ui_props_encoder.h>
+#include <core/ui_props_define.h>
+#include <core/ui_props/ui_props_encoder.h>
 #include <bridge_source.h>
 
 _ui_enum_start(bsource_scale)

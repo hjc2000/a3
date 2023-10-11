@@ -28,7 +28,7 @@
 
 #include <core/base/output_rfmixer.h>
 #include <vatek_sdk_device.h>
-#include <core/ui/ui_props/ui_props_output.h>
+#include <core/ui_props/ui_props_output.h>
 
 vatek_result rfmixer_check_support(void_vatek_chip hchip)
 {

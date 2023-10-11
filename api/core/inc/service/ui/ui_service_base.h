@@ -29,10 +29,10 @@
 #ifndef _UI_SERVICE_BASE_
 #define _UI_SERVICE_BASE_
 
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 #include <service/service_base.h>
-#include <core/ui/ui_props/ui_props_stream.h>
-#include <core/ui/ui_props/ui_props_output.h>
+#include <core/ui_props/ui_props_stream.h>
+#include <core/ui_props/ui_props_output.h>
 
 HALREG_S(BCINFO_STREAM	, 8	)
 HALREG_S(BCINFO_OUTPUT	, 8	)

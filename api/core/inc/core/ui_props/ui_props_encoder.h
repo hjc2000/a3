@@ -29,7 +29,7 @@
 #ifndef _UI_PROPS_ENCODER_
 #define _UI_PROPS_ENCODER_
 
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 #include <core/base/stream_encoder.h>
 
 HALREG_S(ENCODER_MODE, 8)

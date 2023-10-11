@@ -31,7 +31,7 @@
 
 #include <core/base/stream_encoder.h>
 #include <core/hal/halreg_stream.h>
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 #include <core/base/chip_define.h>
 
 typedef enum _stream_mode

@@ -31,7 +31,7 @@
 
 #include <core/base/output_modulator.h>
 #include <mux/mux_define.h>
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 
 typedef struct _ofdm_frame
 {

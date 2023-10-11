@@ -2,9 +2,9 @@
 #include <core/tools/tool_bufstream.h>
 #include <core/tools/tool_crc32.h>
 
-#include <core/ui/ui_props/ui_props_chip.h>
-#include <core/ui/ui_props/ui_props_encoder.h>
-#include <core/ui/ui_props/ui_props_modulator.h>
+#include <core/ui_props/ui_props_chip.h>
+#include <core/ui_props/ui_props_encoder.h>
+#include <core/ui_props/ui_props_modulator.h>
 
 /* import default params */
 #include<storage_default.h>

@@ -29,7 +29,7 @@
 #ifndef _UI_PROPS_API_
 #define _UI_PROPS_API_
 
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 
 #ifdef __cplusplus 
 extern "C" {

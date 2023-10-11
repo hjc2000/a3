@@ -32,7 +32,7 @@
 #include <core/base/output_base.h>
 #include <core/base/output_rfmixer.h>
 #include <core/base/calibration_define.h>
-#include <core/ui/ui_props/ui_props_modulator.h>
+#include <core/ui_props/ui_props_modulator.h>
 
 HALREG_S(R2_PARAM_I, 16)
 HALREG_S(R2_PARAM_Q, 16)

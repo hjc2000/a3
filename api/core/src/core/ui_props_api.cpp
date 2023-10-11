@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/ui/ui_props_api.h>
+#include <core/ui_props_api.h>
 
 static const char* _str_unknown = "_unknown";
 

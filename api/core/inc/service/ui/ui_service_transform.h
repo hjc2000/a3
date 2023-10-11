@@ -29,7 +29,7 @@
 #ifndef _UI_SERVICE_TRANSFORM_
 #define _UI_SERVICE_TRANSFORM_
 
-#include <core/ui/ui_props/ui_props_chip.h>
+#include <core/ui_props/ui_props_chip.h>
 #include <service/ui/ui_service_base.h>
 #include <service/service_transform.h>
 

@@ -27,7 +27,7 @@
 //
 
 #include <core/tools/tool_ofdm.h>
-#include <core/ui/ui_props/ui_props_modulator.h>
+#include <core/ui_props/ui_props_modulator.h>
 
 vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 {

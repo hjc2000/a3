@@ -59,13 +59,13 @@ set(core_INC_CORE
     inc/core/tools/tool_j83abc.h
     inc/core/tools/tool_ofdm.h
     inc/core/tools/tool_output.h
-    inc/core/ui/ui_props_api.h
-    inc/core/ui/ui_props_define.h
-    inc/core/ui/ui_props/ui_props_chip.h
-    inc/core/ui/ui_props/ui_props_encoder.h
-    inc/core/ui/ui_props/ui_props_modulator.h
-    inc/core/ui/ui_props/ui_props_output.h
-    inc/core/ui/ui_props/ui_props_stream.h)
+    inc/core/ui_props_api.h
+    inc/core/ui_props_define.h
+    inc/core/ui_props/ui_props_chip.h
+    inc/core/ui_props/ui_props_encoder.h
+    inc/core/ui_props/ui_props_modulator.h
+    inc/core/ui_props/ui_props_output.h
+    inc/core/ui_props/ui_props_stream.h)
 
 set(core_INC_CROSS
     inc/cross/cross_bridge.h

@@ -29,7 +29,7 @@
 #ifndef _UI_PROPS_MODULATOR_
 #define _UI_PROPS_MODULATOR_
 
-#include <core/ui/ui_props_define.h>
+#include <core/ui_props_define.h>
 #include <core/base/chip_define.h>
 #include <core/base/output_modulator.h>
 
