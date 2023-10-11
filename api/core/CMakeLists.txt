@@ -115,7 +115,6 @@ set(core_SRC_CORE
     src/core/output_modulator.cpp
     src/core/output_rfmixer.cpp
     src/core/storage_section.cpp
-    src/core/storage_default.cpp
     src/core/stream_base.cpp
     src/core/stream_encoder.cpp
     src/core/device_usb.cpp
