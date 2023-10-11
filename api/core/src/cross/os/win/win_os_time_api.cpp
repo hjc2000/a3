@@ -27,15 +27,6 @@ void init_queryperformance()
 	}
 }
 
-vatek_result cross_os_get_time(struct timespec *tp)
-{
-	LARGE_INTEGER curtime;
-	init_queryperformance();
-	QueryPerformanceCounter(&curtime);
-	convert_tick_to_timespec(curtime, tp);
-	return (vatek_result)0;
-}
-
 vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse)
 {
 	struct timespec curtime;

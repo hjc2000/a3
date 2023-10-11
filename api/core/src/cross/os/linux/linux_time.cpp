@@ -4,12 +4,6 @@
 #include <unistd.h>
 #include <sched.h>
 
-vatek_result cross_os_get_time(struct timespec *tp)
-{
-	struct timespec ts;
-	if (clock_gettime(CLOCK_MONOTONIC, tp) >= 0)return vatek_success;
-	return vatek_hwfail;
-}
 
 vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse)
 {

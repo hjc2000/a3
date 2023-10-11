@@ -90,3 +90,17 @@ uint64_t cross_os_get_time_us()
 	auto now = steady_clock::now().time_since_epoch();
 	return duration_cast<microseconds>(now).count();
 }
+
+vatek_result cross_os_get_time(timespec *tp)
+{
+	if (!tp) return vatek_hwfail; // Check for null pointer
+
+	duration now = steady_clock::now().time_since_epoch();
+	seconds now_seconds = duration_cast<seconds>(now);
+	nanoseconds now_nanoseconds = duration_cast<nanoseconds>(now - now_seconds);
+
+	tp->tv_sec = now_seconds.count();
+	tp->tv_nsec = now_nanoseconds.count();
+
+	return vatek_success;
+}

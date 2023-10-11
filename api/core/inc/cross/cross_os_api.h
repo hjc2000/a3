@@ -71,7 +71,7 @@ extern "C" {
 	HAL_API void cross_os_time_plus_ms(struct timespec *tp, int32_t ms);
 	HAL_API void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend);
 
-	HAL_API vatek_result cross_os_get_time(struct timespec *tp);
+	HAL_API vatek_result cross_os_get_time(timespec *tp);
 	HAL_API uint64_t cross_os_get_time_us();
 	HAL_API uint64_t cross_os_time_to_us(struct timespec *tp);
 
