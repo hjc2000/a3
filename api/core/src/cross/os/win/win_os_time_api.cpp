@@ -36,7 +36,7 @@ vatek_result cross_os_get_time(struct timespec *tp)
 	init_queryperformance();
 	QueryPerformanceCounter(&curtime);
 	convert_tick_to_timespec(curtime, tp);
-	return 0;
+	return (vatek_result)0;
 }
 
 uint64_t cross_os_get_time_us()

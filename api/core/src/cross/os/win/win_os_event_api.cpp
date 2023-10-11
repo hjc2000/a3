@@ -28,11 +28,11 @@
 
 #include "internal/win_os_common.h"
 
-vatek_result cross_os_create_event(const char* tag, hcross_event* hevent)
+vatek_result cross_os_create_event(const char *tag, hcross_event *hevent)
 {
 	HANDLE newevent = INVALID_HANDLE_VALUE;
 	//newevent = CreateEventA(NULL, FALSE, FALSE, win_get_global_name(tag));
-	newevent = CreateEventA(NULL, FALSE, FALSE,tag);
+	newevent = CreateEventA(NULL, FALSE, FALSE, tag);
 	if (newevent != INVALID_HANDLE_VALUE)
 	{
 		*hevent = newevent;
@@ -42,7 +42,7 @@ vatek_result cross_os_create_event(const char* tag, hcross_event* hevent)
 	return vatek_memfail;
 }
 
-vatek_result cross_os_open_event(const char* tag, hcross_event* hevent)
+vatek_result cross_os_open_event(const char *tag, hcross_event *hevent)
 {
 	HANDLE newevent = INVALID_HANDLE_VALUE;
 	//newevent = OpenEventA(0, FALSE, win_get_global_name(tag));
@@ -66,7 +66,7 @@ vatek_result cross_os_wait_event_timeout(hcross_event hevent, int32_t ms)
 vatek_result cross_os_wait_event(hcross_event hevent)
 {
 	uint32_t ncode = WaitForSingleObject((HANDLE)hevent, INFINITE);
-	if(ncode == WAIT_OBJECT_0)return vatek_success;
+	if (ncode == WAIT_OBJECT_0)return vatek_success;
 	else
 	{
 		cross_os_printf("wait event fail : %08x", ncode);

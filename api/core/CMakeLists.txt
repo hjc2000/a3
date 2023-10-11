@@ -150,23 +150,23 @@ if(MSVC)
 	set(core_SRC_CROSS
     		src/cross/cross_bridge.cpp
     		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_socket.c
-    		src/cross/cross_stream.c
+    		src/cross/cross_os_socket.cpp
+    		src/cross/cross_stream.cpp
     		src/cross/cross_stream_file.cpp
     		src/cross/cross_stream_test.cpp
-    		src/cross/cross_stream_udp.c
-    		src/cross/cross_stream_mux.c
+    		src/cross/cross_stream_udp.cpp
+    		src/cross/cross_stream_mux.cpp
     		src/cross/cross_usb_device_winusb.cpp)
 elseif(UNIX)
 	set(core_SRC_CROSS
     		src/cross/cross_bridge.cpp
     		src/cross/cross_bridge_board.cpp
-    		src/cross/cross_os_socket.c
-    		src/cross/cross_stream.c
+    		src/cross/cross_os_socket.cpp
+    		src/cross/cross_stream.cpp
     		src/cross/cross_stream_file.cpp
     		src/cross/cross_stream_test.cpp
-    		src/cross/cross_stream_udp.c
-    		src/cross/cross_stream_mux.c
+    		src/cross/cross_stream_udp.cpp
+    		src/cross/cross_stream_mux.cpp
     		src/cross/cross_usb_device_libusb.c
     		src/cross/libusb_tool.c)
 endif()
@@ -210,15 +210,15 @@ set(core_SRC_SDK
 if(MSVC)
     set(core_SRC_OS
         src/cross/os/win/win_os_bridge.cpp
-        src/cross/os/win/win_os_common.c
-        src/cross/os/win/win_os_event_api.c
-        src/cross/os/win/win_os_mutex_api.c
-        src/cross/os/win/win_os_process.c
+        src/cross/os/win/win_os_common.cpp
+        src/cross/os/win/win_os_event_api.cpp
+        src/cross/os/win/win_os_mutex_api.cpp
+        src/cross/os/win/win_os_process.cpp
         src/cross/os/win/win_os_smem_api.cpp
-        src/cross/os/win/win_os_sys_api.c
-        src/cross/os/win/win_os_thread_api.c
-        src/cross/os/win/win_os_time_api.c
-        src/cross/os/win/win_os_uart_api.c)
+        src/cross/os/win/win_os_sys_api.cpp
+        src/cross/os/win/win_os_thread_api.cpp
+        src/cross/os/win/win_os_time_api.cpp
+        src/cross/os/win/win_os_uart_api.cpp)
 elseif(UNIX)
     set(core_SRC_OS
         src/cross/os/linux/cross_bridge_libusb.c

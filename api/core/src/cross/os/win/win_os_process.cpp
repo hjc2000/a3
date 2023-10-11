@@ -42,7 +42,7 @@ typedef struct _win_process_handle
 	DWORD threadid;
 	uint8_t rawbuf[PROCESS_BUF_LEN];
 	Pcross_proccess_param param;
-}win_process_handle,*Pwin_process_handle;
+}win_process_handle, *Pwin_process_handle;
 
 extern DWORD process_thread(LPVOID lpThreadParameter);
 extern int32_t process_is_valid(Pwin_process_handle phprocess);
@@ -50,7 +50,7 @@ extern int32_t process_is_valid(Pwin_process_handle phprocess);
 hcross_process cross_os_create_process(Pcross_proccess_param pprocess)
 {
 	Pwin_process_handle newprocess = (Pwin_process_handle)malloc(sizeof(win_process_handle));
-	
+
 	SECURITY_ATTRIBUTES secatt;
 	BOOL bsuccess = FALSE;
 
@@ -80,15 +80,15 @@ hcross_process cross_os_create_process(Pcross_proccess_param pprocess)
 				startinfo.dwFlags = STARTF_USESTDHANDLES;
 
 				bsuccess = CreateProcessA(NULL,
-					pprocess->command,
-					NULL,
-					NULL,
-					TRUE,
-					CREATE_NO_WINDOW,
-					NULL,
-					pprocess->path,
-					&startinfo,
-					&newprocess->proccessinfo);
+										  pprocess->command,
+										  NULL,
+										  NULL,
+										  TRUE,
+										  CREATE_NO_WINDOW,
+										  NULL,
+										  pprocess->path,
+										  &startinfo,
+										  &newprocess->proccessinfo);
 				if (!bsuccess)cross_os_printf("create fail : %08x", GetLastError());
 			}
 			else bsuccess = 0;
@@ -108,7 +108,7 @@ void cross_os_free_process(hcross_process hprocess)
 	Pwin_process_handle phprocess = (Pwin_process_handle)hprocess;
 	if (cross_os_check_process(hprocess))
 	{
-		BOOL bsuccess = TerminateProcess(phprocess->proccessinfo.hProcess,0);
+		BOOL bsuccess = TerminateProcess(phprocess->proccessinfo.hProcess, 0);
 		if (!bsuccess)cross_os_printf("TerminateProcess fail : %08d", GetLastError());
 	}
 
@@ -117,7 +117,7 @@ void cross_os_free_process(hcross_process hprocess)
 		DWORD rlen = 0;
 		while (phprocess->isrunning)
 		{
-			if (!WriteFile(phprocess->hpipein, (uint8_t*)PROCESS_END_TAG, (uint32_t)strlen(PROCESS_END_TAG), &rlen, NULL))
+			if (!WriteFile(phprocess->hpipein, (uint8_t *)PROCESS_END_TAG, (uint32_t)strlen(PROCESS_END_TAG), &rlen, NULL))
 				cross_os_printf("write end cmd fail");
 			cross_os_sleep(10);
 		}
@@ -135,7 +135,7 @@ vatek_result cross_os_check_process(hcross_process hprocess)
 {
 	Pwin_process_handle phprocess = (Pwin_process_handle)hprocess;
 	DWORD ncode = 0;
-	if (GetExitCodeProcess(phprocess->proccessinfo.hProcess,&ncode))
+	if (GetExitCodeProcess(phprocess->proccessinfo.hProcess, &ncode))
 	{
 		if (ncode == STILL_ACTIVE)return (vatek_result)1;
 		else return vatek_success;
@@ -153,12 +153,12 @@ DWORD process_thread(LPVOID lpThreadParameter)
 		BOOL bread = ReadFile(phprocess->hpipeout, &phprocess->rawbuf[0], PROCESS_BUF_LEN, &nrlen, NULL);
 		if (bread && nrlen)
 		{
-			char* pend = strstr((char*)&phprocess->rawbuf[0], PROCESS_END_TAG);
+			char *pend = strstr((char *)&phprocess->rawbuf[0], PROCESS_END_TAG);
 			int32_t isend = (pend != NULL);
 
-			if(isend)pend[0] = '\0';
-			nrlen = (uint32_t)strlen(&phprocess->rawbuf[0]);
-			if(nrlen)phprocess->param->parser(phprocess->param->param, &phprocess->rawbuf[0], nrlen);
+			if (isend)pend[0] = '\0';
+			nrlen = (uint32_t)strlen((char *)&phprocess->rawbuf[0]);
+			if (nrlen)phprocess->param->parser(phprocess->param->param, &phprocess->rawbuf[0], nrlen);
 
 			if (isend)break;
 		}

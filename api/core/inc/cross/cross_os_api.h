@@ -13,8 +13,8 @@ extern "C" {
 
 	/// <summary>
 	///		尝试从键盘缓冲区中获取一个字符。
-	///		* 此函数不会等待用户输入，如果键盘缓冲区中有字符，就读取，并返回此字符，
-	///		  如果键盘缓冲区中没有字符，则返回 -1。
+	///		* 此函数不会等待用户输入，所以不会阻塞，仅仅检查键盘缓冲区。如果键盘缓冲区中有字符，
+	///		  就读取并返回此字符，如果键盘缓冲区中没有字符，则返回 -1。
 	/// </summary>
 	/// <param name=""></param>
 	/// <returns></returns>
@@ -127,13 +127,13 @@ extern "C" {
 	typedef void *hcross_process;
 	typedef void(*fpprocess_parser)(void *param, uint8_t *ptr, int32_t len);
 
-	typedef struct _cross_proccess_param
+	struct cross_proccess_param
 	{
 		char *path;
 		char *command;
 		void *param;
 		fpprocess_parser parser;
-	}cross_proccess_param;
+	};
 
 	typedef cross_proccess_param *Pcross_proccess_param;
 

@@ -155,8 +155,9 @@ vatek_result cross_os_connect_socket(hcross_socket hsocket)
 							if (is_vatek_success(nres))
 							{
 								if (psocket->protocol == protocol_tcp)
-									nres = connect(psocket->socket_fd, recvptr->ai_addr, (int32_t)recvptr->ai_addrlen);
-								else nres = bind(psocket->socket_fd, recvptr->ai_addr, (int32_t)recvptr->ai_addrlen);
+									nres = (vatek_result)connect(psocket->socket_fd, recvptr->ai_addr, (int32_t)recvptr->ai_addrlen);
+								else
+									nres = (vatek_result)bind(psocket->socket_fd, recvptr->ai_addr, (int32_t)recvptr->ai_addrlen);
 							}
 							if (is_vatek_success(nres))
 							{
@@ -187,7 +188,7 @@ vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t 
 	while (pos < len)
 	{
 		int32_t rlen = len - pos;
-		nres = (vatek_result)recv(psocket->socket_fd, &pbuf[pos], rlen, 0);
+		nres = (vatek_result)recv(psocket->socket_fd, (char *)&pbuf[pos], rlen, 0);
 		if (!is_vatek_success(nres))
 		{
 			if ((cross_os_get_tick_ms() - tick) > (uint32_t)timeout)
@@ -220,7 +221,7 @@ vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t 
 	{
 		/* 因为 send 函数实际发送出去的数据可能少于 rlen，所以需要在循环中反复发送 */
 		int32_t rlen = len - pos;
-		int have_send = (vatek_result)send(psocket->socket_fd, &pbuf[pos], rlen, 0);
+		int have_send = (vatek_result)send(psocket->socket_fd, (char *)&pbuf[pos], rlen, 0);
 		if (have_send >= 0)
 		{
 			pos += have_send;
@@ -228,12 +229,12 @@ vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t 
 		else
 		{
 			// 发送失败，因为 send 函数发生了错误
-			return -1;
+			return (vatek_result)-1;
 		}
 	}
 
 	// 退出循环说明数据发送完成
-	return 0;
+	return (vatek_result)0;
 }
 
 vatek_result cross_os_disconnect_socket(hcross_socket hsocket)
@@ -325,7 +326,7 @@ vatek_result socket_mutilcast_group(Phandle_socket psocket)
 		struct ip_mreq mreq;
 		mreq.imr_multiaddr.s_addr = addr4->sin_addr.s_addr;
 		mreq.imr_interface.s_addr = INADDR_ANY;
-		nres = setsockopt(psocket->socket_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (const void *)&mreq, sizeof(mreq));
+		nres = (vatek_result)setsockopt(psocket->socket_fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (const char *)&mreq, sizeof(mreq));
 	}
 	return nres;
 }
@@ -335,7 +336,7 @@ vatek_result socket_set_recvbuf(Phandle_socket psocket)
 	vatek_result nres = vatek_success;
 	int32_t buflen = psocket->param.buffer_len;
 	if (buflen)
-		nres = (vatek_result)setsockopt(psocket->socket_fd, SOL_SOCKET, SO_RCVBUF, (void *)&buflen, sizeof(int32_t));
+		nres = (vatek_result)setsockopt(psocket->socket_fd, SOL_SOCKET, SO_RCVBUF, (char *)&buflen, sizeof(int32_t));
 
 	return nres;
 }

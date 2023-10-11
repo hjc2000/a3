@@ -38,29 +38,29 @@ typedef struct _win_ffind
 	char full_path[WIN_PATH_MAX_LEN];
 	cross_ffind findptr;
 	WIN32_FIND_DATAA winfind;
-}win_ffind,*Pwin_ffind;
+}win_ffind, *Pwin_ffind;
 
-void cross_os_get_current_path(char* path,int32_t buflen)
+void cross_os_get_current_path(char *path, int32_t buflen)
 {
-    char* lastslash = NULL;
-    GetModuleFileNameA(NULL,path,buflen);
+	char *lastslash = NULL;
+	GetModuleFileNameA(NULL, path, buflen);
 
-    while (*path != '\0')
-    {
-        if(*path == '\\')lastslash = path;
-        *path++;
-    }
+	while (*path != '\0')
+	{
+		if (*path == '\\')lastslash = path;
+		*path++;
+	}
 
-    if (lastslash != NULL)
-    {
-        lastslash++;
-        *lastslash = '\0'; 
-    }
+	if (lastslash != NULL)
+	{
+		lastslash++;
+		*lastslash = '\0';
+	}
 }
 
-extern void ffind_put_result(Pwin_ffind pff, Pcross_ffind* pfind);
+extern void ffind_put_result(Pwin_ffind pff, Pcross_ffind *pfind);
 
-vatek_result cross_os_findfile_first(hcross_ffind* hffind, const char* path, Pcross_ffind* pfind)
+vatek_result cross_os_findfile_first(hcross_ffind *hffind, const char *path, Pcross_ffind *pfind)
 {
 	Pwin_ffind newffind = (Pwin_ffind)malloc(sizeof(win_ffind));
 	vatek_result nres = vatek_memfail;
@@ -72,7 +72,7 @@ vatek_result cross_os_findfile_first(hcross_ffind* hffind, const char* path, Pcr
 		sprintf(&szsearch[0], "%s\\*.*", path);
 		strncpy(&newffind->path[0], &szsearch[0], WIN_PATH_MAX_LEN);
 		newffind->path[strlen(&newffind->path[0]) - 3] = '\0';
-		
+
 
 		newffind->hfind = FindFirstFileA(&szsearch[0], &newffind->winfind);
 		if (newffind->hfind != INVALID_HANDLE_VALUE)
@@ -91,14 +91,14 @@ vatek_result cross_os_findfile_first(hcross_ffind* hffind, const char* path, Pcr
 	return nres;
 }
 
-vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind* pfind)
+vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind *pfind)
 {
 	vatek_result nres = vatek_success;
 	Pwin_ffind pff = (Pwin_ffind)hffind;
 
-	do 
+	do
 	{
-		nres = FindNextFileA(pff->hfind, &pff->winfind);
+		nres = (vatek_result)FindNextFileA(pff->hfind, &pff->winfind);
 		if (!nres)
 		{
 			nres = vatek_nodevice;
@@ -117,36 +117,36 @@ void cross_os_findfile_close(hcross_ffind hffind)
 	free(pffind);
 }
 
-hcross_dll cross_os_dll_load(const char* dllfile)
+hcross_dll cross_os_dll_load(const char *dllfile)
 {
-    return LoadLibraryA(dllfile);
+	return LoadLibraryA(dllfile);
 }
 
-void* cross_os_dll_get_function(hcross_dll hdll, const char* name)
+void *cross_os_dll_get_function(hcross_dll hdll, const char *name)
 {
-    return GetProcAddress(hdll,name);
+	return GetProcAddress((HMODULE)hdll, name);
 }
 
 vatek_result cross_os_dll_free(hcross_dll hdll)
 {
-    if(hdll != NULL)FreeLibrary(hdll);
-    return vatek_success;
+	if (hdll != NULL)FreeLibrary((HMODULE)hdll);
+	return vatek_success;
 }
 
-vatek_result cross_os_dll_valid(const char* name)
+vatek_result cross_os_dll_valid(const char *name)
 {
 	int32_t len = (int32_t)strlen(name);
 	if (strcmp(".dll", &name[len - 4]) == 0)return vatek_success;
 	return vatek_badparam;
 }
 
-void ffind_put_result(Pwin_ffind pff, Pcross_ffind* pfind)
+void ffind_put_result(Pwin_ffind pff, Pcross_ffind *pfind)
 {
 	sprintf(&pff->full_path[0], "%s%s", &pff->path[0], &pff->winfind.cFileName[0]);
 	pff->findptr.fullpath = &pff->full_path[0];
 	pff->findptr.filename = &pff->full_path[strlen(&pff->path[0])];
 	pff->findptr.ff_type = 0;
-	if (pff->winfind.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY)
+	if (pff->winfind.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		pff->findptr.ff_type |= FF_TYPE_FOLDER;
 	*pfind = &pff->findptr;
 }
