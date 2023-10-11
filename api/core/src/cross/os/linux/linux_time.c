@@ -7,13 +7,6 @@
 #define TIME_SECOND_TO_NS		    1000000000
 #define TIME_SECOND_TO_US		    1000000
 
-uint32_t cross_os_get_tick_ms(void)
-{
-	struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (ts.tv_sec * 1000 + ts.tv_nsec / 1000000);	
-}
-
 void cross_os_wait_unit(struct timespec* target)
 {
 	uint64_t curtick = cross_os_get_time_us();

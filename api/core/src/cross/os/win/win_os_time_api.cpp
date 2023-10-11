@@ -1,12 +1,13 @@
 #include "internal/win_os_common.h"
+#include<chrono>
+#include<ctime>
+
+using namespace std;
+using namespace std::chrono;
+
 
 #define TIME_SECOND_TO_NS		1000000000
 #define TIME_SECOND_TO_US		1000000
-
-uint32_t cross_os_get_tick_ms(void)
-{
-	return (uint32_t)GetTickCount64();
-}
 
 #pragma comment(lib,"Winmm.lib") 
 
