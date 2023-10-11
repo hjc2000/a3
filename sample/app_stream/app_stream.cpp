@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
 		else
 		{
 			usbcmd.mode = ustream_mode_sync;
-			usbcmd.sync.param = &streamsource;
+			usbcmd.sync.void_param = &streamsource;
 			usbcmd.sync.getbuffer = source_sync_get_buffer;
 
 			nres = vatek_usbstream_start(hustream, &usbcmd);

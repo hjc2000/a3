@@ -312,7 +312,7 @@ void usbstream_sync_handler(Pcross_thread_param param)
 	Phandle_usbstream pustream = (Phandle_usbstream)param->userparam;
 	vatek_result nres = vatek_success;
 	fpsync_get_buffer fpgetbuf = pustream->sync.getbuffer;
-	void* fpparam = pustream->sync.param;
+	void* fpparam = pustream->sync.void_param;
 	pustream->stream_packets = 0;
 	pustream->stream_tick = cross_os_get_tick_ms();
 

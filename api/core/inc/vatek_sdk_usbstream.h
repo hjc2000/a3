@@ -78,7 +78,7 @@ typedef vatek_result(*fpsync_get_buffer)(void *param, uint8_t **slicebuf);
 
 struct usbstream_sync
 {
-	void *param;
+	void *void_param;
 	fpsync_get_buffer getbuffer;
 };
 
