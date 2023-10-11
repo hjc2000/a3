@@ -27,9 +27,9 @@
 //
 
 #include <mux_rule.h>
-#include <core/base/binary_rom.h>
-#include <core/tools/tool_crc32.h>
-#include <core/tools/tool_bufstream.h>
+#include <base/binary_rom.h>
+#include <tools/tool_crc32.h>
+#include <tools/tool_bufstream.h>
 #include <stdio.h>
 
 #define DEFAULT_RULE_BLOCK_SIZE		16*1024

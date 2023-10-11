@@ -27,7 +27,7 @@
 //
 
 #include "./internal/stream_handle.h"
-#include <core/tools/tool_crc32.h>
+#include <tools/tool_crc32.h>
 
 #define TEST_PACKET_USB_PAT		1
 #define TEST_PACKET_PCR_PID		0x100

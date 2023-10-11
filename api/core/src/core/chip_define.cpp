@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/base/chip_define.h>
+#include <base/chip_define.h>
 //#include <cross_os_api.h>
 
 chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode)
@@ -106,7 +106,7 @@ vatek_result chip_status_check(void_vatek_chip hchip, chip_status status)
 	return nres;
 }
 
-vatek_result chip_info_reset(chip_info * pinfo, hal_service_mode service, vatek_ic_module icmodule)
+vatek_result chip_info_reset(chip_info *pinfo, hal_service_mode service, vatek_ic_module icmodule)
 {
 	typedef struct _ic_info
 	{
@@ -157,7 +157,7 @@ vatek_result chip_info_reset(chip_info * pinfo, hal_service_mode service, vatek_
 	return vatek_badparam;
 }
 
-vatek_result chip_info_get(void_vatek_chip hchip, chip_info * pinfo)
+vatek_result chip_info_get(void_vatek_chip hchip, chip_info *pinfo)
 {
 	uint32_t errcode = 0;
 	chip_status status = chip_status_get(hchip, &errcode);
@@ -212,7 +212,7 @@ vatek_result chip_info_get(void_vatek_chip hchip, chip_info * pinfo)
 	return nres;
 }
 
-vatek_result chip_info_set(void_vatek_chip hchip, chip_info * pinfo)
+vatek_result chip_info_set(void_vatek_chip hchip, chip_info *pinfo)
 {
 	vatek_result nres = chip_status_set(hchip, pinfo->status, pinfo->errcode);
 	if (is_vatek_success(nres))

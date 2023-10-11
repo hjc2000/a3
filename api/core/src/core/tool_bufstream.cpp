@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_bufstream.h>
+#include <tools/tool_bufstream.h>
 
 void putbuf_buf(Pbufstream pbuf, uint8_t* pbufdata, int32_t len)
 {

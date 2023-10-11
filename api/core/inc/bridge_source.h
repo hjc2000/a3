@@ -30,8 +30,8 @@
 #define _BRIDGE_SOURCE_
 
 #include <bridge_base.h>
-#include <core/base/media_video.h>
-#include <core/base/media_audio.h>
+#include <base/media_video.h>
+#include <base/media_audio.h>
 
 typedef enum _bsource_id
 {

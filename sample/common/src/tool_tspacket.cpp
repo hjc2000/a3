@@ -1,6 +1,6 @@
 
 #include "../inc/tool_tspacket.h"
-#include <core/tools/tool_crc32.h>
+#include <tools/tool_crc32.h>
 
 #define TEST_PACKET_USB_PAT		1
 

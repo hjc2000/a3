@@ -26,9 +26,9 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/base/stream_base.h>
-#include <core/ui_props/ui_props_stream.h>
-#include <core/ui_props_api.h>
+#include <base/stream_base.h>
+#include <ui_props/ui_props_stream.h>
+#include <ui_props_api.h>
 
 const Pui_prop_item stream_source_get_ui_props(stream_source source)
 {

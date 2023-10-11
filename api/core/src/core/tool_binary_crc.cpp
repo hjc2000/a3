@@ -26,8 +26,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_binary_crc.h>
-#include <core/tools/tool_crc32.h>
+#include <tools/tool_binary_crc.h>
+#include <tools/tool_crc32.h>
 
 vatek_result tool_binary_reset_crc(uint32_t* crc)
 {

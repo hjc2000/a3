@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_helpful.h>
+#include <tools/tool_helpful.h>
 
 extern void bs_next(Pth_bitstream pbs);
 extern void bs_write(Pth_bitstream pbs);

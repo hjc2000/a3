@@ -26,13 +26,13 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_output.h>
-#include <core/tools/tool_isdb_t.h>
-#include <core/tools/tool_dvb_t2.h>
-#include <core/tools/tool_dvb.h>
-#include <core/tools/tool_8vsb.h>
-#include <core/tools/tool_j83abc.h>
-#include <core/tools/tool_dtmb.h>
+#include <tools/tool_output.h>
+#include <tools/tool_isdb_t.h>
+#include <tools/tool_dvb_t2.h>
+#include <tools/tool_dvb.h>
+#include <tools/tool_8vsb.h>
+#include <tools/tool_j83abc.h>
+#include <tools/tool_dtmb.h>
 
 typedef struct _modoutput_clock
 {

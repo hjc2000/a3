@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_crc32.h>
+#include <tools/tool_crc32.h>
 
 /// <summary>
 ///  CRC 查找表。预计算了 uint8_t 所有 256 个值得 CRC 值，用于加速。

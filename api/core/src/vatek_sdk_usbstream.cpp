@@ -1,8 +1,8 @@
 #include <vatek_sdk_usbstream.h>
 #include <vatek_sdk_transform.h>
 
-#include <core/base/output_rfmixer.h>
-#include <core/tools/tool_helpful.h>
+#include <base/output_rfmixer.h>
+#include <tools/tool_helpful.h>
 #include <cross_os_api.h>
 
 #define US_DEF_PREPARE_TIME				10

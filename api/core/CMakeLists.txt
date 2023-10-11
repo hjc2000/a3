@@ -20,52 +20,52 @@ set(core_INC_BRIDGE
 set(core_INC_CORE
     inc/vatek_base.h
     inc/storage_default.h
-    inc/core/base/binary_rom.h
-    inc/core/base/chip_define.h
-    inc/core/base/device_usb.h
-    inc/core/base/media_audio.h
-    inc/core/base/media_video.h
-    inc/core/base/output_base.h
-    inc/core/base/output_modulator.h
-    inc/core/base/output_rfmixer.h
-    inc/core/base/stream_base.h
-    inc/core/base/stream_encoder.h
-    inc/core/base/calibration_define.h
-    inc/core/hal/halreg_define.h
-    inc/core/hal/halreg_mux.h
-    inc/core/hal/halreg_output.h
-    inc/core/hal/halreg_playload.h
-    inc/core/hal/halreg_rfmixer.h
-    inc/core/hal/halreg_stream.h
-    inc/core/hal/halreg_calibration.h
-    inc/core/hal/halservice_base.h
-    inc/core/hal/halservice_broadcast.h
-    inc/core/hal/halservice_rescure.h
-    inc/core/hal/halservice_transform.h
-    inc/core/storage/storage_broadcast.h
-    inc/core/storage/storage_config.h
-    inc/core/storage/storage_r2tune.h
-    inc/core/storage/storage_section.h
-    inc/core/storage/storage_transform.h
-    inc/core/tools/tool_8vsb.h
-    inc/core/tools/tool_binary_crc.h
-    inc/core/tools/tool_bufstream.h
-    inc/core/tools/tool_crc32.h
-    inc/core/tools/tool_dvb.h
-    inc/core/tools/tool_dvb_t2.h
-    inc/core/tools/tool_dtmb.h
-    inc/core/tools/tool_helpful.h
-    inc/core/tools/tool_isdb_t.h
-    inc/core/tools/tool_j83abc.h
-    inc/core/tools/tool_ofdm.h
-    inc/core/tools/tool_output.h
-    inc/core/ui_props_api.h
-    inc/core/ui_props_define.h
-    inc/core/ui_props/ui_props_chip.h
-    inc/core/ui_props/ui_props_encoder.h
-    inc/core/ui_props/ui_props_modulator.h
-    inc/core/ui_props/ui_props_output.h
-    inc/core/ui_props/ui_props_stream.h)
+    inc/base/binary_rom.h
+    inc/base/chip_define.h
+    inc/base/device_usb.h
+    inc/base/media_audio.h
+    inc/base/media_video.h
+    inc/base/output_base.h
+    inc/base/output_modulator.h
+    inc/base/output_rfmixer.h
+    inc/base/stream_base.h
+    inc/base/stream_encoder.h
+    inc/base/calibration_define.h
+    inc/hal/halreg_define.h
+    inc/hal/halreg_mux.h
+    inc/hal/halreg_output.h
+    inc/hal/halreg_playload.h
+    inc/hal/halreg_rfmixer.h
+    inc/hal/halreg_stream.h
+    inc/hal/halreg_calibration.h
+    inc/hal/halservice_base.h
+    inc/hal/halservice_broadcast.h
+    inc/hal/halservice_rescure.h
+    inc/hal/halservice_transform.h
+    inc/storage/storage_broadcast.h
+    inc/storage/storage_config.h
+    inc/storage/storage_r2tune.h
+    inc/storage/storage_section.h
+    inc/storage/storage_transform.h
+    inc/tools/tool_8vsb.h
+    inc/tools/tool_binary_crc.h
+    inc/tools/tool_bufstream.h
+    inc/tools/tool_crc32.h
+    inc/tools/tool_dvb.h
+    inc/tools/tool_dvb_t2.h
+    inc/tools/tool_dtmb.h
+    inc/tools/tool_helpful.h
+    inc/tools/tool_isdb_t.h
+    inc/tools/tool_j83abc.h
+    inc/tools/tool_ofdm.h
+    inc/tools/tool_output.h
+    inc/ui_props_api.h
+    inc/ui_props_define.h
+    inc/ui_props/ui_props_chip.h
+    inc/ui_props/ui_props_encoder.h
+    inc/ui_props/ui_props_modulator.h
+    inc/ui_props/ui_props_output.h
+    inc/ui_props/ui_props_stream.h)
 
 set(core_INC_CROSS
     inc/cross_bridge.h
@@ -220,8 +220,6 @@ set(sdk2_HEADERS
     ${core_INC_SERVICE})
 
 if(MSVC)
-    source_group("inc/bridge" FILES ${core_INC_BRIDGE})
-    source_group("inc/core" FILES ${core_INC_CORE})
     source_group("inc" FILES ${core_INC_MUX})
     source_group("inc" FILES ${core_INC_SERVICE})
     source_group("inc" FILES ${core_INC_SDK})

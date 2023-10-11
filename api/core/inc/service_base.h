@@ -30,9 +30,9 @@
 #define _SERVICE_BASE_
 
 #include <vatek_sdk_device.h>
-#include <core/hal/halservice_base.h>
-#include <core/ui_props/ui_props_output.h>
-#include <core/ui_props/ui_props_stream.h>
+#include <hal/halservice_base.h>
+#include <ui_props/ui_props_output.h>
+#include <ui_props/ui_props_stream.h>
 
 /**
  * @ingroup broadcast_api

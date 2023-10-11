@@ -26,15 +26,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_ofdm.h>
-#include <core/tools/tool_8vsb.h>
-#include <core/tools/tool_dvb.h>
-#include <core/tools/tool_dtmb.h>
-#include <core/tools/tool_isdb_t.h>
-#include <core/tools/tool_j83abc.h>
-#include <core/tools/tool_dvb_t2.h>
+#include <tools/tool_ofdm.h>
+#include <tools/tool_8vsb.h>
+#include <tools/tool_dvb.h>
+#include <tools/tool_dtmb.h>
+#include <tools/tool_isdb_t.h>
+#include <tools/tool_j83abc.h>
+#include <tools/tool_dvb_t2.h>
 
-#include <core/ui_props/ui_props_modulator.h>
+#include <ui_props/ui_props_modulator.h>
 
 #define _mparam_prop(type,tag)   {sizeof(tag),(const uint8_t*)&default_##tag,_ui_struct(tag),tool_##type##_get_bitrate,tool_##type##_check_param},
 #define _mparam_j83(type,tag)    {sizeof(tag),(const uint8_t*)&default_##tag,_ui_struct(tag),tool_j83_get_bitrate,tool_j83_check_param},

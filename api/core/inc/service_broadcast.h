@@ -30,7 +30,7 @@
 #define _SERVICE_BROADCAST_
 
 #include <service_base.h>
-#include <core/hal/halservice_broadcast.h>
+#include <hal/halservice_broadcast.h>
 #include <mux_handle.h>
 
 #define BCUSB_ESINFO_MAXLEN				48

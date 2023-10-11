@@ -2,8 +2,8 @@
 #include "../inc/tool_printf.h"
 #include <stdio.h>
 #include <cross_os_api.h>
-#include <core/ui_props/ui_props_chip.h>
-#include <core/ui_props_api.h>
+#include <ui_props/ui_props_chip.h>
+#include <ui_props_api.h>
 #include <vatek_sdk_bridge.h>
 #include <ui_bridge_base.h>
 #include <ui_bridge_source.h>

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <core/tools/tool_helpful.h>
+#include <tools/tool_helpful.h>
 
 #define MEMQUERY_EN_TAG		0xF9700122
 

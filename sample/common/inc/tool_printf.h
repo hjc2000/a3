@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <core/base/chip_define.h>
+#include <base/chip_define.h>
 #include <bridge_device.h>
 #include <vatek_sdk_usbstream.h>
 

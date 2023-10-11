@@ -28,7 +28,7 @@
 
 
 #include <vatek_sdk_transform.h>
-#include <core/base/output_rfmixer.h>
+#include <base/output_rfmixer.h>
 #include <ui_service_broadcast.h>
 #include <ui_service_transform.h>
 
