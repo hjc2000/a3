@@ -7,17 +7,7 @@
 #define TIME_SECOND_TO_NS		    1000000000
 #define TIME_SECOND_TO_US		    1000000
 
-void cross_os_wait_unit(struct timespec* target)
-{
-	uint64_t curtick = cross_os_get_time_us();
-	uint64_t timetick = cross_os_time_to_us(target);
-
-	if (curtick > timetick)return;
-	curtick = timetick - curtick;
-	cross_os_usleep((uint32_t)curtick);
-}
-
-void cross_os_time_plus_ms(struct timespec* tp,int32_t ms)
+void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
 {
 	if (ms >= 1000)
 	{
@@ -33,7 +23,7 @@ void cross_os_time_plus_ms(struct timespec* tp,int32_t ms)
 	}
 }
 
-void cross_os_time_plus_time(struct timespec* tp,struct timespec* tappend)
+void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend)
 {
 	tp->tv_nsec += tappend->tv_nsec;
 	tp->tv_sec += tappend->tv_sec;
@@ -45,26 +35,26 @@ void cross_os_time_plus_time(struct timespec* tp,struct timespec* tappend)
 	}
 }
 
-vatek_result cross_os_get_time(struct timespec * tp)
+vatek_result cross_os_get_time(struct timespec *tp)
 {
 	struct timespec ts;
-    if(clock_gettime(CLOCK_MONOTONIC, tp) >= 0)return vatek_success;
-    return vatek_hwfail;
+	if (clock_gettime(CLOCK_MONOTONIC, tp) >= 0)return vatek_success;
+	return vatek_hwfail;
 }
 
 uint64_t cross_os_get_time_us()
 {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return ((uint64_t)ts.tv_sec * 1000000 + ts.tv_nsec / 1000);	
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ((uint64_t)ts.tv_sec * 1000000 + ts.tv_nsec / 1000);
 }
 
-uint64_t cross_os_time_to_us(struct timespec* tp)
+uint64_t cross_os_time_to_us(struct timespec *tp)
 {
-    return (tp->tv_sec * 1000000) + (tp->tv_nsec / 1000);
+	return (tp->tv_sec * 1000000) + (tp->tv_nsec / 1000);
 }
 
-vatek_result cross_os_time_eclipse(struct timespec* st,struct timespec* eclipse)
+vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse)
 {
 	struct timespec curtime;
 	vatek_result nres = cross_os_get_time(&curtime);

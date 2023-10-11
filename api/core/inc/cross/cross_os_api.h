@@ -43,12 +43,28 @@ extern "C" {
 	HAL_API vatek_result cross_os_findfile_next(hcross_ffind hffind, Pcross_ffind *pfind);
 	HAL_API void cross_os_findfile_close(hcross_ffind hffind);
 
-	/* cross_os_time_api */
+	/// <summary>
+	///		睡眠指定的毫秒数
+	/// </summary>
+	/// <param name="ms"></param>
+	/// <returns></returns>
 	HAL_API void cross_os_sleep(int32_t ms);
 	HAL_API void cross_os_yield();			/*  relinquish the CPU */
+
+	/// <summary>
+	///		获取 UTC 的毫秒数
+	/// </summary>
+	/// <param name=""></param>
+	/// <returns></returns>
 	HAL_API uint32_t cross_os_get_tick_ms(void);
+
+	/// <summary>
+	///		睡眠指定的微秒数
+	/// </summary>
+	/// <param name="us"></param>
+	/// <returns></returns>
 	HAL_API void cross_os_usleep(uint32_t us);
-	HAL_API void cross_os_wait_unit(struct timespec *target);
+	HAL_API void cross_os_wait_unit(timespec *target);
 	HAL_API void cross_os_time_plus_ms(struct timespec *tp, int32_t ms);
 	HAL_API void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend);
 

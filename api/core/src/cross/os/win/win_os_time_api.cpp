@@ -73,16 +73,6 @@ vatek_result cross_os_time_eclipse(struct timespec *st, struct timespec *eclipse
 	return nres;
 }
 
-void cross_os_wait_unit(struct timespec *target)
-{
-	uint64_t curtick = cross_os_get_time_us();
-	uint64_t timetick = cross_os_time_to_us(target);
-
-	if (curtick > timetick)return;
-	curtick = timetick - curtick;
-	cross_os_usleep((uint32_t)curtick);
-}
-
 void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
 {
 	if (ms >= 1000)

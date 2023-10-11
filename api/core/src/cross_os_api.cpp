@@ -29,7 +29,8 @@ void cross_os_yield()
 void cross_os_append_path(char *path, const char *append)
 {
 	int32_t len = (int32_t)strlen(path);
-	if (path[len - 1] != PATH_BACKSLASH)path[len++] = PATH_BACKSLASH;
+	if (path[len - 1] != PATH_BACKSLASH)
+		path[len++] = PATH_BACKSLASH;
 	strcpy(&path[len], append);
 }
 
@@ -38,4 +39,15 @@ uint32_t cross_os_get_tick_ms(void)
 	duration since_epoch = system_clock::now().time_since_epoch();
 	int64_t millis = duration_cast<milliseconds>(since_epoch).count();
 	return millis;
+}
+
+void cross_os_wait_unit(timespec *target)
+{
+	uint64_t curtick = cross_os_get_time_us();
+	uint64_t timetick = cross_os_time_to_us(target);
+
+	if (curtick > timetick)
+		return;
+	curtick = timetick - curtick;
+	cross_os_usleep((uint32_t)curtick);
 }
