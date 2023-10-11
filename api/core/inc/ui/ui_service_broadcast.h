@@ -29,8 +29,8 @@
 #ifndef _UI_SERVICE_BROADCAST_
 #define _UI_SERVICE_BROADCAST_
 
-#include <service/ui/ui_service_base.h>
-#include <service/service_broadcast.h>
+#include <ui/ui_service_base.h>
+#include <service_broadcast.h>
 
 /* stream : common*/
 HALREG_S(MUX_PCR_PID, 13)

@@ -1,7 +1,7 @@
 #ifndef _VATEK_SDK_USBSTREAM_
 #define _VATEK_SDK_USBSTREAM_
 
-#include <service/service_transform.h>
+#include <service_transform.h>
 
 /// <summary>
 ///		void * 类型

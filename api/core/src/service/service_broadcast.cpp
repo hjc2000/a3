@@ -26,8 +26,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <service/service_broadcast.h>
-#include <service/ui/ui_service_broadcast.h>
+#include <service_broadcast.h>
+#include <ui/ui_service_broadcast.h>
 
 vatek_result broadcast_param_set(void_vatek_chip hchip, Pbroadcast_param pbc)
 {

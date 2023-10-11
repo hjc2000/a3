@@ -30,7 +30,7 @@
 #define _UI_SERVICE_BASE_
 
 #include <core/ui_props_define.h>
-#include <service/service_base.h>
+#include <service_base.h>
 #include <core/ui_props/ui_props_stream.h>
 #include <core/ui_props/ui_props_output.h>
 

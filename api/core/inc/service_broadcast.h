@@ -29,7 +29,7 @@
 #ifndef _SERVICE_BROADCAST_
 #define _SERVICE_BROADCAST_
 
-#include <service/service_base.h>
+#include <service_base.h>
 #include <core/hal/halservice_broadcast.h>
 #include <mux/mux_handle.h>
 

@@ -30,8 +30,8 @@
 #define _UI_SERVICE_TRANSFORM_
 
 #include <core/ui_props/ui_props_chip.h>
-#include <service/ui/ui_service_base.h>
-#include <service/service_transform.h>
+#include <ui/ui_service_base.h>
+#include <service_transform.h>
 
 _ui_enum_start(transform_mode)
 	_val(trmode_enum,enum)

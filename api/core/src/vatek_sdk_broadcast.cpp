@@ -31,7 +31,7 @@
 #include <vatek_sdk_device.h>
 
 #include <cross/cross_os_api.h>
-#include <service/ui/ui_service_broadcast.h>
+#include <ui/ui_service_broadcast.h>
 
 typedef struct _handle_broadcast
 {

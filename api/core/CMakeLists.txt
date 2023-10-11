@@ -94,12 +94,12 @@ set(core_INC_MUX
     inc/mux/ui/ui_tool_country.h)
 
 set(core_INC_SERVICE
-    inc/service/service_base.h
-    inc/service/service_broadcast.h
-    inc/service/service_transform.h
-    inc/service/ui/ui_service_base.h
-    inc/service/ui/ui_service_broadcast.h
-    inc/service/ui/ui_service_transform.h)
+    inc/service_base.h
+    inc/service_broadcast.h
+    inc/service_transform.h
+    inc/ui/ui_service_base.h
+    inc/ui/ui_service_broadcast.h
+    inc/ui/ui_service_transform.h)
 
 set(core_INC_SDK
     inc/vatek_sdk_bridge.h
@@ -224,7 +224,7 @@ if(MSVC)
     source_group("inc/core" FILES ${core_INC_CORE})
     source_group("inc/cross" FILES ${core_INC_CROSS})
     source_group("inc/mux" FILES ${core_INC_MUX})
-    source_group("inc/service" FILES ${core_INC_SERVICE})
+    source_group("inc" FILES ${core_INC_SERVICE})
     source_group("inc" FILES ${core_INC_SDK})
 
     source_group("src/core" FILES ${core_SRC_CORE})

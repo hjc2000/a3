@@ -29,7 +29,7 @@
 #ifndef _VATEK_SDK_USBMUX_
 #define _VATEK_SDK_USBMUX_
 
-#include <service/service_transform.h>
+#include <service_transform.h>
 #include <mux/mux_spec.h>
 #include <mux/mux_packet.h>
 

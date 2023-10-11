@@ -29,7 +29,7 @@
 #ifndef _VATEK_SDK_BROADCAST_
 #define _VATEK_SDK_BROADCAST_
 
-#include <service/service_broadcast.h>
+#include <service_broadcast.h>
 
 typedef void* hvatek_broadcast;
 typedef void* hvatek_aux;

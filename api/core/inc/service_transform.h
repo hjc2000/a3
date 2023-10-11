@@ -29,7 +29,7 @@
 #ifndef _SERVICE_TRANSFORM_
 #define _SERVICE_TRANSFORM_
 
-#include <service/service_base.h>
+#include <service_base.h>
 #include <core/hal/halservice_transform.h>
 #include <mux/mux_handle.h>
 
