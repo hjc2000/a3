@@ -21,7 +21,7 @@ extern void udp_stream_free(hstream_source hsource);
 
 typedef struct _handle_udp
 {
-	hcross_socket hsocket;
+	void_cross_socket hsocket;
 	void_cross_thread hrecv;
 	void_cross_mutex hlock;
 	int32_t buf_rptr;
@@ -55,7 +55,7 @@ vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source * psource
 {
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;
-	hcross_socket hsocket = NULL;
+	void_cross_socket hsocket = NULL;
 	void_cross_mutex hlock = NULL;
 
 	sparam.buffer_len = UDP_BUFFER_LEN;

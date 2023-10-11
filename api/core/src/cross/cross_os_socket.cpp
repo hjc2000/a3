@@ -82,7 +82,7 @@ extern vatek_result socket_set_block(Phandle_socket psocket, int32_t isblock);
 extern vatek_result socket_mutilcast_group(Phandle_socket psocket);
 extern vatek_result socket_set_recvbuf(Phandle_socket psocket);
 
-vatek_result cross_os_create_socket(socket_param * param, hcross_socket *hsocket)
+vatek_result cross_os_create_socket(socket_param * param, void_cross_socket *hsocket)
 {
 	socket_protocol nprotocol = socket_get_protocol(param);
 	vatek_result nres = vatek_unsupport;
@@ -109,13 +109,13 @@ vatek_result cross_os_create_socket(socket_param * param, hcross_socket *hsocket
 	return nres;
 }
 
-socket_protocol cross_os_get_protocol_socket(hcross_socket hsocket)
+socket_protocol cross_os_get_protocol_socket(void_cross_socket hsocket)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	return psocket->protocol;
 }
 
-vatek_result cross_os_connect_socket(hcross_socket hsocket)
+vatek_result cross_os_connect_socket(void_cross_socket hsocket)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	vatek_result nres = vatek_badstatus;
@@ -179,7 +179,7 @@ vatek_result cross_os_connect_socket(hcross_socket hsocket)
 	return nres;
 }
 
-vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
+vatek_result cross_os_recv_socket(void_cross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	vatek_result nres = vatek_unsupport;
@@ -208,7 +208,7 @@ vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t 
 	return nres;
 }
 
-vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
+vatek_result cross_os_send_socket(void_cross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	if (psocket->protocol != protocol_tcp)
@@ -237,7 +237,7 @@ vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t 
 	return (vatek_result)0;
 }
 
-vatek_result cross_os_disconnect_socket(hcross_socket hsocket)
+vatek_result cross_os_disconnect_socket(void_cross_socket hsocket)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	vatek_result nres = vatek_success;
@@ -247,7 +247,7 @@ vatek_result cross_os_disconnect_socket(hcross_socket hsocket)
 	return nres;
 }
 
-void cross_os_free_socket(hcross_socket hsocket)
+void cross_os_free_socket(void_cross_socket hsocket)
 {
 	Phandle_socket psocket = (Phandle_socket)hsocket;
 	if (psocket->socket_fd != -1)

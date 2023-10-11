@@ -44,7 +44,7 @@
 typedef struct _handle_udp
 {
 	cstream_handler handle;
-	hcross_socket hsocket;
+	void_cross_socket hsocket;
 	void_cross_thread hrecv;
 	void_cross_mutex hlock;
 	int32_t buf_rptr;
@@ -71,7 +71,7 @@ vatek_result cross_stream_udp_get(const char* url, Pcstream_handler* pcstream)
 {
 	socket_param sparam = { 0, };
 	vatek_result nres = vatek_success;
-	hcross_socket hsocket = NULL;
+	void_cross_socket hsocket = NULL;
 	void_cross_mutex hlock = NULL;
 
 	sparam.buffer_len = UDP_BUFFER_LEN;

@@ -175,7 +175,7 @@ extern "C" {
 
 	/* cross_os_socket_api */
 
-	typedef void *hcross_socket;
+	typedef void *void_cross_socket;
 
 	enum socket_mode
 	{
@@ -205,10 +205,10 @@ extern "C" {
 			//xxx.xxx.xxx.xxx:PPPP			[_tcp]
 	*/
 
-	HAL_API vatek_result cross_os_create_socket(socket_param *param, hcross_socket *hsocket);
-	HAL_API socket_protocol cross_os_get_protocol_socket(hcross_socket hsocket);
-	HAL_API vatek_result cross_os_connect_socket(hcross_socket hsocket);
-	HAL_API vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout);
+	HAL_API vatek_result cross_os_create_socket(socket_param *param, void_cross_socket *hsocket);
+	HAL_API socket_protocol cross_os_get_protocol_socket(void_cross_socket hsocket);
+	HAL_API vatek_result cross_os_connect_socket(void_cross_socket hsocket);
+	HAL_API vatek_result cross_os_recv_socket(void_cross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout);
 
 	/// <summary>
 	///		用套接字将数据发送出去。只能用于 TCP 协议的套接字，内部会判断是不是 protocol_tcp。
@@ -218,9 +218,9 @@ extern "C" {
 	/// <param name="len"></param>
 	/// <param name="timeout"></param>
 	/// <returns>发送完成返回 0，发生错误返回 -1</returns>
-	HAL_API vatek_result cross_os_send_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout);
-	HAL_API vatek_result cross_os_disconnect_socket(hcross_socket hsocket);
-	HAL_API void cross_os_free_socket(hcross_socket hsocket);
+	HAL_API vatek_result cross_os_send_socket(void_cross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout);
+	HAL_API vatek_result cross_os_disconnect_socket(void_cross_socket hsocket);
+	HAL_API void cross_os_free_socket(void_cross_socket hsocket);
 
 	#ifdef _MSC_VER
 	#define _cos_log(format,...) cross_os_printf("[%s:%d] " format "\r\n",__func__, __LINE__, ##__VA_ARGS__)
