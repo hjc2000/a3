@@ -30,7 +30,7 @@
 #define _UI_MUX_SPEC_PSIP_
 
 #include <ui_props_mux.h>
-#include <spec/spec_psip.h>
+#include <spec_psip.h>
 
 _mux_string_start(mux_spec_psip)
 	_mux_string(0, short_name, _MUX_STRING_UTF16, 14)

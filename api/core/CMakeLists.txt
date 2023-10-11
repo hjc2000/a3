@@ -81,14 +81,14 @@ set(core_INC_MUX
     inc/mux_rule.h
     inc/mux_spec.h
     inc/mux_time.h
-    inc/spec/spec_arib.h
-    inc/spec/spec_dvb.h
-    inc/spec/spec_iso_13818.h
-    inc/spec/spec_psip.h
-    inc/ui/spec/ui_mux_spec_arib.h
-    inc/ui/spec/ui_mux_spec_dvb.h
-    inc/ui/spec/ui_mux_spec_iso.h
-    inc/ui/spec/ui_mux_spec_psip.h
+    inc/spec_arib.h
+    inc/spec_dvb.h
+    inc/spec_iso_13818.h
+    inc/spec_psip.h
+    inc/ui_mux_spec_arib.h
+    inc/ui_mux_spec_dvb.h
+    inc/ui_mux_spec_iso.h
+    inc/ui_mux_spec_psip.h
     inc/ui_props_mux.h
     inc/ui_tool_arib.h
     inc/ui_tool_country.h)

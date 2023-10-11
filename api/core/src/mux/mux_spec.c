@@ -27,10 +27,10 @@
 //
 
 #include <mux_spec.h>
-#include <ui/spec/ui_mux_spec_arib.h>
-#include <ui/spec/ui_mux_spec_dvb.h>
-#include <ui/spec/ui_mux_spec_iso.h>
-#include <ui/spec/ui_mux_spec_psip.h>
+#include <ui_mux_spec_arib.h>
+#include <ui_mux_spec_dvb.h>
+#include <ui_mux_spec_iso.h>
+#include <ui_mux_spec_psip.h>
 
 typedef struct _muxspec_props
 {
@@ -38,9 +38,9 @@ typedef struct _muxspec_props
 	Pmux_ui_string strings;
 	Pui_prop_item chprops;
 	Pui_prop_item progprops;
-	uint8_t* chbuf;
+	uint8_t *chbuf;
 	int32_t chlen;
-	uint8_t* progbuf;
+	uint8_t *progbuf;
 	int32_t proglen;
 }muxspec_props, *Pmuxspec_props;
 
@@ -70,12 +70,12 @@ static const muxspec_props defspec_props[] =
 
 extern Pmuxspec_props muxspec_get_props(mux_spec_mode spec);
 extern vatek_result muxspec_copy_props(Pth_mempool pmem,
-									   Pui_prop_item props, 
-									   uint8_t* pdest, 
-									   uint8_t* psource, 
+									   Pui_prop_item props,
+									   uint8_t *pdest,
+									   uint8_t *psource,
 									   int32_t len);
 
-extern void muxspec_printf_uiprops(mux_spec_mode spec,const char* fmt,Pui_prop_item props, uint8_t* pbuf);
+extern void muxspec_printf_uiprops(mux_spec_mode spec, const char *fmt, Pui_prop_item props, uint8_t *pbuf);
 
 vatek_result muxspec_check_support(mux_spec_mode spec, mux_country_code country)
 {
@@ -84,7 +84,7 @@ vatek_result muxspec_check_support(mux_spec_mode spec, mux_country_code country)
 	return vatek_unsupport;
 }
 
-vatek_result muxspec_get_channel_uiprops(mux_spec_mode spec, Pui_prop_item* pprops)
+vatek_result muxspec_get_channel_uiprops(mux_spec_mode spec, Pui_prop_item *pprops)
 {
 	vatek_result nres = vatek_unsupport;
 	Pmuxspec_props pmprops = muxspec_get_props(spec);
@@ -96,7 +96,7 @@ vatek_result muxspec_get_channel_uiprops(mux_spec_mode spec, Pui_prop_item* ppro
 	return nres;
 }
 
-vatek_result muxspec_get_program_uiprops(mux_spec_mode spec, Pui_prop_item* pprops)
+vatek_result muxspec_get_program_uiprops(mux_spec_mode spec, Pui_prop_item *pprops)
 {
 	vatek_result nres = vatek_unsupport;
 	Pmuxspec_props pmprops = muxspec_get_props(spec);
@@ -108,7 +108,7 @@ vatek_result muxspec_get_program_uiprops(mux_spec_mode spec, Pui_prop_item* ppro
 	return nres;
 }
 
-vatek_result muxspec_get_spec_string(mux_spec_mode spec, Pui_prop_item puiprop, Pmux_ui_string* pstrings)
+vatek_result muxspec_get_spec_string(mux_spec_mode spec, Pui_prop_item puiprop, Pmux_ui_string *pstrings)
 {
 	Pmuxspec_props puispec = muxspec_get_props(spec);
 	vatek_result nres = vatek_unsupport;
@@ -122,12 +122,12 @@ vatek_result muxspec_get_spec_string(mux_spec_mode spec, Pui_prop_item puiprop, 
 		else nres = vatek_unsupport;
 	}
 
-	if(!is_vatek_success(nres))
-		VWAR("spec string not found : [%s:%s]",ui_enum_get_str(mux_spec_mode,spec),puiprop->name);
+	if (!is_vatek_success(nres))
+		VWAR("spec string not found : [%s:%s]", ui_enum_get_str(mux_spec_mode, spec), puiprop->name);
 	return nres;
 }
 
-vatek_result muxspec_set_string_ascii(Pmux_string pstring, const char* szeng)
+vatek_result muxspec_set_string_ascii(Pmux_string pstring, const char *szeng)
 {
 	vatek_result nres = vatek_badparam;
 	int32_t slen = (int32_t)strlen(szeng);
@@ -135,21 +135,21 @@ vatek_result muxspec_set_string_ascii(Pmux_string pstring, const char* szeng)
 	{
 		memset(&pstring->text[0], 0, pstring->maxlen);
 		if (slen > (int32_t)pstring->maxlen)slen = pstring->maxlen;
-		strncpy((char*)&pstring->text[0], szeng, slen);
+		strncpy((char *)&pstring->text[0], szeng, slen);
 		pstring->len = slen;
 		nres = vatek_success;
 	}
 	return nres;
 }
 
-vatek_result muxspec_set_string_jiseng(Pmux_string pstring, const char* szeng)
+vatek_result muxspec_set_string_jiseng(Pmux_string pstring, const char *szeng)
 {
 	vatek_result nres = vatek_badparam;
 	int32_t slen = (int32_t)strlen(szeng);
 	if (slen)
 	{
 		int32_t maxlen = pstring->maxlen - 2;
-		uint8_t* ptrs = &pstring->text[2];
+		uint8_t *ptrs = &pstring->text[2];
 		pstring->text[0] = 0x1B;
 		pstring->text[1] = 0x7E;
 		if (slen > maxlen)slen = maxlen;
@@ -165,14 +165,14 @@ vatek_result muxspec_set_string_jiseng(Pmux_string pstring, const char* szeng)
 	return nres;
 }
 
-vatek_result muxspec_set_string_utf16(Pmux_string pstring, const char* szeng)
+vatek_result muxspec_set_string_utf16(Pmux_string pstring, const char *szeng)
 {
 	vatek_result nres = vatek_badparam;
 	int32_t slen = (int32_t)strlen(szeng);
 	if (slen)
 	{
 		int32_t ulen = pstring->maxlen >> 1;
-		uint8_t* ptrs = &pstring->text[1];
+		uint8_t *ptrs = &pstring->text[1];
 		if (slen > ulen)slen = ulen;
 		for (ulen = 0; ulen < slen; ulen++)
 		{
@@ -185,7 +185,7 @@ vatek_result muxspec_set_string_utf16(Pmux_string pstring, const char* szeng)
 	return nres;
 }
 
-vatek_result muxspec_set_string_psip_mutil(Pmux_string pstring, const char* szeng)
+vatek_result muxspec_set_string_psip_mutil(Pmux_string pstring, const char *szeng)
 {
 	vatek_result nres = vatek_badparam;
 	int32_t slen = (int32_t)strlen(szeng);
@@ -197,14 +197,14 @@ vatek_result muxspec_set_string_psip_mutil(Pmux_string pstring, const char* szen
 
 		memcpy(&pstring->text[0], &psip_end[0], 7);
 		pstring->text[7] = slen;
-		strncpy((char*)&pstring->text[8], szeng, slen);
+		strncpy((char *)&pstring->text[8], szeng, slen);
 		pstring->len = slen + 8;
 		nres = vatek_success;
 	}
 	return nres;
 }
 
-vatek_result muxspec_set_spec_string(Pmux_ui_string pmuxstr, Pmux_string pstring, const char* szval)
+vatek_result muxspec_set_spec_string(Pmux_ui_string pmuxstr, Pmux_string pstring, const char *szval)
 {
 	vatek_result nres = vatek_unsupport;
 	if (pmuxstr->coding == _MUX_STRING_TYPE_ASCII)
@@ -218,7 +218,7 @@ vatek_result muxspec_set_spec_string(Pmux_ui_string pmuxstr, Pmux_string pstring
 	return nres;
 }
 
-vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item props, const char* propname, uint8_t* praw, const char* value)
+vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item props, const char *propname, uint8_t *praw, const char *value)
 {
 	int32_t i = 0;
 	vatek_result nres = vatek_badparam;
@@ -228,7 +228,7 @@ vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item p
 		{
 			if (strcmp(props[i].name, propname) == 0)
 			{
-				Pmux_string pstring = *(Pmux_string*)&praw[props[i].offset];
+				Pmux_string pstring = *(Pmux_string *)&praw[props[i].offset];
 				Pmux_ui_string pmstr = NULL;
 				nres = muxspec_get_spec_string(spec, &props[i], &pmstr);
 				if (is_vatek_success(nres))nres = muxspec_set_spec_string(pmstr, pstring, value);
@@ -240,7 +240,7 @@ vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item p
 	return nres;
 }
 
-vatek_result muxspec_set_channel_spec_string(mux_spec_mode spec, const char* propname,uint8_t* praw, const char* value)
+vatek_result muxspec_set_channel_spec_string(mux_spec_mode spec, const char *propname, uint8_t *praw, const char *value)
 {
 	Pui_prop_item puiprops = NULL;
 	vatek_result nres = muxspec_get_channel_uiprops(spec, &puiprops);
@@ -248,7 +248,7 @@ vatek_result muxspec_set_channel_spec_string(mux_spec_mode spec, const char* pro
 	return nres;
 }
 
-vatek_result muxspec_set_program_spec_string(mux_spec_mode spec, const char* propname, uint8_t* praw, const char* value)
+vatek_result muxspec_set_program_spec_string(mux_spec_mode spec, const char *propname, uint8_t *praw, const char *value)
 {
 	Pui_prop_item puiprops = NULL;
 	vatek_result nres = muxspec_get_program_uiprops(spec, &puiprops);
@@ -257,15 +257,15 @@ vatek_result muxspec_set_program_spec_string(mux_spec_mode spec, const char* pro
 	return nres;
 }
 
-vatek_result muxspec_get_string_ascii(Pmux_string pstring, char* pbuf, int32_t len)
+vatek_result muxspec_get_string_ascii(Pmux_string pstring, char *pbuf, int32_t len)
 {
 	memset(pbuf, 0, len);
 	if (len > (int32_t)pstring->maxlen)len = pstring->maxlen;
-	strncpy(pbuf, (char*)pstring->text, len);
+	strncpy(pbuf, (char *)pstring->text, len);
 	return vatek_success;
 }
 
-vatek_result muxspec_get_string_jiseng(Pmux_string pstring, char* pbuf, int32_t len)
+vatek_result muxspec_get_string_jiseng(Pmux_string pstring, char *pbuf, int32_t len)
 {
 	int32_t i = 2;
 	vatek_result nres = vatek_format;
@@ -281,7 +281,7 @@ vatek_result muxspec_get_string_jiseng(Pmux_string pstring, char* pbuf, int32_t 
 	return nres;
 }
 
-vatek_result muxspec_get_string_utf16(Pmux_string pstring, char* pbuf, int32_t len)
+vatek_result muxspec_get_string_utf16(Pmux_string pstring, char *pbuf, int32_t len)
 {
 	int32_t i = 1;
 	int32_t pos = 0;
@@ -297,12 +297,12 @@ vatek_result muxspec_get_string_utf16(Pmux_string pstring, char* pbuf, int32_t l
 	return nres;
 }
 
-vatek_result muxspec_get_string_psip_mutil(Pmux_string pstring, char* pbuf, int32_t len)
+vatek_result muxspec_get_string_psip_mutil(Pmux_string pstring, char *pbuf, int32_t len)
 {
 	vatek_result nres = vatek_format;
-	if (pstring->text[0] == 0x01 && 
-		pstring->text[1] == 'e' && 
-		pstring->text[2] == 'n' && 
+	if (pstring->text[0] == 0x01 &&
+		pstring->text[1] == 'e' &&
+		pstring->text[2] == 'n' &&
 		pstring->text[3] == 'g')
 	{
 		int32_t i = 0;
@@ -317,7 +317,7 @@ vatek_result muxspec_get_string_psip_mutil(Pmux_string pstring, char* pbuf, int3
 	return nres;
 }
 
-vatek_result muxspec_get_spec_string_display(Pmux_ui_string puistring, Pmux_string pvstring, char* pbuf, int32_t len)
+vatek_result muxspec_get_spec_string_display(Pmux_ui_string puistring, Pmux_string pvstring, char *pbuf, int32_t len)
 {
 	vatek_result nres = vatek_success;
 	if (puistring->coding == _MUX_STRING_TYPE_ASCII)
@@ -332,12 +332,12 @@ vatek_result muxspec_get_spec_string_display(Pmux_ui_string puistring, Pmux_stri
 	return nres;
 }
 
-extern vatek_result muxspec_get_props_len(mux_spec_mode spec,Pui_prop_item puiprops);
+extern vatek_result muxspec_get_props_len(mux_spec_mode spec, Pui_prop_item puiprops);
 
 vatek_result muxspec_get_channel_len(mux_spec_mode spec)
 {
 	Pui_prop_item puiprops = NULL;
-	vatek_result nres = muxspec_get_channel_uiprops(spec,&puiprops);
+	vatek_result nres = muxspec_get_channel_uiprops(spec, &puiprops);
 	if (is_vatek_success(nres))
 		nres = muxspec_get_props_len(spec, puiprops);
 	return nres;
@@ -386,44 +386,44 @@ Pmuxspec_props muxspec_get_props(mux_spec_mode spec)
 	return NULL;
 }
 
-vatek_result muxspec_malloc_channel(Pth_mempool pmem,mux_spec_mode spec,mux_country_code country, Pspec_channel* pchannel)
+vatek_result muxspec_malloc_channel(Pth_mempool pmem, mux_spec_mode spec, mux_country_code country, Pspec_channel *pchannel)
 {
 	vatek_result nres = vatek_unsupport;
 	Pmuxspec_props pmprops = muxspec_get_props(spec);
 	if (pmprops)
 	{
-		Pspec_channel newch = (Pspec_channel)th_mempool_malloc(pmem,sizeof(spec_channel));
+		Pspec_channel newch = (Pspec_channel)th_mempool_malloc(pmem, sizeof(spec_channel));
 		nres = vatek_memfail;
 		if (newch)
 		{
 			newch->spec = spec;
 			newch->country = country;
-			nres = muxspec_copy_props(pmem,pmprops->chprops, (uint8_t*)&newch->_spec, pmprops->chbuf, pmprops->chlen);
-			if(is_vatek_success(nres))*pchannel = newch;
+			nres = muxspec_copy_props(pmem, pmprops->chprops, (uint8_t *)&newch->_spec, pmprops->chbuf, pmprops->chlen);
+			if (is_vatek_success(nres))*pchannel = newch;
 		}
 	}
 	return nres;
 }
 
-vatek_result muxspec_malloc_program(Pth_mempool pmem, mux_spec_mode spec, Pspec_program* pprogram)
+vatek_result muxspec_malloc_program(Pth_mempool pmem, mux_spec_mode spec, Pspec_program *pprogram)
 {
 	vatek_result nres = vatek_unsupport;
 	Pmuxspec_props pmprops = muxspec_get_props(spec);
 	if (pmprops)
 	{
-		Pspec_program newprog = (Pspec_program)th_mempool_malloc(pmem,sizeof(spec_program));
+		Pspec_program newprog = (Pspec_program)th_mempool_malloc(pmem, sizeof(spec_program));
 		nres = vatek_memfail;
 		if (newprog)
 		{
 			newprog->spec = spec;
-			nres = muxspec_copy_props(pmem,pmprops->progprops, (uint8_t*)&newprog->_spec, pmprops->progbuf, pmprops->proglen);
-			if(is_vatek_success(nres))*pprogram = newprog;
+			nres = muxspec_copy_props(pmem, pmprops->progprops, (uint8_t *)&newprog->_spec, pmprops->progbuf, pmprops->proglen);
+			if (is_vatek_success(nres))*pprogram = newprog;
 		}
 	}
 	return nres;
 }
 
-vatek_result muxspec_copy_props(Pth_mempool pmem,Pui_prop_item props, uint8_t* pdest, uint8_t* psource, int32_t len)
+vatek_result muxspec_copy_props(Pth_mempool pmem, Pui_prop_item props, uint8_t *pdest, uint8_t *psource, int32_t len)
 {
 	vatek_result nres = vatek_success;
 	int32_t i = 0;
@@ -433,9 +433,9 @@ vatek_result muxspec_copy_props(Pth_mempool pmem,Pui_prop_item props, uint8_t* p
 	{
 		if (IS_UIPROP_STRBUF(props[i].type))
 		{
-			Pmux_string pstring = *(Pmux_string*)&psource[props[i].offset];
-			uint8_t* newbuf = (uint8_t*)th_mempool_malloc(pmem,sizeof(mux_string) + pstring->maxlen);
-			*((uint8_t**)&pdest[props[i].offset]) = NULL;
+			Pmux_string pstring = *(Pmux_string *)&psource[props[i].offset];
+			uint8_t *newbuf = (uint8_t *)th_mempool_malloc(pmem, sizeof(mux_string) + pstring->maxlen);
+			*((uint8_t **)&pdest[props[i].offset]) = NULL;
 			nres = vatek_memfail;
 			if (newbuf)
 			{
@@ -444,7 +444,7 @@ vatek_result muxspec_copy_props(Pth_mempool pmem,Pui_prop_item props, uint8_t* p
 				newstr->maxlen = pstring->maxlen;
 				newstr->text = &newbuf[sizeof(mux_string)];
 				memcpy(&newstr->text[0], &pstring->text[0], pstring->len);
-				*((Pmux_string*)&pdest[props[i].offset]) = newstr;
+				*((Pmux_string *)&pdest[props[i].offset]) = newstr;
 				nres = vatek_success;
 			}
 		}
@@ -504,7 +504,7 @@ vatek_result muxspec_set_program_default(uint32_t tag, Pspec_program pspec)
 	return nres;
 }
 
-void muxspec_printf_uiprops(mux_spec_mode spec,const char* fmt, Pui_prop_item props, uint8_t* pbuf)
+void muxspec_printf_uiprops(mux_spec_mode spec, const char *fmt, Pui_prop_item props, uint8_t *pbuf)
 {
 	int32_t i = 0;
 	char szval[32];
@@ -512,10 +512,10 @@ void muxspec_printf_uiprops(mux_spec_mode spec,const char* fmt, Pui_prop_item pr
 	{
 		if (IS_UIPROP_STRBUF(props[i].type))
 		{
-			Pmux_string pmstr = *(Pmux_string*)&pbuf[props[i].offset];
+			Pmux_string pmstr = *(Pmux_string *)&pbuf[props[i].offset];
 			Pmux_ui_string puistr = NULL;
 			memset(&szval[0], 0, 32);
-			if(is_vatek_success(muxspec_get_spec_string(spec, &props[i], &puistr)))
+			if (is_vatek_success(muxspec_get_spec_string(spec, &props[i], &puistr)))
 				muxspec_get_spec_string_display(puistr, pmstr, &szval[0], 32);
 			else strncpy(&szval[0], "_unknown", 32);
 		}
@@ -525,21 +525,21 @@ void muxspec_printf_uiprops(mux_spec_mode spec,const char* fmt, Pui_prop_item pr
 	}
 }
 
-vatek_result muxspec_printf_channel(const char* fmt,Pspec_channel pch)
+vatek_result muxspec_printf_channel(const char *fmt, Pspec_channel pch)
 {
 	Pui_prop_item puiprops = NULL;
 	vatek_result nres = muxspec_get_channel_uiprops(pch->spec, &puiprops);
 	if (is_vatek_success(nres))
-		muxspec_printf_uiprops(pch->spec,fmt, puiprops, (uint8_t*)&pch->_spec);
+		muxspec_printf_uiprops(pch->spec, fmt, puiprops, (uint8_t *)&pch->_spec);
 	return nres;
 }
 
-vatek_result muxspec_printf_program(const char* fmt,Pspec_program program)
+vatek_result muxspec_printf_program(const char *fmt, Pspec_program program)
 {
 	Pui_prop_item puiprops = NULL;
 	vatek_result nres = muxspec_get_program_uiprops(program->spec, &puiprops);
 	if (is_vatek_success(nres))
-		muxspec_printf_uiprops(program->spec,fmt, puiprops, (uint8_t*)&program->_spec);
+		muxspec_printf_uiprops(program->spec, fmt, puiprops, (uint8_t *)&program->_spec);
 	return nres;
 }
 

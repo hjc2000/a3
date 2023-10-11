@@ -30,7 +30,7 @@
 #define _UI_MUX_SPEC_ARIB_
 
 #include <ui_props_mux.h>
-#include <spec/spec_arib.h>
+#include <spec_arib.h>
 
 _ui_enum_start(arib_abnt_copy)
 _val(arib_abnt_free, free)

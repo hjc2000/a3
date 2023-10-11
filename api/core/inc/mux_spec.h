@@ -30,10 +30,10 @@
 #define _MUX_SPEC_
 
 #include <ui_props_mux.h>
-#include <spec/spec_iso_13818.h>
-#include <spec/spec_dvb.h>
-#include <spec/spec_arib.h>
-#include <spec/spec_psip.h>
+#include <spec_iso_13818.h>
+#include <spec_dvb.h>
+#include <spec_arib.h>
+#include <spec_psip.h>
 
 /**
  * @ingroup mux_spec
