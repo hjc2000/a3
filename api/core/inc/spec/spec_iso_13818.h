@@ -26,19 +26,35 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _UI_MUX_SPEC_ISO_
-#define _UI_MUX_SPEC_ISO_
+#ifndef _SPEC_ISO_13818_
+#define _SPEC_ISO_13818_
 
-#include <mux/ui/ui_props_mux.h>
-#include <mux/spec/spec_iso_13818.h>
+#include <mux_define.h>
 
-_mux_ui_struct_start(mux_spec_iso_channel)
-	_mux_h16(mux_spec_iso_channel, transport_stream_id, "transport_stream_id")
-_mux_ui_struct_end(mux_spec_iso_channel, mux_ui_level_channel)
+/**
+ * @ingroup mprop_iso
+ * ISO Channel Properties
+ */
+typedef struct _mux_spec_iso_channel{
+	uint16_t transport_stream_id;	/** PAT Table transport id */
+	uint16_t recv;
+}mux_spec_iso_channel;
 
-/* _iso program */
-_mux_ui_struct_start(mux_spec_iso_program)
-	_mux_h16(mux_spec_iso_program, program_number, "program_number")
-_mux_ui_struct_end(mux_spec_iso_program, mux_ui_level_program)
+typedef mux_spec_iso_channel* Pmux_spec_iso_channel;
+
+/**
+ * @ingroup mprop_iso
+ * ISO Program Properties
+ */
+typedef struct _mux_spec_iso_program
+{
+	uint16_t program_number;		/* PMT Table program number*/
+	uint16_t recv;
+}mux_spec_iso_program;
+
+typedef mux_spec_iso_program* Pmux_spec_iso_program;
+
+static const mux_spec_iso_channel default_mux_spec_iso_channel = { 1,0, };
+static const mux_spec_iso_program default_mux_spec_iso_program = { 1,0, };
 
 #endif

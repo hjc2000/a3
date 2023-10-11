@@ -28,8 +28,8 @@
 
 #include <vatek_sdk_usbmux.h>
 #include <vatek_sdk_usbstream.h>
-#include <mux/mux_handle.h>
-#include <mux/mux_spec.h>
+#include <mux_handle.h>
+#include <mux_spec.h>
 #include "device/internal/mux_usbstream.h"
 
 #define HUSBMUX_MEMPOOL_SIZE		1024*1024

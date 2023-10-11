@@ -26,11 +26,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_spec.h>
-#include <mux/ui/spec/ui_mux_spec_arib.h>
-#include <mux/ui/spec/ui_mux_spec_dvb.h>
-#include <mux/ui/spec/ui_mux_spec_iso.h>
-#include <mux/ui/spec/ui_mux_spec_psip.h>
+#include <mux_spec.h>
+#include <ui/spec/ui_mux_spec_arib.h>
+#include <ui/spec/ui_mux_spec_dvb.h>
+#include <ui/spec/ui_mux_spec_iso.h>
+#include <ui/spec/ui_mux_spec_psip.h>
 
 typedef struct _muxspec_props
 {

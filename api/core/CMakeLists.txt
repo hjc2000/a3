@@ -74,24 +74,24 @@ set(core_INC_CROSS
     inc/cross/cross_usb_device_winusb.h)
 
 set(core_INC_MUX
-    inc/mux/mux_define.h
-    inc/mux/mux_epg.h
-    inc/mux/mux_handle.h
-    inc/mux/mux_packet.h
-    inc/mux/mux_rule.h
-    inc/mux/mux_spec.h
-    inc/mux/mux_time.h
-    inc/mux/spec/spec_arib.h
-    inc/mux/spec/spec_dvb.h
-    inc/mux/spec/spec_iso_13818.h
-    inc/mux/spec/spec_psip.h
-    inc/mux/ui/spec/ui_mux_spec_arib.h
-    inc/mux/ui/spec/ui_mux_spec_dvb.h
-    inc/mux/ui/spec/ui_mux_spec_iso.h
-    inc/mux/ui/spec/ui_mux_spec_psip.h
-    inc/mux/ui/ui_props_mux.h
-    inc/mux/ui/ui_tool_arib.h
-    inc/mux/ui/ui_tool_country.h)
+    inc/mux_define.h
+    inc/mux_epg.h
+    inc/mux_handle.h
+    inc/mux_packet.h
+    inc/mux_rule.h
+    inc/mux_spec.h
+    inc/mux_time.h
+    inc/spec/spec_arib.h
+    inc/spec/spec_dvb.h
+    inc/spec/spec_iso_13818.h
+    inc/spec/spec_psip.h
+    inc/ui/spec/ui_mux_spec_arib.h
+    inc/ui/spec/ui_mux_spec_dvb.h
+    inc/ui/spec/ui_mux_spec_iso.h
+    inc/ui/spec/ui_mux_spec_psip.h
+    inc/ui/ui_props_mux.h
+    inc/ui/ui_tool_arib.h
+    inc/ui/ui_tool_country.h)
 
 set(core_INC_SERVICE
     inc/service_base.h
@@ -223,7 +223,7 @@ if(MSVC)
     source_group("inc/bridge" FILES ${core_INC_BRIDGE})
     source_group("inc/core" FILES ${core_INC_CORE})
     source_group("inc/cross" FILES ${core_INC_CROSS})
-    source_group("inc/mux" FILES ${core_INC_MUX})
+    source_group("inc" FILES ${core_INC_MUX})
     source_group("inc" FILES ${core_INC_SERVICE})
     source_group("inc" FILES ${core_INC_SDK})
 

@@ -29,7 +29,7 @@
 #ifndef _UI_TOOL_ARIB_
 #define _UI_TOOL_ARIB_
 
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
 typedef struct _arib_jp_area
 {

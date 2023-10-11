@@ -30,7 +30,7 @@
 #define _VATEK_SDK_TRANSFORM_
 
 #include <service_transform.h>
-#include <mux/mux_handle.h>
+#include <mux_handle.h>
 
 typedef void* hvatek_transform;
 

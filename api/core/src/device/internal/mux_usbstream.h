@@ -4,8 +4,8 @@
 
 #include <vatek_sdk_usbstream.h>
 #include <vatek_sdk_usbmux.h>
-#include <mux/mux_handle.h>
-#include <mux/mux_packet.h>
+#include <mux_handle.h>
+#include <mux_packet.h>
 #include <cross/cross_os_api.h>
 
 #define HUSBPES_FRAME_LEN			(1 << 12)

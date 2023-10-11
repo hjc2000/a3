@@ -26,39 +26,47 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _UI_MUX_SPEC_PSIP_
-#define _UI_MUX_SPEC_PSIP_
+#ifndef _SPEC_DVB_
+#define _SPEC_DVB_
 
-#include <mux/ui/ui_props_mux.h>
-#include <mux/spec/spec_psip.h>
+#include <mux_define.h>
 
-_mux_string_start(mux_spec_psip)
-	_mux_string(0, short_name, _MUX_STRING_UTF16, 14)
-	_mux_string(1, long_name, _MUX_STRING_PSIP_MUTIL, 32)
-_mux_string_end
+#define DVBSTR_NETWORK_NAME_LEN	16
+#define DVBSTR_SERVICE_NAME_LEN	16
 
-_ui_enum_start(psip_cc_mode)
-	_val(cc_mode_disable, disable)
-	_val(cc_mode_608, cc_608)
-_ui_enum_end
+static const uint8_t network_name[6] = { 'V','A','T','E','K','\0', };
+static const mux_string def_network_name = { 5,(uint8_t*)&network_name[0],DVBSTR_NETWORK_NAME_LEN };
 
-/* _psip channel */
+static const uint8_t service_name[6] = { 'V','A','-','T','V','\0', };
+static const mux_string def_service_name = { 5,(uint8_t*)&service_name[0],DVBSTR_SERVICE_NAME_LEN };
 
-_mux_ui_struct_start(mux_spec_psip_channel)
-	_mux_h32(mux_spec_psip_channel,psip_flags,"psip flags")
-	_mux_h16(mux_spec_psip_channel, transport_stream_id, "transport_stream_id")
-	_mux_u8(mux_spec_psip_channel, gps_utc_offset, "gps utc offset")
-	_mux_u16(mux_spec_psip_channel, daylight_saving, "daylight saving")
-	_mux_enum(mux_spec_psip_channel, psip_cc_mode, cc_mode, "caption service mode")
-	_mux_str(mux_spec_psip_channel, short_name, "short_name", 0)
-_mux_ui_struct_end(mux_spec_psip_channel, mux_ui_level_channel)
+/**
+ * @ingroup mprop_dvb
+ * DVB PSI Channel Properties
+ */
+typedef struct _mux_spec_dvb_channel{
+	uint16_t transport_stream_id;	/*!< transport_stream_id */
+	uint16_t network_id;			/*!< network_id */
+	Pmux_string network_name;		/*!< network_name */
+}mux_spec_dvb_channel;
 
-_mux_ui_struct_start(mux_spec_psip_program)
-	_mux_h16(mux_spec_psip_program, program_number, "program_number")
-	_mux_h16(mux_spec_psip_program, source_id, "source_id")
-	_mux_u16(mux_spec_psip_program, channel_major, "channel_major")
-	_mux_u16(mux_spec_psip_program, channel_minor, "channel_minor")
-	_mux_str(mux_spec_psip_program, long_name, "long_name", 1)
-_mux_ui_struct_end(mux_spec_psip_program, mux_ui_level_program)
+typedef mux_spec_dvb_channel* Pmux_spec_dvb_channel;
+
+/**
+ * @ingroup mprop_dvb
+ * DVB PSI Program Properties
+ */
+typedef struct _mux_spec_dvb_program{
+	uint16_t original_network_id;	/*!< original_network_id */
+	uint16_t program_number;		/*!< program_number */
+	uint16_t channel_no;			/*!< channel_no */
+	uint16_t recv;
+	Pmux_string service_name;		/*!< service_name */
+}mux_spec_dvb_program;
+
+typedef mux_spec_dvb_program* Pmux_spec_dvb_program;
+
+static const mux_spec_dvb_channel default_mux_spec_dvb_channel = { 1,1,(Pmux_string)&def_network_name };
+static const mux_spec_dvb_program default_mux_spec_dvb_program = { 1,1,1,0,(Pmux_string)&def_service_name };
 
 #endif

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_packet.h>
+#include <mux_packet.h>
 #include "internal/mux_core.h"
 
 extern Pmux_packet packet_malloc(Pth_mempool pmem,int32_t sle,int32_t packetnum);

@@ -29,7 +29,7 @@
 #ifndef _MUX_PACKET_
 #define _MUX_PACKET_
 
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
 /* ts_packet */
 

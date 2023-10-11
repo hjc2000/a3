@@ -29,7 +29,7 @@
 #ifndef _MUX_RULE_
 #define _MUX_RULE_
 
-#include <mux/mux_spec.h>
+#include <mux_spec.h>
 
 /* deprecated only used with before v1.2 not supported muxpsi_api*/
 #define MUX_RULE_HDR_TAG				"mazo-r0"

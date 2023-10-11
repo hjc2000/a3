@@ -35,7 +35,7 @@
 #include <vatek_sdk_device.h>
 #include <vatek_sdk_bridge.h>
 #include <cross/cross_os_api.h>
-#include <mux/mux_handle.h>
+#include <mux_handle.h>
 
 #include "../common/inc/tool_printf.h"
 #include "../common/inc/tool_tspacket.h"

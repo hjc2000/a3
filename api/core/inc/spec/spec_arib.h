@@ -29,7 +29,7 @@
 #ifndef _SPEC_ARIB_
 #define _SPEC_ARIB_
 
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
 #define ARIBSTR_NETWORKNAME_LEN		20
 #define ARIBSTR_SERVICE_NAME_LEN	20

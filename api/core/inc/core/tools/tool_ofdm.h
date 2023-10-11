@@ -30,7 +30,7 @@
 #define _TOOL_OFDM_
 
 #include <core/base/output_modulator.h>
-#include <mux/mux_define.h>
+#include <mux_define.h>
 #include <core/ui_props_define.h>
 
 typedef struct _ofdm_frame

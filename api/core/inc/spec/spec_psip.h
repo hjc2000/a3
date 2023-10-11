@@ -29,7 +29,7 @@
 #ifndef _SPEC_PSIP_
 #define _SPEC_PSIP_
 
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
 #define PSIPSTR_SHORT_NAME_LEN	14
 #define PSIPSTR_LONG_NAME_LEN	32

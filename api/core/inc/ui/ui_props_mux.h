@@ -30,7 +30,7 @@
 #define _UI_PROPS_MUX_
 
 #include <core/ui_props_api.h>
-#include <mux/mux_epg.h>
+#include <mux_epg.h>
 
 typedef enum _mux_ui_level
 {

@@ -29,10 +29,10 @@
 #ifndef _MUX_HANDLE_
 #define _MUX_HANDLE_
 
-#include <mux/mux_define.h>
-#include <mux/mux_epg.h>
-#include <mux/mux_spec.h>
-#include <mux/mux_rule.h>
+#include <mux_define.h>
+#include <mux_epg.h>
+#include <mux_spec.h>
+#include <mux_rule.h>
 #include <core/base/stream_encoder.h>
 
 typedef void* hmux_core;

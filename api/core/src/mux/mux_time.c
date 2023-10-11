@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_time.h>
+#include <mux_time.h>
 
 void muxtime_append_hours(Pmux_time ptime, int32_t hours)
 {

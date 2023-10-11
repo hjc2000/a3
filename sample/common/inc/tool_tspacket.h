@@ -2,7 +2,7 @@
 #define _TOOL_TSPACKET_
 
 #include <stdint.h>
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
 #define TSPACKET_PCR_PID		0x100
 

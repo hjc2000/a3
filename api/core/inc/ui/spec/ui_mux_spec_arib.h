@@ -29,8 +29,8 @@
 #ifndef _UI_MUX_SPEC_ARIB_
 #define _UI_MUX_SPEC_ARIB_
 
-#include <mux/ui/ui_props_mux.h>
-#include <mux/spec/spec_arib.h>
+#include <ui/ui_props_mux.h>
+#include <spec/spec_arib.h>
 
 _ui_enum_start(arib_abnt_copy)
 	_val(arib_abnt_free, free)

@@ -28,7 +28,7 @@
 
 #include "./internal/stream_handle.h"
 #include <core/tools/tool_output.h>
-#include <mux/mux_packet.h>
+#include <mux_packet.h>
 #include <core/tools/tool_crc32.h>
 
 #define CSTREAM_MUX_MEMPOOL_SIZE	8192

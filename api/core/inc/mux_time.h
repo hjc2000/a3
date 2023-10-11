@@ -26,47 +26,42 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _SPEC_DVB_
-#define _SPEC_DVB_
+#ifndef _MUX_TIME_
+#define _MUX_TIME_
 
-#include <mux/mux_define.h>
+#include <mux_define.h>
 
-#define DVBSTR_NETWORK_NAME_LEN	16
-#define DVBSTR_SERVICE_NAME_LEN	16
+typedef struct _mux_time{
+	uint16_t year;
+	uint8_t month;
+	uint8_t day;
+	uint8_t hour;
+	uint8_t minute;
+	uint8_t second;
+	uint8_t recv;
+}mux_time;
 
-static const uint8_t network_name[6] = { 'V','A','T','E','K','\0', };
-static const mux_string def_network_name = { 5,(uint8_t*)&network_name[0],DVBSTR_NETWORK_NAME_LEN };
+typedef mux_time* Pmux_time;
 
-static const uint8_t service_name[6] = { 'V','A','-','T','V','\0', };
-static const mux_string def_service_name = { 5,(uint8_t*)&service_name[0],DVBSTR_SERVICE_NAME_LEN };
+#define MUXTIME_DATA_TO_UINT(time)	((time.year << 16) | (time.month << 8) | (time.day))
+#define MUXTIME_TIME_TO_UINT(time)	((time.hour << 16) | (time.minute << 8) | (time.second))
 
-/**
- * @ingroup mprop_dvb
- * DVB PSI Channel Properties
- */
-typedef struct _mux_spec_dvb_channel{
-	uint16_t transport_stream_id;	/*!< transport_stream_id */
-	uint16_t network_id;			/*!< network_id */
-	Pmux_string network_name;		/*!< network_name */
-}mux_spec_dvb_channel;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef mux_spec_dvb_channel* Pmux_spec_dvb_channel;
+	HAL_API void muxtime_append_hours(Pmux_time ptime, int32_t hours);
+	HAL_API void muxtime_append_days(Pmux_time ptime, int32_t days);
+	HAL_API uint32_t muxtime_eclipse_hour(Pmux_time pstart, Pmux_time pcur);
+	HAL_API uint8_t muxtime_get_month_days(Pmux_time ptime);
+	HAL_API int32_t muxtime_is_leap_year(Pmux_time ptime);
+	HAL_API uint32_t muxtime_date_to_reg(Pmux_time ptime);
+	HAL_API uint32_t muxtime_clock_to_reg(Pmux_time ptime);
+	HAL_API void muxtime_date_from_reg(Pmux_time ptime, uint32_t reg);
+	HAL_API void muxtime_clock_from_reg(Pmux_time ptime, uint32_t reg);
 
-/**
- * @ingroup mprop_dvb
- * DVB PSI Program Properties
- */
-typedef struct _mux_spec_dvb_program{
-	uint16_t original_network_id;	/*!< original_network_id */
-	uint16_t program_number;		/*!< program_number */
-	uint16_t channel_no;			/*!< channel_no */
-	uint16_t recv;
-	Pmux_string service_name;		/*!< service_name */
-}mux_spec_dvb_program;
-
-typedef mux_spec_dvb_program* Pmux_spec_dvb_program;
-
-static const mux_spec_dvb_channel default_mux_spec_dvb_channel = { 1,1,(Pmux_string)&def_network_name };
-static const mux_spec_dvb_program default_mux_spec_dvb_program = { 1,1,1,0,(Pmux_string)&def_service_name };
+#ifdef __cplusplus
+}
+#endif
 
 #endif

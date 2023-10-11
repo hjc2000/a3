@@ -2,9 +2,9 @@
 #ifndef _MUX_CORE_
 #define _MUX_CORE_
 
-#include <mux/mux_spec.h>
-#include <mux/mux_rule.h>
-#include <mux/mux_epg.h>
+#include <mux_spec.h>
+#include <mux_rule.h>
+#include <mux_epg.h>
 
 #define MUX_CORE_MEMPOOL_SIZE	128*1024
 

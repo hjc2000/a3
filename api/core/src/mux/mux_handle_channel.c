@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_handle.h>
+#include <mux_handle.h>
 #include "internal/mux_core.h"
 
 extern vatek_result channel_malloc_psispec(Phandle_mux pmux,Phandle_channel pch);

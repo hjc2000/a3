@@ -29,11 +29,11 @@
 #ifndef _MUX_SPEC_
 #define _MUX_SPEC_
 
-#include <mux/ui/ui_props_mux.h>
-#include <mux/spec/spec_iso_13818.h>
-#include <mux/spec/spec_dvb.h>
-#include <mux/spec/spec_arib.h>
-#include <mux/spec/spec_psip.h>
+#include <ui/ui_props_mux.h>
+#include <spec/spec_iso_13818.h>
+#include <spec/spec_dvb.h>
+#include <spec/spec_arib.h>
+#include <spec/spec_psip.h>
 
 /**
  * @ingroup mux_spec

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_packet.h>
+#include <mux_packet.h>
 #include "internal/mux_core.h"
 
 #define PES_EN_DATACHK						0

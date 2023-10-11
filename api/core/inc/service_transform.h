@@ -31,7 +31,7 @@
 
 #include <service_base.h>
 #include <core/hal/halservice_transform.h>
-#include <mux/mux_handle.h>
+#include <mux_handle.h>
 
 #define TRCAPTURE_MAX_PACKETNUMS			10
 #define TRCAPTURE_DEFAILT_TIMEOUT			10000

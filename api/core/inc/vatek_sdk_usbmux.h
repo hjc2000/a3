@@ -30,8 +30,8 @@
 #define _VATEK_SDK_USBMUX_
 
 #include <service_transform.h>
-#include <mux/mux_spec.h>
-#include <mux/mux_packet.h>
+#include <mux_spec.h>
+#include <mux_packet.h>
 
 typedef void* hvatek_usbmux;
 

@@ -29,7 +29,7 @@
 #ifndef _MUX_EPG_
 #define _MUX_EPG_
 
-#include <mux/mux_time.h>
+#include <mux_time.h>
 
 /* first section started at current hour (default start at 00:00:00)*/
 #define EPG_FLAG_START_HOUR				0x00000001	

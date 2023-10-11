@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <mux/mux_rule.h>
+#include <mux_rule.h>
 #include <core/base/binary_rom.h>
 #include <core/tools/tool_crc32.h>
 #include <core/tools/tool_bufstream.h>
