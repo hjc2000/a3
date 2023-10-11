@@ -1,6 +1,7 @@
 #include<cross/cross_os_api.h>
 #include<chrono>
 #include<iostream>
+#include<stdarg.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -124,4 +125,12 @@ vatek_result cross_os_time_eclipse(timespec *st, timespec *eclipse)
 	}
 
 	return nres;
+}
+
+void cross_os_printf(const char *fmt, ...)
+{
+	va_list arg;
+	va_start(arg, fmt);
+	vprintf(fmt, arg);
+	va_end(arg);
 }

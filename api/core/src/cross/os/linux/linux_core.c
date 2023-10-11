@@ -1,4 +1,3 @@
-
 #include <cross/cross_os_api.h>
 #include <stdarg.h>
 
@@ -22,14 +21,6 @@ extern void enable_raw_mode();
 extern void disable_raw_mode();
 extern int32_t kbhit();
 extern int32_t getch(void);
-
-void cross_os_printf(const char* fmt, ...)
-{
-    va_list arg;
-    va_start(arg, fmt);
-    vprintf(fmt, arg);
-    va_end(arg);
-}
 
 void cross_os_error(const char* fmt, ...)
 {

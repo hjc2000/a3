@@ -39,18 +39,6 @@ int32_t try_getchar(void)
 	return nchar;
 }
 
-void cross_os_printf(const char* fmt, ...)
-{
-	char szlog[256];
-	va_list va;
-	va_start(va, fmt);
-	vsprintf(szlog, fmt, va);
-	va_end(va);
-	OutputDebugStringA(szlog);
-	OutputDebugStringA("\r\n");
-
-}
-
 void cross_os_error(const char* fmt, ...)
 {
 	char szlog[256];
