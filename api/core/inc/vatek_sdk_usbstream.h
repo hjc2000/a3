@@ -82,8 +82,6 @@ struct usbstream_sync
 	fpsync_get_buffer getbuffer;
 };
 
-typedef usbstream_sync *Pusbstream_sync;
-
 enum uasync_status
 {
 	uasync_status_unsupport = -1,
