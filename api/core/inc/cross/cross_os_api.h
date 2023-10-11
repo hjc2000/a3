@@ -90,11 +90,11 @@ extern "C" {
 	/* cross_os_thread_api */
 	typedef void *hcross_thread;
 
-	typedef struct _cross_thread_param
+	struct cross_thread_param
 	{
 		void *userparam;
 		vatek_result result;
-	}cross_thread_param;
+	};
 
 	typedef cross_thread_param *Pcross_thread_param;
 
@@ -106,16 +106,16 @@ extern "C" {
 	HAL_API vatek_result cross_os_get_thread_result(hcross_thread hthread);
 
 	/* cross_os_mutex_api */
-	typedef void *hcross_mutex;
+	typedef void *void_cross_mutex;
 
-	HAL_API vatek_result cross_os_create_mutex_name(const char *tag, hcross_mutex *hmutex);
-	HAL_API vatek_result cross_os_open_mutex_name(const char *tag, hcross_mutex *hmuxtex);
-	HAL_API vatek_result cross_os_create_mutex(hcross_mutex *hmutex);
-	HAL_API void cross_os_lock_mutex(hcross_mutex hmutex);
-	HAL_API vatek_result cross_os_lock_mutex_timeout(hcross_mutex hmutex, uint32_t ms);
-	HAL_API vatek_result cross_os_trylock_mutex(hcross_mutex hmutex);
-	HAL_API void cross_os_release_mutex(hcross_mutex hmutex);
-	HAL_API vatek_result cross_os_free_mutex(hcross_mutex hmutex);
+	HAL_API vatek_result cross_os_create_mutex_name(const char *tag, void_cross_mutex *hmutex);
+	HAL_API vatek_result cross_os_open_mutex_name(const char *tag, void_cross_mutex *hmuxtex);
+	HAL_API vatek_result cross_os_create_mutex(void_cross_mutex *hmutex);
+	HAL_API void cross_os_lock_mutex(void_cross_mutex hmutex);
+	HAL_API vatek_result cross_os_lock_mutex_timeout(void_cross_mutex hmutex, uint32_t ms);
+	HAL_API vatek_result cross_os_trylock_mutex(void_cross_mutex hmutex);
+	HAL_API void cross_os_release_mutex(void_cross_mutex hmutex);
+	HAL_API vatek_result cross_os_free_mutex(void_cross_mutex hmutex);
 
 
 	/* cross_os_event_api */
@@ -144,16 +144,16 @@ extern "C" {
 
 	/* cross_os_dynamic_library_api */
 
-	typedef void *hcross_dll;
+	typedef void *void_cross_dll;
 
-	HAL_API hcross_dll cross_os_dll_load(const char *dllfile);
-	HAL_API void *cross_os_dll_get_function(hcross_dll hdll, const char *name);
-	HAL_API vatek_result cross_os_dll_free(hcross_dll hdll);
+	HAL_API void_cross_dll cross_os_dll_load(const char *dllfile);
+	HAL_API void *cross_os_dll_get_function(void_cross_dll hdll, const char *name);
+	HAL_API vatek_result cross_os_dll_free(void_cross_dll hdll);
 	HAL_API vatek_result cross_os_dll_valid(const char *name);
 
 	/* cross_os_process_api */
 
-	typedef void *hcross_process;
+	typedef void *void_cross_process;
 	typedef void(*fpprocess_parser)(void *param, uint8_t *ptr, int32_t len);
 
 	struct cross_proccess_param
@@ -166,36 +166,34 @@ extern "C" {
 
 	typedef cross_proccess_param *Pcross_proccess_param;
 
-	HAL_API hcross_process cross_os_create_process(Pcross_proccess_param pprocess);
-	HAL_API vatek_result cross_os_check_process(hcross_process hprocess);
-	HAL_API void cross_os_free_process(hcross_process hprocess);
+	HAL_API void_cross_process cross_os_create_process(Pcross_proccess_param pprocess);
+	HAL_API vatek_result cross_os_check_process(void_cross_process hprocess);
+	HAL_API void cross_os_free_process(void_cross_process hprocess);
 
 	/* cross_os_socket_api */
 
 	typedef void *hcross_socket;
 
-	typedef enum _socket_mode
+	enum socket_mode
 	{
 		socket_client,
 		socket_service,
-	}socket_mode;
+	};
 
-	typedef enum _socket_protocol
+	enum socket_protocol
 	{
 		protocol_unknown = -1,
 		protocol_rtp = 0,
 		protocol_udp = 1,
 		protocol_tcp = 2,
-	}socket_protocol;
+	};
 
-	typedef struct _socket_param
+	struct socket_param
 	{
 		socket_mode mode;
 		const char *url;
 		int32_t buffer_len;
-	}socket_param;
-
-	typedef socket_param *Psocket_param;
+	};
 
 	/*
 		supported :
@@ -204,7 +202,7 @@ extern "C" {
 			//xxx.xxx.xxx.xxx:PPPP			[_tcp]
 	*/
 
-	HAL_API vatek_result cross_os_create_socket(Psocket_param param, hcross_socket *hsocket);
+	HAL_API vatek_result cross_os_create_socket(socket_param *param, hcross_socket *hsocket);
 	HAL_API socket_protocol cross_os_get_protocol_socket(hcross_socket hsocket);
 	HAL_API vatek_result cross_os_connect_socket(hcross_socket hsocket);
 	HAL_API vatek_result cross_os_recv_socket(hcross_socket hsocket, uint8_t *pbuf, int32_t len, int32_t timeout);

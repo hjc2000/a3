@@ -117,17 +117,17 @@ void cross_os_findfile_close(hcross_ffind hffind)
 	free(pffind);
 }
 
-hcross_dll cross_os_dll_load(const char *dllfile)
+void_cross_dll cross_os_dll_load(const char *dllfile)
 {
 	return LoadLibraryA(dllfile);
 }
 
-void *cross_os_dll_get_function(hcross_dll hdll, const char *name)
+void *cross_os_dll_get_function(void_cross_dll hdll, const char *name)
 {
 	return GetProcAddress((HMODULE)hdll, name);
 }
 
-vatek_result cross_os_dll_free(hcross_dll hdll)
+vatek_result cross_os_dll_free(void_cross_dll hdll)
 {
 	if (hdll != NULL)FreeLibrary((HMODULE)hdll);
 	return vatek_success;

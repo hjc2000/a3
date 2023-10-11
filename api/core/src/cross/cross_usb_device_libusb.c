@@ -12,7 +12,7 @@ typedef struct _usb_handle
 	struct _usb_handle* next;
 	char name[32];
 	struct libusb_device_handle* husb;
-	hcross_mutex lock;
+	void_cross_mutex lock;
 	int32_t ref;
 	int32_t is_dma;
 	int32_t epsize;
@@ -62,7 +62,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, husb_device_list* hlis
 					usbdevice_type devtype = usb_type_unknown;
 					if (fpcheck(&desc,&devtype,checkparam))
 					{
-						hcross_mutex hlock = NULL;
+						void_cross_mutex hlock = NULL;
 						struct libusb_device_handle* pdevhandle;
 						nres = (vatek_result)libusb_open(udevice, &pdevhandle);
 						if (is_vatek_success(nres))nres = cross_os_create_mutex(&hlock);

@@ -69,20 +69,20 @@ extern void socket_init();
 extern void socket_free();
 
 /// <summary>
-///		通过分析 Psocket_param 的 url 字段，获取使用的是什么协议。
+///		通过分析 socket_param * 的 url 字段，获取使用的是什么协议。
 ///		* 以 "udp://" 开头，是 protocol_udp
 ///		* 以 "rtp://" 开头，是 protocol_rtp
 ///		* 以 "//" 开头，是 protocol_tcp
 /// </summary>
 /// <param name="param"></param>
 /// <returns>协议类型</returns>
-extern socket_protocol socket_get_protocol(Psocket_param param);
+extern socket_protocol socket_get_protocol(socket_param * param);
 extern vatek_result socket_init_handle(Phandle_socket psocket);
 extern vatek_result socket_set_block(Phandle_socket psocket, int32_t isblock);
 extern vatek_result socket_mutilcast_group(Phandle_socket psocket);
 extern vatek_result socket_set_recvbuf(Phandle_socket psocket);
 
-vatek_result cross_os_create_socket(Psocket_param param, hcross_socket *hsocket)
+vatek_result cross_os_create_socket(socket_param * param, hcross_socket *hsocket)
 {
 	socket_protocol nprotocol = socket_get_protocol(param);
 	vatek_result nres = vatek_unsupport;
@@ -284,7 +284,7 @@ vatek_result socket_init_handle(Phandle_socket psocket)
 	return nres;
 }
 
-socket_protocol socket_get_protocol(Psocket_param param)
+socket_protocol socket_get_protocol(socket_param * param)
 {
 	socket_protocol nprotocol = protocol_unknown;
 	if (strlen(param->url) < MAX_IP_STR_LEN)

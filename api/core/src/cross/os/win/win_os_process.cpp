@@ -47,7 +47,7 @@ typedef struct _win_process_handle
 extern DWORD process_thread(LPVOID lpThreadParameter);
 extern int32_t process_is_valid(Pwin_process_handle phprocess);
 
-hcross_process cross_os_create_process(Pcross_proccess_param pprocess)
+void_cross_process cross_os_create_process(Pcross_proccess_param pprocess)
 {
 	Pwin_process_handle newprocess = (Pwin_process_handle)malloc(sizeof(win_process_handle));
 
@@ -103,7 +103,7 @@ hcross_process cross_os_create_process(Pcross_proccess_param pprocess)
 	return newprocess;
 }
 
-void cross_os_free_process(hcross_process hprocess)
+void cross_os_free_process(void_cross_process hprocess)
 {
 	Pwin_process_handle phprocess = (Pwin_process_handle)hprocess;
 	if (cross_os_check_process(hprocess))
@@ -131,7 +131,7 @@ void cross_os_free_process(hcross_process hprocess)
 	free(phprocess);
 }
 
-vatek_result cross_os_check_process(hcross_process hprocess)
+vatek_result cross_os_check_process(void_cross_process hprocess)
 {
 	Pwin_process_handle phprocess = (Pwin_process_handle)hprocess;
 	DWORD ncode = 0;

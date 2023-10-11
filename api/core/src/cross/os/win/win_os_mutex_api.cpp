@@ -1,6 +1,6 @@
 #include "internal/win_os_common.h"
 
-vatek_result cross_os_create_mutex_name(const char *tag, hcross_mutex *hmutex)
+vatek_result cross_os_create_mutex_name(const char *tag, void_cross_mutex *hmutex)
 {
 	HANDLE newmux = INVALID_HANDLE_VALUE;
 	vatek_result nres = vatek_memfail;
@@ -16,7 +16,7 @@ vatek_result cross_os_create_mutex_name(const char *tag, hcross_mutex *hmutex)
 	return nres;
 }
 
-vatek_result cross_os_open_mutex_name(const char *tag, hcross_mutex *hmuxtex)
+vatek_result cross_os_open_mutex_name(const char *tag, void_cross_mutex *hmuxtex)
 {
 	HANDLE newmux = INVALID_HANDLE_VALUE;
 	newmux = OpenMutexA(0, FALSE, win_get_global_name(tag));
@@ -30,7 +30,7 @@ vatek_result cross_os_open_mutex_name(const char *tag, hcross_mutex *hmuxtex)
 	return vatek_memfail;
 }
 
-vatek_result cross_os_create_mutex(hcross_mutex *hmutex)
+vatek_result cross_os_create_mutex(void_cross_mutex *hmutex)
 {
 	HANDLE newmutex = CreateMutexA(NULL, FALSE, NULL);
 	vatek_result nres = vatek_memfail;
@@ -44,7 +44,7 @@ vatek_result cross_os_create_mutex(hcross_mutex *hmutex)
 	return nres;
 }
 
-void cross_os_lock_mutex(hcross_mutex hmutex)
+void cross_os_lock_mutex(void_cross_mutex hmutex)
 {
 	HANDLE hmux = (HANDLE)hmutex;
 	uint32_t nres = WaitForSingleObject(hmux, INFINITE);
@@ -53,7 +53,7 @@ void cross_os_lock_mutex(hcross_mutex hmutex)
 		cross_os_printf("lock mutex fail : 0x%08x", hmutex);
 }
 
-vatek_result cross_os_lock_mutex_timeout(hcross_mutex hmutex, uint32_t ms)
+vatek_result cross_os_lock_mutex_timeout(void_cross_mutex hmutex, uint32_t ms)
 {
 	HANDLE hmux = (HANDLE)hmutex;
 	uint32_t nres = WaitForSingleObject(hmux, ms);
@@ -69,7 +69,7 @@ vatek_result cross_os_lock_mutex_timeout(hcross_mutex hmutex, uint32_t ms)
 	}
 }
 
-vatek_result cross_os_trylock_mutex(hcross_mutex hmutex)
+vatek_result cross_os_trylock_mutex(void_cross_mutex hmutex)
 {
 	HANDLE hmux = (HANDLE)hmutex;
 	uint32_t nres = WaitForSingleObject(hmux, 0);
@@ -81,12 +81,12 @@ vatek_result cross_os_trylock_mutex(hcross_mutex hmutex)
 	return vatek_unknown;
 }
 
-void cross_os_release_mutex(hcross_mutex hmutex)
+void cross_os_release_mutex(void_cross_mutex hmutex)
 {
 	if (!ReleaseMutex((HANDLE)hmutex))win_get_last_error();
 }
 
-vatek_result cross_os_free_mutex(hcross_mutex hmutex)
+vatek_result cross_os_free_mutex(void_cross_mutex hmutex)
 {
 	CloseHandle((HANDLE)hmutex);
 	return vatek_success;
