@@ -95,8 +95,8 @@ extern "C" {
 
 	struct cross_thread_param
 	{
-		void *void_userparam;
-		vatek_result result;
+		void *void_userparam = nullptr;
+		vatek_result result = vatek_success;
 	};
 
 	typedef void (*fpcross_thread_function)(cross_thread_param *param);
@@ -118,18 +118,17 @@ extern "C" {
 	HAL_API void cross_os_release_mutex(void_cross_mutex hmutex);
 	HAL_API vatek_result cross_os_free_mutex(void_cross_mutex hmutex);
 
-
 	/* cross_os_event_api */
-	typedef void *hcross_event;
+	typedef void *void_cross_event;
 
-	HAL_API vatek_result cross_os_create_event(const char *tag, hcross_event *hevent);
-	HAL_API vatek_result cross_os_open_event(const char *tag, hcross_event *hevent);
+	HAL_API vatek_result cross_os_create_event(const char *tag, void_cross_event *hevent);
+	HAL_API vatek_result cross_os_open_event(const char *tag, void_cross_event *hevent);
 
-	HAL_API vatek_result cross_os_wait_event_timeout(hcross_event hevent, int32_t ms);
-	HAL_API vatek_result cross_os_wait_event(hcross_event hevent);
-	HAL_API vatek_result cross_os_raise_event(hcross_event hevent);
+	HAL_API vatek_result cross_os_wait_event_timeout(void_cross_event hevent, int32_t ms);
+	HAL_API vatek_result cross_os_wait_event(void_cross_event hevent);
+	HAL_API vatek_result cross_os_raise_event(void_cross_event hevent);
 
-	HAL_API void cross_os_free_event(hcross_event hevent);
+	HAL_API void cross_os_free_event(void_cross_event hevent);
 
 	/* cross_os_share_memory_api */
 
