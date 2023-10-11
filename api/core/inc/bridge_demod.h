@@ -29,7 +29,7 @@
 #ifndef _BRIDGE_DEMODE_
 #define _BRIDGE_DEMODE_
 
-#include <bridge/bridge_base.h>
+#include <bridge_base.h>
 
 typedef enum _bdemod_driver
 {

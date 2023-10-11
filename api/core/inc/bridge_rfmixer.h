@@ -29,7 +29,7 @@
 #ifndef _BRIDGE_RFMIXER_
 #define _BRIDGE_RFMIXER_
 
-#include <bridge/bridge_base.h>
+#include <bridge_base.h>
 
 typedef enum _brfmixer_driver
 {

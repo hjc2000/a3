@@ -1,8 +1,8 @@
 #ifndef _CROSS_BRIDGE_
 #define _CROSS_BRIDGE_
 
-#include <bridge/bridge_usb.h>
-#include <bridge/bridge_device.h>
+#include <bridge_usb.h>
+#include <bridge_device.h>
 
 typedef void *hbridge_device;
 
@@ -70,7 +70,7 @@ extern "C" {
 	HAL_API const char *bridge_device_get_name(hbridge_device hbridge);
 	HAL_API vatek_result bridge_device_close(hbridge_device hbridge);
 	HAL_API void bridge_device_lock_command(hbridge_device hbridge);
-	HAL_API hid_bridge_cmd * bridge_device_get_command(hbridge_device hbridge);
+	HAL_API hid_bridge_cmd *bridge_device_get_command(hbridge_device hbridge);
 	HAL_API Phid_bridge_result bridge_device_get_result(hbridge_device hbridge);
 	HAL_API vatek_result bridge_device_send_bridge_command(hbridge_device hbridge);
 	HAL_API void bridge_device_unlock_command(hbridge_device hbridge);

@@ -30,7 +30,7 @@
 #define _VATEK_SDK_BRIDGE_
 
 #include <vatek_sdk_device.h>
-#include <bridge/bridge_device.h>
+#include <bridge_device.h>
 
 typedef void* hvatek_bridge;
 

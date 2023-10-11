@@ -5,8 +5,8 @@
 #include <core/ui/ui_props/ui_props_chip.h>
 #include <core/ui/ui_props_api.h>
 #include <vatek_sdk_bridge.h>
-#include <bridge/ui_bridge_base.h>
-#include <bridge/ui_bridge_source.h>
+#include <ui_bridge_base.h>
+#include <ui_bridge_source.h>
 
 
 void printf_chip_info(chip_info *pchip)

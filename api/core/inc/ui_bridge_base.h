@@ -30,7 +30,7 @@
 #define _UI_BRIDGE_BASE_
 
 #include <core/ui/ui_props_define.h>
-#include <bridge/bridge_base.h>
+#include <bridge_base.h>
 
 _ui_enum_start(bridge_status)
 	_val(bstatus_invalid, invalid)

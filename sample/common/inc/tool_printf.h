@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <core/base/chip_define.h>
-#include <bridge/bridge_device.h>
+#include <bridge_device.h>
 #include <vatek_sdk_usbstream.h>
 
 #define _disp_l(fmt, ...) printf("	" fmt "\r\n", ##__VA_ARGS__)

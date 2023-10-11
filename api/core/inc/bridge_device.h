@@ -29,10 +29,10 @@
 #ifndef _BRIDGE_DEVICE_
 #define _BRIDGE_DEVICE_
 
-#include <bridge/bridge_base.h>
-#include <bridge/bridge_source.h>
-#include <bridge/bridge_demod.h>
-#include <bridge/bridge_rfmixer.h>
+#include <bridge_base.h>
+#include <bridge_source.h>
+#include <bridge_demod.h>
+#include <bridge_rfmixer.h>
 
 #define BRIDGE_IP_DEVICE_TAG						0x00F00000
 #define IP_DEVICE_SET_CMD(cmd)						BRIDGE_SET_CMD(BRIDGE_IP_DEVICE_TAG,cmd)
@@ -55,13 +55,13 @@ typedef struct _bdevice_info
 	uint32_t demod_enable;							/* enabled _demod driver				*/
 	uint32_t rfmixer_enable;						/* enabled rf_mixer driver				*/
 	uint32_t source_nums;							/* how many valid source devices		*/
-}bdevice_info,*Pbdevice_info;
+}bdevice_info, *Pbdevice_info;
 
 typedef struct _bflash_command
 {
 	uint32_t bcmd;
 	uint32_t nsection;
-}bflash_command,*Pbflash_command;
+}bflash_command, *Pbflash_command;
 
 #define BSTORAGE_FILE_EXTENSION				".bstorage"
 
@@ -88,7 +88,7 @@ typedef struct _bstorage_header
 {
 	uint8_t tag[BFLASH_TAG_LEN];
 	uint32_t version;
-}bstorage_header,*Pbstorage_header;
+}bstorage_header, *Pbstorage_header;
 
 
 #define STORAGE_CFG_OFFSET				64
@@ -112,13 +112,13 @@ typedef struct _bresource_section
 	uint32_t section_addr;
 	uint32_t section_len;
 	uint32_t binary_size;
-}bresource_section,*Pbresource_section;
+}bresource_section, *Pbresource_section;
 
 typedef struct _bridge_tag
 {
 	uint32_t tag;
-	const char* name;
-}bridge_tag, * Pbridge_tag;
+	const char *name;
+}bridge_tag, *Pbridge_tag;
 
 static const bridge_tag bridge_tags[] =
 {
@@ -138,16 +138,16 @@ static const bridge_tag bridge_tags[] =
 #define BRESOURCE_FIRST_SECTIONLEN		(BSTORAGE_SECTION_LEN - sizeof(bresource_section))
 
 _bparam_start(bflash_command)
-	_bparam_uint(0, bflash_command, bcmd)
-	_bparam_uint(1, bflash_command, nsection)
+_bparam_uint(0, bflash_command, bcmd)
+_bparam_uint(1, bflash_command, nsection)
 _bparam_end
 
 _bparam_start(bdevice_info)
-	_bparam_uint(0, bdevice_info, bversion)
-	_bparam_uint(1, bdevice_info, source_enable)
-	_bparam_uint(2, bdevice_info, demod_enable)
-	_bparam_uint(3, bdevice_info, rfmixer_enable)
-	_bparam_uint(4, bdevice_info, source_nums)
+_bparam_uint(0, bdevice_info, bversion)
+_bparam_uint(1, bdevice_info, source_enable)
+_bparam_uint(2, bdevice_info, demod_enable)
+_bparam_uint(3, bdevice_info, rfmixer_enable)
+_bparam_uint(4, bdevice_info, source_nums)
 _bparam_end
 
 #endif

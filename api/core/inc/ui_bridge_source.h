@@ -31,7 +31,7 @@
 
 #include <core/ui/ui_props_define.h>
 #include <core/ui/ui_props/ui_props_encoder.h>
-#include <bridge/bridge_source.h>
+#include <bridge_source.h>
 
 _ui_enum_start(bsource_scale)
 	_val(sscale_bypass, bypass)

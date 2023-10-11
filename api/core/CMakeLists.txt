@@ -8,14 +8,14 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(core_INC_BRIDGE
-    inc/bridge/bridge_base.h
-    inc/bridge/bridge_demod.h
-    inc/bridge/bridge_device.h
-    inc/bridge/bridge_rfmixer.h
-    inc/bridge/bridge_source.h
-    inc/bridge/bridge_usb.h
-    inc/bridge/ui_bridge_base.h
-    inc/bridge/ui_bridge_source.h)
+    inc/bridge_base.h
+    inc/bridge_demod.h
+    inc/bridge_device.h
+    inc/bridge_rfmixer.h
+    inc/bridge_source.h
+    inc/bridge_usb.h
+    inc/ui_bridge_base.h
+    inc/ui_bridge_source.h)
 
 set(core_INC_CORE
     inc/core/vatek_base.h

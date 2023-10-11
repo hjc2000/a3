@@ -29,7 +29,7 @@
 #ifndef _BRIDGE_SOURCE_
 #define _BRIDGE_SOURCE_
 
-#include <bridge/bridge_base.h>
+#include <bridge_base.h>
 #include <core/base/media_video.h>
 #include <core/base/media_audio.h>
 
