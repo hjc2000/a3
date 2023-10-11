@@ -20,7 +20,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// <param name="stream_source"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
-extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, usbstream_param * pustream);
+extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, usbstream_param *pustream);
 
 int main(int argc, char *argv[])
 {
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.fft = fft_mode::fft_8k;
 	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
-	usbcmd.sync = usbstream_sync{ NULL, NULL };
+	usbcmd.sync = usbstream_sync{};
 
 	nres = parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
 	/*
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					chip_info * pinfo = vatek_device_get_info(hchip);
+					chip_info *pinfo = vatek_device_get_info(hchip);
 					printf_chip_info(pinfo);
 					nres = streamsource.start(streamsource.hsource);
 				}
@@ -220,7 +220,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
-vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, usbstream_param * pustream)
+vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, usbstream_param *pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
 
