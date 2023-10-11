@@ -35,7 +35,7 @@
 
 typedef struct _handle_broadcast
 {
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	int32_t is_rfmixer;
 	int32_t is_rfstart;
 	int32_t is_aux;
@@ -51,7 +51,7 @@ typedef struct _handle_broadcast
 
 extern vatek_result broadcast_usb_start_aux(Phandle_broadcast pbc, Pbroadcast_auxstream paux);
 
-vatek_result vatek_broadcast_check_auxstream(hvatek_chip hchip)
+vatek_result vatek_broadcast_check_auxstream(void_vatek_chip hchip)
 {
 	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;
@@ -63,7 +63,7 @@ vatek_result vatek_broadcast_check_auxstream(hvatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_broadcast_open(hvatek_chip hchip,hvatek_broadcast* hbc)
+vatek_result vatek_broadcast_open(void_vatek_chip hchip,hvatek_broadcast* hbc)
 {
 	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_success;

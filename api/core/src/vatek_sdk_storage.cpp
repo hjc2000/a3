@@ -956,7 +956,7 @@ typedef enum _hstorage_mode
 
 typedef struct _storage_usbbulk
 {
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	usbbulk_command cmd;
 	usbbulk_result result;
 }storage_usbbulk, *Pstorage_usbbulk;
@@ -967,7 +967,7 @@ typedef struct _hstorage_entry
 	union
 	{
 		FILE *hfile;
-		hvatek_chip hchip;
+		void_vatek_chip hchip;
 		hvatek_bridge hbridge;
 		Pstorage_usbbulk husbbulk;
 	}_handle;
@@ -977,7 +977,7 @@ typedef struct _hstorage_entry
 
 extern Pstorage_handle create_shandle(void);
 
-vatek_result vatek_storage_create_chip_handle(hvatek_chip hchip, Pstorage_handle *phandle, fprom_progress fpcb, void *cbparam)
+vatek_result vatek_storage_create_chip_handle(void_vatek_chip hchip, Pstorage_handle *phandle, fprom_progress fpcb, void *cbparam)
 {
 	vatek_result nres = vatek_memfail;
 	Pstorage_handle newstorage = create_shandle();
@@ -1219,7 +1219,7 @@ vatek_result device_read_section(int32_t nsection, uint8_t *psection, void *para
 {
 	uint32_t val = 0;
 	Phstorage_entry prom = (Phstorage_entry)param;
-	hvatek_chip hchip = prom->_handle.hchip;
+	void_vatek_chip hchip = prom->_handle.hchip;
 	vatek_result nres = vatek_chip_read_memory(hchip, HALREG_RESCUE_CNTL, &val);
 	if (is_vatek_success(nres))
 	{
@@ -1271,7 +1271,7 @@ vatek_result device_write_section(int32_t nsection, uint8_t *psection, void *par
 {
 	uint32_t val = 0;
 	Phstorage_entry prom = (Phstorage_entry)param;
-	hvatek_chip hchip = prom->_handle.hchip;
+	void_vatek_chip hchip = prom->_handle.hchip;
 	vatek_result nres = vatek_chip_read_memory(hchip, HALREG_RESCUE_CNTL, &val);
 	if (is_vatek_success(nres))
 	{

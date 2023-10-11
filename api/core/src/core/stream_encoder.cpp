@@ -30,7 +30,7 @@
 #include <core/ui/ui_props/ui_props_encoder.h>
 #include <core/ui/ui_props_api.h>
 
-vatek_result encoder_param_set(hvatek_chip hchip,Pencoder_param penc)
+vatek_result encoder_param_set(void_vatek_chip hchip,Pencoder_param penc)
 {
     vatek_result nres = vatek_badparam;
     if(is_current_encmode(penc->mode))
@@ -48,7 +48,7 @@ vatek_result encoder_param_set(hvatek_chip hchip,Pencoder_param penc)
     return nres;
 }
 
-vatek_result encoder_param_get(hvatek_chip hchip,Pencoder_param penc)
+vatek_result encoder_param_get(void_vatek_chip hchip,Pencoder_param penc)
 {
     vatek_result  nres = ui_props_read_hal(hchip,_ui_struct(encoder_param),(uint8_t*)penc);
     if(is_vatek_success(nres))

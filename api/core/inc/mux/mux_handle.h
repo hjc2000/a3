@@ -52,9 +52,9 @@ extern "C" {
 	HAL_API void mux_handle_reset(hmux_core hmux);
 	HAL_API void mux_handle_free(hmux_core hmux);
 
-	HAL_API vatek_result mux_handle_set_hal(hmux_core hmux, hvatek_chip hchip);
-	HAL_API vatek_result mux_handle_get_hal_broadcast(hmux_core hmux, hvatek_chip hchip,uint16_t pcrpid,Pencoder_param penc);
-	HAL_API vatek_result mux_handle_get_hal_channel(hmux_core hmux, hvatek_chip hchip);
+	HAL_API vatek_result mux_handle_set_hal(hmux_core hmux, void_vatek_chip hchip);
+	HAL_API vatek_result mux_handle_get_hal_broadcast(hmux_core hmux, void_vatek_chip hchip,uint16_t pcrpid,Pencoder_param penc);
+	HAL_API vatek_result mux_handle_get_hal_channel(hmux_core hmux, void_vatek_chip hchip);
 
 	HAL_API vatek_result mux_open_channel_rule(hmux_core hmux,const char* filename,hmux_channel* hchannel);
 	HAL_API vatek_result mux_open_channel_rule_raw(hmux_core hmux, Pmux_rule_block pblock, hmux_channel* hchannel);

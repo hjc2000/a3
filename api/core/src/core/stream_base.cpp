@@ -56,7 +56,7 @@ vatek_result stream_source_reset(vatek_ic_module icmodule, stream_source source,
 	return nres;
 }
 
-vatek_result stream_source_set(hvatek_chip hchip,stream_source source, uint8_t* prawsource)
+vatek_result stream_source_set(void_vatek_chip hchip,stream_source source, uint8_t* prawsource)
 {
 	vatek_result nres = vatek_badparam;
 	const Pui_prop_item puiprops = stream_source_get_ui_props(source);
@@ -69,7 +69,7 @@ vatek_result stream_source_set(hvatek_chip hchip,stream_source source, uint8_t* 
 	return nres;
 }
 
-vatek_result stream_source_get(hvatek_chip hchip,stream_source source, uint8_t* prawsource)
+vatek_result stream_source_get(void_vatek_chip hchip,stream_source source, uint8_t* prawsource)
 {
 	vatek_result nres = vatek_badparam;
 	const Pui_prop_item puiprops = stream_source_get_ui_props(source);

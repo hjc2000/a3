@@ -51,8 +51,8 @@ typedef broadcast_auxstream* Pbroadcast_auxstream;
 extern "C" {
 #endif
 
-    HAL_API vatek_result vatek_broadcast_check_auxstream(hvatek_chip hchip);
-    HAL_API vatek_result vatek_broadcast_open(hvatek_chip hchip,hvatek_broadcast* hbc);
+    HAL_API vatek_result vatek_broadcast_check_auxstream(void_vatek_chip hchip);
+    HAL_API vatek_result vatek_broadcast_open(void_vatek_chip hchip,hvatek_broadcast* hbc);
 
     HAL_API Pbroadcast_info vatek_broadcast_get_info(hvatek_broadcast hbc);
 

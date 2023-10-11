@@ -68,7 +68,7 @@ struct vatek_device_list;
 ///     void * 类型。
 ///		* 被强转为 vatek_device* 类型
 /// </summary>
-typedef void *hvatek_chip;
+typedef void *void_vatek_chip;
 
 /**
  * @ingroup core_props
@@ -121,12 +121,12 @@ extern "C" {
 	HAL_API void vatek_debug_print(vatek_debug_level level, const char *fmt, ...);
 	HAL_API void vatek_debug_set(vatek_debug_level level);
 
-	HAL_API vatek_result vatek_chip_read_register(hvatek_chip hchip, int32_t addr, uint32_t *val);
-	HAL_API vatek_result vatek_chip_write_register(hvatek_chip hchip, int32_t addr, uint32_t val);
-	HAL_API vatek_result vatek_chip_read_memory(hvatek_chip hchip, int32_t addr, uint32_t *val);
-	HAL_API vatek_result vatek_chip_write_memory(hvatek_chip hchip, int32_t addr, uint32_t val);
-	HAL_API vatek_result vatek_chip_write_buffer(hvatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
-	HAL_API vatek_result vatek_chip_read_buffer(hvatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
+	HAL_API vatek_result vatek_chip_read_register(void_vatek_chip hchip, int32_t addr, uint32_t *val);
+	HAL_API vatek_result vatek_chip_write_register(void_vatek_chip hchip, int32_t addr, uint32_t val);
+	HAL_API vatek_result vatek_chip_read_memory(void_vatek_chip hchip, int32_t addr, uint32_t *val);
+	HAL_API vatek_result vatek_chip_write_memory(void_vatek_chip hchip, int32_t addr, uint32_t val);
+	HAL_API vatek_result vatek_chip_write_buffer(void_vatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
+	HAL_API vatek_result vatek_chip_read_buffer(void_vatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
 
 	#define readhal(a,v)        vatek_chip_read_memory(hchip,a,v)
 	#define writehal(a,v)       vatek_chip_write_memory(hchip,a,v)

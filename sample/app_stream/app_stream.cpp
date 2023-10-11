@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	//	"udp://127.0.0.1:1234",
 	//};
 
-	hvatek_chip hchip = NULL;
+	void_vatek_chip hchip = NULL;
 	hvatek_usbstream hustream = NULL;
 	tsstream_source streamsource;
 	vatek_result nres = vatek_success;

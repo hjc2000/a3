@@ -37,13 +37,13 @@
 
 struct bridge_handle
 {
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	cross_device *hcross;
 	hbridge_device hbridge;
 	bdevice_info info;
 };
 
-vatek_result vatek_bridge_open(hvatek_chip hchip, hvatek_bridge *hbridge)
+vatek_result vatek_bridge_open(void_vatek_chip hchip, hvatek_bridge *hbridge)
 {
 	cross_device *pcross = ((vatek_device *)hchip)->cross;
 	hbridge_device hdevice = pcross->cross_get_bridge_device_handle();

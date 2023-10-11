@@ -34,7 +34,7 @@
 
 typedef struct _handle_transform
 {
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	int32_t is_rfmixer;
 	stream_mode streammode;
 	transform_info info;
@@ -43,9 +43,9 @@ typedef struct _handle_transform
 	hmux_core hmux;
 }handle_transform,*Phandle_transform;
 
-extern vatek_result transform_check_status(hvatek_chip hchip,chip_status status);
+extern vatek_result transform_check_status(void_vatek_chip hchip,chip_status status);
 
-vatek_result vatek_transform_open(hvatek_chip hchip, hvatek_transform* htr)
+vatek_result vatek_transform_open(void_vatek_chip hchip, hvatek_transform* htr)
 {
 	vatek_result nres = vatek_unsupport;
 	chip_info * pinfo = vatek_device_get_info(hchip);
@@ -292,7 +292,7 @@ void vatek_transform_close(hvatek_transform htr)
 	free(phtr);
 }
 
-vatek_result transform_check_status(hvatek_chip hchip,chip_status status)
+vatek_result transform_check_status(void_vatek_chip hchip,chip_status status)
 {
 	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_success;

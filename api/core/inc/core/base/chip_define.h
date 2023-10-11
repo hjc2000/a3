@@ -130,19 +130,19 @@ struct chip_info
 extern "C" {
 	#endif
 
-	HAL_API chip_status chip_status_get(hvatek_chip hchip, uint32_t *errcode);
-	HAL_API vatek_result chip_status_set(hvatek_chip hchip, chip_status status, uint32_t errcode);
+	HAL_API chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode);
+	HAL_API vatek_result chip_status_set(void_vatek_chip hchip, chip_status status, uint32_t errcode);
 
-	HAL_API vatek_result chip_status_check(hvatek_chip hchip, chip_status status);
+	HAL_API vatek_result chip_status_check(void_vatek_chip hchip, chip_status status);
 
 	HAL_API vatek_result chip_info_reset(chip_info *pinfo, hal_service_mode service, vatek_ic_module icmodule);
-	HAL_API vatek_result chip_info_get(hvatek_chip hchip, chip_info *pinfo);
-	HAL_API vatek_result chip_info_set(hvatek_chip hchip, chip_info *pinfo);
+	HAL_API vatek_result chip_info_get(void_vatek_chip hchip, chip_info *pinfo);
+	HAL_API vatek_result chip_info_set(void_vatek_chip hchip, chip_info *pinfo);
 
-	HAL_API vatek_result chip_send_command(hvatek_chip hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr);
-	HAL_API vatek_result chip_raise_command(hvatek_chip hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait);
-	HAL_API vatek_result chip_check_command(hvatek_chip hchip, uint32_t cmdaddr);
-	HAL_API vatek_result chip_result_command(hvatek_chip hchip, uint32_t resultaddr, uint32_t *errcode);
+	HAL_API vatek_result chip_send_command(void_vatek_chip hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr);
+	HAL_API vatek_result chip_raise_command(void_vatek_chip hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait);
+	HAL_API vatek_result chip_check_command(void_vatek_chip hchip, uint32_t cmdaddr);
+	HAL_API vatek_result chip_result_command(void_vatek_chip hchip, uint32_t resultaddr, uint32_t *errcode);
 
 	#ifdef __cplusplus
 }

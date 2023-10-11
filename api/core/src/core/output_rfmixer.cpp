@@ -30,12 +30,12 @@
 #include <vatek_sdk_device.h>
 #include <core/ui/ui_props/ui_props_output.h>
 
-vatek_result rfmixer_check_support(hvatek_chip hchip)
+vatek_result rfmixer_check_support(void_vatek_chip hchip)
 {
     return rfmixer_r2_check_support(hchip);
 }
 
-vatek_result rfmixer_start(hvatek_chip hchip,uint32_t cntl,uint32_t freqkhz)
+vatek_result rfmixer_start(void_vatek_chip hchip,uint32_t cntl,uint32_t freqkhz)
 {
     vatek_result nres = writehal(HALREG_RF_COM_FREQ,freqkhz);
     if (is_vatek_success(nres))
@@ -45,12 +45,12 @@ vatek_result rfmixer_start(hvatek_chip hchip,uint32_t cntl,uint32_t freqkhz)
     return nres;
 }
 
-vatek_result rfmixer_stop(hvatek_chip hchip,uint32_t cntl)
+vatek_result rfmixer_stop(void_vatek_chip hchip,uint32_t cntl)
 {
     return chip_send_command(hchip,RFMIXER_CMD_STOP, cntl,HALREG_SYS_ERRCODE);
 }
 
-rfmixer_status rfmixer_get_status(hvatek_chip hchip)
+rfmixer_status rfmixer_get_status(void_vatek_chip hchip)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_RF_COM_STATUS,&val);
@@ -63,7 +63,7 @@ rfmixer_status rfmixer_get_status(hvatek_chip hchip)
     return status;
 }
 
-vatek_result rfmixer_set_status(hvatek_chip hchip,rfmixer_status status)
+vatek_result rfmixer_set_status(void_vatek_chip hchip,rfmixer_status status)
 {
     vatek_result nres = vatek_badparam;
     if(status == rfmixer_powered)nres = writehal(HALREG_RF_COM_STATUS,RF_STATUS_ACTIVE);
@@ -72,7 +72,7 @@ vatek_result rfmixer_set_status(hvatek_chip hchip,rfmixer_status status)
     return nres;
 }
 
-vatek_result rfmixer_r2_check_support(hvatek_chip hchip)
+vatek_result rfmixer_r2_check_support(void_vatek_chip hchip)
 {
 	uint32_t val = 0;
 	vatek_result nres = readhal(HALREG_PERIPHERAL_EN,&val);
@@ -86,7 +86,7 @@ vatek_result rfmixer_r2_check_support(hvatek_chip hchip)
 
 #if 0
 
-vatek_result rfmixer_r2_get_default(hvatek_chip hchip,Pr2_default_rule pr2def)
+vatek_result rfmixer_r2_get_default(void_vatek_chip hchip,Pr2_default_rule pr2def)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_R2_DEF_TAG,&val);
@@ -99,7 +99,7 @@ vatek_result rfmixer_r2_get_default(hvatek_chip hchip,Pr2_default_rule pr2def)
     return nres;
 }
 
-vatek_result rfmixer_r2_set_default(hvatek_chip hchip,Pr2_default_rule pr2def)
+vatek_result rfmixer_r2_set_default(void_vatek_chip hchip,Pr2_default_rule pr2def)
 {
     vatek_result nres = ui_props_write_hal(hchip,_ui_struct(r2_tune_default),(uint8_t*)pr2def);
     if(is_vatek_success(nres))
@@ -109,7 +109,7 @@ vatek_result rfmixer_r2_set_default(hvatek_chip hchip,Pr2_default_rule pr2def)
 
 #endif
 
-vatek_result rfmixer_r2_get_param(hvatek_chip hchip,Pr2_param pr2)
+vatek_result rfmixer_r2_get_param(void_vatek_chip hchip,Pr2_param pr2)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_R2_EN_CNTL,&val);
@@ -141,7 +141,7 @@ vatek_result rfmixer_r2_get_param(hvatek_chip hchip,Pr2_param pr2)
     return nres;
 }
 
-vatek_result rfmixer_r2_set_param(hvatek_chip hchip,Pr2_param pr2)
+vatek_result rfmixer_r2_set_param(void_vatek_chip hchip,Pr2_param pr2)
 {
     vatek_result nres = vatek_badparam;
     if(pr2->mode == r2_cntl_path_0)nres = writehal(HALREG_R2_EN_CNTL,R2_EN_PATH_0);
@@ -165,12 +165,12 @@ vatek_result rfmixer_r2_set_param(hvatek_chip hchip,Pr2_param pr2)
     return nres;
 }
 
-vatek_result rfmixer_r2_adjust_pagain(hvatek_chip hchip, int8_t gain) {
+vatek_result rfmixer_r2_adjust_pagain(void_vatek_chip hchip, int8_t gain) {
     uint32_t nvalue = EXT_R2_GAIN_EN_TAG | (EXT_R2_GAIN_MASK & gain);
     return writehal(HALREG_EXT_R2_GAIN, nvalue);
 }
 
-vatek_result rfmixer_r2_start(hvatek_chip hchip,uint32_t cntl,Pr2_param pr2param)
+vatek_result rfmixer_r2_start(void_vatek_chip hchip,uint32_t cntl,Pr2_param pr2param)
 {
     vatek_result nres = rfmixer_r2_set_param(hchip,pr2param);
     if(is_vatek_success(nres))
@@ -178,7 +178,7 @@ vatek_result rfmixer_r2_start(hvatek_chip hchip,uint32_t cntl,Pr2_param pr2param
     return nres;
 }
 
-vatek_result rfmixer_r2_stop(hvatek_chip hchip,uint32_t cntl)
+vatek_result rfmixer_r2_stop(void_vatek_chip hchip,uint32_t cntl)
 {
     return rfmixer_stop(hchip,cntl);
 }

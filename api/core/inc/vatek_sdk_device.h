@@ -54,35 +54,35 @@ HAL_API uint32_t vatek_device_list_get_bus(vatek_device_list *hdevices, int32_t 
 HAL_API const char *vatek_device_list_get_name(vatek_device_list *hdevices, int32_t idx);
 HAL_API hal_service_mode vatek_device_list_get_service(vatek_device_list *hdevices, int32_t idx);
 HAL_API void vatek_device_list_free(vatek_device_list *hdevices);
-HAL_API vatek_result vatek_device_open(vatek_device_list *hdevices, int32_t idx, hvatek_chip *hchip);
+HAL_API vatek_result vatek_device_open(vatek_device_list *hdevices, int32_t idx, void_vatek_chip *hchip);
 
-HAL_API vatek_result vatek_device_start_sine(hvatek_chip hchip, uint32_t freqkhz);
-HAL_API vatek_result vatek_device_start_test(hvatek_chip hchip, Pmodulator_param pmod, uint32_t freqkhz);
-HAL_API vatek_result vatek_device_polling(hvatek_chip hchip);
-HAL_API void vatek_device_stop(hvatek_chip hchip);
+HAL_API vatek_result vatek_device_start_sine(void_vatek_chip hchip, uint32_t freqkhz);
+HAL_API vatek_result vatek_device_start_test(void_vatek_chip hchip, Pmodulator_param pmod, uint32_t freqkhz);
+HAL_API vatek_result vatek_device_polling(void_vatek_chip hchip);
+HAL_API void vatek_device_stop(void_vatek_chip hchip);
 
-HAL_API uint32_t vatek_device_get_bus(hvatek_chip hchip);
-HAL_API chip_info * vatek_device_get_info(hvatek_chip hchip);
-HAL_API const char *vatek_device_get_name(hvatek_chip hchip);
-HAL_API vatek_result vatek_device_close(hvatek_chip hchip);
+HAL_API uint32_t vatek_device_get_bus(void_vatek_chip hchip);
+HAL_API chip_info * vatek_device_get_info(void_vatek_chip hchip);
+HAL_API const char *vatek_device_get_name(void_vatek_chip hchip);
+HAL_API vatek_result vatek_device_close(void_vatek_chip hchip);
 
-HAL_API vatek_result vatek_device_close_reboot(hvatek_chip hchip);
+HAL_API vatek_result vatek_device_close_reboot(void_vatek_chip hchip);
 
-HAL_API vatek_result vatek_device_calibration_load(hvatek_chip hchip, Pcalibration_param pcalibration);
-HAL_API vatek_result vatek_device_calibration_apply(hvatek_chip hchip, Pcalibration_param pcalibration);
-HAL_API vatek_result vatek_device_calibration_save(hvatek_chip hchip, Pcalibration_param pcalibration);
-HAL_API vatek_result vatek_device_r2_apply(hvatek_chip hchip, int r2_power);
+HAL_API vatek_result vatek_device_calibration_load(void_vatek_chip hchip, Pcalibration_param pcalibration);
+HAL_API vatek_result vatek_device_calibration_apply(void_vatek_chip hchip, Pcalibration_param pcalibration);
+HAL_API vatek_result vatek_device_calibration_save(void_vatek_chip hchip, Pcalibration_param pcalibration);
+HAL_API vatek_result vatek_device_r2_apply(void_vatek_chip hchip, int r2_power);
 
 /* used with transform service for usb stream */
-HAL_API vatek_result vatek_device_stream_start(hvatek_chip hchip, Pmodulator_param pmod, uint32_t stream_mode);
-HAL_API vatek_result vatek_device_stream_write(hvatek_chip hchip, uint8_t *pbuf, int32_t size);
-HAL_API vatek_result vatek_device_stream_stop(hvatek_chip hchip);
+HAL_API vatek_result vatek_device_stream_start(void_vatek_chip hchip, Pmodulator_param pmod, uint32_t stream_mode);
+HAL_API vatek_result vatek_device_stream_write(void_vatek_chip hchip, uint8_t *pbuf, int32_t size);
+HAL_API vatek_result vatek_device_stream_stop(void_vatek_chip hchip);
 
 /* usb device bulk operations */
-HAL_API vatek_result vatek_device_usbbulk_send(hvatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result vatek_device_usbbulk_get_result(hvatek_chip hchip, Pusbbulk_result presult);
-HAL_API vatek_result vatek_device_usbbulk_write(hvatek_chip hchip, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result vatek_device_usbbulk_read(hvatek_chip hchip, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result vatek_device_usbbulk_get_size(hvatek_chip hchip);
+HAL_API vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, Pusbbulk_result presult);
+HAL_API vatek_result vatek_device_usbbulk_write(void_vatek_chip hchip, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result vatek_device_usbbulk_read(void_vatek_chip hchip, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result vatek_device_usbbulk_get_size(void_vatek_chip hchip);
 
 #endif

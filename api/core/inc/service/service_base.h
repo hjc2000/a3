@@ -85,7 +85,7 @@ extern "C" {
 	 * @param[in] pinfo broadcast information parameters
 	 * @return >= 0 mean success, other error
 	 */
-	HAL_API vatek_result broadcast_info_set(hvatek_chip hchip, Pbroadcast_info pinfo);
+	HAL_API vatek_result broadcast_info_set(void_vatek_chip hchip, Pbroadcast_info pinfo);
 
 	/**
 	 * @ingroup service_api
@@ -95,7 +95,7 @@ extern "C" {
 	 * @param[out] pinfo broadcast information parameters
 	 * @return >= 0 mean success, other error
 	 */
-	HAL_API vatek_result broadcast_info_get(hvatek_chip hchip, Pbroadcast_info pinfo);
+	HAL_API vatek_result broadcast_info_get(void_vatek_chip hchip, Pbroadcast_info pinfo);
 
 	/**
 	 * @ingroup service_api
@@ -105,7 +105,7 @@ extern "C" {
 	 * @param[out] status broadcast status
 	 * @return HAL_API
 	 */
-	HAL_API vatek_result broadcast_status_get(hvatek_chip hchip, broadcast_status* status);
+	HAL_API vatek_result broadcast_status_get(void_vatek_chip hchip, broadcast_status* status);
 
 	/**
 	 * @ingroup service_api
@@ -115,7 +115,7 @@ extern "C" {
 	 * @param[in] status broadcast status
 	 * @return HAL_API
 	 */
-	HAL_API vatek_result broadcast_status_set(hvatek_chip hchip, broadcast_status status);
+	HAL_API vatek_result broadcast_status_set(void_vatek_chip hchip, broadcast_status status);
 
 #ifdef __cplusplus
 }

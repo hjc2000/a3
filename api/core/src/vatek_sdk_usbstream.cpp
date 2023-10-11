@@ -54,7 +54,7 @@ typedef struct _handle_usbstream
 {
 	usbstream_mode mode;
 	usbstream_status status;
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	hvatek_transform htransform;
 	transform_broadcast broadcast;
 	int32_t is_support_r2;
@@ -81,7 +81,7 @@ extern void usbstream_async_finish_buffer(Phandle_async pasync);
 
 extern void usbstream_async_free(Phandle_async pasync);
 
-vatek_result vatek_usbstream_open(hvatek_chip hchip, hvatek_usbstream* husstream)
+vatek_result vatek_usbstream_open(void_vatek_chip hchip, hvatek_usbstream* husstream)
 {
 	chip_info * pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;

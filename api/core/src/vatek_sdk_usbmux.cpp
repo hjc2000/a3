@@ -65,7 +65,7 @@ typedef struct _handle_usbmux
 	usbmux_status umstatus;
 	usbmux_param uparam;
 	Pth_mempool hmempool;
-	hvatek_chip hchip;
+	void_vatek_chip hchip;
 	hvatek_usbstream husbstream;
 	hmux_core hmux;
 	hmux_channel hchannel;
@@ -85,7 +85,7 @@ extern int32_t usbmux_get_streams_nums(Phandle_usbmux pumux);
 extern vatek_result usbmux_set_stream(Phandle_umprogram phprog, Phandle_umstream phstream);
 extern vatek_result usbmux_set_channel(Phandle_usbmux pumux, Phandle_muxer pmuxer);
 
-vatek_result vatek_usbmux_create(hvatek_chip hchip, Pusbmux_param puparam, hvatek_usbmux* husbmux)
+vatek_result vatek_usbmux_create(void_vatek_chip hchip, Pusbmux_param puparam, hvatek_usbmux* husbmux)
 {
 	hvatek_usbstream hstream = NULL;
 	vatek_result nres = vatek_usbstream_open(hchip, &hstream);

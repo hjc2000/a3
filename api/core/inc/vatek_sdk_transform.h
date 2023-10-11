@@ -38,7 +38,7 @@ typedef void* hvatek_transform;
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_transform_open(hvatek_chip hchip,hvatek_transform* htr);
+	HAL_API vatek_result vatek_transform_open(void_vatek_chip hchip,hvatek_transform* htr);
 
 	HAL_API vatek_result vatek_transform_start_enum(hvatek_transform htr, Ptransform_enum penum);
 	HAL_API vatek_result vatek_transform_start_capture(hvatek_transform htr, Ptransform_capture pcapture);
