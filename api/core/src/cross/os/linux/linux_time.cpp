@@ -4,34 +4,6 @@
 #include <unistd.h>
 #include <sched.h>
 
-void cross_os_time_plus_ms(struct timespec *tp, int32_t ms)
-{
-	if (ms >= 1000)
-	{
-		tp->tv_sec += ms / 1000;
-		ms %= 1000;
-	}
-
-	tp->tv_nsec += ms * 1000;
-	if (tp->tv_nsec >= TIME_SECOND_TO_NS)
-	{
-		tp->tv_sec++;
-		tp->tv_nsec -= TIME_SECOND_TO_NS;
-	}
-}
-
-void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend)
-{
-	tp->tv_nsec += tappend->tv_nsec;
-	tp->tv_sec += tappend->tv_sec;
-
-	if (tp->tv_nsec > TIME_SECOND_TO_NS)
-	{
-		tp->tv_sec++;
-		tp->tv_nsec -= TIME_SECOND_TO_NS;
-	}
-}
-
 vatek_result cross_os_get_time(struct timespec *tp)
 {
 	struct timespec ts;
