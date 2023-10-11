@@ -71,7 +71,17 @@ extern "C" {
 	HAL_API void cross_os_time_plus_ms(struct timespec *tp, int32_t ms);
 	HAL_API void cross_os_time_plus_time(struct timespec *tp, struct timespec *tappend);
 
+	/// <summary>
+	///		获取当前 UTC 时间
+	/// </summary>
+	/// <param name="tp"></param>
+	/// <returns></returns>
 	HAL_API vatek_result cross_os_get_time(timespec *tp);
+
+	/// <summary>
+	///		以微秒数获取当前 UTC
+	/// </summary>
+	/// <returns></returns>
 	HAL_API uint64_t cross_os_get_time_us();
 	HAL_API uint64_t cross_os_time_to_us(struct timespec *tp);
 

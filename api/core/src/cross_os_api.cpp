@@ -87,7 +87,7 @@ uint64_t cross_os_time_to_us(struct timespec *tp)
 
 uint64_t cross_os_get_time_us()
 {
-	auto now = steady_clock::now().time_since_epoch();
+	duration now = steady_clock::now().time_since_epoch();
 	return duration_cast<microseconds>(now).count();
 }
 
@@ -103,4 +103,25 @@ vatek_result cross_os_get_time(timespec *tp)
 	tp->tv_nsec = now_nanoseconds.count();
 
 	return vatek_success;
+}
+
+vatek_result cross_os_time_eclipse(timespec *st, timespec *eclipse)
+{
+	timespec curtime;
+	vatek_result nres = cross_os_get_time(&curtime);
+	if (is_vatek_success(nres))
+	{
+		if (curtime.tv_nsec > st->tv_nsec)
+		{
+			eclipse->tv_nsec = st->tv_nsec + (1000000000UL - curtime.tv_nsec);
+			eclipse->tv_sec = (curtime.tv_sec - st->tv_sec) - 1;
+		}
+		else
+		{
+			eclipse->tv_nsec = curtime.tv_nsec - st->tv_nsec;
+			eclipse->tv_sec = curtime.tv_sec - st->tv_sec;
+		}
+	}
+
+	return nres;
 }
