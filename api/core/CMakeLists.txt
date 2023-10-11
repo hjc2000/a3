@@ -7,16 +7,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(core_INC_BRIDGE
-    inc/bridge_base.h
-    inc/bridge_demod.h
-    inc/bridge_device.h
-    inc/bridge_rfmixer.h
-    inc/bridge_source.h
-    inc/bridge_usb.h
-    inc/ui_bridge_base.h
-    inc/ui_bridge_source.h)
-
 set(core_INC_CORE
     inc/vatek_base.h
     inc/storage_default.h
@@ -212,7 +202,15 @@ set(sdk2_SOURCES
     ${core_SRC_SERVICE})
 
 set(sdk2_HEADERS
-    ${core_INC_BRIDGE}
+    inc/bridge_base.h
+    inc/bridge_demod.h
+    inc/bridge_device.h
+    inc/bridge_rfmixer.h
+    inc/bridge_source.h
+    inc/bridge_usb.h
+    inc/ui_bridge_base.h
+    inc/ui_bridge_source.h
+
     ${core_INC_CORE}
     ${core_INC_CROSS}
     ${core_INC_MUX}
@@ -220,10 +218,6 @@ set(sdk2_HEADERS
     ${core_INC_SERVICE})
 
 if(MSVC)
-    source_group("inc" FILES ${core_INC_MUX})
-    source_group("inc" FILES ${core_INC_SERVICE})
-    source_group("inc" FILES ${core_INC_SDK})
-
     source_group("src/core" FILES ${core_SRC_CORE})
     source_group("src/cross" FILES ${core_SRC_CROSS})
     source_group("src/device" FILES ${core_SRC_DEVICE})
