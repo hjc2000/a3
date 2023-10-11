@@ -217,17 +217,7 @@ if(MSVC)
         src/cross/os/win/win_os_smem_api.cpp
         src/cross/os/win/win_os_sys_api.cpp
         src/cross/os/win/win_os_thread_api.cpp
-        src/cross/os/win/win_os_uart_api.cpp)
-elseif(UNIX)
-    set(core_SRC_OS
-        src/cross/os/linux/cross_bridge_libusb.c
-        src/cross/os/linux/linux_core.c
-        src/cross/os/linux/linux_dynamic_dll.c
-        src/cross/os/linux/linux_event.c
-        src/cross/os/linux/linux_mutex.c
-        src/cross/os/linux/linux_process.c
-        src/cross/os/linux/linux_smem.c
-        src/cross/os/linux/linux_thread.c
+        src/cross/os/win/win_os_uart_api.cpp
     )
 endif()
 
