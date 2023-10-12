@@ -41,6 +41,11 @@ public:
 	function<uint8_t *(void_stream_source hsource)> get;
 	function<vatek_result(void_stream_source hsource)> stop;
 	function<void(void_stream_source hsource)> free;
+
+	virtual vatek_result Start()
+	{
+		return vatek_success;
+	}
 };
 
 /// <summary>
@@ -179,6 +184,11 @@ public:
 				return vatek_timeout;
 		}
 	}
+
+	vatek_result Start()
+	{
+		return vatek_success;
+	}
 };
 
 #define UDP_SLICE_BUF_NUMS		32
@@ -202,6 +212,11 @@ public:
 	///		线程函数当前是否在执行
 	/// </summary>
 	int32_t isrunning;
+
+	vatek_result Start()
+	{
+		return vatek_success;
+	}
 };
 
 /// <summary>
