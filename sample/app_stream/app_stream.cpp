@@ -261,10 +261,6 @@ vatek_result parser_cmd_source(int32_t argc, char **argv, ts_stream_source *stre
 		{
 			modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
 		}
-		else if (strcmp(argv[1], "test") == 0)
-		{
-			nres = stream_source_test_get(&usbcmd.modulator, stream_source);
-		}
 		else
 		{
 			nres = vatek_unsupport;

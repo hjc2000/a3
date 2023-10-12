@@ -32,7 +32,7 @@
 #define TEST_PACKET_USB_PAT		1
 #define TEST_PACKET_PCR_PID		0x100
 
-struct handle_test
+struct test_stream_source
 {
 	cstream_handler handle;
 	mux_time_tick time;
@@ -50,12 +50,12 @@ extern void cstream_test_close(hcstream hstream);
 
 vatek_result cross_stream_test_get(uint32_t bitrate, cstream_handler * *pcstream)
 {
-	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));
+	test_stream_source *ptest = (test_stream_source *)malloc(sizeof(test_stream_source));
 	vatek_result nres = vatek_memfail;
 
 	if (ptest)
 	{
-		memset(ptest, 0, sizeof(handle_test));
+		memset(ptest, 0, sizeof(test_stream_source));
 		ptest->slice_ns = (1000000000 / (bitrate / (TS_PACKET_LEN * 8))) * TSSLICE_PACKET_NUM;
 		ptest->handle.hstream = ptest;
 		ptest->handle.start = cstream_test_start;
@@ -72,7 +72,7 @@ vatek_result cross_stream_test_get(uint32_t bitrate, cstream_handler * *pcstream
 
 vatek_result cstream_test_start(hcstream hstream)
 {
-	handle_test *ptest = (handle_test *)hstream;
+	test_stream_source *ptest = (test_stream_source *)hstream;
 	ptest->time.ms = 0;
 	ptest->time.ns = 0;
 	ptest->tick = cross_os_get_tick_ms();
@@ -81,7 +81,7 @@ vatek_result cstream_test_start(hcstream hstream)
 
 uint32_t cstream_test_get_bitrate(hcstream hstream)
 {
-	handle_test *ptest = (handle_test *)hstream;
+	test_stream_source *ptest = (test_stream_source *)hstream;
 	int32_t eclipse = cross_os_get_tick_ms() - ptest->tick;
 	if (eclipse)
 	{
@@ -96,7 +96,7 @@ uint32_t cstream_test_get_bitrate(hcstream hstream)
 
 vatek_result cstream_test_get_slice(hcstream hstream, uint8_t **pslice)
 {
-	handle_test *ptest = (handle_test *)hstream;
+	test_stream_source *ptest = (test_stream_source *)hstream;
 	int32_t nums = 0;
 	uint8_t *ptr = &ptest->buffer[0];
 
@@ -127,7 +127,7 @@ void cstream_test_stop(hcstream hstream)
 
 void cstream_test_close(hcstream hstream)
 {
-	handle_test *ptest = (handle_test *)hstream;
+	test_stream_source *ptest = (test_stream_source *)hstream;
 	free(hstream);
 }
 

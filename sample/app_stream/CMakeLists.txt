@@ -12,7 +12,6 @@ set(cli_SRC
 set(cli_SRC_COM
     "../common/src/tool_printf.cpp"
     "../common/src/tool_stream_file.cpp"
-    "../common/src/tool_stream_test.cpp"
     "../common/src/tool_stream_udp.cpp"
     "../common/src/tool_tspacket.cpp")
 
