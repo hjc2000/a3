@@ -1,7 +1,7 @@
 #include <cross_bridge.h>
 #include <cross_os_api.h>
 
-vatek_result bridge_device_lock(void_bridge_device hbridge)
+vatek_result bridge_device_lock(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_success;
 	if (bridge_device_get_status(hbridge) == hid_status_idle)
@@ -42,7 +42,7 @@ vatek_result bridge_device_lock(void_bridge_device hbridge)
 	return nres;
 }
 
-vatek_result bridge_device_unlock(void_bridge_device hbridge)
+vatek_result bridge_device_unlock(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_success;
 	if (bridge_device_get_status(hbridge) == hid_status_locked)
@@ -79,7 +79,7 @@ vatek_result bridge_device_unlock(void_bridge_device hbridge)
 	return nres;
 }
 
-bridge_device_status bridge_device_get_status(void_bridge_device hbridge)
+bridge_device_status bridge_device_get_status(win_hid_device_list_node * hbridge)
 {
 	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 	bridge_device_status status;
@@ -88,7 +88,7 @@ bridge_device_status bridge_device_get_status(void_bridge_device hbridge)
 	return status;
 }
 
-vatek_result bridge_device_bulk_transfer(void_bridge_device hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len)
+vatek_result bridge_device_bulk_transfer(win_hid_device_list_node * hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len)
 {
 	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
 	Pbridge_mod_param modparam = &pcmd->param.mod;

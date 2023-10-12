@@ -4,12 +4,12 @@
 extern vatek_result map_bridge_to_buffer(uint8_t *bbuf, uint8_t *bdata, const Pstruct_bridge_param params);
 extern vatek_result map_buffer_to_bridge(uint8_t *bbuf, uint8_t *bdata, const Pstruct_bridge_param params);
 
-//extern vatek_result bridge_send_cmd(void_bridge_device hbridge,int32_t cmd);
-extern vatek_result bridge_send_cmd(void_bridge_device hbridge, int32_t cmd, uint8_t *praw, const Pstruct_bridge_param pbparam, Phid_bridge_result *presult);
+//extern vatek_result bridge_send_cmd(win_hid_device_list_node * hbridge,int32_t cmd);
+extern vatek_result bridge_send_cmd(win_hid_device_list_node * hbridge, int32_t cmd, uint8_t *praw, const Pstruct_bridge_param pbparam, Phid_bridge_result *presult);
 extern const char *bridge_get_tag_string(uint32_t tag);
 extern vatek_result bridge_get_source(Phid_bridge_result presult, Pbridge_source psource);
 
-vatek_result bridge_device_get_info(void_bridge_device hbridge, Pbdevice_info pdevinfo)
+vatek_result bridge_device_get_info(win_hid_device_list_node * hbridge, Pbdevice_info pdevinfo)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -21,7 +21,7 @@ vatek_result bridge_device_get_info(void_bridge_device hbridge, Pbdevice_info pd
 	return nres;
 }
 
-vatek_result bridge_device_get_demod_info(void_bridge_device hbridge, Pbdemod_info pinfo)
+vatek_result bridge_device_get_demod_info(win_hid_device_list_node * hbridge, Pbdemod_info pinfo)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -33,7 +33,7 @@ vatek_result bridge_device_get_demod_info(void_bridge_device hbridge, Pbdemod_in
 	return nres;
 }
 
-vatek_result bridge_device_set_demod_mode(void_bridge_device hbridge, Pbdemod_mode_param pmode)
+vatek_result bridge_device_set_demod_mode(win_hid_device_list_node * hbridge, Pbdemod_mode_param pmode)
 {
 	vatek_result nres = vatek_success;
 	bridge_device_lock_command(hbridge);
@@ -42,7 +42,7 @@ vatek_result bridge_device_set_demod_mode(void_bridge_device hbridge, Pbdemod_mo
 	return nres;
 }
 
-vatek_result bridge_device_get_demod_mode(void_bridge_device hbridge, Pbdemod_mode_param pmode)
+vatek_result bridge_device_get_demod_mode(win_hid_device_list_node * hbridge, Pbdemod_mode_param pmode)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -54,7 +54,7 @@ vatek_result bridge_device_get_demod_mode(void_bridge_device hbridge, Pbdemod_mo
 	return nres;
 }
 
-vatek_result bridge_device_start_demod(void_bridge_device hbridge, Pbdemod_op_param param)
+vatek_result bridge_device_start_demod(win_hid_device_list_node * hbridge, Pbdemod_op_param param)
 {
 	vatek_result nres = vatek_success;
 	bridge_device_unlock_command(hbridge);
@@ -63,7 +63,7 @@ vatek_result bridge_device_start_demod(void_bridge_device hbridge, Pbdemod_op_pa
 	return nres;
 }
 
-vatek_result bridge_device_stop_demod(void_bridge_device hbridge)
+vatek_result bridge_device_stop_demod(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_success;
 	bridge_device_lock_command(hbridge);
@@ -72,7 +72,7 @@ vatek_result bridge_device_stop_demod(void_bridge_device hbridge)
 	return nres;
 }
 
-vatek_result bridge_device_get_source(void_bridge_device hbridge, int32_t idx, Pbridge_source pphy)
+vatek_result bridge_device_get_source(win_hid_device_list_node * hbridge, int32_t idx, Pbridge_source pphy)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -95,7 +95,7 @@ vatek_result bridge_device_get_source(void_bridge_device hbridge, int32_t idx, P
 	return nres;
 }
 
-vatek_result bridge_device_start_source(void_bridge_device hbridge, Pbridge_source pvideo)
+vatek_result bridge_device_start_source(win_hid_device_list_node * hbridge, Pbridge_source pvideo)
 {
 	vatek_result nres = vatek_success;
 	bridge_source_cmd cmd;
@@ -108,7 +108,7 @@ vatek_result bridge_device_start_source(void_bridge_device hbridge, Pbridge_sour
 	return nres;
 }
 
-vatek_result bridge_device_stop_source(void_bridge_device hbridge)
+vatek_result bridge_device_stop_source(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_success;
 	bridge_source_cmd cmd;
@@ -120,7 +120,7 @@ vatek_result bridge_device_stop_source(void_bridge_device hbridge)
 	return nres;
 }
 
-vatek_result bridge_device_get_source_status(void_bridge_device hbridge, Pbridge_source psource)
+vatek_result bridge_device_get_source_status(win_hid_device_list_node * hbridge, Pbridge_source psource)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -143,12 +143,12 @@ vatek_result bridge_device_get_source_status(void_bridge_device hbridge, Pbridge
 	return nres;
 }
 
-const char *bridge_device_get_source_name(void_bridge_device hbridge, Pbridge_source psource)
+const char *bridge_device_get_source_name(win_hid_device_list_node * hbridge, Pbridge_source psource)
 {
 	return bridge_get_tag_string((uint32_t)psource->source_id);
 }
 
-vatek_result bridge_device_start_rfmixer(void_bridge_device hbridge, Pbrfmixer_op_param pparam)
+vatek_result bridge_device_start_rfmixer(win_hid_device_list_node * hbridge, Pbrfmixer_op_param pparam)
 {
 	vatek_result nres = vatek_success;
 	bridge_device_lock_command(hbridge);
@@ -157,7 +157,7 @@ vatek_result bridge_device_start_rfmixer(void_bridge_device hbridge, Pbrfmixer_o
 	return nres;
 }
 
-vatek_result bridge_device_stop_rfmixer(void_bridge_device hbridge)
+vatek_result bridge_device_stop_rfmixer(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_success;
 	bridge_device_lock_command(hbridge);
@@ -166,7 +166,7 @@ vatek_result bridge_device_stop_rfmixer(void_bridge_device hbridge)
 	return nres;
 }
 
-vatek_result bridge_device_storage_write(void_bridge_device hbridge, int32_t nsection, uint8_t *pbuf)
+vatek_result bridge_device_storage_write(win_hid_device_list_node * hbridge, int32_t nsection, uint8_t *pbuf)
 {
 	vatek_result nres = vatek_success;
 	bflash_command cmd;
@@ -201,7 +201,7 @@ vatek_result bridge_device_storage_write(void_bridge_device hbridge, int32_t nse
 	return nres;
 }
 
-vatek_result bridge_device_storage_read(void_bridge_device hbridge, int32_t nsection, uint8_t *pbuf)
+vatek_result bridge_device_storage_read(win_hid_device_list_node * hbridge, int32_t nsection, uint8_t *pbuf)
 {
 	vatek_result nres = vatek_success;
 	Phid_bridge_result presult = NULL;
@@ -236,7 +236,7 @@ vatek_result bridge_device_storage_read(void_bridge_device hbridge, int32_t nsec
 	return nres;
 }
 
-vatek_result bridge_device_storage_erase(void_bridge_device hbridge, int32_t nsection)
+vatek_result bridge_device_storage_erase(win_hid_device_list_node * hbridge, int32_t nsection)
 {
 	bflash_command cmd;
 	memset(&cmd, 0, sizeof(bflash_command));
@@ -249,7 +249,7 @@ vatek_result bridge_device_storage_erase(void_bridge_device hbridge, int32_t nse
 	return nres;
 }
 
-vatek_result bridge_send_cmd(void_bridge_device hbridge, int32_t cmd, uint8_t *praw, const Pstruct_bridge_param pbparam, Phid_bridge_result *presult)
+vatek_result bridge_send_cmd(win_hid_device_list_node * hbridge, int32_t cmd, uint8_t *praw, const Pstruct_bridge_param pbparam, Phid_bridge_result *presult)
 {
 	vatek_result nres = vatek_success;
 	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);

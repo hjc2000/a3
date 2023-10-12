@@ -332,7 +332,7 @@ vatek_result bridge_device_list_free(win_hid_device_list_node * root_node)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t idx, void_bridge_device *hbridge)
+vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t idx, win_hid_device_list_node * *hbridge)
 {
 	int32_t nums = 0;
 	while (root_node)
@@ -353,7 +353,7 @@ vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t
 
 const char *bridge_device_list_get_name(win_hid_device_list_node *hblist, int32_t idx)
 {
-	void_bridge_device hbridge = NULL;
+	win_hid_device_list_node * hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
 	if (is_vatek_success(nres))
 		return &((win_hid_device_list_node *)hbridge)->hid_path[0];
@@ -361,7 +361,7 @@ const char *bridge_device_list_get_name(win_hid_device_list_node *hblist, int32_
 	return NULL;
 }
 
-vatek_result bridge_device_open(void_bridge_device hbridge)
+vatek_result bridge_device_open(win_hid_device_list_node * hbridge)
 {
 	vatek_result nres = vatek_badstatus;
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
@@ -406,25 +406,25 @@ vatek_result bridge_device_open(void_bridge_device hbridge)
 	return nres;
 }
 
-void bridge_device_lock_command(void_bridge_device hbridge)
+void bridge_device_lock_command(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	cross_os_lock_mutex(phid->_mutex);
 }
 
-void bridge_device_unlock_command(void_bridge_device hbridge)
+void bridge_device_unlock_command(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	cross_os_release_mutex(phid->_mutex);
 }
 
-const char *bridge_device_get_name(void_bridge_device hbridge)
+const char *bridge_device_get_name(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return &phid->hid_path[0];
 }
 
-vatek_result bridge_device_close(void_bridge_device hbridge)
+vatek_result bridge_device_close(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	if (phid->hid_handle != NULL)
@@ -441,19 +441,19 @@ vatek_result bridge_device_close(void_bridge_device hbridge)
 }
 
 
-hid_bridge_cmd *bridge_device_get_command(void_bridge_device hbridge)
+hid_bridge_cmd *bridge_device_get_command(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 }
 
-Phid_bridge_result bridge_device_get_result(void_bridge_device hbridge)
+Phid_bridge_result bridge_device_get_result(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return (Phid_bridge_result)&phid->rawbuf_rx[HID_PACKET_DATA_OFFSET];
 }
 
-vatek_result bridge_device_send_bridge_command(void_bridge_device hbridge)
+vatek_result bridge_device_send_bridge_command(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	vatek_result nres = win_hid_api_write(phid, &phid->rawbuf_tx[HID_PACKET_START_OFFSET]);

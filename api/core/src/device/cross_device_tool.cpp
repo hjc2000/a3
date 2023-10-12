@@ -43,7 +43,7 @@ vatek_result cross_devices_create(cross_device **pcross)
 			nums = nres;
 			for (i = 0; i < nums; i++)
 			{
-				void_bridge_device hbridge = NULL;
+				win_hid_device_list_node * hbridge = NULL;
 				nres = bridge_device_list_get(m_cdevices.bridges, i, &hbridge);
 				if (is_vatek_success(nres))
 				{
