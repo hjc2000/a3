@@ -5,30 +5,30 @@
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
-extern vatek_result test_stream_start(hstream_source hsource);
+extern vatek_result test_stream_start(void_stream_source hsource);
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns>将 1 强制转换为 vatek_result 类型</returns>
-extern vatek_result test_stream_check(hstream_source hsource);
+extern vatek_result test_stream_check(void_stream_source hsource);
 
 
-extern uint8_t *test_stream_get(hstream_source hsource);
+extern uint8_t *test_stream_get(void_stream_source hsource);
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns>直接返回 vatek_success</returns>
-extern vatek_result test_stream_stop(hstream_source hsource);
+extern vatek_result test_stream_stop(void_stream_source hsource);
 
 /// <summary>
 ///		在堆中释放 hsource
 /// </summary>
 /// <param name="hsource"></param>
-extern void test_stream_free(hstream_source hsource);
+extern void test_stream_free(void_stream_source hsource);
 
 vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *stream_source)
 {
@@ -52,7 +52,7 @@ vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *stre
 	return vatek_success;
 }
 
-vatek_result test_stream_start(hstream_source hsource)
+vatek_result test_stream_start(void_stream_source hsource)
 {
 	handle_test *ptest = (handle_test *)hsource;
 	ptest->time.ms = 0;
@@ -60,12 +60,12 @@ vatek_result test_stream_start(hstream_source hsource)
 	return vatek_success;
 }
 
-vatek_result test_stream_check(hstream_source hsource)
+vatek_result test_stream_check(void_stream_source hsource)
 {
 	return (vatek_result)1;
 }
 
-uint8_t *test_stream_get(hstream_source hsource)
+uint8_t *test_stream_get(void_stream_source hsource)
 {
 	handle_test *ptest = (handle_test *)hsource;
 	int32_t nums = 0;
@@ -94,12 +94,12 @@ uint8_t *test_stream_get(hstream_source hsource)
 	return &ptest->buffer[0];
 }
 
-vatek_result test_stream_stop(hstream_source hsource)
+vatek_result test_stream_stop(void_stream_source hsource)
 {
 	return vatek_success;
 }
 
-void test_stream_free(hstream_source hsource)
+void test_stream_free(void_stream_source hsource)
 {
 	free(hsource);
 }

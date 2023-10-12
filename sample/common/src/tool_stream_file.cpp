@@ -8,28 +8,28 @@
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
-extern vatek_result file_stream_start(hstream_source hsource);
-extern vatek_result file_stream_check(hstream_source hsource);
+extern vatek_result file_stream_start(void_stream_source hsource);
+extern vatek_result file_stream_check(void_stream_source hsource);
 
 /// <summary>
 ///		将 hsource 强制转换为 FileWrapper * 后返回 buffer 字段。这是一个一维数组的头指针。
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
-extern uint8_t *file_stream_get(hstream_source hsource);
+extern uint8_t *file_stream_get(void_stream_source hsource);
 
 /// <summary>
 ///		
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns>直接返回 vatek_success</returns>
-extern vatek_result file_stream_stop(hstream_source hsource);
+extern vatek_result file_stream_stop(void_stream_source hsource);
 
 /// <summary>
 ///		关闭 hsource 内的 fhandle 字段指向的文件，然后释放 hsource 对象
 /// </summary>
 /// <param name="hsource"></param>
-extern void file_stream_free(hstream_source hsource);
+extern void file_stream_free(void_stream_source hsource);
 
 vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 {
@@ -79,12 +79,12 @@ vatek_result stream_source_file_get(const char *file, tsstream_source *psource)
 	return nres;
 }
 
-vatek_result file_stream_start(hstream_source hsource)
+vatek_result file_stream_start(void_stream_source hsource)
 {
 	return vatek_success;
 }
 
-vatek_result file_stream_check(hstream_source hsource)
+vatek_result file_stream_check(void_stream_source hsource)
 {
 	FileWrapper *pfile = (FileWrapper *)hsource;
 	int32_t pos = 0;
@@ -128,18 +128,18 @@ vatek_result file_stream_check(hstream_source hsource)
 	return nres;
 }
 
-uint8_t *file_stream_get(hstream_source hsource)
+uint8_t *file_stream_get(void_stream_source hsource)
 {
 	FileWrapper *pfile = (FileWrapper *)hsource;
 	return &pfile->buffer[0];
 }
 
-vatek_result file_stream_stop(hstream_source hsource)
+vatek_result file_stream_stop(void_stream_source hsource)
 {
 	return vatek_success;
 }
 
-void file_stream_free(hstream_source hsource)
+void file_stream_free(void_stream_source hsource)
 {
 	FileWrapper *pfile = (FileWrapper *)hsource;
 	fclose(pfile->fhandle);

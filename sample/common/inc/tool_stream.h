@@ -1,4 +1,3 @@
-
 #ifndef _TOOL_STREAM_
 #define _TOOL_STREAM_
 
@@ -18,12 +17,12 @@ using namespace std;
 // 缓冲区大小除以一个 ts 包的尺寸，得出缓冲区可以储存多少个 ts 包
 #define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN / TS_PACKET_LEN)
 
-typedef void *hstream_source;
-typedef vatek_result(*fpstream_source_start)(hstream_source hsource);
-typedef vatek_result(*fpstream_source_check)(hstream_source hsource);
-typedef uint8_t *(*fpstream_source_get)(hstream_source hsource);
-typedef vatek_result(*fpstream_source_stop)(hstream_source hsource);
-typedef void(*fpstream_source_free)(hstream_source hsource);
+typedef void *void_stream_source;
+typedef vatek_result(*fpstream_source_start)(void_stream_source hsource);
+typedef vatek_result(*fpstream_source_check)(void_stream_source hsource);
+typedef uint8_t *(*fpstream_source_get)(void_stream_source hsource);
+typedef vatek_result(*fpstream_source_stop)(void_stream_source hsource);
+typedef void(*fpstream_source_free)(void_stream_source hsource);
 
 struct handle_test
 {
@@ -34,14 +33,14 @@ struct handle_test
 };
 
 /// <summary>
-///		ts 流源。内部定义了一个 hstream_source 类型的字段和一些函数指针。
-///		这些函数指针的第一个参数全部是 hstream_source hsource。
+///		ts 流源。内部定义了一个 void_stream_source 类型的字段和一些函数指针。
+///		这些函数指针的第一个参数全部是 void_stream_source hsource。
 ///		这个结构体就是在模仿 C++ 的类。
 /// </summary>
 class tsstream_source
 {
 public:
-	hstream_source hsource = nullptr;
+	void_stream_source hsource = nullptr;
 	fpstream_source_start start;
 	fpstream_source_check check;
 	fpstream_source_get get;

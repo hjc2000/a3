@@ -13,11 +13,11 @@
 
 #define UDP_BUFFER_LEN			(((4*1024*1024) / UDP_FRAME_LEN) * UDP_FRAME_LEN)
 
-extern vatek_result tool_udp_stream_start(hstream_source hsource);
-extern vatek_result tool_udp_stream_check(hstream_source hsource);
-extern uint8_t *tool_udp_stream_get(hstream_source hsource);
-extern vatek_result udp_stream_stop(hstream_source hsource);
-extern void udp_stream_free(hstream_source hsource);
+extern vatek_result tool_udp_stream_start(void_stream_source hsource);
+extern vatek_result tool_udp_stream_check(void_stream_source hsource);
+extern uint8_t *tool_udp_stream_get(void_stream_source hsource);
+extern vatek_result tool_udp_stream_stop(void_stream_source hsource);
+extern void tool_udp_stream_free(void_stream_source hsource);
 
 struct tool_handle_udp
 {
@@ -44,7 +44,7 @@ struct tool_handle_udp
 ///		接收 UDP 流的线程函数
 /// </summary>
 /// <param name="param"></param>
-extern void recv_handle(cross_thread_param *param);
+extern void tool_recv_handle(cross_thread_param *param);
 
 extern uint8_t *tool_get_write_buffer(tool_handle_udp *pudp);
 extern void commit_write_buffer(tool_handle_udp *pudp);
@@ -78,10 +78,10 @@ vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource)
 
 			psource->hsource = pudp;
 			psource->start = tool_udp_stream_start;
-			psource->stop = udp_stream_stop;
+			psource->stop = tool_udp_stream_stop;
 			psource->check = tool_udp_stream_check;
 			psource->get = tool_udp_stream_get;
-			psource->free = udp_stream_free;
+			psource->free = tool_udp_stream_free;
 			_disp_l("open UDP/RTP address - [%s]", sparam.url);
 			printf("\r\n");
 			nres = vatek_success;
@@ -99,7 +99,7 @@ vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource)
 	return  nres;
 }
 
-vatek_result tool_udp_stream_start(hstream_source hsource)
+vatek_result tool_udp_stream_start(void_stream_source hsource)
 {
 	vatek_result nres = vatek_badstatus;
 	tool_handle_udp *pudp = (tool_handle_udp *)hsource;
@@ -109,7 +109,7 @@ vatek_result tool_udp_stream_start(hstream_source hsource)
 		if (is_vatek_success(nres))
 		{
 			pudp->isrunning = 1;
-			pudp->hrecv = cross_os_create_thread(recv_handle, pudp);
+			pudp->hrecv = cross_os_create_thread(tool_recv_handle, pudp);
 			if (!pudp->hrecv)nres = vatek_hwfail;
 
 			if (!is_vatek_success(nres))
@@ -122,7 +122,7 @@ vatek_result tool_udp_stream_start(hstream_source hsource)
 	return nres;
 }
 
-vatek_result tool_udp_stream_check(hstream_source hsource)
+vatek_result tool_udp_stream_check(void_stream_source hsource)
 {
 	tool_handle_udp *pudp = (tool_handle_udp *)hsource;
 	if (!pudp->isrunning)
@@ -138,14 +138,14 @@ vatek_result tool_udp_stream_check(hstream_source hsource)
 	}
 }
 
-uint8_t *tool_udp_stream_get(hstream_source hsource)
+uint8_t *tool_udp_stream_get(void_stream_source hsource)
 {
 	if (tool_udp_stream_check(hsource))
 		return tool_get_valid_buffer((tool_handle_udp *)hsource);
 	return NULL;
 }
 
-vatek_result udp_stream_stop(hstream_source hsource)
+vatek_result tool_udp_stream_stop(void_stream_source hsource)
 {
 	tool_handle_udp *pudp = (tool_handle_udp *)hsource;
 	if (pudp->isrunning)
@@ -161,13 +161,13 @@ vatek_result udp_stream_stop(hstream_source hsource)
 	return vatek_success;
 }
 
-void udp_stream_free(hstream_source hsource)
+void tool_udp_stream_free(void_stream_source hsource)
 {
 	tool_handle_udp *pudp = (tool_handle_udp *)hsource;
-	udp_stream_stop(hsource);
+	tool_udp_stream_stop(hsource);
 }
 
-void recv_handle(cross_thread_param *param)
+void tool_recv_handle(cross_thread_param *param)
 {
 	tool_handle_udp *pudp = (tool_handle_udp *)param->void_userparam;
 	vatek_result nres = vatek_success;
