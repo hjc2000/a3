@@ -6,11 +6,7 @@
 
 typedef void *void_bridge_device;
 
-/// <summary>
-///		设备链表的节点。有指向下一个节点的指针。这里是 void*，在别的地方会被强制转换为
-///		具体的类型。
-/// </summary>
-typedef void *void_bridge_device_list_node;
+struct win_hid_device_list_node;
 
 #define BRIDGE_SETCMD(pcmd,val)             vatek_uint32_2_buffer((uint8_t*)&pcmd->cmd,val)
 #define BRIDGE_PARAM_SET(cmd,idx,val)       vatek_uint32_2_buffer((uint8_t*)&cmd->param.base.params[idx],val)
@@ -31,7 +27,7 @@ typedef void *void_bridge_device_list_node;
 /// </summary>
 /// <param name="root_node">找到的设备会被放到链表中，最后将根节点赋值给 root_node</param>
 /// <returns>总共查找到多少个设备</returns>
-HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(void_bridge_device_list_node *root_node);
+HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(win_hid_device_list_node **root_node);
 
 /// <summary>
 ///		根据供应商ID (vid) 和产品ID (pid) 来找出匹配的设备
@@ -40,7 +36,7 @@ HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(void_bridge_device_
 /// <param name="pid">产品ID</param>
 /// <param name="root_node">查找到的设备会被放到一个链表中，最后将链表的根节点指针赋值给 root_node</param>
 /// <returns>找到的设备的数量，即从 root_node 开始到最后一个节点一共有多少个节点</returns>
-HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, void_bridge_device_list_node *root_node);
+HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, win_hid_device_list_node **root_node);
 
 /// <summary>
 ///		从链表中获取指定索引位置的设备
@@ -49,18 +45,18 @@ HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, voi
 /// <param name="idx"></param>
 /// <param name="hbridge"></param>
 /// <returns></returns>
-HAL_API vatek_result bridge_device_list_get(void_bridge_device_list_node root_node, int32_t idx, void_bridge_device *hbridge);
-HAL_API const char *bridge_device_list_get_name(void_bridge_device_list_node hblist, int32_t idx);
+HAL_API vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t idx, void_bridge_device *hbridge);
+HAL_API const char *bridge_device_list_get_name(win_hid_device_list_node *hblist, int32_t idx);
 
 /// <summary>
 ///		释放从 root_node 开始的一连串链表结点
 /// </summary>
 /// <param name="root_node">
 ///		链表的根节点。
-///		* 不能传非根节点，否则会造成内存泄漏，因为 void_bridge_device_list_node 是单向链表的节点。
+///		* 不能传非根节点，否则会造成内存泄漏，因为 win_hid_device_list_node * 是单向链表的节点。
 /// </param>
 /// <returns></returns>
-HAL_API vatek_result bridge_device_list_free(void_bridge_device_list_node root_node);
+HAL_API vatek_result bridge_device_list_free(win_hid_device_list_node *root_node);
 
 HAL_API vatek_result bridge_device_open(void_bridge_device hbridge);
 HAL_API const char *bridge_device_get_name(void_bridge_device hbridge);

@@ -176,7 +176,7 @@ public:
 	}
 };
 
-int bridge_device_list_enum_usb_with_pid_and_old_pid(void_bridge_device_list_node *hblist)
+int bridge_device_list_enum_usb_with_pid_and_old_pid(win_hid_device_list_node * *hblist)
 {
 	/* bridge_device_list_enum_usb 函数如果没有发生错误，会返回找到的设备的数量，发生错误会
 	* 返回错误代码。
@@ -193,7 +193,7 @@ int bridge_device_list_enum_usb_with_pid_and_old_pid(void_bridge_device_list_nod
 	return amount_of_devices;
 }
 
-vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, void_bridge_device_list_node *root_node)
+vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, win_hid_device_list_node * *root_node)
 {
 	SP_DEVINFO_DATA devinfo_data;
 	SP_DEVICE_INTERFACE_DATA device_interface_data;
@@ -309,7 +309,7 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, void_bridge
 	return nres;
 }
 
-vatek_result bridge_device_list_free(void_bridge_device_list_node root_node)
+vatek_result bridge_device_list_free(win_hid_device_list_node * root_node)
 {
 	win_hid_device_list_node *proot = (win_hid_device_list_node *)root_node;
 
@@ -332,7 +332,7 @@ vatek_result bridge_device_list_free(void_bridge_device_list_node root_node)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(void_bridge_device_list_node hblist, int32_t idx, void_bridge_device *hbridge)
+vatek_result bridge_device_list_get(win_hid_device_list_node *hblist, int32_t idx, void_bridge_device *hbridge)
 {
 	win_hid_device_list_node *proot = (win_hid_device_list_node *)hblist;
 	int32_t nums = 0;
@@ -352,7 +352,7 @@ vatek_result bridge_device_list_get(void_bridge_device_list_node hblist, int32_t
 	return vatek_badparam;
 }
 
-const char *bridge_device_list_get_name(void_bridge_device_list_node hblist, int32_t idx)
+const char *bridge_device_list_get_name(win_hid_device_list_node *hblist, int32_t idx)
 {
 	void_bridge_device hbridge = NULL;
 	vatek_result nres = bridge_device_list_get(hblist, idx, &hbridge);
@@ -387,7 +387,7 @@ vatek_result bridge_device_open(void_bridge_device hbridge)
 				phid->hid_overlapped.hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 				if (phid->hid_overlapped.hEvent != INVALID_HANDLE_VALUE)
 				{
-					hid_bridge_cmd * pcmd = (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
+					hid_bridge_cmd *pcmd = (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 					memset(&phid->rawbuf_tx[0], 0, HID_PACKET_BUFFER_LEN);
 					memset(&phid->rawbuf_rx[0], 0, HID_PACKET_BUFFER_LEN);
 					memcpy(&pcmd->tag[0], &hid_bridge_tag[0], 4);
@@ -442,7 +442,7 @@ vatek_result bridge_device_close(void_bridge_device hbridge)
 }
 
 
-hid_bridge_cmd * bridge_device_get_command(void_bridge_device hbridge)
+hid_bridge_cmd *bridge_device_get_command(void_bridge_device hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
 	return (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];

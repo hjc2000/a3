@@ -1,7 +1,7 @@
 #include "./internal/cross_device_tool.h"
 
 /// <summary>
-///		这个似乎才是链表类，而里面的 void_bridge_device_list_node 和 void_usb_device_list 其实应该
+///		这个似乎才是链表类，而里面的 win_hid_device_list_node * 和 void_usb_device_list 其实应该
 ///		是链表结点。
 /// </summary>
 struct cross_handle
@@ -13,7 +13,7 @@ struct cross_handle
 	/// <summary>
 	///		bridge 设备的链表
 	/// </summary>
-	void_bridge_device_list_node bridges = nullptr;
+	win_hid_device_list_node * bridges = nullptr;
 
 	/// <summary>
 	///		usb 设备的链表
@@ -73,7 +73,7 @@ vatek_result cross_devices_create(cross_device **pcross)
 				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
 				if (is_vatek_success(nres))
 				{
-					nres = cross_usb_device_open(husb, &*pcross);
+					nres = cross_usb_device_open(husb, pcross);
 					if (is_vatek_success(nres))
 					{
 						if (!m_cdevices.root)
