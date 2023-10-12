@@ -461,10 +461,21 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node *
 	int32_t enumnums = 0;
 
 	deviceData.HandlesOpen = FALSE;
-	deviceInfo = SetupDiGetClassDevsA(&GUID_DEVINTERFACE_USBApplication1, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+	deviceInfo = SetupDiGetClassDevsA(
+		&GUID_DEVINTERFACE_USBApplication1,
+		NULL,
+		NULL,
+		DIGCF_PRESENT | DIGCF_DEVICEINTERFACE
+	);
+
 	interfaceData.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
-	while (SetupDiEnumDeviceInterfaces(deviceInfo, NULL, &GUID_DEVINTERFACE_USBApplication1, index, &interfaceData))
+	while (SetupDiEnumDeviceInterfaces(
+		deviceInfo,
+		NULL,
+		&GUID_DEVINTERFACE_USBApplication1,
+		index,
+		&interfaceData))
 	{
 		nres = (vatek_result)SetupDiGetDeviceInterfaceDetail(deviceInfo, &interfaceData, NULL, 0, &requiredLength, NULL);
 
@@ -487,19 +498,30 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node *
 		detailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA);
 		length = requiredLength;
 
-		nres = (vatek_result)SetupDiGetDeviceInterfaceDetail(deviceInfo, &interfaceData, detailData, length, &requiredLength, NULL);
+		nres = (vatek_result)SetupDiGetDeviceInterfaceDetail(
+			deviceInfo,
+			&interfaceData,
+			detailData,
+			length,
+			&requiredLength,
+			NULL
+		);
 
-		nres = (vatek_result)StringCbCopy(deviceData.DevicePath,
-										  sizeof(deviceData.DevicePath),
-										  detailData->DevicePath);
+		nres = (vatek_result)StringCbCopy(
+			deviceData.DevicePath,
+			sizeof(deviceData.DevicePath),
+			detailData->DevicePath
+		);
 
-		deviceData.DeviceHandle = CreateFile(deviceData.DevicePath,
-											 GENERIC_WRITE | GENERIC_READ,
-											 FILE_SHARE_WRITE | FILE_SHARE_READ,
-											 NULL,
-											 OPEN_EXISTING,
-											 FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
-											 NULL);
+		deviceData.DeviceHandle = CreateFile(
+			deviceData.DevicePath,
+			GENERIC_WRITE | GENERIC_READ,
+			FILE_SHARE_WRITE | FILE_SHARE_READ,
+			NULL,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
+			NULL
+		);
 
 		if (INVALID_HANDLE_VALUE == deviceData.DeviceHandle)
 		{
@@ -517,7 +539,14 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node *
 			return (vatek_result)0;
 		}
 
-		nres = (vatek_result)WinUsb_GetDescriptor(deviceData.WinusbHandle, USB_DEVICE_DESCRIPTOR_TYPE, 0, 0, (PBYTE)&deviceDesc, sizeof(deviceDesc), &lengthReceived);
+		nres = (vatek_result)WinUsb_GetDescriptor(
+			deviceData.WinusbHandle,
+			USB_DEVICE_DESCRIPTOR_TYPE,
+			0, 0,
+			(PBYTE)&deviceDesc,
+			sizeof(deviceDesc),
+			&lengthReceived
+		);
 
 		usbdevice_type devtype = usb_type_unknown;
 		if (fpcheck(&deviceDesc, &devtype, (usbdevice_type)checkparam))
@@ -555,8 +584,11 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node *
 					pnext = newdevice;
 					enumnums++;
 				}
-				else nres = vatek_memfail;
-				if (!is_vatek_success(nres))cross_os_free_mutex(hlock);
+				else
+					nres = vatek_memfail;
+
+				if (!is_vatek_success(nres))
+					cross_os_free_mutex(hlock);
 			}
 		}
 		else
@@ -564,15 +596,20 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node *
 			WinUsb_Free(deviceData.WinusbHandle);
 			CloseHandle(deviceData.DeviceHandle);
 		}
-		if (!is_vatek_success(nres))break;
+
+		if (!is_vatek_success(nres))
+			break;
 		index++;
 	}
 
 	LocalFree(detailData);
 	SetupDiDestroyDeviceInfoList(deviceInfo);
 
-	if (is_vatek_success(nres))nres = (vatek_result)enumnums;
-	else nres = vatek_hwfail;
+	if (is_vatek_success(nres))
+		nres = (vatek_result)enumnums;
+	else
+		nres = vatek_hwfail;
+
 	*hlist = proot;
 
 	return nres;

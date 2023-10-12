@@ -80,11 +80,23 @@ static HidD_SetNumInputBuffers_ HidD_SetNumInputBuffers;
 /// </summary>
 struct win_hid_device_list_node
 {
-	win_hid_device_list_node *pnext;
-	uint16_t hid_vid;
-	uint16_t hid_pid;
-	HANDLE hid_handle;
-	HANDLE _mutex;
+	/// <summary>
+	///		指向下一个节点
+	/// </summary>
+	win_hid_device_list_node *pnext = nullptr;
+
+	/// <summary>
+	///		供应商 ID
+	/// </summary>
+	uint16_t hid_vid = 0;
+
+	/// <summary>
+	///		产品 ID
+	/// </summary>
+	uint16_t hid_pid = 0;
+
+	HANDLE hid_handle = nullptr;
+	HANDLE _mutex = nullptr;
 	char hid_path[MAX_PATH];
 	OVERLAPPED hid_overlapped;
 	uint8_t rawbuf_tx[HID_PACKET_BUFFER_LEN];
@@ -490,7 +502,14 @@ vatek_result win_hid_api_read(win_hid_device_list_node *pdevice, uint8_t *ppacke
 	vatek_result nres = vatek_badstatus;
 	if (pdevice->hid_handle)
 	{
-		BOOL bres = ReadFile(pdevice->hid_handle, ppacket, HID_PACKET_LEN, (LPDWORD)&nread, &pdevice->hid_overlapped);
+		BOOL bres = ReadFile(
+			pdevice->hid_handle,
+			ppacket,
+			HID_PACKET_LEN,
+			(LPDWORD)&nread,
+			&pdevice->hid_overlapped
+		);
+
 		nres = vatek_hwfail;
 		if (bres || (GetLastError() == ERROR_IO_PENDING))
 		{
@@ -498,9 +517,11 @@ vatek_result win_hid_api_read(win_hid_device_list_node *pdevice, uint8_t *ppacke
 			if (nerr == WAIT_OBJECT_0)
 			{
 				bres = GetOverlappedResult(pdevice->hid_handle, &pdevice->hid_overlapped, (LPDWORD)&nread, TRUE);
-				if (bres && nread == HID_PACKET_LEN)nres = vatek_success;
+				if (bres && nread == HID_PACKET_LEN)
+					nres = vatek_success;
 			}
 		}
+
 		if (!is_vatek_success(nres))
 			CancelIo(pdevice->hid_handle);
 	}
