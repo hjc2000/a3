@@ -50,8 +50,8 @@ struct cross_stream
 };
 
 typedef vatek_result(*fpbulk_get_size)(void_usb_device husb);
-typedef vatek_result(*fpbulk_send_command)(void_usb_device husb, Pusbbulk_command pcmd);
-typedef vatek_result(*fpbulk_get_result)(void_usb_device husb, Pusbbulk_result presult);
+typedef vatek_result(*fpbulk_send_command)(void_usb_device husb, usbbulk_command * pcmd);
+typedef vatek_result(*fpbulk_get_result)(void_usb_device husb, usbbulk_result * presult);
 typedef vatek_result(*fpbulk_write)(void_usb_device husb, uint8_t *pbuf, int32_t len);
 typedef vatek_result(*fpbulk_read)(void_usb_device husb, uint8_t *pbuf, int32_t len);
 

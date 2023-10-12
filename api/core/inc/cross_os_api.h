@@ -162,9 +162,7 @@ extern "C" {
 		fpprocess_parser parser;
 	};
 
-	typedef cross_proccess_param *Pcross_proccess_param;
-
-	HAL_API void_cross_process cross_os_create_process(Pcross_proccess_param pprocess);
+	HAL_API void_cross_process cross_os_create_process(cross_proccess_param *pprocess);
 	HAL_API vatek_result cross_os_check_process(void_cross_process hprocess);
 	HAL_API void cross_os_free_process(void_cross_process hprocess);
 

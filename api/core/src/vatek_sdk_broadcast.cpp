@@ -169,7 +169,7 @@ vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info *pinf
 				if (pbc->paux)
 				{
 					Pbroadcast_auxstream paux = pbc->paux;
-					Pusbparam_aux pusbaux = &paux->aux;
+					usbparam_aux * pusbaux = &paux->aux;
 					if (pusbaux->mode == usbaux_sync)
 					{
 						if (pbc->auxpackets)
@@ -232,13 +232,13 @@ vatek_result vatek_broadcast_polling(hvatek_broadcast hbc, Pbroadcast_info *pinf
 vatek_result broadcast_usb_start_aux(Phandle_broadcast pbc, Pbroadcast_auxstream paux)
 {
 	vatek_result nres = vatek_device_usbbulk_get_size(pbc->hchip);
-	Pusbbulk_command pcmd = &pbc->usbcmd;
-	Pusbbulk_result presult = &pbc->usbresult;
-	Pusbparam_aux pusbaux = &pcmd->_h.aux;
+	usbbulk_command * pcmd = &pbc->usbcmd;
+	usbbulk_result * presult = &pbc->usbresult;
+	usbparam_aux * pusbaux = &pcmd->_h.aux;
 	if (is_vatek_success(nres))
 	{
 		int32_t nepsize = nres;
-		Pusbparam_aux pusbaux = &paux->aux;
+		usbparam_aux * pusbaux = &paux->aux;
 		nres = vatek_badparam;
 		if (pusbaux->mode == usbaux_sync || pusbaux->mode == usbaux_async)
 		{

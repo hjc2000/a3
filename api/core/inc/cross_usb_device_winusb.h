@@ -86,8 +86,8 @@ HAL_API vatek_result usb_api_ll_command(void_usb_device husb, uint8_t cmd, uint3
 HAL_API vatek_result usb_api_ll_command_buffer(void_usb_device husb, uint8_t cmd, uint8_t *pbuf, uint8_t *rxbuf);
 
 HAL_API vatek_result usb_api_ll_bulk_get_size(void_usb_device husb);
-HAL_API vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, Pusbbulk_command pcmd);
-HAL_API vatek_result usb_api_ll_bulk_get_result(void_usb_device husb, Pusbbulk_result presult);
+HAL_API vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, usbbulk_command * pcmd);
+HAL_API vatek_result usb_api_ll_bulk_get_result(void_usb_device husb, usbbulk_result * presult);
 HAL_API vatek_result usb_api_ll_bulk_write(void_usb_device husb, uint8_t *pbuf, int32_t len);
 HAL_API vatek_result usb_api_ll_bulk_read(void_usb_device husb, uint8_t *pbuf, int32_t len);
 

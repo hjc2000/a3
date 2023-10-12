@@ -41,13 +41,13 @@ typedef struct _win_process_handle
 	int32_t isrunning;
 	DWORD threadid;
 	uint8_t rawbuf[PROCESS_BUF_LEN];
-	Pcross_proccess_param param;
+	cross_proccess_param * param;
 }win_process_handle, *Pwin_process_handle;
 
 extern DWORD process_thread(LPVOID lpThreadParameter);
 extern int32_t process_is_valid(Pwin_process_handle phprocess);
 
-void_cross_process cross_os_create_process(Pcross_proccess_param pprocess)
+void_cross_process cross_os_create_process(cross_proccess_param * pprocess)
 {
 	Pwin_process_handle newprocess = (Pwin_process_handle)malloc(sizeof(win_process_handle));
 

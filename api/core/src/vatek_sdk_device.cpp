@@ -397,7 +397,7 @@ vatek_result vatek_device_stream_stop(void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t *pbuf, int32_t len)
+vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, usbbulk_command * pcmd, usbbulk_result * presult, uint8_t *pbuf, int32_t len)
 {
 	#define USBBUF_DIR_NULL	0
 	#define USBBUF_DIR_IN	1
@@ -445,7 +445,7 @@ vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command p
 	return nres;
 }
 
-vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, Pusbbulk_result presult)
+vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, usbbulk_result * presult)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	vatek_result nres = vatek_unsupport;

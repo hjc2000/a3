@@ -36,7 +36,7 @@ int32_t usbbulk_buffer_check(uint8_t* pbuf)
 	return !strcmp((const char*)&pbuf[0], &usbbulk_raw_tag[0]);
 }
 
-vatek_result usbbulk_command_set(Pusbbulk_command pcmd, uint8_t* pbuf)
+vatek_result usbbulk_command_set(usbbulk_command * pcmd, uint8_t* pbuf)
 {
 	vatek_result nres = vatek_success;
 	if ((pcmd->mode & USBBULK_CMD_MASK) == USBBULK_CMD_BASE)
@@ -61,7 +61,7 @@ vatek_result usbbulk_command_set(Pusbbulk_command pcmd, uint8_t* pbuf)
 	return nres;
 }
 
-vatek_result usbbulk_command_get(Pusbbulk_command pcmd, uint8_t* pbuf)
+vatek_result usbbulk_command_get(usbbulk_command * pcmd, uint8_t* pbuf)
 {
 	vatek_result nres = vatek_format;
 	if (usbbulk_buffer_check(pbuf))
@@ -90,7 +90,7 @@ vatek_result usbbulk_command_get(Pusbbulk_command pcmd, uint8_t* pbuf)
 	return nres;
 }
 
-vatek_result usbbulk_result_set(Pusbbulk_result presult, uint8_t* pbuf)
+vatek_result usbbulk_result_set(usbbulk_result * presult, uint8_t* pbuf)
 {
 	vatek_result nres = vatek_success;
 	if ((presult->mode & USBBULK_CMD_MASK) == USBBULK_CMD_BASE)
@@ -106,7 +106,7 @@ vatek_result usbbulk_result_set(Pusbbulk_result presult, uint8_t* pbuf)
 	return nres;
 }
 
-vatek_result usbbulk_result_get(Pusbbulk_result presult, uint8_t* pbuf)
+vatek_result usbbulk_result_get(usbbulk_result * presult, uint8_t* pbuf)
 {
 	vatek_result nres = vatek_format;
 	if (usbbulk_buffer_check(pbuf))

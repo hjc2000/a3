@@ -287,7 +287,7 @@ vatek_result usb_api_ll_bulk_get_size(void_usb_device husb)
 	return (vatek_result)pusb->bulksize;
 }
 
-vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, Pusbbulk_command pcmd)
+vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, usbbulk_command * pcmd)
 {
 	usb_handle *pusb = (usb_handle *)husb;
 	vatek_result nres = vatek_badstatus;
@@ -308,7 +308,7 @@ vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, Pusbbulk_command
 	return nres;
 }
 
-vatek_result usb_api_ll_bulk_get_result(void_usb_device husb, Pusbbulk_result presult)
+vatek_result usb_api_ll_bulk_get_result(void_usb_device husb, usbbulk_result * presult)
 {
 	usb_handle *pusb = (usb_handle *)husb;
 	vatek_result nres = vatek_badstatus;

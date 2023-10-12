@@ -79,8 +79,8 @@ HAL_API vatek_result vatek_device_stream_write(void_vatek_chip hchip, uint8_t *p
 HAL_API vatek_result vatek_device_stream_stop(void_vatek_chip hchip);
 
 /* usb device bulk operations */
-HAL_API vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, Pusbbulk_command pcmd, Pusbbulk_result presult, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, Pusbbulk_result presult);
+HAL_API vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, usbbulk_command * pcmd, usbbulk_result * presult, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, usbbulk_result * presult);
 HAL_API vatek_result vatek_device_usbbulk_write(void_vatek_chip hchip, uint8_t *pbuf, int32_t len);
 HAL_API vatek_result vatek_device_usbbulk_read(void_vatek_chip hchip, uint8_t *pbuf, int32_t len);
 HAL_API vatek_result vatek_device_usbbulk_get_size(void_vatek_chip hchip);
