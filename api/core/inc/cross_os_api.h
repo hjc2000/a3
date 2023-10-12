@@ -109,8 +109,6 @@ extern "C" {
 	/* cross_os_mutex_api */
 	typedef void *void_cross_mutex;
 
-	HAL_API vatek_result cross_os_create_mutex_name(const char *tag, void_cross_mutex *hmutex);
-	HAL_API vatek_result cross_os_open_mutex_name(const char *tag, void_cross_mutex *hmuxtex);
 	HAL_API vatek_result cross_os_create_mutex(void_cross_mutex *hmutex);
 	HAL_API void cross_os_lock_mutex(void_cross_mutex hmutex);
 	HAL_API vatek_result cross_os_lock_mutex_timeout(void_cross_mutex hmutex, uint32_t ms);

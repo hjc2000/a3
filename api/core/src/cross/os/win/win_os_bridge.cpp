@@ -307,22 +307,20 @@ vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, win_hid_dev
 
 vatek_result bridge_device_list_free(win_hid_device_list_node *root_node)
 {
-	win_hid_device_list_node *proot = (win_hid_device_list_node *)root_node;
-
-	while (proot)
+	while (root_node)
 	{
-		if (proot->hid_handle != NULL)
+		if (root_node->hid_handle != NULL)
 			return vatek_badstatus;
-		proot = proot->pnext;
+		root_node = root_node->pnext;
 	}
 
-	proot = (win_hid_device_list_node *)root_node;
-	while (proot)
+	root_node = (win_hid_device_list_node *)root_node;
+	while (root_node)
 	{
-		win_hid_device_list_node *pnext = proot->pnext;
-		cross_os_free_mutex(proot->_mutex);
-		free(proot);
-		proot = pnext;
+		win_hid_device_list_node *pnext = root_node->pnext;
+		cross_os_free_mutex(root_node->_mutex);
+		free(root_node);
+		root_node = pnext;
 	}
 
 	return vatek_success;

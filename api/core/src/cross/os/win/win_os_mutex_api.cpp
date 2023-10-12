@@ -1,35 +1,5 @@
 #include "internal/win_os_common.h"
 
-vatek_result cross_os_create_mutex_name(const char *tag, void_cross_mutex *hmutex)
-{
-	HANDLE newmux = INVALID_HANDLE_VALUE;
-	vatek_result nres = vatek_memfail;
-
-	newmux = CreateMutexA(NULL, FALSE, win_get_global_name(tag));
-	if (newmux != INVALID_HANDLE_VALUE)
-	{
-		*hmutex = newmux;
-		nres = vatek_success;
-	}
-	else
-		win_get_last_error();
-	return nres;
-}
-
-vatek_result cross_os_open_mutex_name(const char *tag, void_cross_mutex *hmuxtex)
-{
-	HANDLE newmux = INVALID_HANDLE_VALUE;
-	newmux = OpenMutexA(0, FALSE, win_get_global_name(tag));
-	if (newmux != INVALID_HANDLE_VALUE)
-	{
-		*hmuxtex = newmux;
-		return vatek_success;
-	}
-	else
-		win_get_last_error();
-	return vatek_memfail;
-}
-
 vatek_result cross_os_create_mutex(void_cross_mutex *hmutex)
 {
 	HANDLE newmutex = CreateMutexA(NULL, FALSE, NULL);
