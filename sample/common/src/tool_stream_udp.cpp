@@ -51,7 +51,7 @@ extern void commit_write_buffer(tool_handle_udp *pudp);
 extern uint8_t *tool_get_valid_buffer(tool_handle_udp *pudp);
 extern int32_t tool_check_valid_buffer(tool_handle_udp *pudp);
 
-vatek_result stream_source_udp_get(const char *ipaddr, ts_stream_source *psource)
+vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 {
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;

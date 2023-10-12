@@ -31,7 +31,7 @@ typedef void *void_stream_source;
 ///		这些函数指针的第一个参数全部是 void_stream_source hsource。
 ///		这个结构体就是在模仿 C++ 的类。
 /// </summary>
-class ts_stream_source
+class TsStreamSource
 {
 public:
 	void_stream_source hsource = nullptr;
@@ -187,7 +187,7 @@ public:
 /// <param name="file">要打开的文件的路径</param>
 /// <param name="psource"></param>
 /// <returns></returns>
-vatek_result stream_source_file_get(const char *file, ts_stream_source *psource);
-vatek_result stream_source_udp_get(const char *ipaddr, ts_stream_source *psource);
+vatek_result stream_source_file_get(const char *file, TsStreamSource *psource);
+vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource);
 
 #endif

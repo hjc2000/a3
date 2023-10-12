@@ -31,7 +31,7 @@ extern vatek_result file_stream_stop(void_stream_source hsource);
 /// <param name="hsource"></param>
 extern void file_stream_free(void_stream_source hsource);
 
-vatek_result stream_source_file_get(const char *file, ts_stream_source *psource)
+vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 {
 	FileWrapper *pfile = new FileWrapper;
 	if (!pfile)
