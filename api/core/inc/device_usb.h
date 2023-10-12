@@ -36,13 +36,13 @@
 
 #define USB_DEVICE_MAX_PACKET_LEN 				512
 
-typedef enum _usbdevice_type
+enum usbdevice_type
 {
 	usb_type_unknown = -1,
 	usb_type_broadcast = 0,
 	usb_type_rescure = 1,
 	usb_type_all = 2,
-}usbdevice_type;
+};
 
 struct usbdevice_id
 {

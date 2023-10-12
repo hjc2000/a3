@@ -54,11 +54,11 @@ struct usb_handle_list_node
 
 extern usbdevice_id *usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len);
-typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
+typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *hlist, uint32_t checkparam);
 
-extern int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
-extern int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam);
+extern int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
+extern int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 
 vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list *hlist)
 {
@@ -70,7 +70,7 @@ vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_l
 	return usb_api_ll_enum_common(usb_enum_check_id, hlist, ((vid << 16) | pid));
 }
 
-int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam)
+int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam)
 {
 	usbdevice_type utype = (usbdevice_type)checkparam;
 	usbdevice_id *puid = usb_ll_list_get_id(pdesc->idVendor, pdesc->idProduct);
@@ -82,7 +82,7 @@ int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type
 	return 0;
 }
 
-int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, uint32_t checkparam)
+int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam)
 {
 	uint16_t vid = (checkparam >> 16) & 0xFFFF;
 	uint16_t pid = (checkparam & 0xFFFF);
@@ -546,7 +546,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *
 		nres = (vatek_result)WinUsb_GetDescriptor(deviceData.WinusbHandle, USB_DEVICE_DESCRIPTOR_TYPE, 0, 0, (PBYTE)&deviceDesc, sizeof(deviceDesc), &lengthReceived);
 
 		usbdevice_type devtype = usb_type_unknown;
-		if (fpcheck(&deviceDesc, &devtype, checkparam))
+		if (fpcheck(&deviceDesc, &devtype, (usbdevice_type)checkparam))
 		{
 			HANDLE hlock = NULL;
 
