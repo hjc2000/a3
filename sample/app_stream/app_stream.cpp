@@ -25,20 +25,20 @@ extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source
 int main(int argc, char *argv[])
 {
 	/* ./app_stream dvbt file qq.ts */
-	const char *cmd[] = {
-		"./app_stream",
-		"dvbt",
-		"file",
-		"qq.ts",
-	};
-
-	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
 	//const char *cmd[] = {
 	//	"./app_stream",
 	//	"dvbt",
-	//	"udp",
-	//	"udp://127.0.0.1:1234",
+	//	"file",
+	//	"qq.ts",
 	//};
+
+	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
+	const char *cmd[] = {
+		"./app_stream",
+		"dvbt",
+		"udp",
+		"udp://127.0.0.1:1234",
+	};
 
 	vatek_device * hchip = NULL;
 	hvatek_usbstream hustream = NULL;
