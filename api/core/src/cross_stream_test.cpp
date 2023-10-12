@@ -48,7 +48,7 @@ extern uint32_t cstream_test_get_bitrate(hcstream hstream);
 extern void cstream_test_stop(hcstream hstream);
 extern void cstream_test_close(hcstream hstream);
 
-vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler *pcstream)
+vatek_result cross_stream_test_get(uint32_t bitrate, cstream_handler * *pcstream)
 {
 	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));
 	vatek_result nres = vatek_memfail;

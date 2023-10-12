@@ -39,7 +39,7 @@ extern void commit_write_buffer(handle_udp *pudp);
 extern uint8_t *get_valid_buffer(handle_udp *pudp);
 extern int32_t check_valid_buffer(handle_udp *pudp);
 
-vatek_result cross_stream_udp_get(const char *url, Pcstream_handler *pcstream)
+vatek_result cross_stream_udp_get(const char *url, cstream_handler * *pcstream)
 {
 	socket_param sparam = { (socket_mode)0, };
 	vatek_result nres = vatek_success;

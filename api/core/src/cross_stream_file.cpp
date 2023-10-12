@@ -20,7 +20,7 @@ extern uint32_t cstream_file_get_bitrate(hcstream hstream);
 extern void cstream_file_stop(hcstream hstream);
 extern void cstream_file_close(hcstream hstream);
 
-vatek_result cross_stream_file_get(const char *filename, Pcstream_handler *pcstream)
+vatek_result cross_stream_file_get(const char *filename, cstream_handler * *pcstream)
 {
 	FileWrapper *pfile = (FileWrapper *)malloc(sizeof(FileWrapper));
 	vatek_result nres = vatek_memfail;

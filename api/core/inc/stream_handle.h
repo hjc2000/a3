@@ -14,7 +14,7 @@ typedef uint32_t(*fpcstream_get_bitrate)(hcstream hstream);
 typedef void (*fpcstream_stop)(hcstream hstream);
 typedef void (*fpcstream_close)(hcstream hstream);
 
-typedef struct _cstream_handler
+struct cstream_handler
 {
 	hcstream hstream;
 	fpcstream_start start;
@@ -22,11 +22,11 @@ typedef struct _cstream_handler
 	fpcstream_get_bitrate get_bitrate;
 	fpcstream_stop stop;
 	fpcstream_close close;
-}cstream_handler, *Pcstream_handler;
+};
 
-vatek_result cross_stream_file_get(const char *filename, Pcstream_handler *pcstream);
-vatek_result cross_stream_udp_get(const char *url, Pcstream_handler *pcstream);
-vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler *pcstream);
+vatek_result cross_stream_file_get(const char *filename, cstream_handler **pcstream);
+vatek_result cross_stream_udp_get(const char *url, cstream_handler **pcstream);
+vatek_result cross_stream_test_get(uint32_t bitrate, cstream_handler **pcstream);
 
 uint8_t *tspacket_get_pcr(Pmux_time_tick ptime);
 uint8_t *tspacket_get_null(void);
