@@ -29,7 +29,7 @@
 #include <service_broadcast.h>
 #include <ui_service_broadcast.h>
 
-vatek_result broadcast_param_set(void_vatek_chip hchip, Pbroadcast_param pbc)
+vatek_result broadcast_param_set(vatek_device * hchip, Pbroadcast_param pbc)
 {
 	vatek_result nres = modulator_param_set(hchip, &pbc->mod);
 	if (is_vatek_success(nres))
@@ -43,7 +43,7 @@ vatek_result broadcast_param_set(void_vatek_chip hchip, Pbroadcast_param pbc)
 	return nres;
 }
 
-vatek_result broadcast_param_get(void_vatek_chip hchip, Pbroadcast_param pbc)
+vatek_result broadcast_param_get(vatek_device * hchip, Pbroadcast_param pbc)
 {
 	uint32_t val = 0;
 	vatek_result nres = modulator_param_get(hchip, &pbc->mod);

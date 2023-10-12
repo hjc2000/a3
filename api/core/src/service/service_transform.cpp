@@ -30,8 +30,8 @@
 #include <ui_props/ui_props_stream.h>
 
 extern vatek_result transform_source_reset(vatek_ic_module icmodule, stream_source source, Ptransform_source psource);
-extern vatek_result transform_source_set(void_vatek_chip hchip,stream_source source, Ptransform_source psource);
-extern vatek_result transform_source_get(void_vatek_chip hchip,stream_source* source, Ptransform_source psource);
+extern vatek_result transform_source_set(vatek_device * hchip,stream_source source, Ptransform_source psource);
+extern vatek_result transform_source_get(vatek_device * hchip,stream_source* source, Ptransform_source psource);
 
 vatek_result transform_enum_reset(vatek_ic_module icmodule, stream_source source, Ptransform_enum penum)
 {
@@ -46,7 +46,7 @@ vatek_result transform_enum_reset(vatek_ic_module icmodule, stream_source source
     return nres;
 }
 
-vatek_result transform_enum_set(void_vatek_chip hchip,Ptransform_enum penum)
+vatek_result transform_enum_set(vatek_device * hchip,Ptransform_enum penum)
 {
     vatek_result nres = writehal(HALREG_TRANSFORM_MODE,TRANSFORM_ENUM);
     if(is_vatek_success(nres))
@@ -56,7 +56,7 @@ vatek_result transform_enum_set(void_vatek_chip hchip,Ptransform_enum penum)
     return nres;
 }
 
-vatek_result transform_enum_get(void_vatek_chip hchip,Ptransform_enum penum)
+vatek_result transform_enum_get(vatek_device * hchip,Ptransform_enum penum)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_TRANSFORM_MODE,&val);
@@ -97,7 +97,7 @@ vatek_result transform_capture_reset(vatek_ic_module icchip, stream_source sourc
     return nres;
 }
 
-vatek_result transform_capture_set(void_vatek_chip hchip,Ptransform_capture pcapture)
+vatek_result transform_capture_set(vatek_device * hchip,Ptransform_capture pcapture)
 {
     vatek_result nres = writehal(HALREG_TRANSFORM_MODE,TRANSFORM_CAPTURE);
     if(is_vatek_success(nres))
@@ -113,7 +113,7 @@ vatek_result transform_capture_set(void_vatek_chip hchip,Ptransform_capture pcap
     return nres;
 }
 
-vatek_result transform_capture_get(void_vatek_chip hchip,Ptransform_capture pcapture)
+vatek_result transform_capture_get(vatek_device * hchip,Ptransform_capture pcapture)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_TRANSFORM_MODE,&val);
@@ -162,7 +162,7 @@ vatek_result transform_broadcast_reset(vatek_ic_module icchip, stream_source sou
     return nres;
 }
 
-vatek_result transform_broadcast_set(void_vatek_chip hchip, Ptransform_broadcast pbc)
+vatek_result transform_broadcast_set(vatek_device * hchip, Ptransform_broadcast pbc)
 {
     vatek_result nres = writehal(HALREG_TRANSFORM_MODE,TRANSFORM_BROADCAST);
     if (is_vatek_success(nres))
@@ -203,7 +203,7 @@ vatek_result transform_broadcast_set(void_vatek_chip hchip, Ptransform_broadcast
     return nres;
 }
 
-vatek_result transform_broadcast_get(void_vatek_chip hchip, Ptransform_broadcast pbc)
+vatek_result transform_broadcast_get(vatek_device * hchip, Ptransform_broadcast pbc)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_TRANSFORM_MODE,&val);
@@ -256,7 +256,7 @@ vatek_result transform_source_reset(vatek_ic_module icmodule,stream_source sourc
     return nres;
 }
 
-vatek_result transform_source_set(void_vatek_chip hchip,stream_source source, Ptransform_source psource)
+vatek_result transform_source_set(vatek_device * hchip,stream_source source, Ptransform_source psource)
 {
     vatek_result nres = stream_source_set(hchip, source, (uint8_t*)psource);
     if (is_vatek_success(nres))
@@ -264,7 +264,7 @@ vatek_result transform_source_set(void_vatek_chip hchip,stream_source source, Pt
     return nres;
 }
 
-vatek_result transform_source_get(void_vatek_chip hchip,stream_source* source, Ptransform_source psource)
+vatek_result transform_source_get(vatek_device * hchip,stream_source* source, Ptransform_source psource)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_TRANSFORM_INPUT, &val);
@@ -278,13 +278,13 @@ vatek_result transform_source_get(void_vatek_chip hchip,stream_source* source, P
     return nres;
 }
 
-vatek_result transform_mode_set(void_vatek_chip hchip, transform_mode mode)
+vatek_result transform_mode_set(vatek_device * hchip, transform_mode mode)
 {
     vatek_result nres = writehal(HALREG_TRINFO_MODE, (uint32_t)mode);
     return nres;
 }
 
-vatek_result transform_mode_get(void_vatek_chip hchip, transform_mode* mode)
+vatek_result transform_mode_get(vatek_device * hchip, transform_mode* mode)
 {
     uint32_t val = 0;
     vatek_result nres = readhal(HALREG_TRINFO_MODE, &val);

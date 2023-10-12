@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 		if (is_vatek_success(nres))
 		{
 			vatek_device_list *hdevlist = NULL;
-			void_vatek_chip hchip = NULL;
+			vatek_device * hchip = NULL;
 
 			/*
 				step 2 :

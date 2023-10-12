@@ -29,7 +29,7 @@
 #include <chip_define.h>
 //#include <cross_os_api.h>
 
-chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode)
+chip_status chip_status_get(vatek_device * hchip, uint32_t *errcode)
 {
 	uint32_t val = 0;
 	vatek_result nres = readhal(HALREG_SYS_STATUS_0, &val);
@@ -62,7 +62,7 @@ chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode)
 	return chipstatus;
 }
 
-vatek_result chip_status_set(void_vatek_chip hchip, chip_status status, uint32_t errcode)
+vatek_result chip_status_set(vatek_device * hchip, chip_status status, uint32_t errcode)
 {
 	vatek_result nres = vatek_badparam;
 	static chip_status prev_status = chip_status_unknown;
@@ -97,7 +97,7 @@ vatek_result chip_status_set(void_vatek_chip hchip, chip_status status, uint32_t
 	return nres;
 }
 
-vatek_result chip_status_check(void_vatek_chip hchip, chip_status status)
+vatek_result chip_status_check(vatek_device * hchip, chip_status status)
 {
 	vatek_result nres = vatek_success;
 	chip_status cstatus = chip_status_get(hchip, NULL);
@@ -157,7 +157,7 @@ vatek_result chip_info_reset(chip_info *pinfo, hal_service_mode service, vatek_i
 	return vatek_badparam;
 }
 
-vatek_result chip_info_get(void_vatek_chip hchip, chip_info *pinfo)
+vatek_result chip_info_get(vatek_device * hchip, chip_info *pinfo)
 {
 	uint32_t errcode = 0;
 	chip_status status = chip_status_get(hchip, &errcode);
@@ -212,7 +212,7 @@ vatek_result chip_info_get(void_vatek_chip hchip, chip_info *pinfo)
 	return nres;
 }
 
-vatek_result chip_info_set(void_vatek_chip hchip, chip_info *pinfo)
+vatek_result chip_info_set(vatek_device * hchip, chip_info *pinfo)
 {
 	vatek_result nres = chip_status_set(hchip, pinfo->status, pinfo->errcode);
 	if (is_vatek_success(nres))
@@ -253,7 +253,7 @@ vatek_result chip_info_set(void_vatek_chip hchip, chip_info *pinfo)
 	return nres;
 }
 
-vatek_result chip_raise_command(void_vatek_chip hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait)
+vatek_result chip_raise_command(vatek_device * hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait)
 {
 	uint32_t val = 0;
 	vatek_result nres = readhal(cmdaddr, &val);
@@ -284,7 +284,7 @@ vatek_result chip_raise_command(void_vatek_chip hchip, uint32_t cmdaddr, uint32_
 	return nres;
 }
 
-vatek_result chip_check_command(void_vatek_chip hchip, uint32_t cmdaddr)
+vatek_result chip_check_command(vatek_device * hchip, uint32_t cmdaddr)
 {
 	uint32_t val = 0;
 	vatek_result nres = readhal(cmdaddr, &val);
@@ -295,12 +295,12 @@ vatek_result chip_check_command(void_vatek_chip hchip, uint32_t cmdaddr)
 	return nres;
 }
 
-vatek_result chip_result_command(void_vatek_chip hchip, uint32_t resultaddr, uint32_t *errcode)
+vatek_result chip_result_command(vatek_device * hchip, uint32_t resultaddr, uint32_t *errcode)
 {
 	return readhal(resultaddr, errcode);
 }
 
-vatek_result chip_send_command(void_vatek_chip hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr)
+vatek_result chip_send_command(vatek_device * hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr)
 {
 	vatek_result nres = chip_raise_command(hchip, cmdaddr, cmd, 1);
 	if (is_vatek_success(nres))

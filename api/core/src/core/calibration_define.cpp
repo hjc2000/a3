@@ -7,7 +7,7 @@
 #define _calibration_dac_igain(v)		((int8_t)((uint8_t)(v >> 8)))
 #define _calibration_dac_qgain(v)		((int8_t)((uint8_t)(v)))
 
-vatek_result calibration_set(void_vatek_chip hchip, Pcalibration_param pcalibration, int32_t isapply)
+vatek_result calibration_set(vatek_device * hchip, Pcalibration_param pcalibration, int32_t isapply)
 {
 	uint32_t val = _calibration_dac_val(pcalibration);
 	vatek_result nres = vatek_chip_write_memory(hchip, HALREG_CALIBRATION_DAC, val);
@@ -25,7 +25,7 @@ vatek_result calibration_set(void_vatek_chip hchip, Pcalibration_param pcalibrat
 	return nres;
 }
 
-vatek_result calibration_adjust_gain(void_vatek_chip hchip, int8_t gain, Pcalibration_param m_calibration)
+vatek_result calibration_adjust_gain(vatek_device * hchip, int8_t gain, Pcalibration_param m_calibration)
 {
 	calibration_param calibration;
 	memset(&calibration, 0, sizeof(Pcalibration_param));
@@ -54,7 +54,7 @@ vatek_result calibration_adjust_gain(void_vatek_chip hchip, int8_t gain, Pcalibr
 	return calibration_set(hchip, &calibration, 1);
 }
 
-vatek_result calibration_check(void_vatek_chip hchip)
+vatek_result calibration_check(vatek_device * hchip)
 {
 	uint32_t val = 0;
 	vatek_result nres = vatek_chip_read_memory(hchip, HALREG_CALIBRATION_CNTL, &val);
@@ -66,7 +66,7 @@ vatek_result calibration_check(void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result calibration_get(void_vatek_chip hchip, Pcalibration_param pcalibration)
+vatek_result calibration_get(vatek_device * hchip, Pcalibration_param pcalibration)
 {
 	vatek_result nres = calibration_check(hchip);
 	if (is_vatek_success(nres))

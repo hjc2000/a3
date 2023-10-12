@@ -105,7 +105,7 @@ typedef usbmux_param* Pusbmux_param;
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_usbmux_create(void_vatek_chip hchip, Pusbmux_param puparam,hvatek_usbmux* husbmux);
+	HAL_API vatek_result vatek_usbmux_create(vatek_device * hchip, Pusbmux_param puparam,hvatek_usbmux* husbmux);
 	HAL_API void vatek_usbmux_free(hvatek_usbmux husbmux);
 
 	HAL_API vatek_result vatek_usbmux_open_rule(hvatek_usbmux husbmux, const char* filerule);

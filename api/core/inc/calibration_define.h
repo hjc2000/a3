@@ -57,10 +57,10 @@ typedef calibration_param* Pcalibration_param;
 extern "C" {
 #endif
 
-	HAL_API vatek_result calibration_set(void_vatek_chip hchip, Pcalibration_param pcalibration,int32_t isapply);
-	HAL_API vatek_result calibration_check(void_vatek_chip hchip);
-	HAL_API vatek_result calibration_get(void_vatek_chip hchip, Pcalibration_param pcalibration);
-	HAL_API vatek_result calibration_adjust_gain(void_vatek_chip hchip, int8_t gain, Pcalibration_param m_calibration);
+	HAL_API vatek_result calibration_set(vatek_device * hchip, Pcalibration_param pcalibration,int32_t isapply);
+	HAL_API vatek_result calibration_check(vatek_device * hchip);
+	HAL_API vatek_result calibration_get(vatek_device * hchip, Pcalibration_param pcalibration);
+	HAL_API vatek_result calibration_adjust_gain(vatek_device * hchip, int8_t gain, Pcalibration_param m_calibration);
 #ifdef __cplusplus
 }
 #endif

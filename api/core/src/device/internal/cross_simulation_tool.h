@@ -17,7 +17,7 @@ typedef enum _sim_status
 	sim_stopping,
 }sim_status;
 
-typedef vatek_result(*fpsimservice_open)(struct _sim_handle* psim, void_vatek_chip hchip, hsim_service* hservice);
+typedef vatek_result(*fpsimservice_open)(struct _sim_handle* psim, vatek_device * hchip, hsim_service* hservice);
 typedef vatek_result(*fpsimservice_polling)(hsim_service hsiim);
 typedef void (*fpsimservice_close)(hsim_service hsiim);
 

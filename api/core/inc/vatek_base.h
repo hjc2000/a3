@@ -63,18 +63,13 @@
 #define VATEK_VERSION 30900
 
 struct vatek_device_list;
-
-/// <summary>
-///     void * 类型。
-///		* 被强转为 vatek_device* 类型
-/// </summary>
-typedef void *void_vatek_chip;
+struct vatek_device;
 
 /**
  * @ingroup core_props
  * vatek sdk result define
  */
-typedef enum _vatek_result
+enum vatek_result
 {
 	vatek_keilc_struct = 0x7FFFFFFF,
 	vatek_bufferempty = -14,
@@ -93,23 +88,21 @@ typedef enum _vatek_result
 	vatek_unknown = -1,					/*!< unknown fail */
 	vatek_success = 0,					/*!< bigger than 0 success */
 	vatek_quitcli = 100,
-}vatek_result;
+};
 
 #define is_vatek_success(a)		(a >= vatek_success)
 
-typedef enum _vatek_debug_level
+enum vatek_debug_level
 {
 	debug_level_all = 0,
 	debug_level_warning = 1,
 	debug_level_error = 2,
-}vatek_debug_level;
+};
 
-/* compiler time assert check */
-#define _VASSERT(COND,MSG) typedef char static_assertion_##MSG[(!!(COND))*2-1];
-
-#ifdef __cplusplus
-extern "C" {
-	#endif
+extern "C"
+{
+	/* compiler time assert check */
+	#define _VASSERT(COND,MSG) typedef char static_assertion_##MSG[(!!(COND))*2-1];
 
 	HAL_API vatek_result vatek_version();
 
@@ -121,12 +114,12 @@ extern "C" {
 	HAL_API void vatek_debug_print(vatek_debug_level level, const char *fmt, ...);
 	HAL_API void vatek_debug_set(vatek_debug_level level);
 
-	HAL_API vatek_result vatek_chip_read_register(void_vatek_chip hchip, int32_t addr, uint32_t *val);
-	HAL_API vatek_result vatek_chip_write_register(void_vatek_chip hchip, int32_t addr, uint32_t val);
-	HAL_API vatek_result vatek_chip_read_memory(void_vatek_chip hchip, int32_t addr, uint32_t *val);
-	HAL_API vatek_result vatek_chip_write_memory(void_vatek_chip hchip, int32_t addr, uint32_t val);
-	HAL_API vatek_result vatek_chip_write_buffer(void_vatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
-	HAL_API vatek_result vatek_chip_read_buffer(void_vatek_chip hchip, int32_t addr, uint8_t *buf, int32_t wlen);
+	HAL_API vatek_result vatek_chip_read_register(vatek_device *hchip, int32_t addr, uint32_t *val);
+	HAL_API vatek_result vatek_chip_write_register(vatek_device *hchip, int32_t addr, uint32_t val);
+	HAL_API vatek_result vatek_chip_read_memory(vatek_device *hchip, int32_t addr, uint32_t *val);
+	HAL_API vatek_result vatek_chip_write_memory(vatek_device *hchip, int32_t addr, uint32_t val);
+	HAL_API vatek_result vatek_chip_write_buffer(vatek_device *hchip, int32_t addr, uint8_t *buf, int32_t wlen);
+	HAL_API vatek_result vatek_chip_read_buffer(vatek_device *hchip, int32_t addr, uint8_t *buf, int32_t wlen);
 
 	#define readhal(a,v)        vatek_chip_read_memory(hchip,a,v)
 	#define writehal(a,v)       vatek_chip_write_memory(hchip,a,v)
@@ -149,8 +142,6 @@ extern "C" {
 	#define VWAR(fmt,...)   vatek_debug_print(debug_level_warning,"[%08x:%-8s] - %-24s - " fmt "\r\n",vatek_get_tick_ms(),"warning",__func__,##__VA_ARGS__)
 	#define VDBG(fmt,...)   vatek_debug_print(debug_level_all,"[%08x:%-8s] - %-24s - " fmt "\r\n",vatek_get_tick_ms(),"info",__func__,##__VA_ARGS__)
 
-	#ifdef __cplusplus
 }
-#endif
 
 #endif

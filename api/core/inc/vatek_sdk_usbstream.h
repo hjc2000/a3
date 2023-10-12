@@ -94,7 +94,7 @@ public:
 	};
 };
 
-HAL_API vatek_result vatek_usbstream_open(void_vatek_chip hchip, hvatek_usbstream *husstream);
+HAL_API vatek_result vatek_usbstream_open(vatek_device * hchip, hvatek_usbstream *husstream);
 HAL_API vatek_result vatek_usbstream_check(hvatek_usbstream husstream);
 HAL_API Pbroadcast_info vatek_usbstream_get_info(hvatek_usbstream husstream);
 HAL_API vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param *puparam);

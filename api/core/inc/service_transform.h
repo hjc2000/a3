@@ -108,19 +108,19 @@ extern "C" {
 #endif
 
 	HAL_API vatek_result transform_enum_reset(vatek_ic_module icchip, stream_source source, Ptransform_enum penum);
-	HAL_API vatek_result transform_enum_set(void_vatek_chip hchip,Ptransform_enum penum);
-	HAL_API vatek_result transform_enum_get(void_vatek_chip hchip,Ptransform_enum penum);
+	HAL_API vatek_result transform_enum_set(vatek_device * hchip,Ptransform_enum penum);
+	HAL_API vatek_result transform_enum_get(vatek_device * hchip,Ptransform_enum penum);
 
 	HAL_API vatek_result transform_capture_reset(vatek_ic_module icchip,stream_source source, Ptransform_capture pcapture);
-	HAL_API vatek_result transform_capture_set(void_vatek_chip hchip,Ptransform_capture pcapture);
-	HAL_API vatek_result transform_capture_get(void_vatek_chip hchip,Ptransform_capture pcapture);
+	HAL_API vatek_result transform_capture_set(vatek_device * hchip,Ptransform_capture pcapture);
+	HAL_API vatek_result transform_capture_get(vatek_device * hchip,Ptransform_capture pcapture);
 
 	HAL_API vatek_result transform_broadcast_reset(vatek_ic_module icchip,stream_source source, Ptransform_broadcast pbc);
-	HAL_API vatek_result transform_broadcast_set(void_vatek_chip hchip, Ptransform_broadcast pbc);
-	HAL_API vatek_result transform_broadcast_get(void_vatek_chip hchip, Ptransform_broadcast pbc);
+	HAL_API vatek_result transform_broadcast_set(vatek_device * hchip, Ptransform_broadcast pbc);
+	HAL_API vatek_result transform_broadcast_get(vatek_device * hchip, Ptransform_broadcast pbc);
 
-	HAL_API vatek_result transform_mode_set(void_vatek_chip hchip, transform_mode mode);
-	HAL_API vatek_result transform_mode_get(void_vatek_chip hchip, transform_mode* mode);
+	HAL_API vatek_result transform_mode_set(vatek_device * hchip, transform_mode mode);
+	HAL_API vatek_result transform_mode_get(vatek_device * hchip, transform_mode* mode);
 
 	HAL_API stream_mode transform_source_get_stream_mode(stream_source source, Ptransform_source pstream);
 

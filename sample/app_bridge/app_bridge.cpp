@@ -38,7 +38,7 @@
 int main(int argc, char *argv[])
 {
 	vatek_device_list *hdevlist = NULL;
-	void_vatek_chip hchip = NULL;
+	vatek_device * hchip = NULL;
 	hvatek_bridge hbridge = NULL;
 	vatek_result nres = vatek_success;
 	chip_info * pinfo = NULL;

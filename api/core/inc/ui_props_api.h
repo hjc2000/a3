@@ -42,8 +42,8 @@ extern "C" {
 	HAL_API vatek_result ui_props_get_strbuf(const Pui_prop_item props, uint8_t* pblock, uint8_t** val);
 	HAL_API vatek_result ui_props_get_strbuf_len(const Pui_prop_item props);
     
-	HAL_API vatek_result ui_props_read_hal(void_vatek_chip hchip,const Pui_prop_item pprop, uint8_t* pblock);
-	HAL_API vatek_result ui_props_write_hal(void_vatek_chip hchip,const Pui_prop_item pprop, uint8_t* pblock);
+	HAL_API vatek_result ui_props_read_hal(vatek_device * hchip,const Pui_prop_item pprop, uint8_t* pblock);
+	HAL_API vatek_result ui_props_write_hal(vatek_device * hchip,const Pui_prop_item pprop, uint8_t* pblock);
 
 	HAL_API const Pui_prop_item ui_props_check_values(const Pui_prop_item pprops, uint8_t* pblock);
 	HAL_API void ui_props_get_value_str(const Pui_prop_item pprop, uint8_t* pblock, char* szval, int32_t len);

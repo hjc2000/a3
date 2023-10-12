@@ -31,45 +31,45 @@
 #include <hal/halreg_playload.h>
 #include "./internal/mux_core.h"
 
-extern vatek_result muxplayload_reset(void_vatek_chip hchip);
+extern vatek_result muxplayload_reset(vatek_device * hchip);
 
-extern vatek_result muxplayload_set_raw(void_vatek_chip hchip,Ppsi_table_raw praw);
-extern vatek_result muxplayload_get_raw(hmux_core hmux,void_vatek_chip hchip);
+extern vatek_result muxplayload_set_raw(vatek_device * hchip,Ppsi_table_raw praw);
+extern vatek_result muxplayload_get_raw(hmux_core hmux,vatek_device * hchip);
 
-extern vatek_result muxplayload_set_broadcast_default(void_vatek_chip hchip, Phandle_channel pbc);
-extern vatek_result muxplayload_get_broadcast_default(hmux_core hmux, void_vatek_chip hchip,uint16_t pcrpid,Pencoder_param penc);
+extern vatek_result muxplayload_set_broadcast_default(vatek_device * hchip, Phandle_channel pbc);
+extern vatek_result muxplayload_get_broadcast_default(hmux_core hmux, vatek_device * hchip,uint16_t pcrpid,Pencoder_param penc);
 
-extern vatek_result muxplayload_set_broadcast_rule(void_vatek_chip hchip,Pmux_rule_block prule, Phandle_channel pbc);
-extern vatek_result muxplayload_get_broadcast_rule(hmux_core hmux, void_vatek_chip hchip, uint16_t pcrpid, Pencoder_param penc);
+extern vatek_result muxplayload_set_broadcast_rule(vatek_device * hchip,Pmux_rule_block prule, Phandle_channel pbc);
+extern vatek_result muxplayload_get_broadcast_rule(hmux_core hmux, vatek_device * hchip, uint16_t pcrpid, Pencoder_param penc);
 
-extern vatek_result muxplayload_set_channel_default(void_vatek_chip hchip,Phandle_channel pch);
-extern vatek_result muxplayload_get_channel_default(hmux_core hmux, void_vatek_chip hchip);
-extern vatek_result muxplayload_set_channel_rule(void_vatek_chip hchip,Pmux_rule_block prule,Phandle_channel pch);
-extern vatek_result muxplayload_get_channel_rule(hmux_core hmux, void_vatek_chip hchip);
+extern vatek_result muxplayload_set_channel_default(vatek_device * hchip,Phandle_channel pch);
+extern vatek_result muxplayload_get_channel_default(hmux_core hmux, vatek_device * hchip);
+extern vatek_result muxplayload_set_channel_rule(vatek_device * hchip,Pmux_rule_block prule,Phandle_channel pch);
+extern vatek_result muxplayload_get_channel_rule(hmux_core hmux, vatek_device * hchip);
 
-extern vatek_result muxplayload_set_channel(void_vatek_chip hchip,Phandle_channel pch,uint32_t* addr);
-extern vatek_result muxplayload_get_channel(hmux_core hmux, void_vatek_chip hchip, hmux_channel hch, uint32_t* addr);
-extern vatek_result muxplayload_set_program(void_vatek_chip hchip,Phandle_channel pch,Pmux_program program,uint32_t* addr);
-extern vatek_result muxplayload_get_program(hmux_core hmux, void_vatek_chip hchip,hmux_channel hch, uint32_t* addr);
-extern vatek_result muxplayload_set_stream(void_vatek_chip hchip,Phandle_channel pch,Pmux_stream pstream,uint32_t* addr);
-extern vatek_result muxplayload_get_stream(hmux_core hmux, void_vatek_chip hchip,hmux_program hprog, uint32_t* addr);
+extern vatek_result muxplayload_set_channel(vatek_device * hchip,Phandle_channel pch,uint32_t* addr);
+extern vatek_result muxplayload_get_channel(hmux_core hmux, vatek_device * hchip, hmux_channel hch, uint32_t* addr);
+extern vatek_result muxplayload_set_program(vatek_device * hchip,Phandle_channel pch,Pmux_program program,uint32_t* addr);
+extern vatek_result muxplayload_get_program(hmux_core hmux, vatek_device * hchip,hmux_channel hch, uint32_t* addr);
+extern vatek_result muxplayload_set_stream(vatek_device * hchip,Phandle_channel pch,Pmux_stream pstream,uint32_t* addr);
+extern vatek_result muxplayload_get_stream(hmux_core hmux, vatek_device * hchip,hmux_program hprog, uint32_t* addr);
 
-extern vatek_result muxplayload_set_rule(void_vatek_chip hchip,Pmux_rule_block prule,uint32_t* addr);
-extern vatek_result muxplayload_get_rule(hmux_core hmux, void_vatek_chip hchip,Pmux_rule_block* prule,uint32_t* addr);
-extern vatek_result muxplayload_set_default(void_vatek_chip hchip,mux_spec_mode spec,mux_country_code country,Ppsiparam_buffer pbuf,uint32_t* addr);
+extern vatek_result muxplayload_set_rule(vatek_device * hchip,Pmux_rule_block prule,uint32_t* addr);
+extern vatek_result muxplayload_get_rule(hmux_core hmux, vatek_device * hchip,Pmux_rule_block* prule,uint32_t* addr);
+extern vatek_result muxplayload_set_default(vatek_device * hchip,mux_spec_mode spec,mux_country_code country,Ppsiparam_buffer pbuf,uint32_t* addr);
 
-extern vatek_result muxplayload_get_default(void_vatek_chip hchip, Ppsiparam_buffer pbuf, uint32_t* addr);
+extern vatek_result muxplayload_get_default(vatek_device * hchip, Ppsiparam_buffer pbuf, uint32_t* addr);
 
-extern vatek_result muxplayload_set_epg(void_vatek_chip hchip,Pmux_epg_param pepg,uint32_t* addr);
-extern vatek_result muxplayload_get_epg(hmux_core hmux, void_vatek_chip hchip, Pmux_epg_param* pepg, uint32_t* addr);
+extern vatek_result muxplayload_set_epg(vatek_device * hchip,Pmux_epg_param pepg,uint32_t* addr);
+extern vatek_result muxplayload_get_epg(hmux_core hmux, vatek_device * hchip, Pmux_epg_param* pepg, uint32_t* addr);
 
-extern vatek_result muxplayload_set_epg_section(void_vatek_chip hchip, Pmux_epg_section psection, uint32_t* addr);
-extern vatek_result muxplayload_get_epg_section(hmux_core hmux, void_vatek_chip hchip, Pmux_epg_section* psection, uint32_t* addr);
+extern vatek_result muxplayload_set_epg_section(vatek_device * hchip, Pmux_epg_section psection, uint32_t* addr);
+extern vatek_result muxplayload_get_epg_section(hmux_core hmux, vatek_device * hchip, Pmux_epg_section* psection, uint32_t* addr);
 extern int32_t muxplayload_get_epg_section_nums(Pmux_epg_param pepg);
 
 
-extern vatek_result muxplayload_wr_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
-extern vatek_result muxplayload_rd_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
+extern vatek_result muxplayload_wr_buf(vatek_device * hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
+extern vatek_result muxplayload_rd_buf(vatek_device * hchip, uint8_t* pbuf, int32_t len, uint32_t* pos);
 
 #define _wrhal(p,v)			vatek_chip_write_memory(hchip,p++,v)
 #define _wrbuf(p,buf,len)	muxplayload_wr_buf(hchip,buf,len,&p)
@@ -78,7 +78,7 @@ extern vatek_result muxplayload_rd_buf(void_vatek_chip hchip, uint8_t* pbuf, int
 
 #define _rdhal(p,v)			vatek_chip_read_memory(hchip,p++,&v)
 
-vatek_result mux_handle_set_hal(hmux_core hmux, void_vatek_chip hchip)
+vatek_result mux_handle_set_hal(hmux_core hmux, vatek_device * hchip)
 {
 	vatek_result nres = vatek_badstatus;
 	Phandle_mux pmux = (Phandle_mux)hmux;
@@ -109,7 +109,7 @@ vatek_result mux_handle_set_hal(hmux_core hmux, void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result mux_handle_get_hal_broadcast(hmux_core hmux, void_vatek_chip hchip, uint16_t pcrpid, Pencoder_param penc)
+vatek_result mux_handle_get_hal_broadcast(hmux_core hmux, vatek_device * hchip, uint16_t pcrpid, Pencoder_param penc)
 {
 	vatek_result nres = vatek_badstatus;
 	Phandle_mux pmux = (Phandle_mux)hmux;
@@ -138,7 +138,7 @@ vatek_result mux_handle_get_hal_broadcast(hmux_core hmux, void_vatek_chip hchip,
 	return nres;
 }
 
-vatek_result mux_handle_get_hal_channel(hmux_core hmux, void_vatek_chip hchip)
+vatek_result mux_handle_get_hal_channel(hmux_core hmux, vatek_device * hchip)
 {
 	vatek_result nres = vatek_badstatus;
 	Phandle_mux pmux = (Phandle_mux)hmux;
@@ -166,7 +166,7 @@ vatek_result mux_handle_get_hal_channel(hmux_core hmux, void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result muxplayload_set_broadcast_default(void_vatek_chip hchip, Phandle_channel pbc)
+vatek_result muxplayload_set_broadcast_default(vatek_device * hchip, Phandle_channel pbc)
 {
 	vatek_result nres = muxplayload_reset(hchip);
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
@@ -205,7 +205,7 @@ vatek_result muxplayload_set_broadcast_default(void_vatek_chip hchip, Phandle_ch
 	return nres;
 }
 
-vatek_result muxplayload_get_broadcast_default(hmux_core hmux, void_vatek_chip hchip, uint16_t pcrpid, Pencoder_param penc)
+vatek_result muxplayload_get_broadcast_default(hmux_core hmux, vatek_device * hchip, uint16_t pcrpid, Pencoder_param penc)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	uint32_t val = 0;
@@ -267,7 +267,7 @@ vatek_result muxplayload_get_broadcast_default(hmux_core hmux, void_vatek_chip h
 	return nres;
 }
 
-vatek_result muxplayload_set_broadcast_rule(void_vatek_chip hchip,Pmux_rule_block prule, Phandle_channel pbc)
+vatek_result muxplayload_set_broadcast_rule(vatek_device * hchip,Pmux_rule_block prule, Phandle_channel pbc)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	vatek_result nres = muxplayload_reset(hchip);
@@ -307,7 +307,7 @@ vatek_result muxplayload_set_broadcast_rule(void_vatek_chip hchip,Pmux_rule_bloc
 	return nres;
 }
 
-vatek_result muxplayload_get_broadcast_rule(hmux_core hmux, void_vatek_chip hchip, uint16_t pcrpid, Pencoder_param penc)
+vatek_result muxplayload_get_broadcast_rule(hmux_core hmux, vatek_device * hchip, uint16_t pcrpid, Pencoder_param penc)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	uint32_t val = 0;
@@ -371,7 +371,7 @@ vatek_result muxplayload_get_broadcast_rule(hmux_core hmux, void_vatek_chip hchi
 	return nres;
 }
 
-vatek_result muxplayload_set_channel_default(void_vatek_chip hchip,Phandle_channel pch)
+vatek_result muxplayload_set_channel_default(vatek_device * hchip,Phandle_channel pch)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	vatek_result nres = muxplayload_reset(hchip);
@@ -398,7 +398,7 @@ vatek_result muxplayload_set_channel_default(void_vatek_chip hchip,Phandle_chann
 	return nres;
 }
 
-vatek_result muxplayload_get_channel_default(hmux_core hmux, void_vatek_chip hchip)
+vatek_result muxplayload_get_channel_default(hmux_core hmux, vatek_device * hchip)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	uint32_t val = 0;
@@ -466,7 +466,7 @@ vatek_result muxplayload_get_channel_default(hmux_core hmux, void_vatek_chip hch
 	return nres;
 }
 
-vatek_result muxplayload_set_channel_rule(void_vatek_chip hchip,Pmux_rule_block prule,Phandle_channel pch)
+vatek_result muxplayload_set_channel_rule(vatek_device * hchip,Pmux_rule_block prule,Phandle_channel pch)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	vatek_result nres = muxplayload_reset(hchip);
@@ -488,7 +488,7 @@ vatek_result muxplayload_set_channel_rule(void_vatek_chip hchip,Pmux_rule_block 
 	return nres;
 }
 
-vatek_result muxplayload_get_channel_rule(hmux_core hmux, void_vatek_chip hchip)
+vatek_result muxplayload_get_channel_rule(hmux_core hmux, vatek_device * hchip)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	uint32_t val = 0;
@@ -516,7 +516,7 @@ vatek_result muxplayload_get_channel_rule(hmux_core hmux, void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result muxplayload_set_raw(void_vatek_chip hchip, Ppsi_table_raw praw)
+vatek_result muxplayload_set_raw(vatek_device * hchip, Ppsi_table_raw praw)
 {
 	vatek_result nres = muxplayload_reset(hchip);
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
@@ -542,7 +542,7 @@ vatek_result muxplayload_set_raw(void_vatek_chip hchip, Ppsi_table_raw praw)
 	return nres;
 }
 
-vatek_result muxplayload_get_raw(hmux_core hcore,void_vatek_chip hchip)
+vatek_result muxplayload_get_raw(hmux_core hcore,vatek_device * hchip)
 {
 	uint32_t pos = HALRANGE_PLAYLOAD_START;
 	uint32_t val = 0;
@@ -591,12 +591,12 @@ vatek_result muxplayload_get_raw(hmux_core hcore,void_vatek_chip hchip)
 	return nres;
 }
 
-vatek_result muxplayload_reset(void_vatek_chip hchip)
+vatek_result muxplayload_reset(vatek_device * hchip)
 {
 	return writehal(HALRANGE_PLAYLOAD_START,0);
 }
 
-vatek_result muxplayload_wr_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos)
+vatek_result muxplayload_wr_buf(vatek_device * hchip, uint8_t* pbuf, int32_t len, uint32_t* pos)
 {
 	uint32_t licensed_pos = *pos;
 	int32_t wlen = _wlen(len);
@@ -606,7 +606,7 @@ vatek_result muxplayload_wr_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t le
 	return nres;
 }
 
-vatek_result muxplayload_rd_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t len, uint32_t* pos)
+vatek_result muxplayload_rd_buf(vatek_device * hchip, uint8_t* pbuf, int32_t len, uint32_t* pos)
 {
 	uint32_t licensed_pos = *pos;
 	int32_t wlen = _wlen(len);
@@ -616,7 +616,7 @@ vatek_result muxplayload_rd_buf(void_vatek_chip hchip, uint8_t* pbuf, int32_t le
 	return nres;
 }
 
-vatek_result muxplayload_set_channel(void_vatek_chip hchip,Phandle_channel pch,uint32_t* addr)
+vatek_result muxplayload_set_channel(vatek_device * hchip,Phandle_channel pch,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	Pmux_program ptrprog = pch->context.programs;
@@ -632,7 +632,7 @@ vatek_result muxplayload_set_channel(void_vatek_chip hchip,Phandle_channel pch,u
 	return nres;
 }
 
-vatek_result muxplayload_get_channel(hmux_core hmux, void_vatek_chip hchip, hmux_channel hch, uint32_t* addr)
+vatek_result muxplayload_get_channel(hmux_core hmux, vatek_device * hchip, hmux_channel hch, uint32_t* addr)
 {
 	vatek_result nres = vatek_success;
 	uint32_t pos = *addr;
@@ -645,7 +645,7 @@ vatek_result muxplayload_get_channel(hmux_core hmux, void_vatek_chip hchip, hmux
 	return nres;
 }
 
-vatek_result muxplayload_set_program(void_vatek_chip hchip,Phandle_channel pch,Pmux_program program,uint32_t* addr)
+vatek_result muxplayload_set_program(vatek_device * hchip,Phandle_channel pch,Pmux_program program,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	Ppsispec_program progpsi = (Ppsispec_program)program;
@@ -687,7 +687,7 @@ vatek_result muxplayload_set_program(void_vatek_chip hchip,Phandle_channel pch,P
 	return nres;
 }
 
-vatek_result muxplayload_get_program(hmux_core hmux, void_vatek_chip hchip, hmux_channel hch, uint32_t* addr)
+vatek_result muxplayload_get_program(hmux_core hmux, vatek_device * hchip, hmux_channel hch, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	uint32_t val = 0;
@@ -744,7 +744,7 @@ vatek_result muxplayload_get_program(hmux_core hmux, void_vatek_chip hchip, hmux
 	return nres;
 }
 
-vatek_result muxplayload_set_stream(void_vatek_chip hchip,Phandle_channel pch,Pmux_stream pstream,uint32_t* addr)
+vatek_result muxplayload_set_stream(vatek_device * hchip,Phandle_channel pch,Pmux_stream pstream,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, STREAM_EN_START);
@@ -793,7 +793,7 @@ vatek_result muxplayload_set_stream(void_vatek_chip hchip,Phandle_channel pch,Pm
 	return nres;
 }
 
-vatek_result muxplayload_get_stream(hmux_core hmux, void_vatek_chip hchip, hmux_program hprog, uint32_t* addr)
+vatek_result muxplayload_get_stream(hmux_core hmux, vatek_device * hchip, hmux_program hprog, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	uint32_t val = 0;
@@ -886,7 +886,7 @@ vatek_result muxplayload_get_stream(hmux_core hmux, void_vatek_chip hchip, hmux_
 	return nres;
 }
 
-vatek_result muxplayload_set_rule(void_vatek_chip hchip,Pmux_rule_block prule,uint32_t* addr)
+vatek_result muxplayload_set_rule(vatek_device * hchip,Pmux_rule_block prule,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, RULE_EN_START);
@@ -899,7 +899,7 @@ vatek_result muxplayload_set_rule(void_vatek_chip hchip,Pmux_rule_block prule,ui
 	return nres;
 }
 
-vatek_result muxplayload_get_rule(hmux_core hmux, void_vatek_chip hchip, Pmux_rule_block* prule, uint32_t* addr)
+vatek_result muxplayload_get_rule(hmux_core hmux, vatek_device * hchip, Pmux_rule_block* prule, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	uint32_t val = 0;
@@ -933,7 +933,7 @@ vatek_result muxplayload_get_rule(hmux_core hmux, void_vatek_chip hchip, Pmux_ru
 	return nres;
 }
 
-vatek_result muxplayload_set_default(void_vatek_chip hchip,mux_spec_mode spec,mux_country_code country,Ppsiparam_buffer pbuf,uint32_t* addr)
+vatek_result muxplayload_set_default(vatek_device * hchip,mux_spec_mode spec,mux_country_code country,Ppsiparam_buffer pbuf,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, spec);
@@ -947,7 +947,7 @@ vatek_result muxplayload_set_default(void_vatek_chip hchip,mux_spec_mode spec,mu
 	return nres;
 }
 
-vatek_result muxplayload_get_default(void_vatek_chip hchip, Ppsiparam_buffer pbuf, uint32_t* addr)
+vatek_result muxplayload_get_default(vatek_device * hchip, Ppsiparam_buffer pbuf, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	uint32_t val = 0;
@@ -974,7 +974,7 @@ vatek_result muxplayload_get_default(void_vatek_chip hchip, Ppsiparam_buffer pbu
 	return nres;
 }
 
-vatek_result muxplayload_set_epg(void_vatek_chip hchip,Pmux_epg_param pepg,uint32_t* addr)
+vatek_result muxplayload_set_epg(vatek_device * hchip,Pmux_epg_param pepg,uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, LIC_EPG_EN_START);
@@ -1008,7 +1008,7 @@ vatek_result muxplayload_set_epg(void_vatek_chip hchip,Pmux_epg_param pepg,uint3
 	return nres;
 }
 
-vatek_result muxplayload_get_epg(hmux_core hmux, void_vatek_chip hchip, Pmux_epg_param* pepg, uint32_t* addr)
+vatek_result muxplayload_get_epg(hmux_core hmux, vatek_device * hchip, Pmux_epg_param* pepg, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	uint32_t val = 0;
@@ -1109,7 +1109,7 @@ int32_t muxplayload_get_epg_section_nums(Pmux_epg_param pepg)
 
 }
 
-vatek_result muxplayload_set_epg_section(void_vatek_chip hchip, Pmux_epg_section psection, uint32_t* addr)
+vatek_result muxplayload_set_epg_section(vatek_device * hchip, Pmux_epg_section psection, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	vatek_result nres = _wrhal(pos, psection->duration);
@@ -1129,7 +1129,7 @@ vatek_result muxplayload_set_epg_section(void_vatek_chip hchip, Pmux_epg_section
 	return nres;
 }
 
-vatek_result muxplayload_get_epg_section(hmux_core hmux, void_vatek_chip hchip, Pmux_epg_section* psection, uint32_t* addr)
+vatek_result muxplayload_get_epg_section(hmux_core hmux, vatek_device * hchip, Pmux_epg_section* psection, uint32_t* addr)
 {
 	uint32_t pos = *addr;
 	Pmux_epg_section newepg = (Pmux_epg_section)mux_handle_malloc_buffer(hmux, sizeof(mux_epg_section));

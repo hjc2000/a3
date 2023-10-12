@@ -38,7 +38,7 @@ typedef void* hvatek_bridge;
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_bridge_open(void_vatek_chip hchip, hvatek_bridge* hbridge);
+	HAL_API vatek_result vatek_bridge_open(vatek_device * hchip, hvatek_bridge* hbridge);
 
 	HAL_API Pbdevice_info vatek_bridge_get_info(hvatek_bridge hbridge);
 	HAL_API vatek_result vatek_bridge_get_av_source(hvatek_bridge hbridge, int32_t idx,Pbridge_source psource);

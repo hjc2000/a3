@@ -234,7 +234,7 @@ vatek_result check_value_checkbox(const Pui_prop_item pprops, uint32_t val)
 	return vatek_success;
 }
 
-vatek_result ui_props_read_hal(void_vatek_chip hchip,const Pui_prop_item pprop, uint8_t* pblock)
+vatek_result ui_props_read_hal(vatek_device * hchip,const Pui_prop_item pprop, uint8_t* pblock)
 {
 	int32_t pos = 0;
 	vatek_result nres = vatek_success;
@@ -264,7 +264,7 @@ vatek_result ui_props_read_hal(void_vatek_chip hchip,const Pui_prop_item pprop, 
 	return nres;
 }
 
-vatek_result ui_props_write_hal(void_vatek_chip hchip,const  Pui_prop_item pprop, uint8_t* pblock)
+vatek_result ui_props_write_hal(vatek_device * hchip,const  Pui_prop_item pprop, uint8_t* pblock)
 {
 	int32_t pos = 0;
 	vatek_result nres = vatek_success;

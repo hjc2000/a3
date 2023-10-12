@@ -98,18 +98,22 @@ struct chip_info
 #define chip_is_en_input(info,en)				(((info)->input_support | en) == en)
 #define chip_is_en_peripheral(info,en)			((info)->peripheral_en | en) == en)
 
-HAL_API chip_status chip_status_get(void_vatek_chip hchip, uint32_t *errcode);
-HAL_API vatek_result chip_status_set(void_vatek_chip hchip, chip_status status, uint32_t errcode);
 
-HAL_API vatek_result chip_status_check(void_vatek_chip hchip, chip_status status);
+extern "C"
+{
+	HAL_API chip_status chip_status_get(vatek_device *hchip, uint32_t *errcode);
+	HAL_API vatek_result chip_status_set(vatek_device *hchip, chip_status status, uint32_t errcode);
 
-HAL_API vatek_result chip_info_reset(chip_info *pinfo, hal_service_mode service, vatek_ic_module icmodule);
-HAL_API vatek_result chip_info_get(void_vatek_chip hchip, chip_info *pinfo);
-HAL_API vatek_result chip_info_set(void_vatek_chip hchip, chip_info *pinfo);
+	HAL_API vatek_result chip_status_check(vatek_device *hchip, chip_status status);
 
-HAL_API vatek_result chip_send_command(void_vatek_chip hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr);
-HAL_API vatek_result chip_raise_command(void_vatek_chip hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait);
-HAL_API vatek_result chip_check_command(void_vatek_chip hchip, uint32_t cmdaddr);
-HAL_API vatek_result chip_result_command(void_vatek_chip hchip, uint32_t resultaddr, uint32_t *errcode);
+	HAL_API vatek_result chip_info_reset(chip_info *pinfo, hal_service_mode service, vatek_ic_module icmodule);
+	HAL_API vatek_result chip_info_get(vatek_device *hchip, chip_info *pinfo);
+	HAL_API vatek_result chip_info_set(vatek_device *hchip, chip_info *pinfo);
+
+	HAL_API vatek_result chip_send_command(vatek_device *hchip, uint32_t cmd, uint32_t cmdaddr, uint32_t resultaddr);
+	HAL_API vatek_result chip_raise_command(vatek_device *hchip, uint32_t cmdaddr, uint32_t cmd, int32_t iswait);
+	HAL_API vatek_result chip_check_command(vatek_device *hchip, uint32_t cmdaddr);
+	HAL_API vatek_result chip_result_command(vatek_device *hchip, uint32_t resultaddr, uint32_t *errcode);
+}
 
 #endif

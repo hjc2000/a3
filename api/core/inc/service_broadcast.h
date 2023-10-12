@@ -88,7 +88,7 @@ extern "C" {
 	 * @param[in] pbc broadcast parameters
 	 * @return >= 0 mean success, or error code.
 	 */
-	HAL_API vatek_result broadcast_param_set(void_vatek_chip hchip,Pbroadcast_param pbc);
+	HAL_API vatek_result broadcast_param_set(vatek_device * hchip,Pbroadcast_param pbc);
 
 	/**
 	 * @ingroup broadcast_api
@@ -98,7 +98,7 @@ extern "C" {
 	 * @param[out] pbc broadcast parameters
 	 * @return >= 0 mean success, other error  
 	 */
-	HAL_API vatek_result broadcast_param_get(void_vatek_chip hchip,Pbroadcast_param pbc);
+	HAL_API vatek_result broadcast_param_get(vatek_device * hchip,Pbroadcast_param pbc);
 
 #ifdef __cplusplus
 }

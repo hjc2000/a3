@@ -83,7 +83,7 @@ typedef romfile_handle* Promfile_handle;
 extern "C" {
 #endif
 
-	HAL_API vatek_result vatek_storage_create_chip_handle(void_vatek_chip hchip, Pstorage_handle* phandle, fprom_progress fpcb,void* cbparam);
+	HAL_API vatek_result vatek_storage_create_chip_handle(vatek_device * hchip, Pstorage_handle* phandle, fprom_progress fpcb,void* cbparam);
 	HAL_API vatek_result vatek_storage_create_file_handle(const char* fimage, 
 														  const char* floader, 
 														  const char* fapp,
