@@ -91,7 +91,7 @@ bridge_device_status bridge_device_get_status(win_hid_device_list_node * hbridge
 vatek_result bridge_device_bulk_transfer(win_hid_device_list_node * hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len)
 {
 	hid_bridge_cmd *pcmd = bridge_device_get_command(hbridge);
-	Pbridge_mod_param modparam = &pcmd->param.mod;
+	bridge_mod_param * modparam = &pcmd->param.mod;
 	vatek_result nres = vatek_unknown;
 	int32_t eachlen = 0;
 	uint8_t iswrite = 0;
@@ -116,7 +116,7 @@ vatek_result bridge_device_bulk_transfer(win_hid_device_list_node * hbridge, uin
 		nres = bridge_device_send_bridge_command(hbridge);
 		if (is_vatek_success(nres))
 		{
-			Phid_bridge_result presult = bridge_device_get_result(hbridge);
+			hid_bridge_result * presult = bridge_device_get_result(hbridge);
 			if (!iswrite && is_vatek_success(presult->result))
 				memcpy(pbuf, &presult->data.mod.buffer[0], eachlen);
 			else

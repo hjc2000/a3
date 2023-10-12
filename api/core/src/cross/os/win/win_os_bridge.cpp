@@ -447,10 +447,10 @@ hid_bridge_cmd *bridge_device_get_command(win_hid_device_list_node * hbridge)
 	return (hid_bridge_cmd *)&phid->rawbuf_tx[HID_PACKET_DATA_OFFSET];
 }
 
-Phid_bridge_result bridge_device_get_result(win_hid_device_list_node * hbridge)
+hid_bridge_result * bridge_device_get_result(win_hid_device_list_node * hbridge)
 {
 	win_hid_device_list_node *phid = (win_hid_device_list_node *)hbridge;
-	return (Phid_bridge_result)&phid->rawbuf_rx[HID_PACKET_DATA_OFFSET];
+	return (hid_bridge_result *)&phid->rawbuf_rx[HID_PACKET_DATA_OFFSET];
 }
 
 vatek_result bridge_device_send_bridge_command(win_hid_device_list_node * hbridge)
@@ -462,7 +462,7 @@ vatek_result bridge_device_send_bridge_command(win_hid_device_list_node * hbridg
 		nres = win_hid_api_read(phid, &phid->rawbuf_rx[HID_PACKET_START_OFFSET]);
 		if (is_vatek_success(nres))
 		{
-			Phid_bridge_result presult = bridge_device_get_result(hbridge);
+			hid_bridge_result * presult = bridge_device_get_result(hbridge);
 			presult->result = vatek_buffer_2_uint32((uint8_t *)&presult->result);
 			presult->cmd = vatek_buffer_2_uint32((uint8_t *)&presult->cmd);
 			if (strncmp((char *)&presult->tag[0], &hid_bridge_tag[0], 4) != 0)nres = vatek_badparam;

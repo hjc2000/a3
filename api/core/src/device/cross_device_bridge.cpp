@@ -161,7 +161,7 @@ vatek_result bridge_cmd_ip_transfer(void_cross_device hdev, int32_t cmd, uint8_t
 
 	if (is_vatek_success(nres))
 	{
-		Phid_bridge_result presult = bridge_device_get_result(hhid);
+		hid_bridge_result * presult = bridge_device_get_result(hhid);
 		nres = (vatek_result)presult->result;
 		if (is_vatek_success(nres))
 			memcpy(pbuf, &presult->data.raw[0], BRIDGE_PARAM_MAX_LEN);

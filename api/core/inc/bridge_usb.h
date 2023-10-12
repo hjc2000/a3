@@ -113,14 +113,14 @@ typedef struct _bridge_i2c_param
 #define MOD_DATA_IS_REG(a)      ((a & FLAG_MOD_REGISTER) == FLAG_MOD_REGISTER)
 #define MOD_DATA_IS_CODE(a)     ((a & FLAG_MOD_CODE) == FLAG_MOD_CODE)
 
-typedef struct _bridge_mod_param
+typedef struct bridge_mod_param
 {
 	uint32_t address;
 	uint32_t len;
 	int32_t index;
 	uint32_t datatype;
 	uint8_t buffer[BRIDGE_MOD_BUFFER_LEN];
-}bridge_mod_param, *Pbridge_mod_param;
+};
 
 struct hid_bridge_cmd
 {
@@ -147,7 +147,7 @@ struct hid_bridge_cmd
 #define HALBRIDGE_ERR_UNKNOWN		-1
 #define HALBRIDGE_ERR_SUCCESS		0
 
-typedef struct _hid_bridge_result
+typedef struct hid_bridge_result
 {
 	uint8_t tag[4];
 	uint32_t cmd;
@@ -158,6 +158,6 @@ typedef struct _hid_bridge_result
 		bridge_i2c_param i2c;
 		bridge_mod_param mod;
 	}data;
-}hid_bridge_result, *Phid_bridge_result;
+};
 
 #endif

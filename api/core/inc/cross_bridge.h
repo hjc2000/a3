@@ -61,7 +61,7 @@ HAL_API const char *bridge_device_get_name(win_hid_device_list_node *hbridge);
 HAL_API vatek_result bridge_device_close(win_hid_device_list_node *hbridge);
 HAL_API void bridge_device_lock_command(win_hid_device_list_node *hbridge);
 HAL_API hid_bridge_cmd *bridge_device_get_command(win_hid_device_list_node *hbridge);
-HAL_API Phid_bridge_result bridge_device_get_result(win_hid_device_list_node *hbridge);
+HAL_API hid_bridge_result * bridge_device_get_result(win_hid_device_list_node *hbridge);
 HAL_API vatek_result bridge_device_send_bridge_command(win_hid_device_list_node *hbridge);
 HAL_API void bridge_device_unlock_command(win_hid_device_list_node *hbridge);
 
