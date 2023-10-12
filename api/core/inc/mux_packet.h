@@ -125,25 +125,17 @@ typedef pes_packet* Ppes_packet;
 #define PKTTAG_ADAP_ONLY			0x20
 #define PKTTAG_BOTH					0x30
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+HAL_API void muxpacket_put_hdr(uint8_t *pktbuf, uint16_t pid, uint8_t hdr, uint8_t tag);
 
-	HAL_API void muxpacket_put_hdr(uint8_t* pktbuf, uint16_t pid, uint8_t hdr, uint8_t tag);
+HAL_API Pnull_packet muxpacket_null_create(Pth_mempool pmem);
+HAL_API uint8_t *muxpacket_null_get_next(Pnull_packet pnull);
 
-	HAL_API Pnull_packet muxpacket_null_create(Pth_mempool pmem);
-	HAL_API uint8_t* muxpacket_null_get_next(Pnull_packet pnull);
+HAL_API Ppcr_packet muxpacket_pcr_create(Pth_mempool pmem, uint16_t pid);
+HAL_API uint8_t *muxpacket_pcr_get_next_time(Ppcr_packet ppcr, Pmux_time_tick ptime);
+HAL_API uint8_t *muxpacket_pcr_get_next_tick(Ppcr_packet ppcr, Pmux_clock_tick pclk);
 
-	HAL_API Ppcr_packet muxpacket_pcr_create(Pth_mempool pmem, uint16_t pid);
-	HAL_API uint8_t* muxpacket_pcr_get_next_time(Ppcr_packet ppcr, Pmux_time_tick ptime);
-	HAL_API uint8_t* muxpacket_pcr_get_next_tick(Ppcr_packet ppcr, Pmux_clock_tick pclk);
-
-	HAL_API Ppes_packet muxpacket_pes_create(Pth_mempool pmem, Pmux_stream pstream, Ppes_source psource,uint32_t latency);
-	HAL_API vatek_result muxpacket_pes_check(Ppes_packet ppes);
-	HAL_API vatek_result muxpacket_pes_get_next(Ppes_packet ppes, uint8_t* packet);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API Ppes_packet muxpacket_pes_create(Pth_mempool pmem, Pmux_stream pstream, Ppes_source psource, uint32_t latency);
+HAL_API vatek_result muxpacket_pes_check(Ppes_packet ppes);
+HAL_API vatek_result muxpacket_pes_get_next(Ppes_packet ppes, uint8_t *packet);
 
 #endif

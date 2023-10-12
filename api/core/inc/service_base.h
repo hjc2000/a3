@@ -73,52 +73,44 @@ typedef struct _broadcast_info{
 
 typedef broadcast_info* Pbroadcast_info;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ * @ingroup service_api
+ * @brief write broadcast information parameters to device (HAL_REGISTER)
+ *
+ * @param[in] hchip device handle
+ * @param[in] pinfo broadcast information parameters
+ * @return >= 0 mean success, other error
+ */
+HAL_API vatek_result broadcast_info_set(vatek_device *hchip, Pbroadcast_info pinfo);
 
-	/**
-	 * @ingroup service_api
-	 * @brief write broadcast information parameters to device (HAL_REGISTER)
-	 *
-	 * @param[in] hchip device handle
-	 * @param[in] pinfo broadcast information parameters
-	 * @return >= 0 mean success, other error
-	 */
-	HAL_API vatek_result broadcast_info_set(vatek_device * hchip, Pbroadcast_info pinfo);
+/**
+ * @ingroup service_api
+ * @brief read broadcast information parameters from device (HAL_REGISTER)
+ *
+ * @param[in] hchip device handle
+ * @param[out] pinfo broadcast information parameters
+ * @return >= 0 mean success, other error
+ */
+HAL_API vatek_result broadcast_info_get(vatek_device *hchip, Pbroadcast_info pinfo);
 
-	/**
-	 * @ingroup service_api
-	 * @brief read broadcast information parameters from device (HAL_REGISTER)
-	 *
-	 * @param[in] hchip device handle
-	 * @param[out] pinfo broadcast information parameters
-	 * @return >= 0 mean success, other error
-	 */
-	HAL_API vatek_result broadcast_info_get(vatek_device * hchip, Pbroadcast_info pinfo);
+/**
+ * @ingroup service_api
+ * @brief read broadcast status from device (HAL_REGISTER)
+ *
+ * @param[in] hchip device handle
+ * @param[out] status broadcast status
+ * @return HAL_API
+ */
+HAL_API vatek_result broadcast_status_get(vatek_device *hchip, broadcast_status *status);
 
-	/**
-	 * @ingroup service_api
-	 * @brief read broadcast status from device (HAL_REGISTER)
-	 *
-	 * @param[in] hchip device handle
-	 * @param[out] status broadcast status
-	 * @return HAL_API
-	 */
-	HAL_API vatek_result broadcast_status_get(vatek_device * hchip, broadcast_status* status);
-
-	/**
-	 * @ingroup service_api
-	 * @brief write broadcast status to device (HAL_REGISTER)
-	 *
-	 * @param[in] hchip device handle
-	 * @param[in] status broadcast status
-	 * @return HAL_API
-	 */
-	HAL_API vatek_result broadcast_status_set(vatek_device * hchip, broadcast_status status);
-
-#ifdef __cplusplus
-}
-#endif
+/**
+ * @ingroup service_api
+ * @brief write broadcast status to device (HAL_REGISTER)
+ *
+ * @param[in] hchip device handle
+ * @param[in] status broadcast status
+ * @return HAL_API
+ */
+HAL_API vatek_result broadcast_status_set(vatek_device *hchip, broadcast_status status);
 
 #endif

@@ -59,36 +59,28 @@ typedef mux_rule_block* Pmux_rule_block;
 #define is_mux_rule_en_tot(rule)	((rule->rule_runction & RULE_EN_TOT) == RULE_EN_TOT)
 #define is_mux_rule_en_eit(rule)	((rule->rule_runction & RULE_EN_EIT) == RULE_EN_EIT)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+HAL_API vatek_result muxrule_load_file(Pth_mempool pmempool, const char *filename, Pmux_rule_block *prule);
+HAL_API vatek_result muxrule_load_raw(Pth_mempool pmempool, uint8_t *praw, int32_t len, Pmux_rule_block *prule);
 
-	HAL_API vatek_result muxrule_load_file(Pth_mempool pmempool,const char* filename, Pmux_rule_block* prule);
-	HAL_API vatek_result muxrule_load_raw(Pth_mempool pmempool, uint8_t* praw, int32_t len, Pmux_rule_block* prule);
+HAL_API vatek_result muxrule_check_valid(uint8_t *praw);
 
-	HAL_API vatek_result muxrule_check_valid(uint8_t* praw);
+HAL_API mux_spec_mode muxrule_get_spec(Pmux_rule_block prule);
+HAL_API mux_country_code muxrule_get_country(Pmux_rule_block prule);
 
-	HAL_API mux_spec_mode muxrule_get_spec(Pmux_rule_block prule);
-	HAL_API mux_country_code muxrule_get_country(Pmux_rule_block prule);
+HAL_API vatek_result muxrule_malloc_uiprops(Pth_mempool pmempool, Pmux_ui_props puiprops, uint8_t **pbufprop);
+HAL_API vatek_result muxrule_get_uiprops(Pui_prop_item puiprops, uint8_t *prulebuf, uint8_t *pdest);
+HAL_API vatek_result muxrule_set_uiprops(Pui_prop_item puiprops, uint8_t *prulebuf, uint8_t *psur);
 
-	HAL_API vatek_result muxrule_malloc_uiprops(Pth_mempool pmempool, Pmux_ui_props puiprops, uint8_t** pbufprop);
-	HAL_API vatek_result muxrule_get_uiprops(Pui_prop_item puiprops, uint8_t* prulebuf, uint8_t* pdest);
-	HAL_API vatek_result muxrule_set_uiprops(Pui_prop_item puiprops, uint8_t* prulebuf, uint8_t* psur);
+HAL_API vatek_result muxrule_copy_channel(Pmux_rule_block prule, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result muxrule_copy_program(Pmux_rule_block prule, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result muxrule_get_channel_param(Pmux_rule_block prule, Pspec_channel pch);
+HAL_API vatek_result muxrule_get_program_param(Pmux_rule_block prule, Pspec_program prog);
+HAL_API vatek_result muxrule_set_channel_param(Pmux_rule_block prule, Pspec_channel pch);
+HAL_API vatek_result muxrule_set_program_param(Pmux_rule_block prule, Pspec_program prog);
 
-	HAL_API vatek_result muxrule_copy_channel(Pmux_rule_block prule,uint8_t* pbuf,int32_t len);
-	HAL_API vatek_result muxrule_copy_program(Pmux_rule_block prule, uint8_t* pbuf, int32_t len);
-	HAL_API vatek_result muxrule_get_channel_param(Pmux_rule_block prule, Pspec_channel pch);
-	HAL_API vatek_result muxrule_get_program_param(Pmux_rule_block prule, Pspec_program prog);
-	HAL_API vatek_result muxrule_set_channel_param(Pmux_rule_block prule, Pspec_channel pch);
-	HAL_API vatek_result muxrule_set_program_param(Pmux_rule_block prule, Pspec_program prog);
-
-	HAL_API vatek_result muxrule_set_channel_rawbuf(Pspec_channel pch, uint8_t* pdest);
-	HAL_API vatek_result muxrule_set_program_rawbuf(Pspec_program pprog, uint8_t* pdest);
-	HAL_API vatek_result muxrule_get_channel_rawbuf(Pspec_channel pch, uint8_t* psur);
-	HAL_API vatek_result muxrule_get_program_rawbuf(Pspec_program pprog,uint8_t* psur);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API vatek_result muxrule_set_channel_rawbuf(Pspec_channel pch, uint8_t *pdest);
+HAL_API vatek_result muxrule_set_program_rawbuf(Pspec_program pprog, uint8_t *pdest);
+HAL_API vatek_result muxrule_get_channel_rawbuf(Pspec_channel pch, uint8_t *psur);
+HAL_API vatek_result muxrule_get_program_rawbuf(Pspec_program pprog, uint8_t *psur);
 
 #endif

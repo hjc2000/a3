@@ -93,15 +93,7 @@ typedef struct _mux_epg_param{
 
 typedef mux_epg_param* Pmux_epg_param;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	HAL_API vatek_result muxepg_create(Pth_mempool pmem, mux_epg_mode mode, Pmux_epg_param* pepg);
-	HAL_API vatek_result muxepg_check(Pmux_epg_param pepg);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API vatek_result muxepg_create(Pth_mempool pmem, mux_epg_mode mode, Pmux_epg_param *pepg);
+HAL_API vatek_result muxepg_check(Pmux_epg_param pepg);
 
 #endif

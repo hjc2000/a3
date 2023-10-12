@@ -83,123 +83,115 @@ typedef struct _spec_program{
 
 typedef spec_program* Pspec_program;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ * @ingroup mspec_api
+ * Check specifily spec and countru is supported
+ * @param spec
+ * @param country
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_check_support(mux_spec_mode spec, mux_country_code country);
 
-	/**
-	 * @ingroup mspec_api
-	 * Check specifily spec and countru is supported
-	 * @param spec 
-	 * @param country 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_check_support(mux_spec_mode spec, mux_country_code country);
+/**
+ * @ingroup mspec_api
+ * malloc spec channel
+ * @param[in] pmem memory pool handle
+ * @param[in] spec spec
+ * @param[in] country country
+ * @param[inout] pchannel
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_malloc_channel(Pth_mempool pmem, mux_spec_mode spec, mux_country_code country, Pspec_channel *pchannel);
 
-	/**
-	 * @ingroup mspec_api
-	 * malloc spec channel 
-	 * @param[in] pmem memory pool handle
-	 * @param[in] spec spec
-	 * @param[in] country country 
-	 * @param[inout] pchannel 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_malloc_channel(Pth_mempool pmem, mux_spec_mode spec, mux_country_code country, Pspec_channel* pchannel);
+/**
+ * @ingroup mspec_api
+ * malloc spec program
+ * @param[in] pmem memory pool handle
+ * @param[in] spec mux spec mode
+ * @param[inout] pprogram
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_malloc_program(Pth_mempool pmem, mux_spec_mode spec, Pspec_program *pprogram);
 
-	/**
-	 * @ingroup mspec_api
-	 * malloc spec program 
-	 * @param[in] pmem memory pool handle
-	 * @param[in] spec mux spec mode
-	 * @param[inout] pprogram 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_malloc_program(Pth_mempool pmem, mux_spec_mode spec, Pspec_program* pprogram);
+/**
+ * @ingroup mspec_api
+ * set spec program defualt
+ * @param[in] tag program serial number
+ * @param[inout] pspec
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_set_program_default(uint32_t tag, Pspec_program pspec);
 
-	/**
-	 * @ingroup mspec_api
-	 * set spec program defualt
-	 * @param[in] tag program serial number 
-	 * @param[inout] pspec 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_set_program_default(uint32_t tag, Pspec_program pspec);
-
-	HAL_API vatek_result muxspec_get_channel_uiprops(mux_spec_mode spec, Pui_prop_item* pprops);
-	HAL_API vatek_result muxspec_get_program_uiprops(mux_spec_mode spec, Pui_prop_item* pprops);
-	HAL_API vatek_result muxspec_get_spec_string(mux_spec_mode spec,Pui_prop_item puiprop, Pmux_ui_string* pstrings);
-	HAL_API vatek_result muxspec_set_spec_string(Pmux_ui_string pmuxstr, Pmux_string pstring, const char* szval);
-	HAL_API vatek_result muxspec_get_spec_string_display(Pmux_ui_string puistring, Pmux_string pvstring, char* pbuf, int32_t len);
+HAL_API vatek_result muxspec_get_channel_uiprops(mux_spec_mode spec, Pui_prop_item *pprops);
+HAL_API vatek_result muxspec_get_program_uiprops(mux_spec_mode spec, Pui_prop_item *pprops);
+HAL_API vatek_result muxspec_get_spec_string(mux_spec_mode spec, Pui_prop_item puiprop, Pmux_ui_string *pstrings);
+HAL_API vatek_result muxspec_set_spec_string(Pmux_ui_string pmuxstr, Pmux_string pstring, const char *szval);
+HAL_API vatek_result muxspec_get_spec_string_display(Pmux_ui_string puistring, Pmux_string pvstring, char *pbuf, int32_t len);
 
 
-	HAL_API vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item props, const char* propname, uint8_t* praw, const char* value);
-	HAL_API vatek_result muxspec_set_channel_spec_string(mux_spec_mode spec, const char* propname, uint8_t* praw, const char* value);
-	HAL_API vatek_result muxspec_set_program_spec_string(mux_spec_mode spec, const char* propname, uint8_t* praw, const char* value);
-	/**
-	 * @ingroup mspec_api
-	 * Get channel properties buffer length 
-	 * @param[in] spec 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_get_channel_len(mux_spec_mode spec);
+HAL_API vatek_result muxspec_set_uiprops_spec_string(mux_spec_mode spec, Pui_prop_item props, const char *propname, uint8_t *praw, const char *value);
+HAL_API vatek_result muxspec_set_channel_spec_string(mux_spec_mode spec, const char *propname, uint8_t *praw, const char *value);
+HAL_API vatek_result muxspec_set_program_spec_string(mux_spec_mode spec, const char *propname, uint8_t *praw, const char *value);
+/**
+ * @ingroup mspec_api
+ * Get channel properties buffer length
+ * @param[in] spec
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_get_channel_len(mux_spec_mode spec);
 
-	/**
-	 * @ingroup mspec_api
-	 * Get program properties buffer length 
-	 * @param[in] spec 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_get_program_len(mux_spec_mode spec);
+/**
+ * @ingroup mspec_api
+ * Get program properties buffer length
+ * @param[in] spec
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_get_program_len(mux_spec_mode spec);
 
-	/**
-	 * @ingroup mspec_api
-	 * Set spec string with ascii coding  
-	 * @param pstring spec string
-	 * @param szeng new string
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_set_string_ascii(Pmux_string pstring, const char* szeng);
+/**
+ * @ingroup mspec_api
+ * Set spec string with ascii coding
+ * @param pstring spec string
+ * @param szeng new string
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_set_string_ascii(Pmux_string pstring, const char *szeng);
 
-	/**
-	 * @ingroup mspec_api
-	 * Get spec string with ascii coding
-	 * @param[in] pstring spec string
-	 * @param[inout] pbuf 
-	 * @param[in] len 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_get_string_ascii(Pmux_string pstring, char* pbuf, int32_t len);
+/**
+ * @ingroup mspec_api
+ * Get spec string with ascii coding
+ * @param[in] pstring spec string
+ * @param[inout] pbuf
+ * @param[in] len
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_get_string_ascii(Pmux_string pstring, char *pbuf, int32_t len);
 
-	/**
-	 * @ingroup mspec_api
-	 * 
-	 * @param pstring 
-	 * @param szeng 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_set_string_jiseng(Pmux_string pstring, const char* szeng);
-	HAL_API vatek_result muxspec_get_string_jiseng(Pmux_string pstring, char* pbuf, int32_t len);
-	
-	HAL_API vatek_result muxspec_set_string_utf16(Pmux_string pstring, const char* szeng);
-	HAL_API vatek_result muxspec_get_string_utf16(Pmux_string pstring, char* pbuf, int32_t len);
+/**
+ * @ingroup mspec_api
+ *
+ * @param pstring
+ * @param szeng
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_set_string_jiseng(Pmux_string pstring, const char *szeng);
+HAL_API vatek_result muxspec_get_string_jiseng(Pmux_string pstring, char *pbuf, int32_t len);
 
-	/**
-	 * @ingroup mspec_api
-	 * 
-	 * @param pstring 
-	 * @param szeng 
-	 * @return HAL_API 
-	 */
-	HAL_API vatek_result muxspec_set_string_psip_mutil(Pmux_string pstring, const char* szeng);
-	
-	HAL_API vatek_result muxspec_get_string_psip_mutil(Pmux_string pstring, char* pbuf, int32_t len);
+HAL_API vatek_result muxspec_set_string_utf16(Pmux_string pstring, const char *szeng);
+HAL_API vatek_result muxspec_get_string_utf16(Pmux_string pstring, char *pbuf, int32_t len);
 
-	HAL_API vatek_result muxspec_printf_channel(const char* fmt,Pspec_channel pch);
-	HAL_API vatek_result muxspec_printf_program(const char* fmt,Pspec_program program);
+/**
+ * @ingroup mspec_api
+ *
+ * @param pstring
+ * @param szeng
+ * @return HAL_API
+ */
+HAL_API vatek_result muxspec_set_string_psip_mutil(Pmux_string pstring, const char *szeng);
 
-#ifdef __cplusplus
-}
-#endif
+HAL_API vatek_result muxspec_get_string_psip_mutil(Pmux_string pstring, char *pbuf, int32_t len);
+
+HAL_API vatek_result muxspec_printf_channel(const char *fmt, Pspec_channel pch);
+HAL_API vatek_result muxspec_printf_program(const char *fmt, Pspec_program program);
 
 #endif

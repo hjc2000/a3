@@ -104,17 +104,9 @@ typedef usb_param* Pusb_param;
 
 static const usb_param default_usb_param = { stream_remux, 0 ,pcr_adjust};
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    
-    HAL_API const Pui_prop_item stream_source_get_ui_props(stream_source source);
-    HAL_API vatek_result stream_source_reset(vatek_ic_module icmodule,stream_source source, uint8_t* prawsource);
-    HAL_API vatek_result stream_source_set(vatek_device * hchip,stream_source source, uint8_t* prawsource);
-    HAL_API vatek_result stream_source_get(vatek_device * hchip,stream_source source, uint8_t* prawsource);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API const Pui_prop_item stream_source_get_ui_props(stream_source source);
+HAL_API vatek_result stream_source_reset(vatek_ic_module icmodule, stream_source source, uint8_t *prawsource);
+HAL_API vatek_result stream_source_set(vatek_device *hchip, stream_source source, uint8_t *prawsource);
+HAL_API vatek_result stream_source_get(vatek_device *hchip, stream_source source, uint8_t *prawsource);
 
 #endif

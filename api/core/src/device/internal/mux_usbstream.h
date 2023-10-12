@@ -52,22 +52,14 @@ typedef struct _handle_muxer
 	Pumuxer_stream streams;
 }handle_muxer, *Phandle_muxer;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+vatek_result usbstream_muxer_create(Pth_mempool pmem, Pusbmux_param param, int32_t nums, Phandle_muxer *pmuxer);
+void usbstream_muxer_query_clean(Phandle_muxer pmuxer);
+vatek_result usbstream_muxer_close(Phandle_muxer pmuxer);
 
-	vatek_result usbstream_muxer_create(Pth_mempool pmem,Pusbmux_param param,int32_t nums, Phandle_muxer* pmuxer);
-	void usbstream_muxer_query_clean(Phandle_muxer pmuxer);
-	vatek_result usbstream_muxer_close(Phandle_muxer pmuxer);
+vatek_result usbstream_muxer_start(Phandle_muxer pmuxer, Pusbmux_source psource, hvatek_usbstream hustream);
+void usbstream_muxer_stop(Phandle_muxer pmuxer);
 
-	vatek_result usbstream_muxer_start(Phandle_muxer pmuxer, Pusbmux_source psource, hvatek_usbstream hustream);
-	void usbstream_muxer_stop(Phandle_muxer pmuxer);
-
-	vatek_result usbstream_muxer_set_stream(Pth_mempool pmem,Phandle_muxer pmuxer, int32_t idx,hmux_stream hstream, Pusbmux_stream pstream);
-	vatek_result usbstream_muxer_put_frame(Phandle_muxer pmuxer,int32_t idx, Pmux_pes_frame pframe);
-
-#ifdef __cplusplus
-}
-#endif
+vatek_result usbstream_muxer_set_stream(Pth_mempool pmem, Phandle_muxer pmuxer, int32_t idx, hmux_stream hstream, Pusbmux_stream pstream);
+vatek_result usbstream_muxer_put_frame(Phandle_muxer pmuxer, int32_t idx, Pmux_pes_frame pframe);
 
 #endif

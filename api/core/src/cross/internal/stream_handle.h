@@ -24,21 +24,12 @@ typedef struct _cstream_handler
 	fpcstream_close close;
 }cstream_handler, *Pcstream_handler;
 
-#ifdef __cplusplus
-extern "C" {
-	#endif
+vatek_result cross_stream_file_get(const char *filename, Pcstream_handler *pcstream);
+vatek_result cross_stream_udp_get(const char *url, Pcstream_handler *pcstream);
+vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler *pcstream);
 
-	vatek_result cross_stream_file_get(const char *filename, Pcstream_handler *pcstream);
-	vatek_result cross_stream_udp_get(const char *url, Pcstream_handler *pcstream);
-	vatek_result cross_stream_test_get(uint32_t bitrate, Pcstream_handler *pcstream);
-
-	uint8_t *tspacket_get_pcr(Pmux_time_tick ptime);
-	uint8_t *tspacket_get_null(void);
-	uint8_t *tspacket_get_suffing(void);
-
-
-	#ifdef __cplusplus
-}
-#endif
+uint8_t *tspacket_get_pcr(Pmux_time_tick ptime);
+uint8_t *tspacket_get_null(void);
+uint8_t *tspacket_get_suffing(void);
 
 #endif

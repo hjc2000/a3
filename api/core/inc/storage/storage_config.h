@@ -161,16 +161,8 @@ typedef struct _storage_chip_config
 
 typedef storage_chip_config* Pstorage_chip_config;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	HAL_API void storage_chip_config_reset(Pstorage_chip_config pcfg);
-	HAL_API vatek_result storage_chip_config_set(Pstorage_chip_config pcfg, uint8_t* psection);
-	HAL_API vatek_result storage_chip_config_get(Pstorage_chip_config pcfg, uint8_t* psection);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API void storage_chip_config_reset(Pstorage_chip_config pcfg);
+HAL_API vatek_result storage_chip_config_set(Pstorage_chip_config pcfg, uint8_t *psection);
+HAL_API vatek_result storage_chip_config_get(Pstorage_chip_config pcfg, uint8_t *psection);
 
 #endif

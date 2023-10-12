@@ -83,18 +83,10 @@ typedef struct _handle_mux
 	}_h;
 }handle_mux, *Phandle_mux;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+int32_t mux_check_idle(Phandle_mux pmux);
+void mux_reset(Phandle_mux pmux);
 
-	int32_t mux_check_idle(Phandle_mux pmux);
-	void mux_reset(Phandle_mux pmux);
-
-	vatek_result mux_malloc_psiparam_buffer_rule(Pth_mempool pmem,Pmux_rule_block prule,Ppsiparam_buffer pbuffer);
-	vatek_result mux_malloc_psiparam_buffer_default(Pth_mempool pmem,Pspec_channel pch,Ppsiparam_buffer pbuffer);
-
-#ifdef __cplusplus
-}
-#endif
+vatek_result mux_malloc_psiparam_buffer_rule(Pth_mempool pmem, Pmux_rule_block prule, Ppsiparam_buffer pbuffer);
+vatek_result mux_malloc_psiparam_buffer_default(Pth_mempool pmem, Pspec_channel pch, Ppsiparam_buffer pbuffer);
 
 #endif

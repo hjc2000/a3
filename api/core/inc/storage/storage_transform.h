@@ -41,16 +41,8 @@ typedef struct _storage_transform
 
 typedef storage_transform* Pstorage_transform;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	HAL_API void storage_transform_reset(Pstorage_transform ptr);
-	HAL_API vatek_result storage_transform_set(Pstorage_transform ptr,uint8_t* psection);
-	HAL_API vatek_result storage_transform_get(Pstorage_transform ptr,uint8_t* psection);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API void storage_transform_reset(Pstorage_transform ptr);
+HAL_API vatek_result storage_transform_set(Pstorage_transform ptr, uint8_t *psection);
+HAL_API vatek_result storage_transform_get(Pstorage_transform ptr, uint8_t *psection);
 
 #endif

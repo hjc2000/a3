@@ -108,16 +108,8 @@ static const encoder_param default_encoder_param =
 	0x1003,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	HAL_API vatek_result encoder_param_reset(video_codec vcodec, Pencoder_param penc);
-	HAL_API vatek_result encoder_param_set(vatek_device * hchip,Pencoder_param penc);
-	HAL_API vatek_result encoder_param_get(vatek_device * hchip,Pencoder_param penc);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API vatek_result encoder_param_reset(video_codec vcodec, Pencoder_param penc);
+HAL_API vatek_result encoder_param_set(vatek_device *hchip, Pencoder_param penc);
+HAL_API vatek_result encoder_param_get(vatek_device *hchip, Pencoder_param penc);
 
 #endif

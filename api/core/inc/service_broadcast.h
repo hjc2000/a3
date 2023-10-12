@@ -66,43 +66,34 @@ typedef struct _broadcast_param{
 
 typedef broadcast_param* Pbroadcast_param;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ * @ingroup broadcast_api
+ * @brief reset broadcast parameters to default used vatek_ic_module.
+ *
+ * @param[in] icchip target vatek_ic_module.
+ * @param[out] pbc broadcast parameters
+ * @return >= 0 mean success, other error
+ */
+HAL_API vatek_result broadcast_param_reset(vatek_ic_module icchip, Pbroadcast_param pbc);
 
-	/**
-	 * @ingroup broadcast_api
-	 * @brief reset broadcast parameters to default used vatek_ic_module.
-	 * 
-	 * @param[in] icchip target vatek_ic_module.
-	 * @param[out] pbc broadcast parameters
-	 * @return >= 0 mean success, other error  
-	 */
-	HAL_API vatek_result broadcast_param_reset(vatek_ic_module icchip, Pbroadcast_param pbc);
+/**
+ * @ingroup broadcast_api
+ * @brief write broadcast parameters to device (HAL_REGISTER).
+ *
+ * @param[in] hchip device handle
+ * @param[in] pbc broadcast parameters
+ * @return >= 0 mean success, or error code.
+ */
+HAL_API vatek_result broadcast_param_set(vatek_device *hchip, Pbroadcast_param pbc);
 
-	/**
-	 * @ingroup broadcast_api
-	 * @brief write broadcast parameters to device (HAL_REGISTER).
-	 * 
-	 * @param[in] hchip device handle
-	 * @param[in] pbc broadcast parameters
-	 * @return >= 0 mean success, or error code.
-	 */
-	HAL_API vatek_result broadcast_param_set(vatek_device * hchip,Pbroadcast_param pbc);
-
-	/**
-	 * @ingroup broadcast_api
-	 * @brief read broadcast parameters from device (HAL_REGISTER)
-	 * 
-	 * @param[in] hchip device handle
-	 * @param[out] pbc broadcast parameters
-	 * @return >= 0 mean success, other error  
-	 */
-	HAL_API vatek_result broadcast_param_get(vatek_device * hchip,Pbroadcast_param pbc);
-
-#ifdef __cplusplus
-}
-#endif
-
+/**
+ * @ingroup broadcast_api
+ * @brief read broadcast parameters from device (HAL_REGISTER)
+ *
+ * @param[in] hchip device handle
+ * @param[out] pbc broadcast parameters
+ * @return >= 0 mean success, other error
+ */
+HAL_API vatek_result broadcast_param_get(vatek_device *hchip, Pbroadcast_param pbc);
 
 #endif
