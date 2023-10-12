@@ -12,7 +12,7 @@ extern vatek_result file_stream_start(void_stream_source hsource);
 extern vatek_result file_stream_check(void_stream_source hsource);
 
 /// <summary>
-///		将 hsource 强制转换为 FileWrapper * 后返回 buffer 字段。这是一个一维数组的头指针。
+///		将 hsource 强制转换为 FileTsStreamSource * 后返回 buffer 字段。这是一个一维数组的头指针。
 /// </summary>
 /// <param name="hsource"></param>
 /// <returns></returns>
@@ -33,14 +33,14 @@ extern void file_stream_free(void_stream_source hsource);
 
 vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 {
-	FileWrapper *pfile = new FileWrapper;
+	FileTsStreamSource *pfile = new FileTsStreamSource;
 	if (!pfile)
 	{
 		// 内存分配失败
 		return vatek_memfail;
 	}
 
-	/* 打开文件，将文件句柄放到刚才分配的 FileWrapper 里面。
+	/* 打开文件，将文件句柄放到刚才分配的 FileTsStreamSource 里面。
 	* 打开方式：读写，二进制
 	*/
 	pfile->fhandle = fopen(file, "rb+");
@@ -86,7 +86,7 @@ vatek_result file_stream_start(void_stream_source hsource)
 
 vatek_result file_stream_check(void_stream_source hsource)
 {
-	FileWrapper *pfile = (FileWrapper *)hsource;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	int32_t pos = 0;
 	uint8_t *ptr = &pfile->buffer[0];
 	vatek_result nres = vatek_success;
@@ -130,7 +130,7 @@ vatek_result file_stream_check(void_stream_source hsource)
 
 uint8_t *file_stream_get(void_stream_source hsource)
 {
-	FileWrapper *pfile = (FileWrapper *)hsource;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	return &pfile->buffer[0];
 }
 
@@ -141,7 +141,7 @@ vatek_result file_stream_stop(void_stream_source hsource)
 
 void file_stream_free(void_stream_source hsource)
 {
-	FileWrapper *pfile = (FileWrapper *)hsource;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	fclose(pfile->fhandle);
 	delete pfile;
 }

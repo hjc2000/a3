@@ -46,7 +46,7 @@ public:
 /// <summary>
 ///		对 C 的 FILE 类型的文件句柄的包装
 /// </summary>
-class FileWrapper
+class FileTsStreamSource :public TsStreamSource
 {
 	/// <summary>
 	///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
@@ -182,8 +182,9 @@ public:
 };
 
 #define UDP_SLICE_BUF_NUMS		32
-struct UdpTsStreamSource
+class UdpTsStreamSource :public TsStreamSource
 {
+public:
 	void_cross_socket hsocket;
 	void_cross_thread hrecv;
 	HANDLE hlock;

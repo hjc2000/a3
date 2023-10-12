@@ -1,6 +1,6 @@
 #include "stream_handle.h"
 
-struct FileWrapper
+struct FileTsStreamSource
 {
 	cstream_handler handle;
 	int32_t packet_len;
@@ -11,7 +11,7 @@ struct FileWrapper
 	uint32_t tick;
 };
 
-extern vatek_result file_lock(FileWrapper *pfile);
+extern vatek_result file_lock(FileTsStreamSource *pfile);
 extern vatek_result file_check_sync(FILE *hfile, int32_t pos, int32_t offset);
 
 extern vatek_result cstream_file_start(hcstream hstream);
@@ -22,12 +22,12 @@ extern void cstream_file_close(hcstream hstream);
 
 vatek_result cross_stream_file_get(const char *filename, cstream_handler * *pcstream)
 {
-	FileWrapper *pfile = (FileWrapper *)malloc(sizeof(FileWrapper));
+	FileTsStreamSource *pfile = (FileTsStreamSource *)malloc(sizeof(FileTsStreamSource));
 	vatek_result nres = vatek_memfail;
 
 	if (pfile)
 	{
-		memset(pfile, 0, sizeof(FileWrapper));
+		memset(pfile, 0, sizeof(FileTsStreamSource));
 		pfile->fhandle = fopen(filename, "rb");
 		nres = vatek_format;
 		if (pfile->fhandle)
@@ -56,7 +56,7 @@ vatek_result cross_stream_file_get(const char *filename, cstream_handler * *pcst
 
 vatek_result cstream_file_start(hcstream hstream)
 {
-	FileWrapper *pfile = (FileWrapper *)hstream;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hstream;
 	if (pfile->fhandle)
 	{
 		cross_os_sleep(1000);					//wait A3 chip ready
@@ -68,7 +68,7 @@ vatek_result cstream_file_start(hcstream hstream)
 
 uint32_t cstream_file_get_bitrate(hcstream hstream)
 {
-	FileWrapper *pfile = (FileWrapper *)hstream;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hstream;
 	int32_t eclipse = cross_os_get_tick_ms() - pfile->tick;
 	if (eclipse)
 	{
@@ -82,7 +82,7 @@ uint32_t cstream_file_get_bitrate(hcstream hstream)
 
 vatek_result cstream_file_get_slice(hcstream hstream, uint8_t **pslice)
 {
-	FileWrapper *pfile = (FileWrapper *)hstream;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hstream;
 	int32_t pos = 0;
 	uint8_t *ptr = &pfile->buffer[0];
 	vatek_result nres = vatek_success;
@@ -119,7 +119,7 @@ vatek_result cstream_file_get_slice(hcstream hstream, uint8_t **pslice)
 
 void cstream_file_stop(hcstream hstream)
 {
-	FileWrapper *pfile = (FileWrapper *)hstream;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hstream;
 	if (pfile->fhandle)
 	{
 
@@ -128,7 +128,7 @@ void cstream_file_stop(hcstream hstream)
 
 void cstream_file_close(hcstream hstream)
 {
-	FileWrapper *pfile = (FileWrapper *)hstream;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hstream;
 	cstream_file_stop(hstream);
 	if (pfile->fhandle)
 	{
@@ -138,7 +138,7 @@ void cstream_file_close(hcstream hstream)
 	free(pfile);
 }
 
-vatek_result file_lock(FileWrapper *pfile)
+vatek_result file_lock(FileTsStreamSource *pfile)
 {
 	vatek_result nres = vatek_badstatus;
 	uint8_t sync;
