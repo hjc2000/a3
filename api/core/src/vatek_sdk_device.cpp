@@ -371,7 +371,7 @@ vatek_result vatek_device_stream_write(void_vatek_chip hchip, uint8_t *pbuf, int
 {
 	vatek_result nres = vatek_badstatus;
 	vatek_device *pvatek = (vatek_device *)hchip;
-	usb_handle * hcross = (usb_handle *)pvatek->cross->hcross;
+	usb_handle_list_node * hcross = (usb_handle_list_node *)pvatek->cross->hcross;
 	cross_stream *pstream = pvatek->cross->stream;
 	if (pvatek->streammode == stream_mode_output)
 	{
@@ -385,7 +385,7 @@ vatek_result vatek_device_stream_stop(void_vatek_chip hchip)
 {
 	vatek_result nres = vatek_badstatus;
 	vatek_device *pvatek = (vatek_device *)hchip;
-	usb_handle * hcross = (usb_handle *)pvatek->cross->hcross;
+	usb_handle_list_node * hcross = (usb_handle_list_node *)pvatek->cross->hcross;
 	cross_stream *pstream = pvatek->cross->stream;
 
 	if (pvatek->streammode != stream_mode_idle)
@@ -406,7 +406,7 @@ vatek_result vatek_device_usbbulk_send(void_vatek_chip hchip, usbbulk_command * 
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
-		usb_handle * husb = pvatek->cross->hcross;
+		usb_handle_list_node * husb = pvatek->cross->hcross;
 		cross_usbbulk *pbulk = pvatek->cross->bulk;
 
 		nres = pbulk->send_command(husb, pcmd);
@@ -451,7 +451,7 @@ vatek_result vatek_device_usbbulk_get_result(void_vatek_chip hchip, usbbulk_resu
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
-		usb_handle * husb = pvatek->cross->hcross;
+		usb_handle_list_node * husb = pvatek->cross->hcross;
 		cross_usbbulk *pbulk = pvatek->cross->bulk;
 		nres = pbulk->get_result(husb, presult);
 	}
@@ -465,7 +465,7 @@ vatek_result vatek_device_usbbulk_write(void_vatek_chip hchip, uint8_t *pbuf, in
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
-		usb_handle * husb = pvatek->cross->hcross;
+		usb_handle_list_node * husb = pvatek->cross->hcross;
 		cross_usbbulk *pbulk = pvatek->cross->bulk;
 		nres = pbulk->write(husb, pbuf, len);
 	}
@@ -479,7 +479,7 @@ vatek_result vatek_device_usbbulk_read(void_vatek_chip hchip, uint8_t *pbuf, int
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
-		usb_handle * husb = pvatek->cross->hcross;
+		usb_handle_list_node * husb = pvatek->cross->hcross;
 		cross_usbbulk *pbulk = pvatek->cross->bulk;
 		nres = pbulk->read(husb, pbuf, len);
 	}
@@ -493,7 +493,7 @@ vatek_result vatek_device_usbbulk_get_size(void_vatek_chip hchip)
 	vatek_result nres = vatek_unsupport;
 	if (pvatek->cross->bulk)
 	{
-		usb_handle * husb = pvatek->cross->hcross;
+		usb_handle_list_node * husb = pvatek->cross->hcross;
 		cross_usbbulk *pbulk = pvatek->cross->bulk;
 		nres = pbulk->get_size(husb);
 	}
