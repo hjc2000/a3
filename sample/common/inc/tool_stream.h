@@ -6,6 +6,7 @@
 #include "../inc/tool_tspacket.h"
 #include<memory>
 #include<functional>
+#include<cross_os_api.h>
 
 using namespace std;
 
@@ -27,9 +28,8 @@ using namespace std;
 typedef void *void_stream_source;
 
 /// <summary>
-///		ts 流源。内部定义了一个 void_stream_source 类型的字段和一些函数指针。
-///		这些函数指针的第一个参数全部是 void_stream_source hsource。
-///		这个结构体就是在模仿 C++ 的类。
+///		ts 流源。
+///		* ts 流源有：文件流源、UDP 流源。具体的流源派生此类。
 /// </summary>
 class TsStreamSource
 {
@@ -179,6 +179,28 @@ public:
 				return vatek_timeout;
 		}
 	}
+};
+
+#define UDP_SLICE_BUF_NUMS		32
+struct UdpTsStreamSource
+{
+	void_cross_socket hsocket;
+	void_cross_thread hrecv;
+	HANDLE hlock;
+	int32_t buf_rptr;
+	int32_t buf_wptr;
+
+	/// <summary>
+	///		定义一个二维数组。因为二维数组内存上是连续的，所以可以当成长度为
+	///		UDP_SLICE_BUF_NUMS * CHIP_STREAM_SLICE_LEN 的一维数组使用。这是用来接收 UDP 流
+	///		的缓冲区。
+	/// </summary>
+	uint8_t buf_pool[UDP_SLICE_BUF_NUMS][CHIP_STREAM_SLICE_LEN];
+
+	/// <summary>
+	///		线程函数当前是否在执行
+	/// </summary>
+	int32_t isrunning;
 };
 
 /// <summary>
