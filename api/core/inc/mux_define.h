@@ -324,58 +324,50 @@ typedef struct _mux_channel
 
 typedef mux_channel *Pmux_channel;
 
-#ifdef __cplusplus
-extern "C" {
-	#endif
-
-	static inline uint32_t mux_clock_get_eclipse(Pmux_clock_tick pclk0, Pmux_clock_tick pclk1)
+static inline uint32_t mux_clock_get_eclipse(Pmux_clock_tick pclk0, Pmux_clock_tick pclk1)
+{
+	if (pclk0->_90KHz > pclk1->_90KHz)
 	{
-		if (pclk0->_90KHz > pclk1->_90KHz)
-		{
-			uint32_t ntick = (uint32_t)((((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) + pclk1->_90KHz);
-			ntick *= 300;
-			ntick += (300 - pclk0->_27MHz) + pclk1->_27MHz;
-			return ntick;
-		}
-		else
-		{
-			uint32_t ntick = (uint32_t)(pclk1->_90KHz - pclk0->_90KHz) * 300;
-			int32_t n27 = pclk1->_27MHz - pclk0->_27MHz;
-			return ntick + n27;
-		}
+		uint32_t ntick = (uint32_t)((((uint64_t)0x1FFFFFFFFL) - pclk0->_90KHz) + pclk1->_90KHz);
+		ntick *= 300;
+		ntick += (300 - pclk0->_27MHz) + pclk1->_27MHz;
+		return ntick;
 	}
-
-	static inline void mux_clock_append(Pmux_clock_tick pclk, uint32_t t27mhz)
+	else
 	{
-		pclk->_90KHz += t27mhz / 300;
-		pclk->_27MHz += t27mhz % 300;
-		pclk->_90KHz += pclk->_27MHz / 300;
-		pclk->_27MHz %= 300;
+		uint32_t ntick = (uint32_t)(pclk1->_90KHz - pclk0->_90KHz) * 300;
+		int32_t n27 = pclk1->_27MHz - pclk0->_27MHz;
+		return ntick + n27;
 	}
-
-	static inline void mux_clock_append_clock(Pmux_clock_tick pclk, Pmux_clock_tick pclkappend)
-	{
-		pclk->_90KHz += pclkappend->_90KHz;
-		pclk->_27MHz += pclkappend->_27MHz;
-		pclk->_90KHz += pclk->_27MHz / 300;
-		pclk->_27MHz %= 300;
-	}
-
-	static inline uint32_t mux_clock_get_ms(Pmux_clock_tick pclk)
-	{
-		return (uint32_t)(pclk->_90KHz / 90);
-	}
-
-	static inline void mux_time_append_ns(Pmux_time_tick ptime, uint32_t ns)
-	{
-		ptime->ms += ns / 1000000;
-		ptime->ns += ns % 1000000;
-		ptime->ms += ptime->ns / 1000000;
-		ptime->ns %= 1000000;
-	}
-
-	#ifdef __cplusplus
 }
-#endif
+
+static inline void mux_clock_append(Pmux_clock_tick pclk, uint32_t t27mhz)
+{
+	pclk->_90KHz += t27mhz / 300;
+	pclk->_27MHz += t27mhz % 300;
+	pclk->_90KHz += pclk->_27MHz / 300;
+	pclk->_27MHz %= 300;
+}
+
+static inline void mux_clock_append_clock(Pmux_clock_tick pclk, Pmux_clock_tick pclkappend)
+{
+	pclk->_90KHz += pclkappend->_90KHz;
+	pclk->_27MHz += pclkappend->_27MHz;
+	pclk->_90KHz += pclk->_27MHz / 300;
+	pclk->_27MHz %= 300;
+}
+
+static inline uint32_t mux_clock_get_ms(Pmux_clock_tick pclk)
+{
+	return (uint32_t)(pclk->_90KHz / 90);
+}
+
+static inline void mux_time_append_ns(Pmux_time_tick ptime, uint32_t ns)
+{
+	ptime->ms += ns / 1000000;
+	ptime->ns += ns % 1000000;
+	ptime->ms += ptime->ns / 1000000;
+	ptime->ns %= 1000000;
+}
 
 #endif
