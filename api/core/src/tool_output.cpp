@@ -51,7 +51,7 @@ typedef struct _modoutput_clock
 	}_h;
 }modoutput_clock, *Pmodoutput_clock;
 
-vatek_result tool_output_clock_create(Pmodulator_param pmod, houtput_clock *houtclk)
+vatek_result tool_output_clock_create(modulator_param * pmod, houtput_clock *houtclk)
 {
 	vatek_result nres = vatek_memfail;
 	Pmodoutput_clock pout = (Pmodoutput_clock)malloc(sizeof(modoutput_clock));
@@ -64,7 +64,7 @@ vatek_result tool_output_clock_create(Pmodulator_param pmod, houtput_clock *hout
 	return nres;
 }
 
-vatek_result tool_output_clock_create_mempool(Pmodulator_param pmod, Pth_mempool pmem, houtput_clock *houtclk)
+vatek_result tool_output_clock_create_mempool(modulator_param * pmod, Pth_mempool pmem, houtput_clock *houtclk)
 {
 	vatek_result nres = vatek_memfail;
 	Pmodoutput_clock pout = (Pmodoutput_clock)th_mempool_malloc(pmem, sizeof(modoutput_clock));
@@ -77,7 +77,7 @@ vatek_result tool_output_clock_create_mempool(Pmodulator_param pmod, Pth_mempool
 	return nres;
 }
 
-vatek_result tool_output_clock_config(houtput_clock houtclk, Pmodulator_param pmod)
+vatek_result tool_output_clock_config(houtput_clock houtclk, modulator_param * pmod)
 {
 	Pmodoutput_clock pout = (Pmodoutput_clock)houtclk;
 	int32_t ismalloc = pout->ismalloc;

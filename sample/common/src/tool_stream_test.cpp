@@ -30,7 +30,7 @@ extern vatek_result test_stream_stop(void_stream_source hsource);
 /// <param name="hsource"></param>
 extern void test_stream_free(void_stream_source hsource);
 
-vatek_result stream_source_test_get(Pmodulator_param pmod, ts_stream_source *stream_source)
+vatek_result stream_source_test_get(modulator_param * pmod, ts_stream_source *stream_source)
 {
 	uint32_t bitrate = modulator_param_get_bitrate(pmod);
 	handle_test *ptest = (handle_test *)malloc(sizeof(handle_test));

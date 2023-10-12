@@ -33,8 +33,8 @@ extern vatek_result section_get_chip_config(Pbufstream pstream, Pchip_config pcf
 extern vatek_result section_put_modulation_config(Pbufstream pstream, Pmodulation_config pmod);
 extern vatek_result section_get_modulation_config(Pbufstream pstream, Pmodulation_config pmod);
 
-extern vatek_result section_put_modulator(Pbufstream pstream, Pmodulator_param pmod);
-extern vatek_result section_get_modulator(Pbufstream pstream, Pmodulator_param pmod);
+extern vatek_result section_put_modulator(Pbufstream pstream, modulator_param * pmod);
+extern vatek_result section_get_modulator(Pbufstream pstream, modulator_param * pmod);
 
 vatek_result storage_section_check_tag(uint8_t *psection, uint32_t *tag, uint32_t *sectionnums)
 {
@@ -545,7 +545,7 @@ vatek_result section_get_ui_props(Pbufstream pstream, const Pui_prop_item puipro
 	return nres;
 }
 
-vatek_result section_put_modulator(Pbufstream pstream, Pmodulator_param pmod)
+vatek_result section_put_modulator(Pbufstream pstream, modulator_param * pmod)
 {
 	vatek_result nres = section_put_ui_props(pstream, _ui_struct(modulator_param), (uint8_t *)pmod);
 	if (is_vatek_success(nres))
@@ -555,7 +555,7 @@ vatek_result section_put_modulator(Pbufstream pstream, Pmodulator_param pmod)
 	return nres;
 }
 
-vatek_result section_get_modulator(Pbufstream pstream, Pmodulator_param pmod)
+vatek_result section_get_modulator(Pbufstream pstream, modulator_param * pmod)
 {
 	vatek_result nres = section_get_ui_props(pstream, _ui_struct(modulator_param), (uint8_t *)pmod);
 	if (is_vatek_success(nres))

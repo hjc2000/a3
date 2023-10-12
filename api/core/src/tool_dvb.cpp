@@ -43,12 +43,12 @@ static const uint32_t dvb_t_sb[] = { _DVBT_SB(5),_DVBT_SB(6),_DVBT_SB(7),_DVBT_S
 #define _crsymbol(p)			(_crsymbol_base(p) * DVB_T_OFDMFRAME_SYMBOL * DVB_T_SUPERFRAME_OFDMFRAME)
 #define _crdata(p)				(_crdata_base(p) * DVB_T_OFDMFRAME_SYMBOL * DVB_T_SUPERFRAME_OFDMFRAME)
 
-vatek_result tool_dvb_t_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe)
+vatek_result tool_dvb_t_superframe_reset(modulator_param * pmod, Pofdm_frame pframe)
 {
 	vatek_result nres = tool_dvb_t_check_param(pmod);
 	if (is_vatek_success(nres))
 	{
-		Pdvb_t_param pdvb = &pmod->mod.dvb_t;
+		dvb_t_param * pdvb = &pmod->mod.dvb_t;
 		uint32_t bitrate = _crdata(pdvb) * dvb_t_qam_bits[pdvb->constellation];
 		bitrate = ((bitrate * CR_RATE[pdvb->coderate][0]) / CR_RATE[pdvb->coderate][1]);
 		bitrate = (bitrate * 188) / 204;
@@ -59,12 +59,12 @@ vatek_result tool_dvb_t_superframe_reset(Pmodulator_param pmod, Pofdm_frame pfra
 	return nres;
 }
 
-vatek_result tool_dvb_t_check_param(Pmodulator_param pmod)
+vatek_result tool_dvb_t_check_param(modulator_param * pmod)
 {
 	vatek_result nres = vatek_badparam;
 	if (pmod->type == modulator_dvb_t)
 	{
-		Pdvb_t_param pdvb = &pmod->mod.dvb_t;
+		dvb_t_param * pdvb = &pmod->mod.dvb_t;
 		if (is_dvb_t_valid_bw(pmod->bandwidth_symbolrate) &&
 			is_constellation_dvb_t(pdvb->constellation) &&
 			is_base_coderate(pdvb->coderate) &&
@@ -74,12 +74,12 @@ vatek_result tool_dvb_t_check_param(Pmodulator_param pmod)
 	return nres;
 }
 
-uint32_t tool_dvb_t_get_bitrate(Pmodulator_param pmod)
+uint32_t tool_dvb_t_get_bitrate(modulator_param * pmod)
 {
 	vatek_result nres = tool_dvb_t_check_param(pmod);
 	if (is_vatek_success(nres))
 	{
-		Pdvb_t_param pdvb = &pmod->mod.dvb_t;
+		dvb_t_param * pdvb = &pmod->mod.dvb_t;
 		uint32_t bitrate = _crdata(pdvb);
 		bitrate *= dvb_t_qam_bits[pdvb->constellation];
 		bitrate = ((bitrate * CR_RATE[pdvb->coderate][0]) / CR_RATE[pdvb->coderate][1]);

@@ -29,7 +29,7 @@
 #include <tool_ofdm.h>
 #include <ui_props_modulator.h>
 
-vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
+vatek_result modulator_param_reset(modulator_type type, modulator_param * pmod)
 {
 	Pofdm_modulation pofdm = NULL;
 	vatek_result nres = tool_ofdm_get_modulation(type, &pofdm);
@@ -57,7 +57,7 @@ vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 	return nres;
 }
 
-vatek_result modulator_param_reset_dvbt2(modulator_type type, Pmodulator_param pmod)
+vatek_result modulator_param_reset_dvbt2(modulator_type type, modulator_param * pmod)
 {
 	vatek_result nres = vatek_success;
 
@@ -83,7 +83,7 @@ const Pui_prop_item modulator_param_get_ui_props(modulator_type type)
 	return NULL;
 }
 
-vatek_result modulator_param_set(vatek_device * hchip, Pmodulator_param pmod)
+vatek_result modulator_param_set(vatek_device * hchip, modulator_param * pmod)
 {
 	Pofdm_modulation pofdm = NULL;
 	vatek_result nres = tool_ofdm_get_modulation(pmod->type, &pofdm);
@@ -96,7 +96,7 @@ vatek_result modulator_param_set(vatek_device * hchip, Pmodulator_param pmod)
 	return nres;
 }
 
-vatek_result modulator_param_get(vatek_device * hchip, Pmodulator_param pmod)
+vatek_result modulator_param_get(vatek_device * hchip, modulator_param * pmod)
 {
 	vatek_result nres = ui_props_read_hal(hchip, _ui_struct(modulator_param), (uint8_t *)pmod);
 	if (is_vatek_success(nres))
@@ -109,7 +109,7 @@ vatek_result modulator_param_get(vatek_device * hchip, Pmodulator_param pmod)
 	return nres;
 }
 
-uint32_t modulator_param_get_bitrate(Pmodulator_param pmod)
+uint32_t modulator_param_get_bitrate(modulator_param * pmod)
 {
 	Pofdm_modulation pofdm = NULL;
 	vatek_result nres = tool_ofdm_get_modulation(pmod->type, &pofdm);

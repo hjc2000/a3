@@ -39,8 +39,8 @@
 #define VSB_FIELD_PACKET_NUMS	(VSB_FIELD_SEGMENT_NUMS - 1)
 #define VSB_FRAME_PACKET_NUMS	(VSB_FIELD_PACKET_NUMS * VSB_FRAME_FIELD_NUMS)
 
-HAL_API vatek_result tool_8vsb_vsbframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
-HAL_API uint32_t tool_atsc_get_bitrate(Pmodulator_param pmod);
-HAL_API vatek_result tool_atsc_check_param(Pmodulator_param pmod);
+HAL_API vatek_result tool_8vsb_vsbframe_reset(modulator_param * pmod, Pofdm_frame pframe);
+HAL_API uint32_t tool_atsc_get_bitrate(modulator_param * pmod);
+HAL_API vatek_result tool_atsc_check_param(modulator_param * pmod);
 
 #endif

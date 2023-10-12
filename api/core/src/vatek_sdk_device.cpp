@@ -184,7 +184,7 @@ vatek_result vatek_device_start_sine(vatek_device * hchip, uint32_t freqkhz)
 	return nres;
 }
 
-vatek_result vatek_device_start_test(vatek_device * hchip, Pmodulator_param pmod, uint32_t freqkhz)
+vatek_result vatek_device_start_test(vatek_device * hchip, modulator_param * pmod, uint32_t freqkhz)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	chip_info *pinfo = vatek_device_get_info(hchip);
@@ -328,7 +328,7 @@ vatek_result vatek_device_calibration_save(vatek_device * hchip, Pcalibration_pa
 	return nres;
 }
 
-vatek_result vatek_device_stream_start(vatek_device * hchip, Pmodulator_param pmod, uint32_t stream_mode)
+vatek_result vatek_device_stream_start(vatek_device * hchip, modulator_param * pmod, uint32_t stream_mode)
 {
 	vatek_device *pvatek = (vatek_device *)hchip;
 	cross_stream *pstream = pvatek->cross->stream;

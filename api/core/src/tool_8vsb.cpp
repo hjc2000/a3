@@ -63,7 +63,7 @@
 #define VSBFRAME_SYMBOLRATE			((VSB_SEGMENT_SB_NUMS * VSB_FIELD_SEGMENT_NUMS) * VSB_FRAME_FIELD_NUMS)
 #define VSBATSC_BITRATE				19392550
 
-vatek_result tool_8vsb_vsbframe_reset(Pmodulator_param pmod, Pofdm_frame pframe)
+vatek_result tool_8vsb_vsbframe_reset(modulator_param * pmod, Pofdm_frame pframe)
 {
 	vatek_result nres = tool_atsc_check_param(pmod);
 	if (is_vatek_success(nres))
@@ -78,7 +78,7 @@ vatek_result tool_8vsb_vsbframe_reset(Pmodulator_param pmod, Pofdm_frame pframe)
 
 #if 0
 
-vatek_result tool_8vsb_get_vsbframe_reset(Pmodulator_param pmod, Pvsb_dataframe pvsb)
+vatek_result tool_8vsb_get_vsbframe_reset(modulator_param * pmod, Pvsb_dataframe pvsb)
 {
 	vatek_result nres = tool_atsc_check_param(pmod);
 	if (is_vatek_success(nres))
@@ -103,13 +103,13 @@ void tool_8vsb_append_vsbframe(Pvsb_dataframe pvsb, Pmux_clock_tick pclk)
 
 #endif
 
-uint32_t tool_atsc_get_bitrate(Pmodulator_param pmod)
+uint32_t tool_atsc_get_bitrate(modulator_param * pmod)
 {
 	if(pmod->type == modulator_atsc)return VSBATSC_BITRATE;
 	return 0;
 }
 
-vatek_result tool_atsc_check_param(Pmodulator_param pmod)
+vatek_result tool_atsc_check_param(modulator_param * pmod)
 {
 	if (pmod->type == modulator_atsc)return vatek_success;
 	return vatek_badparam;

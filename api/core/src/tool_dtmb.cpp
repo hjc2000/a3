@@ -43,12 +43,12 @@ const uint8_t dtmb_fftbits[] = { 2,4,6,2,5, };
 #define _crframe(p)		((DTMB_FRAME_CRBASE + dtmb_framehdr[p->framesync]) * dtmb_framelen[p->framesync])
 #define _crdata(p)		(((DTMB_FRAME_CRDATA * dtmb_coderate[p->coderate]) / DTMB_CODE_BASE) * dtmb_framelen[p->framesync])
 
-vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe)
+vatek_result tool_dtmb_superframe_reset(modulator_param * pmod, Pofdm_frame pframe)
 {
 	vatek_result nres = tool_dtmb_check_param(pmod);
 	if (is_vatek_success(nres))
 	{
-		Pdtmb_param pdtmb = &pmod->mod.dtmb;
+		dtmb_param * pdtmb = &pmod->mod.dtmb;
 		uint32_t symbolrate = DTMB_6MHZ;
 		uint32_t bitrate = _crdata(pdtmb) * dtmb_fftbits[pdtmb->constellation];
 		if (pmod->bandwidth_symbolrate == 8)
@@ -60,12 +60,12 @@ vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pofdm_frame pfram
 	return nres;
 }
 
-uint32_t tool_dtmb_get_bitrate(Pmodulator_param pmod)
+uint32_t tool_dtmb_get_bitrate(modulator_param * pmod)
 {
 	vatek_result nres = tool_dtmb_check_param(pmod);
 	if (is_vatek_success(nres))
 	{
-		Pdtmb_param pdtmb = &pmod->mod.dtmb;
+		dtmb_param * pdtmb = &pmod->mod.dtmb;
 		uint32_t sb = DTMB_6MHZ;
 		if (pmod->bandwidth_symbolrate == 8)sb = DTMB_8MHZ;
 		int32_t pktlen = (_crdata(pdtmb) * dtmb_fftbits[pdtmb->constellation]);
@@ -74,12 +74,12 @@ uint32_t tool_dtmb_get_bitrate(Pmodulator_param pmod)
 	return nres;
 }
 
-vatek_result tool_dtmb_check_param(Pmodulator_param pmod)
+vatek_result tool_dtmb_check_param(modulator_param * pmod)
 {
 	vatek_result nres = vatek_badparam;
 	if (pmod->type == modulator_dtmb)
 	{
-		Pdtmb_param pdtmb = &pmod->mod.dtmb;
+		dtmb_param * pdtmb = &pmod->mod.dtmb;
 		if (is_dtmb_vaild_bw(pmod->bandwidth_symbolrate) &&
 			is_constellation_dtmb(pdtmb->constellation) &&
 			is_dtmb_carrier_mode(pdtmb->carriermode) &&

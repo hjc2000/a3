@@ -92,7 +92,7 @@ extern uint32_t cstream_mux_get_bitrate(hcstream hstream);
 extern void cstream_mux_stop(hcstream hstream);
 extern void cstream_mux_close(hcstream hstream);
 
-vatek_result cross_stream_open_mux(Pmodulator_param pmod, hcross_stream* hcstream)
+vatek_result cross_stream_open_mux(modulator_param * pmod, hcross_stream* hcstream)
 {
 	vatek_result nres = vatek_memfail;
 	Pcstream_mux pmux = (Pcstream_mux)malloc(sizeof(cstream_mux) + CSTREAM_MUX_MEMPOOL_SIZE);

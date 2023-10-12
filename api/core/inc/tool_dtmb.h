@@ -49,16 +49,16 @@ typedef dtmb_superframe* Pdtmb_superframe;
 extern "C" {
 #endif
 
-	HAL_API vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
+	HAL_API vatek_result tool_dtmb_superframe_reset(modulator_param * pmod, Pofdm_frame pframe);
 
 #if 0
-	HAL_API vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pdtmb_superframe psframe);
+	HAL_API vatek_result tool_dtmb_superframe_reset(modulator_param * pmod, Pdtmb_superframe psframe);
 	HAL_API vatek_result tool_dtmb_superframe_get_tick(Pdtmb_superframe psframe, int32_t pktpos);
 	HAL_API void tool_dtmb_superframe_append_frame(Pdtmb_superframe psframe, Pmux_clock_tick pclk);
 #endif
 
-	HAL_API uint32_t tool_dtmb_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_dtmb_check_param(Pmodulator_param pmod);
+	HAL_API uint32_t tool_dtmb_get_bitrate(modulator_param * pmod);
+	HAL_API vatek_result tool_dtmb_check_param(modulator_param * pmod);
 
 #ifdef __cplusplus
 }

@@ -45,9 +45,9 @@
 extern "C" {
 #endif
 
-	HAL_API vatek_result tool_j83_j83frame_reset(Pmodulator_param pmod, Pofdm_frame pframe);
-	HAL_API uint32_t tool_j83_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_j83_check_param(Pmodulator_param pmod);
+	HAL_API vatek_result tool_j83_j83frame_reset(modulator_param * pmod, Pofdm_frame pframe);
+	HAL_API uint32_t tool_j83_get_bitrate(modulator_param * pmod);
+	HAL_API vatek_result tool_j83_check_param(modulator_param * pmod);
 
 #ifdef __cplusplus
 }

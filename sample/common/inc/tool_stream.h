@@ -5,6 +5,7 @@
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 #include<memory>
+#include<functional>
 
 using namespace std;
 
@@ -25,12 +26,6 @@ using namespace std;
 /// </summary>
 typedef void *void_stream_source;
 
-typedef vatek_result(*fpstream_source_start)(void_stream_source hsource);
-typedef vatek_result(*fpstream_source_check)(void_stream_source hsource);
-typedef uint8_t *(*fpstream_source_get)(void_stream_source hsource);
-typedef vatek_result(*fpstream_source_stop)(void_stream_source hsource);
-typedef void(*fpstream_source_free)(void_stream_source hsource);
-
 struct handle_test
 {
 	mux_time_tick time;
@@ -48,11 +43,12 @@ class ts_stream_source
 {
 public:
 	void_stream_source hsource = nullptr;
-	fpstream_source_start start;
-	fpstream_source_check check;
-	fpstream_source_get get;
-	fpstream_source_stop stop;
-	fpstream_source_free free;
+
+	function<vatek_result(void_stream_source hsource)> start;
+	function<vatek_result(void_stream_source hsource)> check;
+	function<uint8_t *(void_stream_source hsource)> get;
+	function<vatek_result(void_stream_source hsource)> stop;
+	function<void(void_stream_source hsource)> free;
 };
 
 /// <summary>
@@ -202,7 +198,7 @@ public:
 /// </param>
 /// <param name="psource">此对象会被初始化</param>
 /// <returns></returns>
-vatek_result stream_source_test_get(Pmodulator_param pmod, ts_stream_source *psource);
+vatek_result stream_source_test_get(modulator_param * pmod, ts_stream_source *psource);
 
 /// <summary>
 ///		从文件中获取流

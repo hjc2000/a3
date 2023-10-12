@@ -175,16 +175,16 @@ const uint16_t t2_gi_base[CELL_GI_NUMS][2] =
 	{1,32,},{1,16,},{1,8,},{1,4,},{1,128,},{19,128,},{19,256,},
 };
 
-extern uint32_t t2_get_total_carrier(Pmodulator_param pmod);
-extern uint32_t t2_get_symbol_carrier(Pmodulator_param pmod);
+extern uint32_t t2_get_total_carrier(modulator_param * pmod);
+extern uint32_t t2_get_symbol_carrier(modulator_param * pmod);
 extern int32_t t2_get_frame_cells_data(Pdvb_t2_cell pcell,int32_t sb);
 
-vatek_result tool_dvb_t2_frame_reset(Pmodulator_param pmod, Pdvb_t2_frame pframe)
+vatek_result tool_dvb_t2_frame_reset(modulator_param * pmod, Pdvb_t2_frame pframe)
 {
     vatek_result nres = tool_dvb_t2_check_param(pmod);
 	if (is_vatek_success(nres))
 	{   /* each t2 frame cost tick and packet numbers */
-        Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+        dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
         uint32_t tcarrier = t2_get_total_carrier(pmod);
         uint32_t fcarrier = t2_get_symbol_carrier(pmod);
         uint32_t sbnums = pt2->symbol_nums;
@@ -204,12 +204,12 @@ vatek_result tool_dvb_t2_frame_reset(Pmodulator_param pmod, Pdvb_t2_frame pframe
 	return nres;
 }
 
-uint32_t tool_dvb_t2_get_bitrate(Pmodulator_param pmod)
+uint32_t tool_dvb_t2_get_bitrate(modulator_param * pmod)
 {
     vatek_result nres = tool_dvb_t2_check_param(pmod);
     if (is_vatek_success(nres))
     {
-        Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+        dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
 		uint32_t tcarrier = t2_get_total_carrier(pmod);
         uint32_t fcarrier = t2_get_symbol_carrier(pmod);
         uint32_t sbnums = pt2->symbol_nums;
@@ -224,9 +224,9 @@ uint32_t tool_dvb_t2_get_bitrate(Pmodulator_param pmod)
     return 0;
 }
 
-vatek_result tool_dvb_t2_check_param(Pmodulator_param pmod)
+vatek_result tool_dvb_t2_check_param(modulator_param * pmod)
 {
-    Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+    dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
     vatek_result nres = vatek_success;
     uint32_t nerr = MODPARAM_ERR_NOTSUPPORT;
     if (!is_t2_version(pt2->version) ||
@@ -294,9 +294,9 @@ vatek_result tool_dvb_t2_check_param(Pmodulator_param pmod)
     return nres;
 }
 
-vatek_result tool_dvb_t2_get_symbol_nums(Pmodulator_param pmod, Pdvb_t2_cell pcell)
+vatek_result tool_dvb_t2_get_symbol_nums(modulator_param * pmod, Pdvb_t2_cell pcell)
 {
-	Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+	dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
 	uint32_t totc = t2_get_total_carrier(pmod);
 	uint32_t framec = t2_get_symbol_carrier(pmod);
 
@@ -310,9 +310,9 @@ vatek_result tool_dvb_t2_get_symbol_nums(Pmodulator_param pmod, Pdvb_t2_cell pce
 	return (vatek_result)totc;
 }
 
-vatek_result tool_dvb_t2_get_symbol_nums_max(Pmodulator_param pmod, Pdvb_t2_cell pcell)
+vatek_result tool_dvb_t2_get_symbol_nums_max(modulator_param * pmod, Pdvb_t2_cell pcell)
 {
-	Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+	dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
 	uint32_t totc = t2_get_total_carrier(pmod);
 	uint32_t framec = t2_get_symbol_carrier(pmod);
 
@@ -334,9 +334,9 @@ vatek_result tool_dvb_t2_get_fecblock_nums(Pdvb_t2_cell pcell, int32_t symbolnum
 	return (vatek_result)((cells - pcell->d_l1) / pcell->cells);
 }
 
-void tool_dvb_t2_get_cell(Pmodulator_param pmod, Pdvb_t2_cell pcell)
+void tool_dvb_t2_get_cell(modulator_param * pmod, Pdvb_t2_cell pcell)
 {
-    Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+    dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
 	int32_t fftidx = pt2->fft;
 
 	if (T2_IS_EXTEND_CARRIER(pt2->t2_flags))fftidx += 3;
@@ -386,7 +386,7 @@ int32_t t2_get_frame_cells_data(Pdvb_t2_cell pcell, int32_t sb)
 	return cells;
 }
 
-uint32_t t2_get_total_carrier(Pmodulator_param pmod)
+uint32_t t2_get_total_carrier(modulator_param * pmod)
 {
 	uint32_t base = 131000000;
 	uint32_t dec = 71;
@@ -398,9 +398,9 @@ uint32_t t2_get_total_carrier(Pmodulator_param pmod)
 	return base / dec;
 }
 
-uint32_t t2_get_symbol_carrier(Pmodulator_param pmod)
+uint32_t t2_get_symbol_carrier(modulator_param * pmod)
 {
-	Pdvb_t2_param pt2 = &pmod->mod.dvb_t2;
+	dvb_t2_param * pt2 = &pmod->mod.dvb_t2;
 	uint32_t fftsb = t2_fft_size[pt2->fft] * (t2_gi_base[pt2->guardinterval][0] + t2_gi_base[pt2->guardinterval][1]);
 	return fftsb / t2_gi_base[pt2->guardinterval][1];
 }
@@ -462,16 +462,16 @@ const static uint32_fp T2_GI[] =
     GI_T_32(1.0,32.0),GI_T_32(1.0,16.0),GI_T_32(1.0,8.0),GI_T_32(1.0,4.0),GI_T_32(1.0,128.0),GI_T_32(19.0,128.0),GI_T_32(19.0,256.0),
 };
 
-extern int32_t t2_get_bw_index(Pmodulator_param param);
-extern int32_t t2_get_bch(Pmodulator_param param);
-extern int32_t t2_get_frame_cell(Pmodulator_param param,Pt2_frame_cell pcell);
-extern int32_t t2_get_max_symbol(Pmodulator_param param,Pt2_frame_cell pcell);
-extern int32_t t2_get_max_block(Pmodulator_param param,Pt2_frame_cell pcell,int32_t symbolnum);
+extern int32_t t2_get_bw_index(modulator_param * param);
+extern int32_t t2_get_bch(modulator_param * param);
+extern int32_t t2_get_frame_cell(modulator_param * param,Pt2_frame_cell pcell);
+extern int32_t t2_get_max_symbol(modulator_param * param,Pt2_frame_cell pcell);
+extern int32_t t2_get_max_block(modulator_param * param,Pt2_frame_cell pcell,int32_t symbolnum);
 
-extern int32_t t2_get_symbol_time(Pmodulator_param param,Pt2_frame_cell pcell,int32_t ms);
+extern int32_t t2_get_symbol_time(modulator_param * param,Pt2_frame_cell pcell,int32_t ms);
 
-extern uint32_fp t2_get_ts(Pmodulator_param param);
-extern uint32_fp t2_get_tf(Pmodulator_param param, uint32_t symbolnum);
+extern uint32_fp t2_get_ts(modulator_param * param);
+extern uint32_fp t2_get_tf(modulator_param * param, uint32_t symbolnum);
 extern uint32_fp uint32_fp_div_fp(uint32_fp a, uint32_fp b);
 extern uint32_fp uint32_fp_mul(uint32_fp a, uint32_fp b);
 
@@ -501,7 +501,7 @@ int32_t dvb_t2_get_N_punc(Pt2_frame_param t2frame)
     return N_punc_temp - (n_post - N_post_temp);
 }
 
-int32_t dvb_t2_get_t2_frame_param(Pmodulator_param param, Pt2_frame_param t2frame)
+int32_t dvb_t2_get_t2_frame_param(modulator_param * param, Pt2_frame_param t2frame)
 {
     int32_t res = t2_get_frame_cell(param,&t2frame->cell_param);
     if(res >= 0)
@@ -516,7 +516,7 @@ int32_t dvb_t2_get_t2_frame_param(Pmodulator_param param, Pt2_frame_param t2fram
     return res;
 }
 
-int32_t dvb_t2_get_t2_frame_time_param(Pmodulator_param param,int32_t ms,Pt2_frame_param t2frame)
+int32_t dvb_t2_get_t2_frame_time_param(modulator_param * param,int32_t ms,Pt2_frame_param t2frame)
 {
     int32_t res = t2_get_frame_cell(param,&t2frame->cell_param);
     if(res >= 0 && (ms < 0 || ms >= 250))return -1;
@@ -528,7 +528,7 @@ int32_t dvb_t2_get_t2_frame_time_param(Pmodulator_param param,int32_t ms,Pt2_fra
     }
 }
 
-int32_t dvb_t2_get_t2_frame_result(Pmodulator_param param, Pt2_frame_param pframe, int32_t sbnum, int32_t blknum, Pt2_frame_result presult)
+int32_t dvb_t2_get_t2_frame_result(modulator_param * param, Pt2_frame_param pframe, int32_t sbnum, int32_t blknum, Pt2_frame_result presult)
 {
     uint32_fp tf = 0;
     uint32_fp feclen = (blknum * ((t2_get_bch(param) - 80) - 0));
@@ -560,7 +560,7 @@ int32_t dvb_t2_get_t2_frame_result(Pmodulator_param param, Pt2_frame_param pfram
     return presult->bitrate;
 }
 
-uint32_fp t2_get_ts(Pmodulator_param param)
+uint32_fp t2_get_ts(modulator_param * param)
 {
     uint32_fp tu = T2_TU[t2_get_bw_index(param)][param->mod.dvb_t2.fft];
     uint32_fp gi = T2_GI[param->mod.dvb_t2.guardinterval];
@@ -568,7 +568,7 @@ uint32_fp t2_get_ts(Pmodulator_param param)
     return tu + tu_gi;
 }
 
-uint32_fp t2_get_tf(Pmodulator_param param, uint32_t symbolnum)
+uint32_fp t2_get_tf(modulator_param * param, uint32_t symbolnum)
 {
     /* 
         TF is the duration of a frame, TF = LF*TS + TP1;  
@@ -580,24 +580,24 @@ uint32_fp t2_get_tf(Pmodulator_param param, uint32_t symbolnum)
     return tf + T2_T2048_32[t2_get_bw_index(param)];
 }
 
-int32_t t2_get_bw_index(Pmodulator_param param)
+int32_t t2_get_bw_index(modulator_param * param)
 {
     if (param->bandwidth_symbolrate == 0)return BW_1_7;
     else if (param->bandwidth_symbolrate == 10)return BW_10;
     else return BW_5 + (param->bandwidth_symbolrate - 5);
 }
 
-int32_t t2_get_bch(Pmodulator_param param)
+int32_t t2_get_bch(modulator_param * param)
 {
-    Pdvb_t2_param pdvbt2 = &param->mod.dvb_t2;
+    dvb_t2_param * pdvbt2 = &param->mod.dvb_t2;
     return T2_BCH[pdvbt2->fectype][param->mod.dvb_t2.coderate];
 }
 
-int32_t t2_get_frame_cell(Pmodulator_param param, Pt2_frame_cell pcell)
+int32_t t2_get_frame_cell(modulator_param * param, Pt2_frame_cell pcell)
 {
     int32_t fftidx = param->mod.dvb_t2.fft;
     int32_t ppidx = param->mod.dvb_t2.pilotpattern;
-    Pdvb_t2_param pdvbt2 = &param->mod.dvb_t2;
+    dvb_t2_param * pdvbt2 = &param->mod.dvb_t2;
 
     if (T2_IS_EXTEND_CARRIER(param->mod.dvb_t2.t2_flags))
         fftidx += 3;
@@ -628,7 +628,7 @@ int32_t t2_get_frame_cell(Pmodulator_param param, Pt2_frame_cell pcell)
     return 0;
 }
 
-int32_t t2_get_symbol_time(Pmodulator_param param,Pt2_frame_cell pcell,int32_t ms)
+int32_t t2_get_symbol_time(modulator_param * param,Pt2_frame_cell pcell,int32_t ms)
 {
     uint32_fp ts = t2_get_ts(param);
     uint32_fp maxfs = (ms * FP32_ONE)/1000;
@@ -636,7 +636,7 @@ int32_t t2_get_symbol_time(Pmodulator_param param,Pt2_frame_cell pcell,int32_t m
     return (sbnum >> 1) << 1;
 }
 
-int32_t t2_get_max_symbol(Pmodulator_param param, Pt2_frame_cell pcell)
+int32_t t2_get_max_symbol(modulator_param * param, Pt2_frame_cell pcell)
 {
     uint32_fp ts = t2_get_ts(param);
     uint32_fp maxfs = FP32_F2FP(0.25);
@@ -698,7 +698,7 @@ int32_t t2_get_dummy(Pt2_frame_cell pcell, int32_t symbolnum, int32_t blocknum)
 }
 
 /* symbolnum not include N_P2*/
-int32_t t2_get_max_block(Pmodulator_param param, Pt2_frame_cell pcell, int32_t symbolnum)
+int32_t t2_get_max_block(modulator_param * param, Pt2_frame_cell pcell, int32_t symbolnum)
 {
     int32_t cells = t2_get_cells_c_fc(pcell,symbolnum);
     int32_t D_L1 = t2_get_d_l1(pcell);

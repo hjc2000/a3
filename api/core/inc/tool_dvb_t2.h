@@ -75,15 +75,15 @@ typedef struct _dvb_t2_frame
 extern "C" {
 #endif /* __cplusplus */
 
-    HAL_API vatek_result tool_dvb_t2_frame_reset(Pmodulator_param pmod, Pdvb_t2_frame pframe);
-	HAL_API uint32_t tool_dvb_t2_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_dvb_t2_check_param(Pmodulator_param pmod);
+    HAL_API vatek_result tool_dvb_t2_frame_reset(modulator_param * pmod, Pdvb_t2_frame pframe);
+	HAL_API uint32_t tool_dvb_t2_get_bitrate(modulator_param * pmod);
+	HAL_API vatek_result tool_dvb_t2_check_param(modulator_param * pmod);
 
-    HAL_API void tool_dvb_t2_get_cell(Pmodulator_param pmod, Pdvb_t2_cell pcell);
+    HAL_API void tool_dvb_t2_get_cell(modulator_param * pmod, Pdvb_t2_cell pcell);
 
     /* get t2 max symbol numbers */
-    HAL_API vatek_result tool_dvb_t2_get_symbol_nums_max(Pmodulator_param pmod,Pdvb_t2_cell pcell);
-    HAL_API vatek_result tool_dvb_t2_get_symbol_nums(Pmodulator_param pmod, Pdvb_t2_cell pcell);
+    HAL_API vatek_result tool_dvb_t2_get_symbol_nums_max(modulator_param * pmod,Pdvb_t2_cell pcell);
+    HAL_API vatek_result tool_dvb_t2_get_symbol_nums(modulator_param * pmod, Pdvb_t2_cell pcell);
     HAL_API vatek_result tool_dvb_t2_get_fecblock_nums(Pdvb_t2_cell pcell, int32_t symbolnums);
     HAL_API int32_t tool_dvb_t2_get_L1_size(Pdvb_t2_cell pcell);
 

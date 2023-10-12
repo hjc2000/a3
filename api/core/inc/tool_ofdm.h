@@ -52,8 +52,8 @@ typedef struct _ofdm_position
 
 typedef ofdm_position* Pofdm_position;
 
-typedef vatek_result(*fpofdm_check_param)(Pmodulator_param pmod);
-typedef uint32_t(*fpofdm_get_bitrate)(Pmodulator_param pmod);
+typedef vatek_result(*fpofdm_check_param)(modulator_param * pmod);
+typedef uint32_t(*fpofdm_get_bitrate)(modulator_param * pmod);
 
 typedef struct _ofdm_modulation
 {

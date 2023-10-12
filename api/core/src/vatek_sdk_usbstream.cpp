@@ -94,7 +94,7 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param *
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
 	if (pustream->status == usbstream_status_idle)
 	{
-		Pmodulator_param pmod = &pustream->broadcast.modulator;
+		modulator_param * pmod = &pustream->broadcast.modulator;
 		uint32_t freqmhz = 0;
 
 		nres = vatek_success;

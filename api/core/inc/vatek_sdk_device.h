@@ -59,7 +59,7 @@ extern "C"
 	HAL_API vatek_result vatek_device_open(vatek_device_list *hdevices, int32_t idx, vatek_device **hchip);
 
 	HAL_API vatek_result vatek_device_start_sine(vatek_device *hchip, uint32_t freqkhz);
-	HAL_API vatek_result vatek_device_start_test(vatek_device *hchip, Pmodulator_param pmod, uint32_t freqkhz);
+	HAL_API vatek_result vatek_device_start_test(vatek_device *hchip, modulator_param * pmod, uint32_t freqkhz);
 	HAL_API vatek_result vatek_device_polling(vatek_device *hchip);
 	HAL_API void vatek_device_stop(vatek_device *hchip);
 
@@ -76,7 +76,7 @@ extern "C"
 	HAL_API vatek_result vatek_device_r2_apply(vatek_device *hchip, int r2_power);
 
 	/* used with transform service for usb stream */
-	HAL_API vatek_result vatek_device_stream_start(vatek_device *hchip, Pmodulator_param pmod, uint32_t stream_mode);
+	HAL_API vatek_result vatek_device_stream_start(vatek_device *hchip, modulator_param * pmod, uint32_t stream_mode);
 	HAL_API vatek_result vatek_device_stream_write(vatek_device *hchip, uint8_t *pbuf, int32_t size);
 	HAL_API vatek_result vatek_device_stream_stop(vatek_device *hchip);
 

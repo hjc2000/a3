@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
 	*/
 	#if BROADCAST_RF_TEST
 	// vatek_device_start_sine(hchip, 473000);
-	// vatek_device_start_test(hchip, (Pmodulator_param)&bc_param.mod, 900000);
+	// vatek_device_start_test(hchip, (modulator_param *)&bc_param.mod, 900000);
 
 	r2_param r2param;
 	nres = rfmixer_r2_get_param(hchip, &r2param);

@@ -48,11 +48,11 @@ typedef isdb_t_bts_frame* Pisdb_t_bts_frame;
 extern "C" {
 #endif
 
-	HAL_API vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_frame pbts);
+	HAL_API vatek_result tool_isdb_t_bts_frame_reset(modulator_param * pmod, Pisdb_t_bts_frame pbts);
 	HAL_API vatek_result tool_isdb_t_bts_frame_get_tick(Pisdb_t_bts_frame pbts, int32_t pktpos);
 
-	HAL_API uint32_t tool_isdb_t_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_isdb_t_check_param(Pmodulator_param pmod);
+	HAL_API uint32_t tool_isdb_t_get_bitrate(modulator_param * pmod);
+	HAL_API vatek_result tool_isdb_t_check_param(modulator_param * pmod);
 
 #ifdef __cplusplus
 }

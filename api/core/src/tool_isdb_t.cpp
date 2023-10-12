@@ -43,10 +43,10 @@ const static uint16_t isdb_t_frametime[] = { 53014,54621,57834,64260, };
 #define _crsymbol(p)	((isdb_t_carrier[p->fft] * GI_RATE[p->guardinterval][1])/ GI_RATE[p->guardinterval][0])
 #define _crdata(p)		(ISDB_T_DATA_CARRIER * _fftrate(p) * ISDB_T_SEGMENT_NUMS)
 
-vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_frame pbts)
+vatek_result tool_isdb_t_bts_frame_reset(modulator_param * pmod, Pisdb_t_bts_frame pbts)
 {
 	vatek_result nres = tool_isdb_t_check_param(pmod);
-	Pisdb_t_param pisdb = &pmod->mod.isdb_t;
+	isdb_t_param * pisdb = &pmod->mod.isdb_t;
 	if (is_vatek_success(nres))
 	{
 		int32_t cr_symbol = _crsymbol(pisdb);
@@ -110,12 +110,12 @@ vatek_result tool_isdb_t_bts_frame_get_tick(Pisdb_t_bts_frame pbts, int32_t pktp
 	return (vatek_result)tick;
 }
 
-vatek_result tool_isdb_t_check_param(Pmodulator_param pmod)
+vatek_result tool_isdb_t_check_param(modulator_param * pmod)
 {
 	vatek_result nres = vatek_badparam;
 	if (pmod->type == modulator_isdb_t)
 	{
-		Pisdb_t_param pisdb = &pmod->mod.isdb_t;
+		isdb_t_param * pisdb = &pmod->mod.isdb_t;
 		if (is_base_coderate(pisdb->coderate) &&
 			is_base_guard_interval(pisdb->guardinterval) &&
 			is_base_fft(pisdb->fft) &&
@@ -124,12 +124,12 @@ vatek_result tool_isdb_t_check_param(Pmodulator_param pmod)
 	return nres;
 }
 
-uint32_t tool_isdb_t_get_bitrate(Pmodulator_param pmod)
+uint32_t tool_isdb_t_get_bitrate(modulator_param * pmod)
 {
 	vatek_result nres = tool_isdb_t_check_param(pmod);
 	if (is_vatek_success(nres))
 	{
-		Pisdb_t_param pisdb = &pmod->mod.isdb_t;
+		isdb_t_param * pisdb = &pmod->mod.isdb_t;
 		uint32_t bitrate = _crdata(pisdb) * ISDB_T_BTS_SYMBOLNUMS;
 		bitrate *= isdb_t_qam_bits[pisdb->constellation];
 		bitrate = ((bitrate * CR_RATE[pisdb->coderate][0]) / CR_RATE[pisdb->coderate][1]);

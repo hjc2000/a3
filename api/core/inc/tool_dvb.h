@@ -40,9 +40,9 @@
 extern "C" {
 #endif
 
-    HAL_API vatek_result tool_dvb_t_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
-    HAL_API vatek_result tool_dvb_t_check_param(Pmodulator_param pmod);
-    HAL_API uint32_t tool_dvb_t_get_bitrate(Pmodulator_param pmod);
+    HAL_API vatek_result tool_dvb_t_superframe_reset(modulator_param * pmod, Pofdm_frame pframe);
+    HAL_API vatek_result tool_dvb_t_check_param(modulator_param * pmod);
+    HAL_API uint32_t tool_dvb_t_get_bitrate(modulator_param * pmod);
 
 #ifdef __cplusplus
 }
