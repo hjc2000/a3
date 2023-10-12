@@ -67,7 +67,6 @@ CloseDevice(
 HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node **hlist);
 HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node **hlist);
 HAL_API vatek_result usb_api_ll_list_get_device(usb_handle_list_node *hlist, int32_t idx, usb_handle_list_node **husb);
-HAL_API const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx);
 HAL_API vatek_result usb_api_ll_open(usb_handle_list_node *husb);
 HAL_API vatek_result usb_api_ll_close(usb_handle_list_node *husb);
 HAL_API const char *usb_api_ll_get_name(usb_handle_list_node *husb);
@@ -80,7 +79,6 @@ HAL_API vatek_result usb_api_ll_write(usb_handle_list_node *husb, uint8_t *pbuf,
 HAL_API vatek_result usb_api_ll_read(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len);
 
 /* usb_device control transfer */
-HAL_API vatek_result usb_api_ll_command(usb_handle_list_node *husb, uint8_t cmd, uint32_t param0, uint8_t *rxbuf);
 HAL_API vatek_result usb_api_ll_command_buffer(usb_handle_list_node *husb, uint8_t cmd, uint8_t *pbuf, uint8_t *rxbuf);
 
 HAL_API vatek_result usb_api_ll_bulk_get_size(usb_handle_list_node *husb);
@@ -117,4 +115,60 @@ public:
 			hlist = pnext;
 		}
 	}
+
+	const char *usb_api_ll_list_get_name(int32_t idx)
+	{
+		usb_handle_list_node *husb = NULL;
+		vatek_result nres = usb_api_ll_list_get_device(this, idx, &husb);
+		if (is_vatek_success(nres))
+		{
+			return &((usb_handle_list_node *)husb)->name[0];
+		}
+
+		return NULL;
+	}
+
+	vatek_result usb_api_ll_command(uint8_t cmd, uint32_t param0, uint8_t *rxbuf)
+	{
+		vatek_result nres = vatek_success;
+		uint16_t wval = ((param0 >> 16) << 8) | ((param0 >> 24) & 0xFF);
+		uint16_t widx = ((param0 & 0xFF) << 8) | ((param0 >> 8) & 0xFF);
+
+		if (husb == INVALID_HANDLE_VALUE)
+		{
+			return (vatek_result)FALSE;
+		}
+
+		WINUSB_SETUP_PACKET SetupPacket_tx;
+		WINUSB_SETUP_PACKET SetupPacket_rx;
+
+		ZeroMemory(&SetupPacket_tx, sizeof(WINUSB_SETUP_PACKET));
+		ZeroMemory(&SetupPacket_rx, sizeof(WINUSB_SETUP_PACKET));
+
+		ULONG cbSent = 0;
+
+		//Create the setup packet
+		SetupPacket_tx.RequestType = 0x80 | 0x40;
+		SetupPacket_tx.Request = cmd;
+		SetupPacket_tx.Value = wval;
+		SetupPacket_tx.Index = widx;
+		SetupPacket_tx.Length = 8;
+
+		SetupPacket_rx.RequestType = 0x40;
+		SetupPacket_rx.Request = cmd;
+		SetupPacket_rx.Value = wval;
+		SetupPacket_rx.Index = widx;
+		SetupPacket_rx.Length = 0;
+
+		if (rxbuf != NULL)
+			nres = (vatek_result)WinUsb_ControlTransfer(husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
+		else
+			nres = (vatek_result)WinUsb_ControlTransfer(husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
+
+		if (!is_vatek_success(nres))
+			nres = vatek_hwfail;
+
+		return nres;
+	}
+
 };

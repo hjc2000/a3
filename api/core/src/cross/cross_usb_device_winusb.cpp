@@ -73,17 +73,6 @@ vatek_result usb_api_ll_list_get_device(usb_handle_list_node *hlist, int32_t idx
 	return vatek_badparam;
 }
 
-const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx)
-{
-	usb_handle_list_node *husb = NULL;
-	vatek_result nres = usb_api_ll_list_get_device(hlist, idx, &husb);
-	if (is_vatek_success(nres))
-	{
-		return &((usb_handle_list_node *)husb)->name[0];
-	}
-	return NULL;
-}
-
 vatek_result usb_api_ll_open(usb_handle_list_node *husb)
 {
 	return vatek_success;
@@ -130,12 +119,15 @@ vatek_result usb_api_ll_set_dma(usb_handle_list_node *husb, int32_t isdma)
 	vatek_result nres = vatek_success;
 
 	if (isdma)
-		nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SET_MODE, CLASSV2_MODE_HWDMA, NULL);
-	else nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SET_MODE, CLASSV2_MODE_NORMAL, NULL);
+		nres = husb->usb_api_ll_command(VATCMD_CLASSV2_SET_MODE, CLASSV2_MODE_HWDMA, NULL);
+	else
+		nres = husb->usb_api_ll_command(VATCMD_CLASSV2_SET_MODE, CLASSV2_MODE_NORMAL, NULL);
 
 	if (is_vatek_success(nres))
 		husb->is_dma = isdma;
-	else husb->is_dma = 0;
+	else
+		husb->is_dma = 0;
+
 	return nres;
 }
 
@@ -181,46 +173,6 @@ vatek_result usb_api_ll_read(usb_handle_list_node *husb, uint8_t *pbuf, int32_t 
 		nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, pbuf, len, (PULONG)&rlen, NULL);
 		if (is_vatek_success(nres))nres = (vatek_result)rlen;
 	}
-	return nres;
-}
-
-vatek_result usb_api_ll_command(usb_handle_list_node *husb, uint8_t cmd, uint32_t param0, uint8_t *rxbuf)
-{
-	vatek_result nres = vatek_success;
-	uint16_t wval = ((param0 >> 16) << 8) | ((param0 >> 24) & 0xFF);
-	uint16_t widx = ((param0 & 0xFF) << 8) | ((param0 >> 8) & 0xFF);
-
-	if (husb->husb == INVALID_HANDLE_VALUE)
-	{
-		return (vatek_result)FALSE;
-	}
-
-	WINUSB_SETUP_PACKET SetupPacket_tx;
-	WINUSB_SETUP_PACKET SetupPacket_rx;
-
-	ZeroMemory(&SetupPacket_tx, sizeof(WINUSB_SETUP_PACKET));
-	ZeroMemory(&SetupPacket_rx, sizeof(WINUSB_SETUP_PACKET));
-
-	ULONG cbSent = 0;
-
-	//Create the setup packet
-	SetupPacket_tx.RequestType = 0x80 | 0x40;
-	SetupPacket_tx.Request = cmd;
-	SetupPacket_tx.Value = wval;
-	SetupPacket_tx.Index = widx;
-	SetupPacket_tx.Length = 8;
-
-	SetupPacket_rx.RequestType = 0x40;
-	SetupPacket_rx.Request = cmd;
-	SetupPacket_rx.Value = wval;
-	SetupPacket_rx.Index = widx;
-	SetupPacket_rx.Length = 0;
-
-	if (rxbuf != NULL)
-		nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
-	else nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
-
-	if (!is_vatek_success(nres))nres = vatek_hwfail;
 	return nres;
 }
 
