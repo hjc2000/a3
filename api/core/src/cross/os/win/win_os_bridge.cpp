@@ -332,20 +332,19 @@ vatek_result bridge_device_list_free(win_hid_device_list_node * root_node)
 	return vatek_success;
 }
 
-vatek_result bridge_device_list_get(win_hid_device_list_node *hblist, int32_t idx, void_bridge_device *hbridge)
+vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t idx, void_bridge_device *hbridge)
 {
-	win_hid_device_list_node *proot = (win_hid_device_list_node *)hblist;
 	int32_t nums = 0;
-	while (proot)
+	while (root_node)
 	{
 		if (nums == idx)
 		{
-			*hbridge = proot;
+			*hbridge = root_node;
 			return vatek_success;
 		}
 
 		// 前往链表的下一个节点
-		proot = proot->pnext;
+		root_node = root_node->pnext;
 		nums++;
 	}
 
