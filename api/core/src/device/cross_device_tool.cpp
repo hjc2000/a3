@@ -173,9 +173,11 @@ vatek_result cross_devices_free(cross_device *pcross)
 			}
 
 			if (m_cdevices.usbdevices)
-				usb_api_ll_free_list(m_cdevices.usbdevices);
+				m_cdevices.usbdevices->usb_api_ll_free_list();
+
 			if (m_cdevices.bridges)
 				bridge_device_list_free(m_cdevices.bridges);
+
 			m_cdevices.usbdevices = NULL;
 			m_cdevices.bridges = NULL;
 			m_cdevices.root = NULL;

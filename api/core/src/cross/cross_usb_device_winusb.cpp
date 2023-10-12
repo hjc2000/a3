@@ -11,19 +11,6 @@
 
 const GUID GUID_DEVINTERFACE_USBApplication1 = { 0xDEE824EF, 0x729B, 0x4A0E, {0x9C, 0x14, 0xB7, 0x11, 0x7D, 0x33, 0xA8, 0x17, } };
 
-struct usb_handle_list_node
-{
-	usb_handle_list_node *next;
-	char name[32];
-	WINUSB_INTERFACE_HANDLE *husb;
-	HANDLE lock;
-	int32_t ref;
-	int32_t is_dma;
-	int32_t epsize;
-	int32_t bulksize;
-	uint8_t *none_dmabuf;
-};
-
 extern usbdevice_id *usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len);
 typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
@@ -95,21 +82,6 @@ const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx)
 		return &((usb_handle_list_node *)husb)->name[0];
 	}
 	return NULL;
-}
-
-vatek_result usb_api_ll_free_list(usb_handle_list_node *hlist)
-{
-	while (hlist)
-	{
-		usb_handle_list_node *pnext = hlist->next;
-		WinUsb_Free((WINUSB_INTERFACE_HANDLE *)hlist->husb);
-		cross_os_free_mutex(hlist->lock);
-		free(hlist->none_dmabuf);
-		free(hlist);
-		hlist = pnext;
-	}
-
-	return vatek_success;
 }
 
 vatek_result usb_api_ll_open(usb_handle_list_node *husb)

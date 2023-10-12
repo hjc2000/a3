@@ -68,7 +68,6 @@ HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node *
 HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node **hlist);
 HAL_API vatek_result usb_api_ll_list_get_device(usb_handle_list_node *hlist, int32_t idx, usb_handle_list_node **husb);
 HAL_API const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx);
-HAL_API vatek_result usb_api_ll_free_list(usb_handle_list_node *hlist);
 HAL_API vatek_result usb_api_ll_open(usb_handle_list_node *husb);
 HAL_API vatek_result usb_api_ll_close(usb_handle_list_node *husb);
 HAL_API const char *usb_api_ll_get_name(usb_handle_list_node *husb);
@@ -91,3 +90,31 @@ HAL_API vatek_result usb_api_ll_bulk_write(usb_handle_list_node *husb, uint8_t *
 HAL_API vatek_result usb_api_ll_bulk_read(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len);
 
 #endif
+
+class usb_handle_list_node
+{
+public:
+	usb_handle_list_node *next;
+	char name[32];
+	WINUSB_INTERFACE_HANDLE *husb;
+	HANDLE lock;
+	int32_t ref;
+	int32_t is_dma;
+	int32_t epsize;
+	int32_t bulksize;
+	uint8_t *none_dmabuf;
+
+	void usb_api_ll_free_list()
+	{
+		usb_handle_list_node *hlist = this;
+		while (hlist)
+		{
+			usb_handle_list_node *pnext = hlist->next;
+			WinUsb_Free((WINUSB_INTERFACE_HANDLE *)hlist->husb);
+			cross_os_free_mutex(hlist->lock);
+			free(hlist->none_dmabuf);
+			free(hlist);
+			hlist = pnext;
+		}
+	}
+};
