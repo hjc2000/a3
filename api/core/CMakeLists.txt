@@ -147,18 +147,18 @@ set(core_SRC_DEVICE
     src/device/mux_usbstream.cpp)
 
 set(core_SRC_MUX
-    src/mux/mux_epg.c
-    src/mux/mux_hadnel_playload.c
-    src/mux/mux_handle_broadcast.c
-    src/mux/mux_handle_channel.c
-    src/mux/mux_handle_core.c
-    src/mux/mux_handle_raw.c
-    src/mux/mux_packet_base.c
+    src/mux/mux_epg.cpp
+    src/mux/mux_hadnel_playload.cpp
+    src/mux/mux_handle_broadcast.cpp
+    src/mux/mux_handle_channel.cpp
+    src/mux/mux_handle_core.cpp
+    src/mux/mux_handle_raw.cpp
+    src/mux/mux_packet_base.cpp
     src/mux/mux_packet_pes.cpp
     src/mux/mux_rule.cpp
-    src/mux/mux_spec.c
-    src/mux/mux_time.c
-    src/mux/mux_tool_tick.c)
+    src/mux/mux_spec.cpp
+    src/mux/mux_time.cpp
+    src/mux/mux_tool_tick.cpp)
 
 set(core_SRC_SERVICE
     src/service/service_base.cpp
