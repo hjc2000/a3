@@ -37,13 +37,13 @@ HAL_API int bridge_device_list_enum_usb_with_pid_and_old_pid(win_hid_device_list
 HAL_API vatek_result bridge_device_list_enum_usb(uint16_t vid, uint16_t pid, win_hid_device_list_node **root_node);
 
 /// <summary>
-///		从链表中获取指定索引位置的设备
+///		从链表中 current_node 节点开始，获取 idx 索引位置的设备。
 /// </summary>
-/// <param name="root_node">需要传进来链表的根节点</param>
-/// <param name="idx"></param>
-/// <param name="hbridge"></param>
+/// <param name="current_node">链表的某一个节点</param>
+/// <param name="idx">想要获取的设备的索引。此索引相对于 current_node</param>
+/// <param name="picked_node">获取到的节点</param>
 /// <returns></returns>
-HAL_API vatek_result bridge_device_list_get(win_hid_device_list_node *root_node, int32_t idx, win_hid_device_list_node **hbridge);
+HAL_API vatek_result bridge_device_list_get(win_hid_device_list_node *current_node, int32_t idx, win_hid_device_list_node **picked_node);
 HAL_API const char *bridge_device_list_get_name(win_hid_device_list_node *hblist, int32_t idx);
 
 /// <summary>
@@ -61,7 +61,7 @@ HAL_API const char *bridge_device_get_name(win_hid_device_list_node *hbridge);
 HAL_API vatek_result bridge_device_close(win_hid_device_list_node *hbridge);
 HAL_API void bridge_device_lock_command(win_hid_device_list_node *hbridge);
 HAL_API hid_bridge_cmd *bridge_device_get_command(win_hid_device_list_node *hbridge);
-HAL_API hid_bridge_result * bridge_device_get_result(win_hid_device_list_node *hbridge);
+HAL_API hid_bridge_result *bridge_device_get_result(win_hid_device_list_node *hbridge);
 HAL_API vatek_result bridge_device_send_bridge_command(win_hid_device_list_node *hbridge);
 HAL_API void bridge_device_unlock_command(win_hid_device_list_node *hbridge);
 
