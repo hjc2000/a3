@@ -20,7 +20,7 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// <param name="stream_source"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
-extern vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *psource, usbstream_param *pustream);
+extern vatek_result parser_cmd_source(int32_t argc, char **argv, ts_stream_source *psource, usbstream_param *pustream);
 
 int main(int argc, char *argv[])
 {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
 	vatek_device * hchip = NULL;
 	hvatek_usbstream hustream = NULL;
-	tsstream_source streamsource;
+	ts_stream_source streamsource;
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
 
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 {
-	tsstream_source *ptssource = (tsstream_source *)param;
+	ts_stream_source *ptssource = (ts_stream_source *)param;
 	vatek_result nres = ptssource->check(ptssource->hsource);
 	if (nres > vatek_success)
 	{
@@ -220,7 +220,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
-vatek_result parser_cmd_source(int32_t argc, char **argv, tsstream_source *stream_source, usbstream_param *pustream)
+vatek_result parser_cmd_source(int32_t argc, char **argv, ts_stream_source *stream_source, usbstream_param *pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
 

@@ -51,7 +51,7 @@ extern void commit_write_buffer(tool_handle_udp *pudp);
 extern uint8_t *tool_get_valid_buffer(tool_handle_udp *pudp);
 extern int32_t tool_check_valid_buffer(tool_handle_udp *pudp);
 
-vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource)
+vatek_result stream_source_udp_get(const char *ipaddr, ts_stream_source *psource)
 {
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;
@@ -116,7 +116,9 @@ vatek_result tool_udp_stream_start(void_stream_source hsource)
 				nres = cross_os_disconnect_socket(pudp->hsocket);
 		}
 		else
+		{
 			_disp_err("cross_os_connect_socket fail : %d", nres);
+		}
 	}
 
 	return nres;

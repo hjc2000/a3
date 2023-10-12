@@ -17,7 +17,14 @@ using namespace std;
 // 缓冲区大小除以一个 ts 包的尺寸，得出缓冲区可以储存多少个 ts 包
 #define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN / TS_PACKET_LEN)
 
+/// <summary>
+///		被强转成：
+///		tool_handle_udp *
+///		handle_test *
+///		FileWrapper *
+/// </summary>
 typedef void *void_stream_source;
+
 typedef vatek_result(*fpstream_source_start)(void_stream_source hsource);
 typedef vatek_result(*fpstream_source_check)(void_stream_source hsource);
 typedef uint8_t *(*fpstream_source_get)(void_stream_source hsource);
@@ -37,7 +44,7 @@ struct handle_test
 ///		这些函数指针的第一个参数全部是 void_stream_source hsource。
 ///		这个结构体就是在模仿 C++ 的类。
 /// </summary>
-class tsstream_source
+class ts_stream_source
 {
 public:
 	void_stream_source hsource = nullptr;
@@ -195,7 +202,7 @@ public:
 /// </param>
 /// <param name="psource">此对象会被初始化</param>
 /// <returns></returns>
-vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psource);
+vatek_result stream_source_test_get(Pmodulator_param pmod, ts_stream_source *psource);
 
 /// <summary>
 ///		从文件中获取流
@@ -203,7 +210,7 @@ vatek_result stream_source_test_get(Pmodulator_param pmod, tsstream_source *psou
 /// <param name="file">要打开的文件的路径</param>
 /// <param name="psource"></param>
 /// <returns></returns>
-vatek_result stream_source_file_get(const char *file, tsstream_source *psource);
-vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source *psource);
+vatek_result stream_source_file_get(const char *file, ts_stream_source *psource);
+vatek_result stream_source_udp_get(const char *ipaddr, ts_stream_source *psource);
 
 #endif
