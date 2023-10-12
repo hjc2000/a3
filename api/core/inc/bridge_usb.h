@@ -1,31 +1,3 @@
-//----------------------------------------------------------------------------
-//
-// Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-// THE POSSIBILITY OF SUCH DAMAGE.
-//
-
 #ifndef _BRIDGE_USB_
 #define _BRIDGE_USB_
 
@@ -47,13 +19,13 @@
 #define USB_CMD_UNLOCK				(USB_CMD_LOCK + 1)
 #define USB_CMD_GETSTATUS			(USB_CMD_UNLOCK + 1)
 
-typedef enum _bridge_device_status
+enum bridge_device_status
 {
 	hid_status_idle = 100,
 	hid_status_waitlock = 101,
 	hid_status_locked = 102,
 	hid_status_waitunlock = 103,
-}bridge_device_status;
+};
 
 #define is_current_usb_hid_status(status)  (status >= hid_status_idle && status <= hid_status_waitunlock)
 
@@ -76,23 +48,23 @@ const static char hid_bridge_tag[4] =
 	'v','a','-','1',
 };
 
-typedef struct _bridge_base_param
+struct bridge_base_param
 {
 	uint32_t params[13];
-}bridge_base_param, *Pbridge_base_param;
+};
 
 #define BRIDGE_PARAM_MAX_LEN	52
 
 
 /* each param cost 52 bytes */
 #define TURNKEY_I2C_MAX_BUFFER_LEN 36
-typedef struct _bridge_i2c_param
+struct bridge_i2c_param
 {
 	uint32_t handle;
 	uint32_t address;
 	uint32_t len;
 	uint8_t buffer[TURNKEY_I2C_MAX_BUFFER_LEN];
-}bridge_i2c_param, *Pbridge_i2c_param;
+};
 
 
 #define BRIDGE_MOD_BUFFER_LEN   32
