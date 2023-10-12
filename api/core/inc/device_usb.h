@@ -44,18 +44,18 @@ typedef enum _usbdevice_type
 	usb_type_all = 2,
 }usbdevice_type;
 
-typedef struct _usbdevice_id
+struct usbdevice_id
 {
 	usbdevice_type type;
 	uint16_t vid;
 	uint16_t pid;
-}usbdevice_id, *Pusbdevice_id;
+};
 
 #define VATCMD_CLASSV2_MASK                     0x40
 
 #define VATCMD_CLASSV2_SET_MODE					0x41
-	#define CLASSV2_MODE_NORMAL					0x0000
-	#define CLASSV2_MODE_HWDMA					0x0001
+#define CLASSV2_MODE_NORMAL					0x0000
+#define CLASSV2_MODE_HWDMA					0x0001
 
 /* put data to usb_cache then used write_ram, write_rom and run code	*/
 /* param_0 : address position											*/
@@ -110,7 +110,7 @@ typedef struct _usbparam_flash
 	uint32_t section;
 }usbparam_flash;
 
-typedef usbparam_flash* Pusbparam_flash;
+typedef usbparam_flash *Pusbparam_flash;
 
 typedef enum _usbaux_mode
 {
@@ -126,7 +126,7 @@ typedef struct _usbparam_aux
 	uint32_t bitrate;
 }usbparam_aux;
 
-typedef usbparam_aux* Pusbparam_aux;
+typedef usbparam_aux *Pusbparam_aux;
 
 typedef struct _usbbulk_command
 {
@@ -138,7 +138,7 @@ typedef struct _usbbulk_command
 	}_h;
 }usbbulk_command;
 
-typedef usbbulk_command* Pusbbulk_command;
+typedef usbbulk_command *Pusbbulk_command;
 
 typedef struct _usbbulk_result
 {
@@ -148,22 +148,22 @@ typedef struct _usbbulk_result
 	uint32_t position;
 }usbbulk_result;
 
-typedef usbbulk_result* Pusbbulk_result;
+typedef usbbulk_result *Pusbbulk_result;
 
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
-	HAL_API int32_t usbbulk_buffer_check(uint8_t* pbuf);
+	HAL_API int32_t usbbulk_buffer_check(uint8_t *pbuf);
 
-	HAL_API vatek_result usbbulk_command_set(Pusbbulk_command pcmd, uint8_t* pbuf);
-	HAL_API vatek_result usbbulk_command_get(Pusbbulk_command pcmd, uint8_t* pbuf);
+	HAL_API vatek_result usbbulk_command_set(Pusbbulk_command pcmd, uint8_t *pbuf);
+	HAL_API vatek_result usbbulk_command_get(Pusbbulk_command pcmd, uint8_t *pbuf);
 
-	HAL_API vatek_result usbbulk_result_set(Pusbbulk_result presult, uint8_t* pbuf);
-	HAL_API vatek_result usbbulk_result_get(Pusbbulk_result presult, uint8_t* pbuf);
+	HAL_API vatek_result usbbulk_result_set(Pusbbulk_result presult, uint8_t *pbuf);
+	HAL_API vatek_result usbbulk_result_get(Pusbbulk_result presult, uint8_t *pbuf);
 
-#ifdef __cplusplus
+	#ifdef __cplusplus
 }
 #endif
 

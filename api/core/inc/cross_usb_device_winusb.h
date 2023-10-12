@@ -37,7 +37,7 @@ struct PIPE_ID
 #define _usb_rescure(pid)	{ usb_type_rescure		,USBDEV_VID	,pid,},
 #define _usb_table_end		{ usb_type_unknown,0,0, },};
 
-#define _usb_table 			((const Pusbdevice_id)&usb_device_ids[0])
+#define _usb_table 			((const usbdevice_id *)&usb_device_ids[0])
 
 _usb_table_start
 _usb_broadcast(0x2011)
