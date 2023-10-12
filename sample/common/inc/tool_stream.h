@@ -7,6 +7,7 @@
 #include<memory>
 #include<functional>
 #include<cross_os_api.h>
+#include<iostream>
 
 using namespace std;
 
@@ -34,6 +35,8 @@ typedef void *void_stream_source;
 class TsStreamSource
 {
 public:
+	virtual ~TsStreamSource() {}
+
 	void_stream_source hsource = nullptr;
 
 	function<vatek_result(void_stream_source hsource)> start;
@@ -195,28 +198,35 @@ public:
 class UdpTsStreamSource :public TsStreamSource
 {
 public:
-	void_cross_socket hsocket;
-	void_cross_thread hrecv;
-	HANDLE hlock;
-	int32_t buf_rptr;
-	int32_t buf_wptr;
+	UdpTsStreamSource()
+	{
+		cout << "UdpTsStreamSource 构造" << endl;
+	}
+
+	~UdpTsStreamSource()
+	{
+		cout << "UdpTsStreamSource 析构" << endl;
+	}
+
+	void_cross_socket hsocket = nullptr;
+	void_cross_thread hrecv = nullptr;
+	HANDLE hlock = nullptr;
+	int32_t buf_rptr = 0;
+	int32_t buf_wptr = 0;
 
 	/// <summary>
 	///		定义一个二维数组。因为二维数组内存上是连续的，所以可以当成长度为
 	///		UDP_SLICE_BUF_NUMS * CHIP_STREAM_SLICE_LEN 的一维数组使用。这是用来接收 UDP 流
 	///		的缓冲区。
 	/// </summary>
-	uint8_t buf_pool[UDP_SLICE_BUF_NUMS][CHIP_STREAM_SLICE_LEN];
+	uint8_t buf_pool[UDP_SLICE_BUF_NUMS][CHIP_STREAM_SLICE_LEN]{};
 
 	/// <summary>
 	///		线程函数当前是否在执行
 	/// </summary>
-	int32_t isrunning;
+	int32_t isrunning = 0;
 
-	vatek_result Start()
-	{
-		return vatek_success;
-	}
+	vatek_result Start();
 };
 
 /// <summary>

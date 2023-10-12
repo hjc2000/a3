@@ -45,7 +45,7 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 
 	if (is_vatek_success(nres))
 	{
-		UdpTsStreamSource *pudp = (UdpTsStreamSource *)malloc(sizeof(UdpTsStreamSource));
+		UdpTsStreamSource *pudp = new UdpTsStreamSource;
 		nres = vatek_memfail;
 		if (pudp)
 		{
@@ -144,6 +144,7 @@ void tool_udp_stream_free(void_stream_source hsource)
 {
 	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
 	tool_udp_stream_stop(hsource);
+	delete hsource;
 }
 
 void tool_recv_handle(cross_thread_param *param)
@@ -263,4 +264,29 @@ int32_t tool_check_valid_buffer(UdpTsStreamSource *pudp)
 		len += UDP_SLICE_BUF_NUMS;
 	cross_os_release_mutex(pudp->hlock);
 	return len;
+}
+
+vatek_result UdpTsStreamSource::Start()
+{
+	vatek_result nres = vatek_badstatus;
+	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
+	if (!pudp->hrecv)
+	{
+		nres = cross_os_connect_socket(pudp->hsocket);
+		if (is_vatek_success(nres))
+		{
+			pudp->isrunning = 1;
+			pudp->hrecv = cross_os_create_thread(tool_recv_handle, pudp);
+			if (!pudp->hrecv)nres = vatek_hwfail;
+
+			if (!is_vatek_success(nres))
+				nres = cross_os_disconnect_socket(pudp->hsocket);
+		}
+		else
+		{
+			_disp_err("cross_os_connect_socket fail : %d", nres);
+		}
+	}
+
+	return nres;
 }
