@@ -27,7 +27,7 @@
 //
 
 #include <mux_handle.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 extern vatek_result channel_malloc_psispec(Phandle_mux pmux,Phandle_channel pch);
 extern void program_stream_put(Ppsispec_program pprog, Ppsispec_stream pstream);

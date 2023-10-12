@@ -1,4 +1,4 @@
-#include "./internal/cross_device_tool.h"
+#include "cross_device_tool.h"
 
 /// <summary>
 ///		这个似乎才是链表类，而里面的 win_hid_device_list_node * 和 usb_handle_list_node * 其实应该

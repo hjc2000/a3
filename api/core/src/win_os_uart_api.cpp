@@ -1,4 +1,4 @@
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 
 int32_t try_getchar(void)
 {

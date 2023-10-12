@@ -27,7 +27,7 @@
 //
 
 #include <mux_handle.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 extern vatek_result broadcast_add_context(uint16_t pcrpid, Pencoder_param penc, hmux_channel hch);
 

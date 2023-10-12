@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 #include <stdio.h>
 
 #define _smem_name_tag	"Global\\%s"

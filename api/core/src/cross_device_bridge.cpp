@@ -1,4 +1,4 @@
-#include "./internal/cross_device_tool.h"
+#include "cross_device_tool.h"
 
 extern vatek_result bridge_read_register(usb_handle_list_node *hdev, int32_t addr, uint32_t *val);
 extern vatek_result bridge_write_register(usb_handle_list_node *hdev, int32_t addr, uint32_t val);

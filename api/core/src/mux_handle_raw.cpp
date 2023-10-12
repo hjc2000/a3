@@ -27,7 +27,7 @@
 //
 
 #include <mux_handle.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 vatek_result mux_open_raw(hmux_core hmux,hmux_rawtable* hraw)
 {

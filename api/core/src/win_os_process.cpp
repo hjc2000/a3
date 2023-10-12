@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 
 
 #define PROCESS_BUF_LEN	8192

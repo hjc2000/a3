@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 
 
 #define WIN_PATH_MAX_LEN	MAX_PATH

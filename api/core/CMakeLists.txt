@@ -101,69 +101,69 @@ set(core_INC_SDK
     inc/vatek_sdk_usbstream.h)
 
 set(core_SRC_CORE
-    src/core/chip_define.cpp
-    src/core/calibration_define.cpp
-    src/core/output_modulator.cpp
-    src/core/output_rfmixer.cpp
-    src/core/storage_section.cpp
-    src/core/stream_base.cpp
-    src/core/stream_encoder.cpp
-    src/core/device_usb.cpp
-    src/core/tool_binary_crc.cpp
-    src/core/tool_bufstream.cpp
-    src/core/tool_crc32.cpp
-    src/core/tool_dvb.cpp
-    src/core/tool_dvb_t2.cpp
-    src/core/tool_dtmb.cpp
-    src/core/tool_ofdm.cpp
-    src/core/tool_helpful_bitstream.cpp
-    src/core/tool_helpful_circlebuf.cpp
-    src/core/tool_helpful_fifo.cpp
-    src/core/tool_helpful_mempool.cpp
-    src/core/tool_helpful_memquery.cpp
-    src/core/tool_helpful_objectlist.cpp
-    src/core/tool_isdb_t.cpp
-    src/core/tool_j83abc.cpp
-    src/core/tool_8vsb.cpp
-    src/core/tool_output.cpp
-    src/core/ui_props_api.cpp)
+    src/chip_define.cpp
+    src/calibration_define.cpp
+    src/output_modulator.cpp
+    src/output_rfmixer.cpp
+    src/storage_section.cpp
+    src/stream_base.cpp
+    src/stream_encoder.cpp
+    src/device_usb.cpp
+    src/tool_binary_crc.cpp
+    src/tool_bufstream.cpp
+    src/tool_crc32.cpp
+    src/tool_dvb.cpp
+    src/tool_dvb_t2.cpp
+    src/tool_dtmb.cpp
+    src/tool_ofdm.cpp
+    src/tool_helpful_bitstream.cpp
+    src/tool_helpful_circlebuf.cpp
+    src/tool_helpful_fifo.cpp
+    src/tool_helpful_mempool.cpp
+    src/tool_helpful_memquery.cpp
+    src/tool_helpful_objectlist.cpp
+    src/tool_isdb_t.cpp
+    src/tool_j83abc.cpp
+    src/tool_8vsb.cpp
+    src/tool_output.cpp
+    src/ui_props_api.cpp)
 
 set(core_SRC_CROSS
-    src/cross/cross_bridge.cpp
-    src/cross/cross_bridge_board.cpp
-    src/cross/cross_os_socket.cpp
-    src/cross/cross_stream.cpp
-    src/cross/cross_stream_file.cpp
-    src/cross/cross_stream_test.cpp
-    src/cross/cross_stream_udp.cpp
-    src/cross/cross_stream_mux.cpp
-    src/cross/cross_usb_device_winusb.cpp
+    src/cross_bridge.cpp
+    src/cross_bridge_board.cpp
+    src/cross_os_socket.cpp
+    src/cross_stream.cpp
+    src/cross_stream_file.cpp
+    src/cross_stream_test.cpp
+    src/cross_stream_udp.cpp
+    src/cross_stream_mux.cpp
+    src/cross_usb_device_winusb.cpp
 )
 
 set(core_SRC_DEVICE
-    src/device/cross_device_bridge.cpp
-    src/device/cross_device_tool.cpp
-    src/device/cross_device_usb.cpp
-    src/device/mux_usbstream.cpp)
+    src/cross_device_bridge.cpp
+    src/cross_device_tool.cpp
+    src/cross_device_usb.cpp
+    src/mux_usbstream.cpp)
 
 set(core_SRC_MUX
-    src/mux/mux_epg.cpp
-    src/mux/mux_hadnel_playload.cpp
-    src/mux/mux_handle_broadcast.cpp
-    src/mux/mux_handle_channel.cpp
-    src/mux/mux_handle_core.cpp
-    src/mux/mux_handle_raw.cpp
-    src/mux/mux_packet_base.cpp
-    src/mux/mux_packet_pes.cpp
-    src/mux/mux_rule.cpp
-    src/mux/mux_spec.cpp
-    src/mux/mux_time.cpp
-    src/mux/mux_tool_tick.cpp)
+    src/mux_epg.cpp
+    src/mux_hadnel_playload.cpp
+    src/mux_handle_broadcast.cpp
+    src/mux_handle_channel.cpp
+    src/mux_handle_core.cpp
+    src/mux_handle_raw.cpp
+    src/mux_packet_base.cpp
+    src/mux_packet_pes.cpp
+    src/mux_rule.cpp
+    src/mux_spec.cpp
+    src/mux_time.cpp
+    src/mux_tool_tick.cpp)
 
 set(core_SRC_SERVICE
-    src/service/service_base.cpp
-    src/service/service_broadcast.cpp
-    src/service/service_transform.cpp)
+    src/service_base.cpp
+    src/service_broadcast.cpp
+    src/service_transform.cpp)
 
 set(core_SRC_SDK
     src/cross_os_api.cpp
@@ -177,15 +177,15 @@ set(core_SRC_SDK
     src/vatek_sdk_usbstream.cpp)
 
 set(core_SRC_OS
-    src/cross/os/win/win_os_bridge.cpp
-    src/cross/os/win/win_os_common.cpp
-    src/cross/os/win/win_os_event_api.cpp
-    src/cross/os/win/win_os_mutex_api.cpp
-    src/cross/os/win/win_os_process.cpp
-    src/cross/os/win/win_os_smem_api.cpp
-    src/cross/os/win/win_os_sys_api.cpp
-    src/cross/os/win/win_os_thread_api.cpp
-    src/cross/os/win/win_os_uart_api.cpp
+    src/win_os_bridge.cpp
+    src/win_os_common.cpp
+    src/win_os_event_api.cpp
+    src/win_os_mutex_api.cpp
+    src/win_os_process.cpp
+    src/win_os_smem_api.cpp
+    src/win_os_sys_api.cpp
+    src/win_os_thread_api.cpp
+    src/win_os_uart_api.cpp
 )
 
 if($(core_SRC_OS))
@@ -218,12 +218,6 @@ set(sdk2_HEADERS
     ${core_INC_SERVICE})
 
 if(MSVC)
-    source_group("src/core" FILES ${core_SRC_CORE})
-    source_group("src/cross" FILES ${core_SRC_CROSS})
-    source_group("src/device" FILES ${core_SRC_DEVICE})
-    source_group("src/mux" FILES ${core_SRC_MUX})
-    source_group("src/os" FILES ${core_SRC_OS})
-    source_group("src/service" FILES ${core_SRC_SERVICE})
     source_group("src" FILES ${core_SRC_SDK})
 endif()
 

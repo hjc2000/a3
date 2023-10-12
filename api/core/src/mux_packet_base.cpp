@@ -27,7 +27,7 @@
 //
 
 #include <mux_packet.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 extern Pmux_packet packet_malloc(Pth_mempool pmem,int32_t sle,int32_t packetnum);
 

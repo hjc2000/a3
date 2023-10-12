@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 #include <stdio.h>
 
 #define WIN_GLOBAL_OBJBASE	"Global\\%s"

@@ -1,4 +1,4 @@
-#include "internal/win_os_common.h"
+#include "win_os_common.h"
 
 vatek_result cross_os_create_mutex(HANDLE *hmutex)
 {

@@ -3,7 +3,7 @@
 #include <halreg_calibration.h>
 #include <output_rfmixer.h>
 #include <ui_service_transform.h>
-#include "device/internal/cross_device_tool.h"
+#include "cross_device_tool.h"
 #include<Exception.h>
 
 vatek_result vatek_device_list_enum(uint32_t bus, hal_service_mode service, vatek_device_list **hdevices)

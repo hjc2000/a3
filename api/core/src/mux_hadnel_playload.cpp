@@ -29,7 +29,7 @@
 #include <mux_handle.h>
 #include <halservice_base.h>
 #include <halreg_playload.h>
-#include "./internal/mux_core.h"
+#include "mux_core.h"
 
 extern vatek_result muxplayload_reset(vatek_device * hchip);
 

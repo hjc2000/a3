@@ -27,7 +27,7 @@
 //
 
 #include <mux_packet.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 #define PES_EN_DATACHK						0
 

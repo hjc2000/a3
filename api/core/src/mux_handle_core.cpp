@@ -28,7 +28,7 @@
 
 #include <mux_handle.h>
 #include <mux_rule.h>
-#include "internal/mux_core.h"
+#include "mux_core.h"
 
 vatek_result mux_handle_create(hmux_core* hmux)
 {
