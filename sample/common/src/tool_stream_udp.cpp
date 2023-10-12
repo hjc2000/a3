@@ -23,7 +23,7 @@ typedef struct _handle_udp
 {
 	void_cross_socket hsocket;
 	void_cross_thread hrecv;
-	void_cross_mutex hlock;
+	HANDLE hlock;
 	int32_t buf_rptr;
 	int32_t buf_wptr;
 
@@ -56,7 +56,7 @@ vatek_result stream_source_udp_get(const char *ipaddr, tsstream_source * psource
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;
 	void_cross_socket hsocket = NULL;
-	void_cross_mutex hlock = NULL;
+	HANDLE hlock = NULL;
 
 	sparam.buffer_len = UDP_BUFFER_LEN;
 	sparam.url = ipaddr;

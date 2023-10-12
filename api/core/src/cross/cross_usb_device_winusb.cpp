@@ -44,7 +44,7 @@ struct usb_handle
 	usb_handle *next;
 	char name[32];
 	WINUSB_INTERFACE_HANDLE *husb;
-	void_cross_mutex lock;
+	HANDLE lock;
 	int32_t ref;
 	int32_t is_dma;
 	int32_t epsize;
@@ -548,7 +548,7 @@ vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *
 		usbdevice_type devtype = usb_type_unknown;
 		if (fpcheck(&deviceDesc, &devtype, checkparam))
 		{
-			void_cross_mutex hlock = NULL;
+			HANDLE hlock = NULL;
 
 			if (!is_vatek_success(nres) || lengthReceived != sizeof(deviceDesc))
 			{

@@ -107,14 +107,14 @@ extern "C" {
 	HAL_API vatek_result cross_os_get_thread_result(void_cross_thread hthread);
 
 	/* cross_os_mutex_api */
-	typedef void *void_cross_mutex;
+	typedef void *HANDLE;
 
-	HAL_API vatek_result cross_os_create_mutex(void_cross_mutex *hmutex);
-	HAL_API void cross_os_lock_mutex(void_cross_mutex hmutex);
-	HAL_API vatek_result cross_os_lock_mutex_timeout(void_cross_mutex hmutex, uint32_t ms);
-	HAL_API vatek_result cross_os_trylock_mutex(void_cross_mutex hmutex);
-	HAL_API void cross_os_release_mutex(void_cross_mutex hmutex);
-	HAL_API vatek_result cross_os_free_mutex(void_cross_mutex hmutex);
+	HAL_API vatek_result cross_os_create_mutex(HANDLE *hmutex);
+	HAL_API void cross_os_lock_mutex(HANDLE hmutex);
+	HAL_API vatek_result cross_os_lock_mutex_timeout(HANDLE hmutex, uint32_t ms);
+	HAL_API vatek_result cross_os_trylock_mutex(HANDLE hmutex);
+	HAL_API void cross_os_release_mutex(HANDLE hmutex);
+	HAL_API vatek_result cross_os_free_mutex(HANDLE hmutex);
 
 	/* cross_os_event_api */
 	typedef void *void_cross_event;

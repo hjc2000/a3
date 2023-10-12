@@ -84,7 +84,7 @@ struct win_hid_device_list_node
 	uint16_t hid_vid;
 	uint16_t hid_pid;
 	HANDLE hid_handle;
-	void_cross_mutex _mutex;
+	HANDLE _mutex;
 	char hid_path[MAX_PATH];
 	OVERLAPPED hid_overlapped;
 	uint8_t rawbuf_tx[HID_PACKET_BUFFER_LEN];
@@ -360,7 +360,7 @@ vatek_result bridge_device_open(win_hid_device_list_node *hbridge)
 	vatek_result nres = vatek_badstatus;
 	if (hbridge->hid_handle == NULL)
 	{
-		void_cross_mutex hlock;
+		HANDLE hlock;
 		nres = cross_os_create_mutex(&hlock);
 		if (is_vatek_success(nres))
 		{

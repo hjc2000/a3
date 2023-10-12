@@ -14,7 +14,7 @@ struct handle_async
 {
 	uasync_status async_status;
 	Pth_circlebuf async_buffer;
-	void_cross_mutex async_lock;
+	HANDLE async_lock;
 	usbstream_slice slicebuf;
 };
 
@@ -448,7 +448,7 @@ vatek_result usbstream_async_create(handle_async **pasync, usbstream_param *pupa
 	vatek_result nres = vatek_badparam;
 	if (puparam->mode == ustream_mode_async)
 	{
-		void_cross_mutex hlock = NULL;
+		HANDLE hlock = NULL;
 		nres = cross_os_create_mutex(&hlock);
 
 		if (is_vatek_success(nres))

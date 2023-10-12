@@ -44,7 +44,7 @@ extern vatek_result usbmuxer_set_tick(Pusbmux_param pparam, Pumuxer_tick ptick);
 vatek_result usbstream_muxer_create(Pth_mempool pmem, Pusbmux_param param, int32_t nums, Phandle_muxer* pmuxer)
 {
 	Phandle_muxer newmuxer = NULL;
-	void_cross_mutex hlock = NULL;
+	HANDLE hlock = NULL;
 	vatek_result nres = cross_os_create_mutex(&hlock);;
 
 	if (is_vatek_success(nres))

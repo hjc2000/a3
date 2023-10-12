@@ -33,7 +33,7 @@ typedef struct _sim_handle
 	vatek_ic_module chip;
 	hal_service_mode service;
 	uint8_t* mapmem;
-	void_cross_mutex lock;
+	HANDLE lock;
 	sim_status status;
 	void_cross_thread hsimrun;
 	FILE* fstream;

@@ -42,7 +42,7 @@ typedef struct _handle_muxer
 	Pusbmux_source source;
 	usbmux_status status;
 	void_cross_thread hthread;
-	void_cross_mutex hlock;
+	HANDLE hlock;
 	umuxer_tick streamtick;
 	int32_t latencyms;
 	Ppcr_packet pcrpacket;
