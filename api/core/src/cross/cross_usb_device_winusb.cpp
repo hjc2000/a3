@@ -1,31 +1,3 @@
-//----------------------------------------------------------------------------
-//
-// Vision Advance Technology - Software Development Kit
-// Copyright (c) 2014-2022, Vision Advance Technology Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-// 1. Redistributions of source code must retain the above copyright notice,
-//    this list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the
-//    documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
-// THE POSSIBILITY OF SUCH DAMAGE.
-//
-
 #include <cross_os_api.h>
 #include <stdio.h>
 #include <cross_usb_device_winusb.h>
@@ -55,19 +27,19 @@ struct usb_handle_list_node
 extern usbdevice_id *usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len);
 typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
-extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *hlist, uint32_t checkparam);
+extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node * *hlist, usbdevice_type checkparam);
 
 extern int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 extern int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 
-vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list *hlist)
+vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node * *hlist)
 {
-	return usb_api_ll_enum_common(usb_enum_check_normal, hlist, (uint32_t)type);
+	return usb_api_ll_enum_common(usb_enum_check_normal, hlist, type);
 }
 
-vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_list *hlist)
+vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node * *hlist)
 {
-	return usb_api_ll_enum_common(usb_enum_check_id, hlist, ((vid << 16) | pid));
+	return usb_api_ll_enum_common(usb_enum_check_id, hlist, (usbdevice_type)((vid << 16) | pid));
 }
 
 int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam)
@@ -95,7 +67,7 @@ int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, us
 	return 0;
 }
 
-vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx, usb_handle_list_node **husb)
+vatek_result usb_api_ll_list_get_device(usb_handle_list_node * hlist, int32_t idx, usb_handle_list_node **husb)
 {
 	usb_handle_list_node *pusbs = (usb_handle_list_node *)hlist;
 	USB_DEVICE_DESCRIPTOR deviceDesc;
@@ -114,7 +86,7 @@ vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx,
 	return vatek_badparam;
 }
 
-const char *usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx)
+const char *usb_api_ll_list_get_name(usb_handle_list_node * hlist, int32_t idx)
 {
 	usb_handle_list_node *husb = NULL;
 	vatek_result nres = usb_api_ll_list_get_device(hlist, idx, &husb);
@@ -125,7 +97,7 @@ const char *usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx)
 	return NULL;
 }
 
-vatek_result usb_api_ll_free_list(void_usb_device_list hlist)
+vatek_result usb_api_ll_free_list(usb_handle_list_node * hlist)
 {
 	usb_handle_list_node *pusbs = (usb_handle_list_node *)hlist;
 	while (pusbs)
@@ -465,7 +437,7 @@ CloseDevice(
 	return;
 }
 
-vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, void_usb_device_list *hlist, uint32_t checkparam)
+vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node * *hlist, usbdevice_type checkparam)
 {
 	USB_DEVICE_DESCRIPTOR deviceDesc;
 	ULONG                 lengthReceived;

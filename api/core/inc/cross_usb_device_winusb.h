@@ -16,7 +16,6 @@
 #include <stdlib.h>
 
 struct usb_handle_list_node;
-typedef void *void_usb_device_list;
 
 struct DEVICE_DATA
 {
@@ -65,11 +64,11 @@ CloseDevice(
 	_Inout_ DEVICE_DATA *DeviceData
 );
 
-HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list *hlist);
-HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_list *hlist);
-HAL_API vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx, usb_handle_list_node **husb);
-HAL_API const char *usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx);
-HAL_API vatek_result usb_api_ll_free_list(void_usb_device_list hlist);
+HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node **hlist);
+HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node **hlist);
+HAL_API vatek_result usb_api_ll_list_get_device(usb_handle_list_node *hlist, int32_t idx, usb_handle_list_node **husb);
+HAL_API const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx);
+HAL_API vatek_result usb_api_ll_free_list(usb_handle_list_node *hlist);
 HAL_API vatek_result usb_api_ll_open(usb_handle_list_node *husb);
 HAL_API vatek_result usb_api_ll_close(usb_handle_list_node *husb);
 HAL_API const char *usb_api_ll_get_name(usb_handle_list_node *husb);

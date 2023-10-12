@@ -1,7 +1,7 @@
 #include "./internal/cross_device_tool.h"
 
 /// <summary>
-///		这个似乎才是链表类，而里面的 win_hid_device_list_node * 和 void_usb_device_list 其实应该
+///		这个似乎才是链表类，而里面的 win_hid_device_list_node * 和 usb_handle_list_node * 其实应该
 ///		是链表结点。
 /// </summary>
 struct cross_handle
@@ -18,7 +18,7 @@ struct cross_handle
 	/// <summary>
 	///		usb 设备的链表
 	/// </summary>
-	void_usb_device_list usbdevices = nullptr;
+	usb_handle_list_node * usbdevices = nullptr;
 };
 
 static cross_handle m_cdevices{};
