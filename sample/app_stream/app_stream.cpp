@@ -220,6 +220,7 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 	return nres;
 }
 
+/* 需要将此函数改为返回 TsStreamSource 的共享指针，而不是传入 TsStreamSource 指针 */
 vatek_result parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source, usbstream_param *pustream)
 {
 	vatek_result nres = vatek_result::vatek_unsupport;
