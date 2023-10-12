@@ -27,17 +27,17 @@ struct usb_handle_list_node
 extern usbdevice_id *usb_ll_list_get_id(uint16_t vid, uint16_t pid);
 extern void usb_ll_convert_bufffer(uint8_t *psrc, uint8_t *pdest, int32_t len);
 typedef int32_t(*fpenum_check)(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
-extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node * *hlist, usbdevice_type checkparam);
+extern vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node **hlist, usbdevice_type checkparam);
 
 extern int32_t usb_enum_check_normal(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 extern int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, usbdevice_type checkparam);
 
-vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node * *hlist)
+vatek_result usb_api_ll_enum(usbdevice_type type, usb_handle_list_node **hlist)
 {
 	return usb_api_ll_enum_common(usb_enum_check_normal, hlist, type);
 }
 
-vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node * *hlist)
+vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, usb_handle_list_node **hlist)
 {
 	return usb_api_ll_enum_common(usb_enum_check_id, hlist, (usbdevice_type)((vid << 16) | pid));
 }
@@ -67,7 +67,7 @@ int32_t usb_enum_check_id(USB_DEVICE_DESCRIPTOR *pdesc, usbdevice_type *type, us
 	return 0;
 }
 
-vatek_result usb_api_ll_list_get_device(usb_handle_list_node * hlist, int32_t idx, usb_handle_list_node **husb)
+vatek_result usb_api_ll_list_get_device(usb_handle_list_node *hlist, int32_t idx, usb_handle_list_node **husb)
 {
 	usb_handle_list_node *pusbs = (usb_handle_list_node *)hlist;
 	USB_DEVICE_DESCRIPTOR deviceDesc;
@@ -86,7 +86,7 @@ vatek_result usb_api_ll_list_get_device(usb_handle_list_node * hlist, int32_t id
 	return vatek_badparam;
 }
 
-const char *usb_api_ll_list_get_name(usb_handle_list_node * hlist, int32_t idx)
+const char *usb_api_ll_list_get_name(usb_handle_list_node *hlist, int32_t idx)
 {
 	usb_handle_list_node *husb = NULL;
 	vatek_result nres = usb_api_ll_list_get_device(hlist, idx, &husb);
@@ -97,18 +97,18 @@ const char *usb_api_ll_list_get_name(usb_handle_list_node * hlist, int32_t idx)
 	return NULL;
 }
 
-vatek_result usb_api_ll_free_list(usb_handle_list_node * hlist)
+vatek_result usb_api_ll_free_list(usb_handle_list_node *hlist)
 {
-	usb_handle_list_node *pusbs = (usb_handle_list_node *)hlist;
-	while (pusbs)
+	while (hlist)
 	{
-		usb_handle_list_node *pnext = pusbs->next;
-		WinUsb_Free((WINUSB_INTERFACE_HANDLE *)pusbs->husb);
-		cross_os_free_mutex(pusbs->lock);
-		free(pusbs->none_dmabuf);
-		free(pusbs);
-		pusbs = pnext;
+		usb_handle_list_node *pnext = hlist->next;
+		WinUsb_Free((WINUSB_INTERFACE_HANDLE *)hlist->husb);
+		cross_os_free_mutex(hlist->lock);
+		free(hlist->none_dmabuf);
+		free(hlist);
+		hlist = pnext;
 	}
+
 	return vatek_success;
 }
 
@@ -128,6 +128,7 @@ usbdevice_id *usb_ll_list_get_id(uint16_t vid, uint16_t pid)
 			return (usbdevice_id *)&usb_device_ids[pos];
 		pos++;
 	}
+
 	return NULL;
 }
 
@@ -142,6 +143,7 @@ vatek_result usb_api_ll_close(usb_handle_list_node *husb)
 		if (r < 0)return vatek_hwfail;
 		return vatek_success;
 	}
+
 	return vatek_badstatus;
 }
 
@@ -153,7 +155,6 @@ const char *usb_api_ll_get_name(usb_handle_list_node *husb)
 
 vatek_result usb_api_ll_set_dma(usb_handle_list_node *husb, int32_t isdma)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_success;
 
 	if (isdma)
@@ -161,50 +162,49 @@ vatek_result usb_api_ll_set_dma(usb_handle_list_node *husb, int32_t isdma)
 	else nres = usb_api_ll_command(husb, VATCMD_CLASSV2_SET_MODE, CLASSV2_MODE_NORMAL, NULL);
 
 	if (is_vatek_success(nres))
-		pusb->is_dma = isdma;
-	else pusb->is_dma = 0;
+		husb->is_dma = isdma;
+	else husb->is_dma = 0;
 	return nres;
 }
 
 void usb_api_ll_lock(usb_handle_list_node *husb)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
-	cross_os_lock_mutex(pusb->lock);
+	cross_os_lock_mutex(husb->lock);
 }
 
 void usb_api_ll_unlock(usb_handle_list_node *husb)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
-	cross_os_release_mutex(pusb->lock);
+	cross_os_release_mutex(husb->lock);
 }
 
 vatek_result usb_api_ll_write(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_badparam;
 	if (len <= CHIP_STREAM_SLICE_LEN && (len % 64) == 0)
 	{
-		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 		int32_t rlen = 0;
-		if (!pusb->is_dma)
+		if (!husb->is_dma)
 		{
-			usb_ll_convert_bufffer(pbuf, pusb->none_dmabuf, len);
-			pbuf = pusb->none_dmabuf;
+			usb_ll_convert_bufffer(pbuf, husb->none_dmabuf, len);
+			pbuf = husb->none_dmabuf;
 		}
+
 		nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, pbuf, len, (PULONG)&rlen, NULL);
-		if (is_vatek_success(nres))nres = (vatek_result)rlen;
+		if (is_vatek_success(nres))
+			nres = (vatek_result)rlen;
 	}
+
 	return nres;
 }
 
 vatek_result usb_api_ll_read(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_success;
 	if (len > CHIP_STREAM_SLICE_LEN || (len % 64) != 0)nres = vatek_badparam;
 	else
 	{
-		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 		int32_t rlen = 0;
 		nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, pbuf, len, (PULONG)&rlen, NULL);
 		if (is_vatek_success(nres))nres = (vatek_result)rlen;
@@ -217,9 +217,8 @@ vatek_result usb_api_ll_command(usb_handle_list_node *husb, uint8_t cmd, uint32_
 	vatek_result nres = vatek_success;
 	uint16_t wval = ((param0 >> 16) << 8) | ((param0 >> 24) & 0xFF);
 	uint16_t widx = ((param0 & 0xFF) << 8) | ((param0 >> 8) & 0xFF);
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 
-	if (pusb->husb == INVALID_HANDLE_VALUE)
+	if (husb->husb == INVALID_HANDLE_VALUE)
 	{
 		return (vatek_result)FALSE;
 	}
@@ -246,8 +245,8 @@ vatek_result usb_api_ll_command(usb_handle_list_node *husb, uint8_t cmd, uint32_
 	SetupPacket_rx.Length = 0;
 
 	if (rxbuf != NULL)
-		nres = (vatek_result)WinUsb_ControlTransfer(pusb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
-	else nres = (vatek_result)WinUsb_ControlTransfer(pusb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
+		nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
+	else nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
 
 	if (!is_vatek_success(nres))nres = vatek_hwfail;
 	return nres;
@@ -255,25 +254,23 @@ vatek_result usb_api_ll_command(usb_handle_list_node *husb, uint8_t cmd, uint32_
 
 vatek_result usb_api_ll_bulk_get_size(usb_handle_list_node *husb)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
-	return (vatek_result)pusb->bulksize;
+	return (vatek_result)husb->bulksize;
 }
 
 vatek_result usb_api_ll_bulk_send_command(usb_handle_list_node *husb, usbbulk_command *pcmd)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_badstatus;
-	if (!pusb->is_dma)
+	if (!husb->is_dma)
 	{
-		nres = usbbulk_command_set(pcmd, pusb->none_dmabuf);
+		nres = usbbulk_command_set(pcmd, husb->none_dmabuf);
 		if (is_vatek_success(nres))
 		{
-			WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+			WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 			int32_t rlen = 0;
-			uint8_t *prawbuf = &pusb->none_dmabuf[pusb->bulksize];
-			usb_ll_convert_bufffer(pusb->none_dmabuf, prawbuf, pusb->bulksize);
+			uint8_t *prawbuf = &husb->none_dmabuf[husb->bulksize];
+			usb_ll_convert_bufffer(husb->none_dmabuf, prawbuf, husb->bulksize);
 
-			nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, prawbuf, pusb->bulksize, (PULONG)&rlen, NULL);
+			nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, prawbuf, husb->bulksize, (PULONG)&rlen, NULL);
 			if (is_vatek_success(nres))nres = (vatek_result)rlen;
 		}
 	}
@@ -282,20 +279,28 @@ vatek_result usb_api_ll_bulk_send_command(usb_handle_list_node *husb, usbbulk_co
 
 vatek_result usb_api_ll_bulk_get_result(usb_handle_list_node *husb, usbbulk_result *presult)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_badstatus;
-	if (!pusb->is_dma)
+	if (!husb->is_dma)
 	{
-		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 		int32_t rlen = 0;
-		uint8_t *prawbuf = &pusb->none_dmabuf[pusb->bulksize];
-		nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, pusb->none_dmabuf, pusb->bulksize, (PULONG)&rlen, NULL);
+		uint8_t *prawbuf = &husb->none_dmabuf[husb->bulksize];
+		nres = (vatek_result)WinUsb_ReadPipe(
+			hdevice,
+			USBDEV_BULK_READ_EP,
+			husb->none_dmabuf,
+			husb->bulksize,
+			(PULONG)&rlen,
+			NULL
+		);
+
 		if (is_vatek_success(nres))
 		{
-			usb_ll_convert_bufffer(pusb->none_dmabuf, prawbuf, pusb->bulksize);
+			usb_ll_convert_bufffer(husb->none_dmabuf, prawbuf, husb->bulksize);
 			nres = usbbulk_result_get(presult, prawbuf);
 		}
 	}
+
 	return nres;
 }
 
@@ -303,21 +308,20 @@ vatek_result usb_api_ll_bulk_get_result(usb_handle_list_node *husb, usbbulk_resu
 
 vatek_result usb_api_ll_bulk_write(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_badstatus;
-	if (!pusb->is_dma)
+	if (!husb->is_dma)
 	{
-		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 		int32_t rlen = 0;
 		uint8_t *ptrbuf = pbuf;
-		uint8_t *prawbuf = pusb->none_dmabuf;
+		uint8_t *prawbuf = husb->none_dmabuf;
 		int32_t pos = 0;
 		while (len > pos)
 		{
 			int32_t nrecv = len - pos;
 			int32_t neach = nrecv;
 			if (neach >= CHIP_STREAM_SLICE_LEN)neach = CHIP_STREAM_SLICE_LEN;
-			else neach = _align_bulk(pusb, neach);
+			else neach = _align_bulk(husb, neach);
 			usb_ll_convert_bufffer(&pbuf[pos], prawbuf, nrecv);
 
 			nres = (vatek_result)WinUsb_WritePipe(hdevice, USBDEV_BULK_WRITE_EP, prawbuf, neach, (PULONG)&rlen, NULL);
@@ -333,21 +337,20 @@ vatek_result usb_api_ll_bulk_write(usb_handle_list_node *husb, uint8_t *pbuf, in
 
 vatek_result usb_api_ll_bulk_read(usb_handle_list_node *husb, uint8_t *pbuf, int32_t len)
 {
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 	vatek_result nres = vatek_badstatus;
-	if (!pusb->is_dma)
+	if (!husb->is_dma)
 	{
-		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)pusb->husb;
+		WINUSB_INTERFACE_HANDLE *hdevice = (WINUSB_INTERFACE_HANDLE *)husb->husb;
 		int32_t rlen = 0;
 		uint8_t *ptrbuf = pbuf;
-		uint8_t *prawbuf = pusb->none_dmabuf;
+		uint8_t *prawbuf = husb->none_dmabuf;
 		int32_t pos = 0;
 		while (len > pos)
 		{
 			int32_t nrecv = len - pos;
 			int32_t neach = nrecv;
 			if (neach >= CHIP_STREAM_SLICE_LEN)neach = CHIP_STREAM_SLICE_LEN;
-			else neach = _align_bulk(pusb, neach);
+			else neach = _align_bulk(husb, neach);
 			nres = (vatek_result)WinUsb_ReadPipe(hdevice, USBDEV_BULK_READ_EP, prawbuf, neach, (PULONG)&rlen, NULL);
 			if (!is_vatek_success(nres))break;
 			else
@@ -365,9 +368,8 @@ vatek_result usb_api_ll_command_buffer(usb_handle_list_node *husb, uint8_t cmd, 
 	vatek_result nres = vatek_success;
 	uint16_t wval = (pbuf[1] << 8) | pbuf[0];
 	uint16_t widx = (pbuf[3] << 8) | pbuf[2];
-	usb_handle_list_node *pusb = (usb_handle_list_node *)husb;
 
-	if (pusb->husb == INVALID_HANDLE_VALUE)
+	if (husb->husb == INVALID_HANDLE_VALUE)
 	{
 		return (vatek_result)FALSE;
 	}
@@ -394,8 +396,8 @@ vatek_result usb_api_ll_command_buffer(usb_handle_list_node *husb, uint8_t cmd, 
 	SetupPacket_rx.Length = 0;
 
 	if (rxbuf != NULL)
-		nres = (vatek_result)WinUsb_ControlTransfer(pusb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
-	else nres = (vatek_result)WinUsb_ControlTransfer(pusb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
+		nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_tx, rxbuf, 8, &cbSent, NULL);
+	else nres = (vatek_result)WinUsb_ControlTransfer(husb->husb, SetupPacket_rx, NULL, 0, &cbSent, NULL);
 
 	if (!is_vatek_success(nres))nres = vatek_hwfail;
 	return nres;
@@ -437,7 +439,7 @@ CloseDevice(
 	return;
 }
 
-vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node * *hlist, usbdevice_type checkparam)
+vatek_result usb_api_ll_enum_common(fpenum_check fpcheck, usb_handle_list_node **hlist, usbdevice_type checkparam)
 {
 	USB_DEVICE_DESCRIPTOR deviceDesc;
 	ULONG                 lengthReceived;
