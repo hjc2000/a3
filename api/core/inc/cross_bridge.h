@@ -4,7 +4,7 @@
 #include <bridge_usb.h>
 #include <bridge_device.h>
 
-typedef void *hbridge_device;
+typedef void *void_bridge_device;
 
 /// <summary>
 ///		设备链表的节点。有指向下一个节点的指针。这里是 void*，在别的地方会被强制转换为
@@ -53,7 +53,7 @@ extern "C" {
 	/// <param name="idx"></param>
 	/// <param name="hbridge"></param>
 	/// <returns></returns>
-	HAL_API vatek_result bridge_device_list_get(void_bridge_device_list_node root_node, int32_t idx, hbridge_device *hbridge);
+	HAL_API vatek_result bridge_device_list_get(void_bridge_device_list_node root_node, int32_t idx, void_bridge_device *hbridge);
 	HAL_API const char *bridge_device_list_get_name(void_bridge_device_list_node hblist, int32_t idx);
 
 	/// <summary>
@@ -66,45 +66,45 @@ extern "C" {
 	/// <returns></returns>
 	HAL_API vatek_result bridge_device_list_free(void_bridge_device_list_node root_node);
 
-	HAL_API vatek_result bridge_device_open(hbridge_device hbridge);
-	HAL_API const char *bridge_device_get_name(hbridge_device hbridge);
-	HAL_API vatek_result bridge_device_close(hbridge_device hbridge);
-	HAL_API void bridge_device_lock_command(hbridge_device hbridge);
-	HAL_API hid_bridge_cmd *bridge_device_get_command(hbridge_device hbridge);
-	HAL_API Phid_bridge_result bridge_device_get_result(hbridge_device hbridge);
-	HAL_API vatek_result bridge_device_send_bridge_command(hbridge_device hbridge);
-	HAL_API void bridge_device_unlock_command(hbridge_device hbridge);
+	HAL_API vatek_result bridge_device_open(void_bridge_device hbridge);
+	HAL_API const char *bridge_device_get_name(void_bridge_device hbridge);
+	HAL_API vatek_result bridge_device_close(void_bridge_device hbridge);
+	HAL_API void bridge_device_lock_command(void_bridge_device hbridge);
+	HAL_API hid_bridge_cmd *bridge_device_get_command(void_bridge_device hbridge);
+	HAL_API Phid_bridge_result bridge_device_get_result(void_bridge_device hbridge);
+	HAL_API vatek_result bridge_device_send_bridge_command(void_bridge_device hbridge);
+	HAL_API void bridge_device_unlock_command(void_bridge_device hbridge);
 
 	/* bridge_device base tool */
-	HAL_API vatek_result bridge_device_lock(hbridge_device hbridge);
-	HAL_API vatek_result bridge_device_unlock(hbridge_device hbridge);
-	HAL_API bridge_device_status bridge_device_get_status(hbridge_device hbridge);
-	HAL_API vatek_result bridge_device_bulk_transfer(hbridge_device hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len);
+	HAL_API vatek_result bridge_device_lock(void_bridge_device hbridge);
+	HAL_API vatek_result bridge_device_unlock(void_bridge_device hbridge);
+	HAL_API bridge_device_status bridge_device_get_status(void_bridge_device hbridge);
+	HAL_API vatek_result bridge_device_bulk_transfer(void_bridge_device hbridge, uint32_t type, uint32_t addr, uint8_t *pbuf, uint32_t len);
 
 	/* bridge_device board devices tool */
 
-	HAL_API vatek_result bridge_device_get_info(hbridge_device hbridge, Pbdevice_info pdevinfo);
+	HAL_API vatek_result bridge_device_get_info(void_bridge_device hbridge, Pbdevice_info pdevinfo);
 
-	HAL_API vatek_result bridge_device_get_demod_info(hbridge_device hbridge, Pbdemod_info pinfo);
-	HAL_API vatek_result bridge_device_set_demod_mode(hbridge_device hbridge, Pbdemod_mode_param pmode);
-	HAL_API vatek_result bridge_device_get_demod_mode(hbridge_device hbridge, Pbdemod_mode_param pmode);
+	HAL_API vatek_result bridge_device_get_demod_info(void_bridge_device hbridge, Pbdemod_info pinfo);
+	HAL_API vatek_result bridge_device_set_demod_mode(void_bridge_device hbridge, Pbdemod_mode_param pmode);
+	HAL_API vatek_result bridge_device_get_demod_mode(void_bridge_device hbridge, Pbdemod_mode_param pmode);
 
-	HAL_API vatek_result bridge_device_start_demod(hbridge_device hbridge, Pbdemod_op_param param);
-	HAL_API vatek_result bridge_device_stop_demod(hbridge_device hbridge);
+	HAL_API vatek_result bridge_device_start_demod(void_bridge_device hbridge, Pbdemod_op_param param);
+	HAL_API vatek_result bridge_device_stop_demod(void_bridge_device hbridge);
 
-	HAL_API vatek_result bridge_device_get_source(hbridge_device hbridge, int32_t idx, Pbridge_source pphy);
-	HAL_API vatek_result bridge_device_start_source(hbridge_device hbridge, Pbridge_source pvideo);
-	HAL_API vatek_result bridge_device_stop_source(hbridge_device hbridge);
+	HAL_API vatek_result bridge_device_get_source(void_bridge_device hbridge, int32_t idx, Pbridge_source pphy);
+	HAL_API vatek_result bridge_device_start_source(void_bridge_device hbridge, Pbridge_source pvideo);
+	HAL_API vatek_result bridge_device_stop_source(void_bridge_device hbridge);
 
-	HAL_API vatek_result bridge_device_get_source_status(hbridge_device hbridge, Pbridge_source psource);
-	HAL_API const char *bridge_device_get_source_name(hbridge_device hbridge, Pbridge_source psource);
+	HAL_API vatek_result bridge_device_get_source_status(void_bridge_device hbridge, Pbridge_source psource);
+	HAL_API const char *bridge_device_get_source_name(void_bridge_device hbridge, Pbridge_source psource);
 
-	HAL_API vatek_result bridge_device_start_rfmixer(hbridge_device hbridge, Pbrfmixer_op_param pparam);
-	HAL_API vatek_result bridge_device_stop_rfmixer(hbridge_device hbridge);
+	HAL_API vatek_result bridge_device_start_rfmixer(void_bridge_device hbridge, Pbrfmixer_op_param pparam);
+	HAL_API vatek_result bridge_device_stop_rfmixer(void_bridge_device hbridge);
 
-	HAL_API vatek_result bridge_device_storage_write(hbridge_device hbridge, int32_t nsection, uint8_t *pbuf);
-	HAL_API vatek_result bridge_device_storage_read(hbridge_device hbridge, int32_t nsection, uint8_t *pbuf);
-	HAL_API vatek_result bridge_device_storage_erase(hbridge_device hbridge, int32_t nsection);
+	HAL_API vatek_result bridge_device_storage_write(void_bridge_device hbridge, int32_t nsection, uint8_t *pbuf);
+	HAL_API vatek_result bridge_device_storage_read(void_bridge_device hbridge, int32_t nsection, uint8_t *pbuf);
+	HAL_API vatek_result bridge_device_storage_erase(void_bridge_device hbridge, int32_t nsection);
 
 	#ifdef __cplusplus
 }

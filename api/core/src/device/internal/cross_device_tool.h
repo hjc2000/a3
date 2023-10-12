@@ -109,17 +109,17 @@ public:
 	const char *get_device_name()
 	{
 		if (driver == cdriver_bridge)
-			return bridge_device_get_name((hbridge_device)hcross);
+			return bridge_device_get_name((void_bridge_device)hcross);
 		else if (driver == cdriver_usb)
 			return usb_api_ll_get_name((void_usb_device)hcross);
 
 		return "_unknown";
 	}
 
-	hbridge_device cross_get_bridge_device_handle()
+	void_bridge_device cross_get_bridge_device_handle()
 	{
 		if (driver == cdriver_bridge)
-			return (hbridge_device)hcross;
+			return (void_bridge_device)hcross;
 
 		return NULL;
 	}
@@ -155,7 +155,7 @@ public:
 
 vatek_result cross_devices_create(cross_device **pcross);
 vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross);
-vatek_result cross_bridge_open(hbridge_device hbridge, cross_device **pcross);
+vatek_result cross_bridge_open(void_bridge_device hbridge, cross_device **pcross);
 vatek_result cross_usb_device_open(void_usb_device husb, cross_device **pcross);
 
 void cross_bridge_close(cross_device *pcross);
