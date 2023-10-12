@@ -29,7 +29,7 @@
 #ifndef _HALSERVICE_TRANSFORM_
 #define _HALSERVICE_TRANSFORM_
 
-#include <hal/halservice_rescure.h>
+#include <halservice_rescure.h>
 
 #define HALREG_TRANSFORM_CNTL				HALREG_SERVICE_BASE_CNTL				/* inheritance HALREG_BROADCAST_CNTL 						*/
     #define TR_START                    	BASE_CMD_START

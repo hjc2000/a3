@@ -30,10 +30,10 @@
 #define _MUX_DEFINE_
 
 #include <vatek_base.h>
-#include <tools/tool_helpful.h>
+#include <tool_helpful.h>
 #include <media_audio.h>
 #include <media_video.h>
-#include <hal/halreg_mux.h>
+#include <halreg_mux.h>
 
 #define TS_PACKET_LEN										188
 #define TS_PACKET_SYNC_TAG									0x47

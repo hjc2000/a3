@@ -30,7 +30,7 @@
 #define UI_BRIDGE_SOURCE
 
 #include <ui_props_define.h>
-#include <ui_props/ui_props_encoder.h>
+#include <ui_props_encoder.h>
 #include <bridge_source.h>
 
 _ui_enum_start(bsource_scale)

@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_dvb.h>
+#include <tool_dvb.h>
 
 #define _DVBT_SB(m)			((uint32_t)(m*8000000)/7)
 #define DVB_T_OFDMFRAME_SYMBOL          68

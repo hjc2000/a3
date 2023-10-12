@@ -2,7 +2,7 @@
 #include <vatek_sdk_transform.h>
 
 #include <output_rfmixer.h>
-#include <tools/tool_helpful.h>
+#include <tool_helpful.h>
 #include <cross_os_api.h>
 
 #define US_DEF_PREPARE_TIME				10

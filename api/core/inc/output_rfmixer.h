@@ -30,7 +30,7 @@
 #define _OUTPUT_RFMIXER_
 
 #include <vatek_base.h>
-#include <hal/halreg_rfmixer.h>
+#include <halreg_rfmixer.h>
 
 typedef enum _rfmixer_status
 {

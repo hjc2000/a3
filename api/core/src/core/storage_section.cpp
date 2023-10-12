@@ -1,10 +1,10 @@
-#include <storage/storage_section.h>
-#include <tools/tool_bufstream.h>
-#include <tools/tool_crc32.h>
+#include <storage_section.h>
+#include <tool_bufstream.h>
+#include <tool_crc32.h>
 
-#include <ui_props/ui_props_chip.h>
-#include <ui_props/ui_props_encoder.h>
-#include <ui_props/ui_props_modulator.h>
+#include <ui_props_chip.h>
+#include <ui_props_encoder.h>
+#include <ui_props_modulator.h>
 
 /* import default params */
 #include<storage_default.h>

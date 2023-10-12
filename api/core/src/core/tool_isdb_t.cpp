@@ -26,8 +26,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_isdb_t.h>
-#include <tools/tool_dvb.h>
+#include <tool_isdb_t.h>
+#include <tool_dvb.h>
 
 #define ISDB_T_TSP_LEN			204
 #define ISDB_T_BTS_SYMBOLNUMS	204

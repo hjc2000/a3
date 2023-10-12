@@ -33,7 +33,7 @@
 #include <binary_rom.h>
 #include <service_base.h>
 #include <ui_props_define.h>
-#include <hal/halservice_base.h>
+#include <halservice_base.h>
 
 _ui_enum_start(chip_status)
 _val(chip_status_badstatus, badstatus)

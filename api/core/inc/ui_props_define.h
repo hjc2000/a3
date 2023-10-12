@@ -30,7 +30,7 @@
 #define _UI_PROPS_DEFINE_
 
 #include <vatek_base.h>
-#include <hal/halreg_define.h>
+#include <halreg_define.h>
 
 typedef struct _ui_hal_param
 {

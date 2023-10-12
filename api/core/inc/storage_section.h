@@ -26,38 +26,33 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _HALSERVICE_RESCURE_
-#define _HALSERVICE_RESCURE_
+#ifndef _STORAGE_SECTION_
+#define _STORAGE_SECTION_
 
-#include <hal/halservice_base.h>
+#include <binary_rom.h>
+#include <storage_broadcast.h>
+#include <storage_transform.h>
+#include <storage_r2tune.h>
+#include <storage_config.h>
 
-#define HALREG_RESCUE_CNTL				0x31
-	#define RESCUE_CNTL_TAG				0xFA000000
-	#define RESCUE_CNTL_WRITE			0xFA010000
-	#define RESCUE_CNTL_READ			0xFA020000
-	#define RESCUE_CNTL_REBOOT			0xFA0300FB
-	#define RESCUE_SECTION_MASK			0x0000FFFF
-	#define RESCUE_CNTL_TAG_MASK		0xFF000000
+#define STORAGE_APP_ADDRESS     LOADER_SIZE
+#define STORAGE_PROTECT_1		((LOADER_SIZE - BINARY_SECTION_SIZE)/BINARY_SECTION_SIZE)
+#define STORAGE_PROTECT_0		((LOADER_SIZE - (BINARY_SECTION_SIZE << 1))/BINARY_SECTION_SIZE)
 
-#define IS_RESCUE_CNTL_VALID(val)		((val & RESCUE_CNTL_TAG_MASK) == RESCUE_CNTL_TAG)
-#define IS_RESCUR_CMD(val,cmd)			((val & 0xFFFF0000) == cmd)
+HAL_API vatek_result storage_section_check_tag(uint8_t *psection, uint32_t *tag, uint32_t *sectionnums);
 
-#define HALREG_RESCUE_CRC32				0x32
-#define HALREG_RESCUE_RESULT            0x33
-	#define RESCUE_ERR_SUCCESS          0x00000000
-	#define RESCUE_ERR_CRC              0x80000001
-	#define RESCUE_ERR_SPIFLASH         0x80000002
-	#define RESCUE_ERR_BADCNTL			0x80000003
-	#define RESCUE_ERR_BADSTATUS		0x80000004
+HAL_API vatek_result storage_section_check_loader(uint8_t *psection);
+HAL_API vatek_result storage_section_check_app(uint8_t *psection);
 
-#define HALREG_APP_DEBUG                0x3E
-	#define APPDBG_EN_PLAYLOAD			0x00000001
+HAL_API vatek_result storage_section_get_loader(uint8_t *psection, Ploader_header plhdr);
+HAL_API vatek_result storage_section_get_app(uint8_t *psection, Papp_header papphdr);
 
-#define HALREG_SYS_DEBUG                0x3F
+HAL_API vatek_result storage_section_set_loader(uint8_t *psection, Ploader_header plhdr);
+HAL_API vatek_result storage_section_set_app(uint8_t *psection, Papp_header papphdr);
 
-#define HALREG_RESCUE_DATA				0x3C00
+/* return size of raw data used */
+HAL_API vatek_result storage_section_put_resource(uint8_t *psection, int32_t size, Pbin_resource_section pbin, uint8_t *praw);
+/* return position of raw data */
+HAL_API vatek_result storage_section_get_resource(uint8_t *psection, Pbin_resource_section pbin);
 
-#define HALREG_RESCUE_EN				0x4000
-	#define RESCUE_EN_TAG				0xFF1229FF  /* next reboot enter rescue mode */
-    
 #endif

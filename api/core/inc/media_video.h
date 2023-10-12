@@ -30,7 +30,7 @@
 #define _MEDIA_VIDEO_
 
 #include <stdint.h>
-#include <hal/halreg_stream.h>
+#include <halreg_stream.h>
 
 #define MPEG2_QUANT_MAX					31
 #define MPEG2_QUANT_MIN					3

@@ -21,41 +21,41 @@ set(core_INC_CORE
     inc/stream_base.h
     inc/stream_encoder.h
     inc/calibration_define.h
-    inc/hal/halreg_define.h
-    inc/hal/halreg_mux.h
-    inc/hal/halreg_output.h
-    inc/hal/halreg_playload.h
-    inc/hal/halreg_rfmixer.h
-    inc/hal/halreg_stream.h
-    inc/hal/halreg_calibration.h
-    inc/hal/halservice_base.h
-    inc/hal/halservice_broadcast.h
-    inc/hal/halservice_rescure.h
-    inc/hal/halservice_transform.h
-    inc/storage/storage_broadcast.h
-    inc/storage/storage_config.h
-    inc/storage/storage_r2tune.h
-    inc/storage/storage_section.h
-    inc/storage/storage_transform.h
-    inc/tools/tool_8vsb.h
-    inc/tools/tool_binary_crc.h
-    inc/tools/tool_bufstream.h
-    inc/tools/tool_crc32.h
-    inc/tools/tool_dvb.h
-    inc/tools/tool_dvb_t2.h
-    inc/tools/tool_dtmb.h
-    inc/tools/tool_helpful.h
-    inc/tools/tool_isdb_t.h
-    inc/tools/tool_j83abc.h
-    inc/tools/tool_ofdm.h
-    inc/tools/tool_output.h
+    inc/halreg_define.h
+    inc/halreg_mux.h
+    inc/halreg_output.h
+    inc/halreg_playload.h
+    inc/halreg_rfmixer.h
+    inc/halreg_stream.h
+    inc/halreg_calibration.h
+    inc/halservice_base.h
+    inc/halservice_broadcast.h
+    inc/halservice_rescure.h
+    inc/halservice_transform.h
+    inc/storage_broadcast.h
+    inc/storage_config.h
+    inc/storage_r2tune.h
+    inc/storage_section.h
+    inc/storage_transform.h
+    inc/tool_8vsb.h
+    inc/tool_binary_crc.h
+    inc/tool_bufstream.h
+    inc/tool_crc32.h
+    inc/tool_dvb.h
+    inc/tool_dvb_t2.h
+    inc/tool_dtmb.h
+    inc/tool_helpful.h
+    inc/tool_isdb_t.h
+    inc/tool_j83abc.h
+    inc/tool_ofdm.h
+    inc/tool_output.h
     inc/ui_props_api.h
     inc/ui_props_define.h
-    inc/ui_props/ui_props_chip.h
-    inc/ui_props/ui_props_encoder.h
-    inc/ui_props/ui_props_modulator.h
-    inc/ui_props/ui_props_output.h
-    inc/ui_props/ui_props_stream.h)
+    inc/ui_props_chip.h
+    inc/ui_props_encoder.h
+    inc/ui_props_modulator.h
+    inc/ui_props_output.h
+    inc/ui_props_stream.h)
 
 set(core_INC_CROSS
     inc/cross_bridge.h

@@ -26,23 +26,33 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _TOOL_DVB_
-#define _TOOL_DVB_
+#ifndef _TOOL_ISDB_T_
+#define _TOOL_ISDB_T_
 
-#include <tools/tool_ofdm.h>
+#include <tool_ofdm.h>
 
-#define DVB_T_BW_MIN                    5
-#define DVB_T_BW_MAX                    8
+#define ISDB_T_6MHZ_SYMBOL		8126984 /* 512/63 */
+#define ISDB_T_TSP_MAXNUMS		(3276 >> 2)
 
-#define is_dvb_t_valid_bw(m)            (m >= DVB_T_BW_MIN && m <= DVB_T_BW_MAX)
+typedef struct _isdb_t_bts_frame
+{
+	ofdm_frame ofdm;
+	int32_t frameus;
+	uint32_t frame_sb;
+	uint16_t tsp_maps[ISDB_T_TSP_MAXNUMS];
+}isdb_t_bts_frame;
+
+typedef isdb_t_bts_frame* Pisdb_t_bts_frame;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    HAL_API vatek_result tool_dvb_t_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
-    HAL_API vatek_result tool_dvb_t_check_param(Pmodulator_param pmod);
-    HAL_API uint32_t tool_dvb_t_get_bitrate(Pmodulator_param pmod);
+	HAL_API vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_frame pbts);
+	HAL_API vatek_result tool_isdb_t_bts_frame_get_tick(Pisdb_t_bts_frame pbts, int32_t pktpos);
+
+	HAL_API uint32_t tool_isdb_t_get_bitrate(Pmodulator_param pmod);
+	HAL_API vatek_result tool_isdb_t_check_param(Pmodulator_param pmod);
 
 #ifdef __cplusplus
 }

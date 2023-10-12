@@ -30,8 +30,8 @@
 #define _OUTPUT_MODULATOR_
 
 #include <vatek_base.h>
-#include <hal/halreg_define.h>
-#include <hal/halreg_output.h>
+#include <halreg_define.h>
+#include <halreg_output.h>
 #include <ui_props_api.h>
 #include <ui_props_api.h>
 #include <output_rfmixer.h>
@@ -599,8 +599,8 @@ extern "C" {
 	HAL_API uint32_t modulator_param_get_bitrate(Pmodulator_param pmod);
 	HAL_API vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod);
 	HAL_API vatek_result modulator_param_reset_dvbt2(modulator_type type, Pmodulator_param pmod);
-	HAL_API vatek_result modulator_param_set(vatek_device * hchip, Pmodulator_param pmod);
-	HAL_API vatek_result modulator_param_get(vatek_device * hchip, Pmodulator_param pmod);
+	HAL_API vatek_result modulator_param_set(vatek_device *hchip, Pmodulator_param pmod);
+	HAL_API vatek_result modulator_param_get(vatek_device *hchip, Pmodulator_param pmod);
 
 	#ifdef __cplusplus
 }

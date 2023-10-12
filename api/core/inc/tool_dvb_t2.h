@@ -29,7 +29,7 @@
 #ifndef _TOOL_DVB_T2_
 #define _TOOL_DVB_T2_
 
-#include <tools/tool_ofdm.h>
+#include <tool_ofdm.h>
 
 #define DVB_T2_SUPERFRAME_NUMS          2
 #define DVB_T2_PLP_NUMS                 1

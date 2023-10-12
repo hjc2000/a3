@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_helpful.h>
+#include <tool_helpful.h>
 
 Pth_fifo th_fifo_create_pool(int32_t len, Pth_mempool pmpool)
 {

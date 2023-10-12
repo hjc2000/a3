@@ -1,6 +1,6 @@
 #include <vatek_sdk_device.h>
-#include <hal/halservice_rescure.h>
-#include <hal/halreg_calibration.h>
+#include <halservice_rescure.h>
+#include <halreg_calibration.h>
 #include <output_rfmixer.h>
 #include <ui_service_transform.h>
 #include "device/internal/cross_device_tool.h"

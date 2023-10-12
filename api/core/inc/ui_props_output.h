@@ -26,36 +26,43 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _TOOL_OUTPUT_
-#define _TOOL_OUTPUT_
+#ifndef _UI_PROPS_OUTPUT_
+#define _UI_PROPS_OUTPUT_
 
-#include <tools/tool_ofdm.h>
-#include <tools/tool_helpful.h>
+#include <output_base.h>
+#include <output_rfmixer.h>
+#include <calibration_define.h>
+#include <ui_props_modulator.h>
 
-#define OUTCLK_DEFAULT_PCRINTERVAL_MS		40
+HALREG_S(R2_PARAM_I, 16)
+HALREG_S(R2_PARAM_Q, 16)
+HALREG_S(R2_PARAM_IMAGE, 16)
+HALREG_S(R2_PARAM_PHASE, 16)
+HALREG_S(R2_PARAM_GPIO, 16)
+HALREG_S(R2_PARAM_GAIN, 16)
 
-typedef void* houtput_clock;
+HALREG_S(CALIBRATION_R2_0_I, 16)
+HALREG_S(CALIBRATION_R2_0_Q, 16)
+HALREG_S(CALIBRATION_R2_0_IMAGE, 16)
+HALREG_S(CALIBRATION_R2_0_PHASE, 16)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_ui_struct_start(r2_tune)
+_prop_u16(r2_tune, ioffset, "i offect", R2_PARAM_I)
+	_prop_u16(r2_tune, qoffset, "q offect", R2_PARAM_Q)
+	_prop_u16(r2_tune, imgoffset, "image offect", R2_PARAM_IMAGE)
+	_prop_u16(r2_tune, phaseoffset, "phase offect", R2_PARAM_PHASE)
+_ui_struct_end
 
-	HAL_API vatek_result tool_output_clock_create(Pmodulator_param pmod, houtput_clock* houtclk);
-	HAL_API vatek_result tool_output_clock_create_mempool(Pmodulator_param pmod,Pth_mempool pmem, houtput_clock* houtclk);
-	HAL_API vatek_result tool_output_clock_config(houtput_clock houtclk, Pmodulator_param pmod);
-	HAL_API void tool_output_clock_set_tick(houtput_clock houtclk,Pmux_clock_tick pclk);
+_ui_struct_start(r2_tune_rule)
+_prop_u16(r2_tune_rule, pagain, "gain", R2_PARAM_GAIN)
+	_prop_u16(r2_tune_rule, gpiocntl, "gpio", R2_PARAM_GPIO)
+_ui_struct_end
 
-	HAL_API void tool_output_clock_adjust_tick(houtput_clock houtclk,int32_t tick27mhz);
-
-	HAL_API Pmux_clock_tick tool_output_clock_append(houtput_clock houtclk);
-	HAL_API vatek_result tool_output_clock_get_pcrpacket(houtput_clock houtclk, int32_t* intervalms);
-	HAL_API Pmux_clock_tick tool_output_clock_get_tick(houtput_clock houtclk);
-
-	HAL_API vatek_result tool_output_clock_reset(houtput_clock houtclk);
-	HAL_API void tool_output_clock_free(houtput_clock houtclk);
-
-#ifdef __cplusplus
-}
-#endif
+_ui_struct_start(r2_tune_calibration0)
+	_prop_u16(r2_tune, ioffset, "i offect", CALIBRATION_R2_0_I)
+	_prop_u16(r2_tune, qoffset, "q offect", CALIBRATION_R2_0_Q)
+	_prop_u16(r2_tune, imgoffset, "image offect", CALIBRATION_R2_0_IMAGE)
+	_prop_u16(r2_tune, phaseoffset, "phase offect", CALIBRATION_R2_0_PHASE)
+_ui_struct_end
 
 #endif

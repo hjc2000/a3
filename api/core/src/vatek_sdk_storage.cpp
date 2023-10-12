@@ -33,9 +33,9 @@
 
 #include <cross_bridge.h>
 #include <cross_os_api.h>
-#include <tools/tool_crc32.h>
-#include <hal/halservice_rescure.h>
-#include <storage/storage_section.h>
+#include <tool_crc32.h>
+#include <halservice_rescure.h>
+#include <storage_section.h>
 
 typedef struct _storage_entry
 {

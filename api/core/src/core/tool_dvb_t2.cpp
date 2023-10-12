@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_dvb_t2.h>
+#include <tool_dvb_t2.h>
 
 /*
     DVB-T2 TIPS - spec EN 302 755_1.3.1

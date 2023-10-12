@@ -27,7 +27,7 @@
 //
 
 #include <stream_encoder.h>
-#include <ui_props/ui_props_encoder.h>
+#include <ui_props_encoder.h>
 #include <ui_props_api.h>
 
 vatek_result encoder_param_set(vatek_device * hchip, Pencoder_param penc)

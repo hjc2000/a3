@@ -31,8 +31,8 @@
 
 #include <ui_props_define.h>
 #include <service_base.h>
-#include <ui_props/ui_props_stream.h>
-#include <ui_props/ui_props_output.h>
+#include <ui_props_stream.h>
+#include <ui_props_output.h>
 
 HALREG_S(BCINFO_STREAM	, 8	)
 HALREG_S(BCINFO_OUTPUT	, 8	)

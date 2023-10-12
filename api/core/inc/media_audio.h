@@ -30,7 +30,7 @@
 #define _MEDIA_AUDIO_
 
 #include <stdint.h>
-#include <hal/halreg_stream.h>
+#include <halreg_stream.h>
 
 #define AUDIO_RC_AUTO					0x00000000
 #define AUDIO_RC_CBR					0x00000001

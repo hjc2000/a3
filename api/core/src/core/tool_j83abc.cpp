@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_j83abc.h>
+#include <tool_j83abc.h>
 
 #define J83B_Q64_BITRATE		26970355
 #define J83B_Q256_BITRATE		38810705

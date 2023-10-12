@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_dtmb.h>
+#include <tool_dtmb.h>
 
 #define DTMB_6MHZ	(uint32_t)(5.67 * 1000000)
 #define DTMB_8MHZ	(uint32_t)(7.56 * 1000000)

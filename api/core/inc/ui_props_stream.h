@@ -30,7 +30,7 @@
 #define _UI_PROPS_STREAM_
 
 #include <stream_base.h>
-#include <ui_props/ui_props_encoder.h>
+#include <ui_props_encoder.h>
 
 /* stream : usb stream mode*/
 HALREG_S(USB_INPUT_MODE,8)

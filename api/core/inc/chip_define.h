@@ -2,7 +2,7 @@
 #define _CHIP_DEFINE_
 
 #include <vatek_base.h>
-#include <hal/halservice_base.h>
+#include <halservice_base.h>
 
 #define DEVICE_BUS_UNKNOWN		0x00000000
 #define DEVICE_BUS_USB			0x00000001

@@ -26,8 +26,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_ofdm.h>
-#include <ui_props/ui_props_modulator.h>
+#include <tool_ofdm.h>
+#include <ui_props_modulator.h>
 
 vatek_result modulator_param_reset(modulator_type type, Pmodulator_param pmod)
 {

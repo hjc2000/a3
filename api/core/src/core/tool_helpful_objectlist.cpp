@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_helpful.h>
+#include <tool_helpful.h>
 
 void th_object_list_reset(Pth_objectlist pqlist)
 {

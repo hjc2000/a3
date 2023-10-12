@@ -30,7 +30,7 @@
 #define _SERVICE_TRANSFORM_
 
 #include <service_base.h>
-#include <hal/halservice_transform.h>
+#include <halservice_transform.h>
 #include <mux_handle.h>
 
 #define TRCAPTURE_MAX_PACKETNUMS			10

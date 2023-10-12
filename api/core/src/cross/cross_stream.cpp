@@ -27,7 +27,7 @@
 //
 
 #include <cross_stream.h>
-#include "./internal/stream_handle.h"
+#include "stream_handle.h"
 
 vatek_result cross_stream_open_test(uint32_t bitrate, hcross_stream* hcstream)
 {

@@ -1,4 +1,4 @@
-#include <storage/storage_config.h>
+#include <storage_config.h>
 #include <media_audio.h>
 #include <media_video.h>
 

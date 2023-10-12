@@ -26,43 +26,31 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _UI_PROPS_OUTPUT_
-#define _UI_PROPS_OUTPUT_
+#ifndef _TOOL_J83ABC_
+#define _TOOL_J83ABC_
 
-#include <output_base.h>
-#include <output_rfmixer.h>
-#include <calibration_define.h>
-#include <ui_props/ui_props_modulator.h>
+#include <tool_ofdm.h>
 
-HALREG_S(R2_PARAM_I, 16)
-HALREG_S(R2_PARAM_Q, 16)
-HALREG_S(R2_PARAM_IMAGE, 16)
-HALREG_S(R2_PARAM_PHASE, 16)
-HALREG_S(R2_PARAM_GPIO, 16)
-HALREG_S(R2_PARAM_GAIN, 16)
+#define J83A_SYMBOL_MIN		5000
+#define J83A_SYMBOL_MAX		8000
 
-HALREG_S(CALIBRATION_R2_0_I, 16)
-HALREG_S(CALIBRATION_R2_0_Q, 16)
-HALREG_S(CALIBRATION_R2_0_IMAGE, 16)
-HALREG_S(CALIBRATION_R2_0_PHASE, 16)
+#define is_j83a_valid_sb(sb)	(sb >= J83A_SYMBOL_MIN && sb <= J83A_SYMBOL_MAX)
 
-_ui_struct_start(r2_tune)
-_prop_u16(r2_tune, ioffset, "i offect", R2_PARAM_I)
-	_prop_u16(r2_tune, qoffset, "q offect", R2_PARAM_Q)
-	_prop_u16(r2_tune, imgoffset, "image offect", R2_PARAM_IMAGE)
-	_prop_u16(r2_tune, phaseoffset, "phase offect", R2_PARAM_PHASE)
-_ui_struct_end
+#define J83B_Q64_SYMBOL		5056941
+#define J83B_Q256_SYMBOL	5360537
 
-_ui_struct_start(r2_tune_rule)
-_prop_u16(r2_tune_rule, pagain, "gain", R2_PARAM_GAIN)
-	_prop_u16(r2_tune_rule, gpiocntl, "gpio", R2_PARAM_GPIO)
-_ui_struct_end
+#define J83C_SYMBOL_RATE	5274
 
-_ui_struct_start(r2_tune_calibration0)
-	_prop_u16(r2_tune, ioffset, "i offect", CALIBRATION_R2_0_I)
-	_prop_u16(r2_tune, qoffset, "q offect", CALIBRATION_R2_0_Q)
-	_prop_u16(r2_tune, imgoffset, "image offect", CALIBRATION_R2_0_IMAGE)
-	_prop_u16(r2_tune, phaseoffset, "phase offect", CALIBRATION_R2_0_PHASE)
-_ui_struct_end
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	HAL_API vatek_result tool_j83_j83frame_reset(Pmodulator_param pmod, Pofdm_frame pframe);
+	HAL_API uint32_t tool_j83_get_bitrate(Pmodulator_param pmod);
+	HAL_API vatek_result tool_j83_check_param(Pmodulator_param pmod);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

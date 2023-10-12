@@ -30,7 +30,7 @@
 #define _OUTPUT_BASE_
 
 #include <output_modulator.h>
-#include <hal/halreg_output.h>
+#include <halreg_output.h>
 
 
 #endif

@@ -27,8 +27,8 @@
 //
 
 #include <mux_handle.h>
-#include <hal/halservice_base.h>
-#include <hal/halreg_playload.h>
+#include <halservice_base.h>
+#include <halreg_playload.h>
 #include "./internal/mux_core.h"
 
 extern vatek_result muxplayload_reset(vatek_device * hchip);

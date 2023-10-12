@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <tools/tool_helpful.h>
+#include <tool_helpful.h>
 
 Pth_circlebuf th_circlebuf_create(int32_t slicelen, int32_t nums)
 {

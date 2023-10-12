@@ -32,9 +32,9 @@
 #include <stdio.h>
 #include <binary_rom.h>
 #include <output_rfmixer.h>
-#include <storage/storage_config.h>
-#include <storage/storage_broadcast.h>
-#include <storage/storage_transform.h>
+#include <storage_config.h>
+#include <storage_broadcast.h>
+#include <storage_transform.h>
 
 typedef void* hvatek_storage;
 

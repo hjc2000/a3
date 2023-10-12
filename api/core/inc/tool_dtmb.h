@@ -26,28 +26,39 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _TOOL_J83ABC_
-#define _TOOL_J83ABC_
+#ifndef _TOOL_DTMB_
+#define _TOOL_DTMB_
 
-#include <tools/tool_ofdm.h>
+#include <tool_ofdm.h>
 
-#define J83A_SYMBOL_MIN		5000
-#define J83A_SYMBOL_MAX		8000
+#if 0
 
-#define is_j83a_valid_sb(sb)	(sb >= J83A_SYMBOL_MIN && sb <= J83A_SYMBOL_MAX)
+typedef struct _dtmb_superframe
+{
+	uint32_t symbolrate;
+	uint32_t sframe_pktnums;
+	uint32_t sframe_tick;
+	uint32_t sframe_pkttick;
+}dtmb_superframe;
 
-#define J83B_Q64_SYMBOL		5056941
-#define J83B_Q256_SYMBOL	5360537
+typedef dtmb_superframe* Pdtmb_superframe;
 
-#define J83C_SYMBOL_RATE	5274
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	HAL_API vatek_result tool_j83_j83frame_reset(Pmodulator_param pmod, Pofdm_frame pframe);
-	HAL_API uint32_t tool_j83_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_j83_check_param(Pmodulator_param pmod);
+	HAL_API vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
+
+#if 0
+	HAL_API vatek_result tool_dtmb_superframe_reset(Pmodulator_param pmod, Pdtmb_superframe psframe);
+	HAL_API vatek_result tool_dtmb_superframe_get_tick(Pdtmb_superframe psframe, int32_t pktpos);
+	HAL_API void tool_dtmb_superframe_append_frame(Pdtmb_superframe psframe, Pmux_clock_tick pclk);
+#endif
+
+	HAL_API uint32_t tool_dtmb_get_bitrate(Pmodulator_param pmod);
+	HAL_API vatek_result tool_dtmb_check_param(Pmodulator_param pmod);
 
 #ifdef __cplusplus
 }

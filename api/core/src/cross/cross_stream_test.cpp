@@ -26,8 +26,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "./internal/stream_handle.h"
-#include <tools/tool_crc32.h>
+#include "stream_handle.h"
+#include <tool_crc32.h>
 
 #define TEST_PACKET_USB_PAT		1
 #define TEST_PACKET_PCR_PID		0x100

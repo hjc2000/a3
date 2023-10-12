@@ -29,10 +29,10 @@
 #ifndef _HALSERVICE_BASE_
 #define _HALSERVICE_BASE_
 
-#include <hal/halreg_define.h>
-#include <hal/halreg_stream.h>
-#include <hal/halreg_output.h>
-#include <hal/halreg_mux.h>
+#include <halreg_define.h>
+#include <halreg_stream.h>
+#include <halreg_output.h>
+#include <halreg_mux.h>
 
 #define HALREG_SYS_STATUS_0             0x20
     #define SYS_STATUS_TAG              0xFF000000

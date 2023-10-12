@@ -26,36 +26,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#ifndef _TOOL_ISDB_T_
-#define _TOOL_ISDB_T_
+#ifndef _TOOL_8VSB_
+#define _TOOL_8VSB_
 
-#include <tools/tool_ofdm.h>
+#include <tool_ofdm.h>
 
-#define ISDB_T_6MHZ_SYMBOL		8126984 /* 512/63 */
-#define ISDB_T_TSP_MAXNUMS		(3276 >> 2)
+#define ATSC_8VSB_SYMBOLRATE	10762238	
+#define VSB_SEGMENT_SB_NUMS		832
+#define VSB_FIELD_SEGMENT_NUMS	313
+#define VSB_FRAME_FIELD_NUMS	2
 
-typedef struct _isdb_t_bts_frame
-{
-	ofdm_frame ofdm;
-	int32_t frameus;
-	uint32_t frame_sb;
-	uint16_t tsp_maps[ISDB_T_TSP_MAXNUMS];
-}isdb_t_bts_frame;
+#define VSB_FIELD_PACKET_NUMS	(VSB_FIELD_SEGMENT_NUMS - 1)
+#define VSB_FRAME_PACKET_NUMS	(VSB_FIELD_PACKET_NUMS * VSB_FRAME_FIELD_NUMS)
 
-typedef isdb_t_bts_frame* Pisdb_t_bts_frame;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	HAL_API vatek_result tool_isdb_t_bts_frame_reset(Pmodulator_param pmod, Pisdb_t_bts_frame pbts);
-	HAL_API vatek_result tool_isdb_t_bts_frame_get_tick(Pisdb_t_bts_frame pbts, int32_t pktpos);
-
-	HAL_API uint32_t tool_isdb_t_get_bitrate(Pmodulator_param pmod);
-	HAL_API vatek_result tool_isdb_t_check_param(Pmodulator_param pmod);
-
-#ifdef __cplusplus
-}
-#endif
+HAL_API vatek_result tool_8vsb_vsbframe_reset(Pmodulator_param pmod, Pofdm_frame pframe);
+HAL_API uint32_t tool_atsc_get_bitrate(Pmodulator_param pmod);
+HAL_API vatek_result tool_atsc_check_param(Pmodulator_param pmod);
 
 #endif

@@ -27,7 +27,7 @@
 //
 
 #include <service_transform.h>
-#include <ui_props/ui_props_stream.h>
+#include <ui_props_stream.h>
 
 extern vatek_result transform_source_reset(vatek_ic_module icmodule, stream_source source, Ptransform_source psource);
 extern vatek_result transform_source_set(vatek_device * hchip,stream_source source, Ptransform_source psource);

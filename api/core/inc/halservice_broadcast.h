@@ -29,8 +29,8 @@
 #ifndef _HALSERVICE_BROADCAST_
 #define _HALSERVICE_BROADCAST_
 
-#include <hal/halreg_mux.h>
-#include <hal/halservice_rescure.h>
+#include <halreg_mux.h>
+#include <halservice_rescure.h>
 
 #define HALREG_BROADCAST_CNTL           HALREG_SERVICE_BASE_CNTL
     #define BC_START                    BASE_CMD_START

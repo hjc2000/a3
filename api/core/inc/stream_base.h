@@ -30,7 +30,7 @@
 #define _STREAM_BASE_
 
 #include <stream_encoder.h>
-#include <hal/halreg_stream.h>
+#include <halreg_stream.h>
 #include <ui_props_define.h>
 #include <chip_define.h>
 

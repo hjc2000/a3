@@ -26,7 +26,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "./internal/stream_handle.h"
+#include "stream_handle.h"
 #include <signal.h>
 
 
