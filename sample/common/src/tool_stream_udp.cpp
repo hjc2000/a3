@@ -45,15 +45,14 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 
 	if (is_vatek_success(nres))
 	{
-		UdpTsStreamSource *pudp = new UdpTsStreamSource;
+		UdpTsStreamSource *udp_stream_source = new UdpTsStreamSource;
 		nres = vatek_memfail;
-		if (pudp)
+		if (udp_stream_source)
 		{
-			memset(pudp, 0, sizeof(UdpTsStreamSource));
-			pudp->hsocket = hsocket;
-			pudp->hlock = hlock;
+			udp_stream_source->hsocket = hsocket;
+			udp_stream_source->hlock = hlock;
 
-			psource->hsource = pudp;
+			psource->hsource = udp_stream_source;
 			psource->start = tool_udp_stream_start;
 			psource->stop = tool_udp_stream_stop;
 			psource->check = tool_udp_stream_check;
