@@ -25,7 +25,6 @@ enum cross_driver
 	cdriver_sim,
 };
 
-typedef void *void_cross_device;
 typedef void *void_cross_list;
 
 enum cross_stream_mode
@@ -36,10 +35,10 @@ enum cross_stream_mode
 	stream_mode_output_nodma = 3,
 };
 
-typedef vatek_result(*fp_start_stream)(void_cross_device hdev, cross_stream_mode mode);
-typedef vatek_result(*fp_read_stream)(void_cross_device hdev, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fp_write_stream)(void_cross_device hdev, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fp_stop_stream)(void_cross_device hdev);
+typedef vatek_result(*fp_start_stream)(usb_handle *hdev, cross_stream_mode mode);
+typedef vatek_result(*fp_read_stream)(usb_handle *hdev, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fp_write_stream)(usb_handle *hdev, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fp_stop_stream)(usb_handle *hdev);
 
 struct cross_stream
 {
@@ -49,11 +48,11 @@ struct cross_stream
 	fp_stop_stream stop_stream;
 };
 
-typedef vatek_result(*fpbulk_get_size)(void_usb_device husb);
-typedef vatek_result(*fpbulk_send_command)(void_usb_device husb, usbbulk_command * pcmd);
-typedef vatek_result(*fpbulk_get_result)(void_usb_device husb, usbbulk_result * presult);
-typedef vatek_result(*fpbulk_write)(void_usb_device husb, uint8_t *pbuf, int32_t len);
-typedef vatek_result(*fpbulk_read)(void_usb_device husb, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fpbulk_get_size)(usb_handle *husb);
+typedef vatek_result(*fpbulk_send_command)(usb_handle *husb, usbbulk_command *pcmd);
+typedef vatek_result(*fpbulk_get_result)(usb_handle *husb, usbbulk_result *presult);
+typedef vatek_result(*fpbulk_write)(usb_handle *husb, uint8_t *pbuf, int32_t len);
+typedef vatek_result(*fpbulk_read)(usb_handle *husb, uint8_t *pbuf, int32_t len);
 
 /* interface for bulk stream used to updated rom or broadcast write aux stream*/
 
@@ -66,13 +65,13 @@ struct cross_usbbulk
 	fpbulk_read read;
 };
 
-typedef vatek_result(*fp_read_register)(void_cross_device hdev, int32_t addr, uint32_t *val);
-typedef vatek_result(*fp_write_register)(void_cross_device hdev, int32_t addr, uint32_t val);
-typedef vatek_result(*fp_read_memory)(void_cross_device hdev, int32_t addr, uint32_t *val);
-typedef vatek_result(*fp_write_memory)(void_cross_device hdev, int32_t addr, uint32_t val);
-typedef vatek_result(*fp_write_buffer)(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-typedef vatek_result(*fp_read_buffer)(void_cross_device hdev, int32_t addr, uint8_t *buf, int32_t wlen);
-typedef vatek_result(*fp_sendcmd)(void_cross_device hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
+typedef vatek_result(*fp_read_register)(usb_handle *hdev, int32_t addr, uint32_t *val);
+typedef vatek_result(*fp_write_register)(usb_handle *hdev, int32_t addr, uint32_t val);
+typedef vatek_result(*fp_read_memory)(usb_handle *hdev, int32_t addr, uint32_t *val);
+typedef vatek_result(*fp_write_memory)(usb_handle *hdev, int32_t addr, uint32_t val);
+typedef vatek_result(*fp_write_buffer)(usb_handle *hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+typedef vatek_result(*fp_read_buffer)(usb_handle *hdev, int32_t addr, uint8_t *buf, int32_t wlen);
+typedef vatek_result(*fp_sendcmd)(usb_handle *hdev, int32_t cmd, int32_t addr, uint8_t *vals, int32_t wlen);
 
 struct cross_core
 {
@@ -94,7 +93,7 @@ public:
 	cross_device *next;
 	uint32_t bus;
 	cross_driver driver;
-	void_cross_device hcross;
+	usb_handle *hcross;
 	hal_service_mode service;
 	cross_core *core;
 	cross_stream *stream;
@@ -111,12 +110,12 @@ public:
 		if (driver == cdriver_bridge)
 			return bridge_device_get_name((win_hid_device_list_node *)hcross);
 		else if (driver == cdriver_usb)
-			return usb_api_ll_get_name((void_usb_device)hcross);
+			return usb_api_ll_get_name((usb_handle *)hcross);
 
 		return "_unknown";
 	}
 
-	win_hid_device_list_node * cross_get_bridge_device_handle()
+	win_hid_device_list_node *cross_get_bridge_device_handle()
 	{
 		if (driver == cdriver_bridge)
 			return (win_hid_device_list_node *)hcross;
@@ -124,10 +123,10 @@ public:
 		return NULL;
 	}
 
-	void_usb_device cross_get_usb_device_handle()
+	usb_handle *cross_get_usb_device_handle()
 	{
 		if (driver == cdriver_usb)
-			return (void_usb_device)hcross;
+			return (usb_handle *)hcross;
 		return NULL;
 	}
 };
@@ -155,8 +154,8 @@ public:
 
 vatek_result cross_devices_create(cross_device **pcross);
 vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_device **pcross);
-vatek_result cross_bridge_open(win_hid_device_list_node * hbridge, cross_device **pcross);
-vatek_result cross_usb_device_open(void_usb_device husb, cross_device **pcross);
+vatek_result cross_bridge_open(win_hid_device_list_node *hbridge, cross_device **pcross);
+vatek_result cross_usb_device_open(usb_handle *husb, cross_device **pcross);
 
 void cross_bridge_close(cross_device *pcross);
 void cross_usb_device_close(cross_device *pcross);

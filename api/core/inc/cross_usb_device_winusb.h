@@ -15,7 +15,7 @@
 #include <SetupAPI.h>
 #include <stdlib.h>
 
-typedef void *void_usb_device;
+struct usb_handle;
 typedef void *void_usb_device_list;
 
 struct DEVICE_DATA
@@ -67,28 +67,28 @@ CloseDevice(
 
 HAL_API vatek_result usb_api_ll_enum(usbdevice_type type, void_usb_device_list *hlist);
 HAL_API vatek_result usb_api_ll_enum_by_id(uint16_t vid, uint16_t pid, void_usb_device_list *hlist);
-HAL_API vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx, void_usb_device *husb);
+HAL_API vatek_result usb_api_ll_list_get_device(void_usb_device_list hlist, int32_t idx, usb_handle **husb);
 HAL_API const char *usb_api_ll_list_get_name(void_usb_device_list hlist, int32_t idx);
 HAL_API vatek_result usb_api_ll_free_list(void_usb_device_list hlist);
-HAL_API vatek_result usb_api_ll_open(void_usb_device husb);
-HAL_API vatek_result usb_api_ll_close(void_usb_device husb);
-HAL_API const char *usb_api_ll_get_name(void_usb_device husb);
+HAL_API vatek_result usb_api_ll_open(usb_handle *husb);
+HAL_API vatek_result usb_api_ll_close(usb_handle *husb);
+HAL_API const char *usb_api_ll_get_name(usb_handle *husb);
 
 /* usb_device bulk transfer */
-HAL_API void usb_api_ll_lock(void_usb_device husb);
-HAL_API void usb_api_ll_unlock(void_usb_device husb);
-HAL_API vatek_result usb_api_ll_set_dma(void_usb_device husb, int32_t isdma);
-HAL_API vatek_result usb_api_ll_write(void_usb_device husb, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result usb_api_ll_read(void_usb_device husb, uint8_t *pbuf, int32_t len);
+HAL_API void usb_api_ll_lock(usb_handle *husb);
+HAL_API void usb_api_ll_unlock(usb_handle *husb);
+HAL_API vatek_result usb_api_ll_set_dma(usb_handle *husb, int32_t isdma);
+HAL_API vatek_result usb_api_ll_write(usb_handle *husb, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result usb_api_ll_read(usb_handle *husb, uint8_t *pbuf, int32_t len);
 
 /* usb_device control transfer */
-HAL_API vatek_result usb_api_ll_command(void_usb_device husb, uint8_t cmd, uint32_t param0, uint8_t *rxbuf);
-HAL_API vatek_result usb_api_ll_command_buffer(void_usb_device husb, uint8_t cmd, uint8_t *pbuf, uint8_t *rxbuf);
+HAL_API vatek_result usb_api_ll_command(usb_handle *husb, uint8_t cmd, uint32_t param0, uint8_t *rxbuf);
+HAL_API vatek_result usb_api_ll_command_buffer(usb_handle *husb, uint8_t cmd, uint8_t *pbuf, uint8_t *rxbuf);
 
-HAL_API vatek_result usb_api_ll_bulk_get_size(void_usb_device husb);
-HAL_API vatek_result usb_api_ll_bulk_send_command(void_usb_device husb, usbbulk_command * pcmd);
-HAL_API vatek_result usb_api_ll_bulk_get_result(void_usb_device husb, usbbulk_result * presult);
-HAL_API vatek_result usb_api_ll_bulk_write(void_usb_device husb, uint8_t *pbuf, int32_t len);
-HAL_API vatek_result usb_api_ll_bulk_read(void_usb_device husb, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result usb_api_ll_bulk_get_size(usb_handle *husb);
+HAL_API vatek_result usb_api_ll_bulk_send_command(usb_handle *husb, usbbulk_command *pcmd);
+HAL_API vatek_result usb_api_ll_bulk_get_result(usb_handle *husb, usbbulk_result *presult);
+HAL_API vatek_result usb_api_ll_bulk_write(usb_handle *husb, uint8_t *pbuf, int32_t len);
+HAL_API vatek_result usb_api_ll_bulk_read(usb_handle *husb, uint8_t *pbuf, int32_t len);
 
 #endif

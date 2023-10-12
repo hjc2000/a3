@@ -69,7 +69,7 @@ vatek_result cross_devices_create(cross_device **pcross)
 			nums = nres;
 			for (i = 0; i < nums; i++)
 			{
-				void_usb_device husb = NULL;
+				usb_handle * husb = NULL;
 				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
 				if (is_vatek_success(nres))
 				{
@@ -116,7 +116,7 @@ vatek_result cross_devices_create_by_usbid(uint16_t vid, uint16_t pid, cross_dev
 			cross_device *newcross = NULL;
 			for (i = 0; i < nums; i++)
 			{
-				void_usb_device husb = NULL;
+				usb_handle * husb = NULL;
 				nres = usb_api_ll_list_get_device(m_cdevices.usbdevices, i, &husb);
 				if (is_vatek_success(nres))
 				{
