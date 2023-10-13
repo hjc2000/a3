@@ -21,14 +21,6 @@ using namespace std;
 #define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN / TS_PACKET_LEN)
 
 /// <summary>
-///		被强转成：
-///		tool_handle_udp *
-///		handle_test *
-///		FileWrapper *
-/// </summary>
-typedef void *void_stream_source;
-
-/// <summary>
 ///		ts 流源。
 ///		* ts 流源有：文件流源、UDP 流源。具体的流源派生此类。
 /// </summary>
@@ -191,12 +183,10 @@ public:
 	{
 		return vatek_success;
 	}
-
 	vatek_result Stop() override
 	{
 		return vatek_success;
 	}
-
 	vatek_result Check() override;
 	uint8_t *Get() override;
 };
