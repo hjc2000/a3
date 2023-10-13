@@ -29,13 +29,11 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 /// <summary>
 ///		解析命令行
 /// </summary>
-/// <param name="argc"></param>
-/// <param name="argv"></param>
-/// <param name="stream_source"></param>
+/// <param name="argc">命令行参数的数量</param>
+/// <param name="argv">命令行参数的数组</param>
 /// <param name="pustream"></param>
-/// <returns></returns>
-/* 需要将此函数改为返回 TsStreamSource 的共享指针，而不是传入 TsStreamSource 指针 */
-void parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source, usbstream_param *pustream)
+/// <returns>解析命令行成功会返回 TsStreamSource 对象，否则返回 nullptr</returns>
+shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstream_param *pustream)
 {
 	auto print_help = [&]()
 	{
@@ -49,11 +47,10 @@ void parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source,
 	if (argc < 2)
 	{
 		print_help();
-		return;
+		return nullptr;
 	}
 
 	///>>> 执行到这里说明参数数量 >= 2
-
 	#pragma region 解析制式
 	if (strcmp(argv[1], "atsc") == 0)
 	{
@@ -104,12 +101,21 @@ void parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source,
 	///>>> 执行到这里说明参数数量 >= 4
 
 	// 如果参数大于等于 4，则第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
+	shared_ptr<TsStreamSource> stream_source;
 	if (strcmp(argv[2], "file") == 0)
-		stream_source_file_get(argv[3], stream_source);
+	{
+		stream_source = shared_ptr<TsStreamSource>{ new FileTsStreamSource{} };
+		stream_source_file_get(argv[3], stream_source.get());
+	}
 	else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
-		stream_source_udp_get(argv[3], stream_source);
+	{
+		stream_source = shared_ptr<TsStreamSource>{ new UdpTsStreamSource{} };
+		stream_source_udp_get(argv[3], stream_source.get());
+	}
 	else
+	{
 		throw Exception("不支持的协议");
+	}
 
 	// 第 5 个参数用来选择 PCR 是穿透还是需要进行校正
 	if (argc == 5)
@@ -119,6 +125,8 @@ void parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source,
 		else
 			pustream->remux = ustream_remux_pcr;
 	}
+
+	return stream_source;
 }
 
 int main(int argc, char *argv[])
@@ -141,7 +149,6 @@ int main(int argc, char *argv[])
 
 	vatek_device *hchip = NULL;
 	void_vatek_usbstream hustream = NULL;
-	shared_ptr<TsStreamSource> streamsource{ new TsStreamSource{} };
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;
@@ -161,7 +168,9 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 
-	parser_cmd_source(4, (char **)cmd, streamsource.get(), &usbcmd);
+	shared_ptr<TsStreamSource> streamsource;
+	streamsource = parser_cmd_source(4, (char **)cmd, &usbcmd);
+
 	/*
 		step 1 :
 		- initialized supported device and open
