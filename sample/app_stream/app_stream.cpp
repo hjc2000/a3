@@ -132,20 +132,20 @@ shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstrea
 int main(int argc, char *argv[])
 {
 	/* ./app_stream dvbt file qq.ts */
-	//const char *cmd[] = {
-	//	"./app_stream",
-	//	"dvbt",
-	//	"file",
-	//	"zf.ts",
-	//};
-
-	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
 	const char *cmd[] = {
 		"./app_stream",
 		"dvbt",
-		"udp",
-		"udp://localhost:1234",
+		"file",
+		"zf.ts",
 	};
+
+	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
+	//const char *cmd[] = {
+	//	"./app_stream",
+	//	"dvbt",
+	//	"udp",
+	//	"udp://localhost:1234",
+	//};
 
 	vatek_device *hchip = NULL;
 	void_vatek_usbstream hustream = NULL;

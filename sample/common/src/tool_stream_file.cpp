@@ -2,7 +2,6 @@
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 
-
 /// <summary>
 ///		直接返回 vatek_success，其实就是 0
 /// </summary>
