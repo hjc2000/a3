@@ -21,13 +21,12 @@ using namespace std;
 #define TSSLICE_PACKET_NUM			(TSSLICE_BUFFER_LEN / TS_PACKET_LEN)
 
 /// <summary>
-///		ts 流源。
-///		* ts 流源有：文件流源、UDP 流源。具体的流源派生此类。
+///		ts 流源的接口。
 /// </summary>
-class TsStreamSource
+class ITsStreamSource
 {
 public:
-	virtual ~TsStreamSource() {}
+	virtual ~ITsStreamSource() {}
 	virtual vatek_result Start() = 0;
 	virtual vatek_result Stop() = 0;
 	virtual vatek_result Check() = 0;
@@ -37,7 +36,7 @@ public:
 /// <summary>
 ///		对 C 的 FILE 类型的文件句柄的包装
 /// </summary>
-class FileTsStreamSource :public TsStreamSource
+class FileTsStreamSource :public ITsStreamSource
 {
 	/// <summary>
 	///		将文件指针移动到以文件开始为参考点的 pos + offset 处，然后读取 1 个字节，检查是否是 ts
@@ -194,7 +193,7 @@ public:
 };
 
 #define UDP_SLICE_BUF_NUMS		32
-class UdpTsStreamSource :public TsStreamSource
+class UdpTsStreamSource :public ITsStreamSource
 {
 public:
 	UdpTsStreamSource()

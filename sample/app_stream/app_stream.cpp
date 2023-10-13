@@ -15,7 +15,7 @@ static usbstream_param usbcmd;
 
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 {
-	TsStreamSource *ptssource = (TsStreamSource *)param;
+	ITsStreamSource *ptssource = (ITsStreamSource *)param;
 	vatek_result nres = ptssource->Check();
 	if (nres > vatek_success)
 	{
@@ -32,8 +32,8 @@ vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 /// <param name="argc">命令行参数的数量</param>
 /// <param name="argv">命令行参数的数组</param>
 /// <param name="pustream"></param>
-/// <returns>解析命令行成功会返回 TsStreamSource 对象，否则返回 nullptr</returns>
-shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstream_param *pustream)
+/// <returns>解析命令行成功会返回 ITsStreamSource 对象，否则返回 nullptr</returns>
+shared_ptr<ITsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstream_param *pustream)
 {
 	auto print_help = [&]()
 	{
@@ -101,15 +101,15 @@ shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstrea
 	///>>> 执行到这里说明参数数量 >= 4
 
 	// 如果参数大于等于 4，则第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
-	shared_ptr<TsStreamSource> stream_source;
+	shared_ptr<ITsStreamSource> stream_source;
 	if (strcmp(argv[2], "file") == 0)
 	{
-		stream_source = shared_ptr<TsStreamSource>{ new FileTsStreamSource{} };
+		stream_source = shared_ptr<ITsStreamSource>{ new FileTsStreamSource{} };
 		stream_source_file_get(argv[3], static_pointer_cast<FileTsStreamSource>(stream_source));
 	}
 	else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
 	{
-		stream_source = shared_ptr<TsStreamSource>{ new UdpTsStreamSource{} };
+		stream_source = shared_ptr<ITsStreamSource>{ new UdpTsStreamSource{} };
 		stream_source_udp_get(argv[3], static_pointer_cast<UdpTsStreamSource>(stream_source));
 	}
 	else
@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 
-	shared_ptr<TsStreamSource> streamsource;
+	shared_ptr<ITsStreamSource> streamsource;
 	streamsource = parser_cmd_source(4, (char **)cmd, &usbcmd);
 
 	/*
