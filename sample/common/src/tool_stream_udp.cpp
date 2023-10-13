@@ -22,11 +22,6 @@ extern void commit_write_buffer(UdpTsStreamSource *pudp);
 extern uint8_t *tool_get_valid_buffer(UdpTsStreamSource *pudp);
 extern int32_t tool_check_valid_buffer(UdpTsStreamSource *pudp);
 
-UdpTsStreamSource::UdpTsStreamSource()
-{
-	cout << "UdpTsStreamSource 构造" << endl;
-}
-
 vatek_result stream_source_udp_get(const char *ipaddr, shared_ptr<UdpTsStreamSource> psource)
 {
 	socket_param sparam = socket_param{};

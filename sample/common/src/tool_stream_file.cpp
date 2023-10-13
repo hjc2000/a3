@@ -2,11 +2,6 @@
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 
-FileTsStreamSource::FileTsStreamSource()
-{
-	cout << "FileTsStreamSource 构造函数" << endl;
-}
-
 vatek_result stream_source_file_get(const char *file, shared_ptr<FileTsStreamSource> psource)
 {
 	/* 打开文件，将文件句柄放到刚才分配的 FileTsStreamSource 里面。

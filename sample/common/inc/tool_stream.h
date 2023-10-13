@@ -82,8 +82,10 @@ class FileTsStreamSource :public TsStreamSource
 	}
 
 public:
-	FileTsStreamSource();
-
+	FileTsStreamSource()
+	{
+		cout << "FileTsStreamSource 构造函数" << endl;
+	}
 	~FileTsStreamSource()
 	{
 		cout << "FileTsStreamSource 析构" << endl;
@@ -195,8 +197,10 @@ public:
 class UdpTsStreamSource :public TsStreamSource
 {
 public:
-	UdpTsStreamSource();
-
+	UdpTsStreamSource()
+	{
+		cout << "UdpTsStreamSource 构造" << endl;
+	}
 	~UdpTsStreamSource()
 	{
 		cout << "UdpTsStreamSource 析构" << endl;
