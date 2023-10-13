@@ -2,11 +2,13 @@
 #define _VATEK_SDK_USBSTREAM_
 
 #include <service_transform.h>
+#include<functional>
+using namespace std;
 
 /// <summary>
 ///		void * 类型
 /// </summary>
-typedef void *hvatek_usbstream;
+typedef void *void_vatek_usbstream;
 
 struct usbstream_slice
 {
@@ -15,8 +17,6 @@ struct usbstream_slice
 	uint8_t *buf;				/*!< raw buffer */
 	uint8_t *ptrbuf;			/*!< buffer pointer */
 };
-
-typedef usbstream_slice *Pusbstream_slice;
 
 enum usbstream_status
 {
@@ -76,10 +76,10 @@ struct usbstream_async
 	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
 };
 
-struct usbstream_param
+class usbstream_param
 {
 public:
-	usbstream_param(){}
+	usbstream_param() {}
 
 	usbstream_mode mode;
 	usbstream_remux remux;
@@ -94,17 +94,17 @@ public:
 	};
 };
 
-HAL_API vatek_result vatek_usbstream_open(vatek_device * hchip, hvatek_usbstream *husstream);
-HAL_API vatek_result vatek_usbstream_check(hvatek_usbstream husstream);
-HAL_API Pbroadcast_info vatek_usbstream_get_info(hvatek_usbstream husstream);
-HAL_API vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param *puparam);
-HAL_API usbstream_status vatek_usbstream_get_status(hvatek_usbstream husstream, Ptransform_info *ptrinfo);
+HAL_API vatek_result vatek_usbstream_open(vatek_device *hchip, void_vatek_usbstream *husstream);
+HAL_API vatek_result vatek_usbstream_check(void_vatek_usbstream husstream);
+HAL_API Pbroadcast_info vatek_usbstream_get_info(void_vatek_usbstream husstream);
+HAL_API vatek_result vatek_usbstream_start(void_vatek_usbstream husstream, usbstream_param *puparam);
+HAL_API usbstream_status vatek_usbstream_get_status(void_vatek_usbstream husstream, Ptransform_info *ptrinfo);
 
-HAL_API uasync_status vatek_ustream_async_get_status(hvatek_usbstream hustream);
-HAL_API vatek_result vatek_ustream_async_get_buffer(hvatek_usbstream husstream, Pusbstream_slice *pslicebuf);
-HAL_API vatek_result vatek_ustream_async_commit_buffer(hvatek_usbstream husstream, Pusbstream_slice pslicebuf);
+HAL_API uasync_status vatek_ustream_async_get_status(void_vatek_usbstream hustream);
+HAL_API vatek_result vatek_ustream_async_get_buffer(void_vatek_usbstream husstream, usbstream_slice **pslicebuf);
+HAL_API vatek_result vatek_ustream_async_commit_buffer(void_vatek_usbstream husstream, usbstream_slice *pslicebuf);
 
-HAL_API vatek_result vatek_usbstream_stop(hvatek_usbstream husstream);
-HAL_API void vatek_usbstream_close(hvatek_usbstream husstream);
+HAL_API vatek_result vatek_usbstream_stop(void_vatek_usbstream husstream);
+HAL_API void vatek_usbstream_close(void_vatek_usbstream husstream);
 
 #endif

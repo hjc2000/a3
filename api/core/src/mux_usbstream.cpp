@@ -7,10 +7,10 @@ extern void usbmuxer_handler(cross_thread_param * param);
 extern vatek_result usbmuxer_set_tick(Pusbmux_param pparam, Pumuxer_tick ptick);
 
 #if USTREAM_EN_PCR_ALIGN_SLICE
-	extern void usbmuxer_append_slice(Phandle_muxer pmuxer, Pusbstream_slice pslice);
+	extern void usbmuxer_append_slice(Phandle_muxer pmuxer, usbstream_slice * pslice);
 #else
 	extern void usbmuxer_append_slice(Pumuxer_tick ptick);
-	extern void usbstream_check_pcr(Phandle_muxer pmuxer, Pusbstream_slice pslice);
+	extern void usbstream_check_pcr(Phandle_muxer pmuxer, usbstream_slice * pslice);
 #endif
 
 vatek_result usbstream_muxer_create(Pth_mempool pmem, Pusbmux_param param, int32_t nums, Phandle_muxer* pmuxer)
@@ -67,7 +67,7 @@ vatek_result usbstream_muxer_close(Phandle_muxer pmuxer)
 	return nres;
 }
 
-vatek_result usbstream_muxer_start(Phandle_muxer pmuxer, Pusbmux_source psource,hvatek_usbstream hustream)
+vatek_result usbstream_muxer_start(Phandle_muxer pmuxer, Pusbmux_source psource,void_vatek_usbstream hustream)
 {
 	vatek_result nres = vatek_badstatus;
 	if (!pmuxer->hthread)
@@ -127,7 +127,7 @@ void usbstream_muxer_query_clean(Phandle_muxer pmuxer)
 	cross_os_release_mutex(pmuxer->hlock);
 }
 
-int32_t usbstream_packet_commit(Phandle_muxer pmuxer, Pusbstream_slice pslice)
+int32_t usbstream_packet_commit(Phandle_muxer pmuxer, usbstream_slice * pslice)
 {
 	pslice->packet_pos++;
 	pslice->ptrbuf += TS_PACKET_LEN;
@@ -141,7 +141,7 @@ int32_t usbstream_packet_commit(Phandle_muxer pmuxer, Pusbstream_slice pslice)
 	return (pslice->packet_pos < pslice->packet_len);
 }
 
-vatek_result usbstream_muxer_stream(Phandle_muxer pmuxer,Pumuxer_stream pumstream, Pusbstream_slice pslice)
+vatek_result usbstream_muxer_stream(Phandle_muxer pmuxer,Pumuxer_stream pumstream, usbstream_slice * pslice)
 {
 	vatek_result nres = vatek_success;
 	int32_t npackets = 0;
@@ -164,7 +164,7 @@ vatek_result usbstream_muxer_stream(Phandle_muxer pmuxer,Pumuxer_stream pumstrea
 	return nres;
 }
 
-vatek_result usbstream_muxer_mux(Pusbstream_slice pslice, Phandle_muxer pmuxer)
+vatek_result usbstream_muxer_mux(usbstream_slice * pslice, Phandle_muxer pmuxer)
 {
 	vatek_result nres = vatek_success;
 	int32_t i = 0;
@@ -199,7 +199,7 @@ void usbmuxer_handler(cross_thread_param * param)
 	while (pmuxer->status == umux_status_running)
 	{
 		uint32_t muxpackets = 0;
-		Pusbstream_slice pslice = NULL;
+		usbstream_slice * pslice = NULL;
 		nres = vatek_ustream_async_get_buffer(pmuxer->hustream, &pslice);
 		if (nres > vatek_success)
 		{
@@ -342,7 +342,7 @@ vatek_result usbmuxer_set_tick(Pusbmux_param pparam, Pumuxer_tick ptick)
 
 #if USTREAM_EN_PCR_ALIGN_SLICE
 
-void usbmuxer_append_slice(Phandle_muxer pmuxer, Pusbstream_slice pslice)
+void usbmuxer_append_slice(Phandle_muxer pmuxer, usbstream_slice * pslice)
 {
 	Pumuxer_tick ptick = &pmuxer->streamtick;
 	ptick->pcr_pos += USBSTREAM_SLICE_PACKET_NUMS;
@@ -361,7 +361,7 @@ void usbmuxer_append_slice(Phandle_muxer pmuxer, Pusbstream_slice pslice)
 }
 #else
 
-void usbstream_check_pcr(Phandle_muxer pmuxer, Pusbstream_slice pslice)
+void usbstream_check_pcr(Phandle_muxer pmuxer, usbstream_slice * pslice)
 {
 	Pumuxer_tick ptick = &pmuxer->streamtick;
 	if (ptick->pcr_pos >= ptick->pcr_packetnums)

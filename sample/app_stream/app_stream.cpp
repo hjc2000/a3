@@ -7,10 +7,24 @@
 #include "../common/inc/tool_stream.h"
 #include <tool_dvb_t2.h>
 #include<Exception.h>
+#include<memory>
+
+using namespace std;
 
 static usbstream_param usbcmd;
 
-extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
+vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
+{
+	TsStreamSource *ptssource = (TsStreamSource *)param;
+	vatek_result nres = ptssource->check(ptssource->hsource);
+	if (nres > vatek_success)
+	{
+		*pslicebuf = ptssource->get(ptssource->hsource);
+		nres = (vatek_result)1;
+	}
+
+	return nres;
+}
 
 /// <summary>
 ///		解析命令行
@@ -20,7 +34,92 @@ extern vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf);
 /// <param name="stream_source"></param>
 /// <param name="pustream"></param>
 /// <returns></returns>
-extern vatek_result parser_cmd_source(int32_t argc, char **argv, TsStreamSource *psource, usbstream_param *pustream);
+/* 需要将此函数改为返回 TsStreamSource 的共享指针，而不是传入 TsStreamSource 指针 */
+void parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source, usbstream_param *pustream)
+{
+	auto print_help = [&]()
+	{
+		_disp_l("support command below : ");
+		_disp_l("	- app_stream test: test stream mode in app_stream.c");
+		_disp_l("	- app_stream [modulation] file [*.ts|*.trp] [remux|passthrough]");
+		_disp_l("	- app_stream [modulation] udp  [ip address] [remux|passthrough]");
+		_disp_l("	- app_stream [modulation] rtp  [ip address] [remux|passthrough]");
+	};
+
+	if (argc < 2)
+	{
+		print_help();
+		return;
+	}
+
+	///>>> 执行到这里说明参数数量 >= 2
+
+	#pragma region 解析制式
+	if (strcmp(argv[1], "atsc") == 0)
+	{
+		modulator_param_reset(modulator_atsc, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "dvbt") == 0)
+	{
+		modulator_param_reset(modulator_dvb_t, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "isdbt") == 0)
+	{
+		modulator_param_reset(modulator_isdb_t, &usbcmd.modulator);
+		usbcmd.modulator.ifmode = ifmode_iqoffset;
+		usbcmd.modulator.iffreq_offset = 143;
+	}
+	else if (strcmp(argv[1], "j83a") == 0)
+	{
+		modulator_param_reset(modulator_j83a, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "j83b") == 0)
+	{
+		modulator_param_reset(modulator_j83b, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "j83c") == 0)
+	{
+		modulator_param_reset(modulator_j83c, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "dtmb") == 0)
+	{
+		modulator_param_reset(modulator_dtmb, &usbcmd.modulator);
+	}
+	else if (strcmp(argv[1], "dvbt2") == 0)
+	{
+		modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
+	}
+	else
+	{
+		throw Exception("不支持的制式");
+	}
+	#pragma endregion
+
+	///>>> 执行到这里说明制式没问题
+	if (argc < 4)
+	{
+		throw Exception("选择了制式却没有输入协议和 URL");
+	}
+
+	///>>> 执行到这里说明参数数量 >= 4
+
+	// 如果参数大于等于 4，则第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
+	if (strcmp(argv[2], "file") == 0)
+		stream_source_file_get(argv[3], stream_source);
+	else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
+		stream_source_udp_get(argv[3], stream_source);
+	else
+		throw Exception("不支持的协议");
+
+	// 第 5 个参数用来选择 PCR 是穿透还是需要进行校正
+	if (argc == 5)
+	{
+		if (strcmp(argv[4], "passthrough") == 0)
+			pustream->remux = ustream_remux_passthrough;
+		else
+			pustream->remux = ustream_remux_pcr;
+	}
+}
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +128,7 @@ int main(int argc, char *argv[])
 	//	"./app_stream",
 	//	"dvbt",
 	//	"file",
-	//	"qq.ts",
+	//	"zf.ts",
 	//};
 
 	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
@@ -37,11 +136,11 @@ int main(int argc, char *argv[])
 		"./app_stream",
 		"dvbt",
 		"udp",
-		"udp://127.0.0.1:1234",
+		"udp://localhost:1234",
 	};
 
-	vatek_device * hchip = NULL;
-	hvatek_usbstream hustream = NULL;
+	vatek_device *hchip = NULL;
+	void_vatek_usbstream hustream = NULL;
 	TsStreamSource streamsource;
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
@@ -63,7 +162,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 	usbcmd.sync = usbstream_sync{};
 
-	nres = parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
+	parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
 	/*
 		step 1 :
 		- initialized supported device and open
@@ -205,97 +304,4 @@ int main(int argc, char *argv[])
 	printf_app_end();
 	cross_os_sleep(10);
 	return (int32_t)1;
-}
-
-vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
-{
-	TsStreamSource *ptssource = (TsStreamSource *)param;
-	vatek_result nres = ptssource->check(ptssource->hsource);
-	if (nres > vatek_success)
-	{
-		*pslicebuf = ptssource->get(ptssource->hsource);
-		nres = (vatek_result)1;
-	}
-
-	return nres;
-}
-
-/* 需要将此函数改为返回 TsStreamSource 的共享指针，而不是传入 TsStreamSource 指针 */
-vatek_result parser_cmd_source(int32_t argc, char **argv, TsStreamSource *stream_source, usbstream_param *pustream)
-{
-	vatek_result nres = vatek_result::vatek_unsupport;
-
-	// 如果参数大于等于 2，第二个参数必须是制式选择。在这里比较字符串来判断选中了哪个制式。
-	if (argc >= 2)
-	{
-		if (strcmp(argv[1], "atsc") == 0)
-		{
-			modulator_param_reset(modulator_atsc, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "dvbt") == 0)
-		{
-			modulator_param_reset(modulator_dvb_t, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "isdbt") == 0)
-		{
-			modulator_param_reset(modulator_isdb_t, &usbcmd.modulator);
-			usbcmd.modulator.ifmode = ifmode_iqoffset;
-			usbcmd.modulator.iffreq_offset = 143;
-		}
-		else if (strcmp(argv[1], "j83a") == 0)
-		{
-			modulator_param_reset(modulator_j83a, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "j83b") == 0)
-		{
-			modulator_param_reset(modulator_j83b, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "j83c") == 0)
-		{
-			modulator_param_reset(modulator_j83c, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "dtmb") == 0)
-		{
-			modulator_param_reset(modulator_dtmb, &usbcmd.modulator);
-		}
-		else if (strcmp(argv[1], "dvbt2") == 0)
-		{
-			modulator_param_reset(modulator_dvb_t2, &usbcmd.modulator);
-		}
-		else
-		{
-			nres = vatek_unsupport;
-		}
-
-		// 如果参数大于等于 4，第 3 个参数必须是视频源的协议，第 4 个参数是视频源的 URL
-		if (argc >= 4)
-		{
-			if (strcmp(argv[2], "file") == 0)
-				nres = stream_source_file_get(argv[3], stream_source);
-			else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
-				nres = stream_source_udp_get(argv[3], stream_source);
-			else
-				nres = vatek_unsupport;
-		}
-
-		// 第 5 个参数用来选择 PCR 是穿透还是需要进行校正
-		if (argc == 5)
-		{
-			if (strcmp(argv[4], "passthrough") == 0)
-				pustream->remux = ustream_remux_passthrough;
-			else
-				pustream->remux = ustream_remux_pcr;
-		}
-	}
-
-	if (nres == vatek_unsupport || strcmp(argv[1], "--help") == 0 || argc == 1)
-	{
-		_disp_l("support command below : ");
-		_disp_l("	- app_stream test: test stream mode in app_stream.c");
-		_disp_l("	- app_stream [modulation] file [*.ts|*.trp] [remux|passthrough]");
-		_disp_l("	- app_stream [modulation] udp  [ip address] [remux|passthrough]");
-		_disp_l("	- app_stream [modulation] rtp  [ip address] [remux|passthrough]");
-	}
-
-	return nres;
 }

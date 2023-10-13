@@ -49,7 +49,7 @@ extern void usbstream_async_finish_buffer(handle_async *pasync);
 
 extern void usbstream_async_free(handle_async *pasync);
 
-vatek_result vatek_usbstream_open(vatek_device * hchip, hvatek_usbstream *husstream)
+vatek_result vatek_usbstream_open(vatek_device * hchip, void_vatek_usbstream *husstream)
 {
 	chip_info *pinfo = vatek_device_get_info(hchip);
 	vatek_result nres = vatek_unsupport;
@@ -86,7 +86,7 @@ vatek_result vatek_usbstream_open(vatek_device * hchip, hvatek_usbstream *husstr
 	return nres;
 }
 
-vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param *puparam)
+vatek_result vatek_usbstream_start(void_vatek_usbstream husstream, usbstream_param *puparam)
 {
 	vatek_result nres = vatek_badstatus;
 	usbstream_param *pustream_new = puparam;
@@ -168,7 +168,7 @@ vatek_result vatek_usbstream_start(hvatek_usbstream husstream, usbstream_param *
 	return nres;
 }
 
-vatek_result vatek_usbstream_check(hvatek_usbstream husstream)
+vatek_result vatek_usbstream_check(void_vatek_usbstream husstream)
 {
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
 	vatek_result nres = vatek_badstatus;
@@ -181,20 +181,20 @@ vatek_result vatek_usbstream_check(hvatek_usbstream husstream)
 	return nres;
 }
 
-Pbroadcast_info vatek_usbstream_get_info(hvatek_usbstream husstream)
+Pbroadcast_info vatek_usbstream_get_info(void_vatek_usbstream husstream)
 {
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
 	return &pustream->info->info;
 }
 
-usbstream_status vatek_usbstream_get_status(hvatek_usbstream husstream, Ptransform_info *ptrinfo)
+usbstream_status vatek_usbstream_get_status(void_vatek_usbstream husstream, Ptransform_info *ptrinfo)
 {
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
 	if (ptrinfo)*ptrinfo = pustream->info;
 	return pustream->status;
 }
 
-vatek_result vatek_ustream_async_get_buffer(hvatek_usbstream husstream, Pusbstream_slice *pslicebuf)
+vatek_result vatek_ustream_async_get_buffer(void_vatek_usbstream husstream, usbstream_slice * *pslicebuf)
 {
 	vatek_result nres = vatek_unsupport;
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
@@ -208,7 +208,7 @@ vatek_result vatek_ustream_async_get_buffer(hvatek_usbstream husstream, Pusbstre
 	return nres;
 }
 
-uasync_status vatek_ustream_async_get_status(hvatek_usbstream hustream)
+uasync_status vatek_ustream_async_get_status(void_vatek_usbstream hustream)
 {
 	handle_usbstream *pustream = (handle_usbstream *)hustream;
 	if (pustream->async)
@@ -216,7 +216,7 @@ uasync_status vatek_ustream_async_get_status(hvatek_usbstream hustream)
 	return uasync_status_unsupport;
 }
 
-vatek_result vatek_ustream_async_commit_buffer(hvatek_usbstream husstream, Pusbstream_slice pslicebuf)
+vatek_result vatek_ustream_async_commit_buffer(void_vatek_usbstream husstream, usbstream_slice * pslicebuf)
 {
 	vatek_result nres = vatek_unsupport;
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
@@ -233,7 +233,7 @@ vatek_result vatek_ustream_async_commit_buffer(hvatek_usbstream husstream, Pusbs
 	return nres;
 }
 
-vatek_result vatek_usbstream_stop(hvatek_usbstream husstream)
+vatek_result vatek_usbstream_stop(void_vatek_usbstream husstream)
 {
 	vatek_result nres = vatek_badstatus;
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
@@ -269,7 +269,7 @@ vatek_result vatek_usbstream_stop(hvatek_usbstream husstream)
 	return nres;
 }
 
-void vatek_usbstream_close(hvatek_usbstream husstream)
+void vatek_usbstream_close(void_vatek_usbstream husstream)
 {
 	handle_usbstream *pustream = (handle_usbstream *)husstream;
 	vatek_usbstream_stop(husstream);
