@@ -40,10 +40,6 @@ UdpTsStreamSource::UdpTsStreamSource()
 	{
 		return Get();
 	};
-	free = [&](void_stream_source s)
-	{
-		Free();
-	};
 
 	cout << "UdpTsStreamSource 构造" << endl;
 }

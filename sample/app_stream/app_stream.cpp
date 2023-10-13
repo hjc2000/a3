@@ -306,7 +306,7 @@ int main(int argc, char *argv[])
 
 	if (streamsource->hsource)
 	{
-		streamsource->free(streamsource->hsource);
+		streamsource->Free();
 	}
 
 	printf_app_end();

@@ -18,12 +18,6 @@ extern uint8_t *file_stream_get(void_stream_source hsource);
 /// <returns>直接返回 vatek_success</returns>
 extern vatek_result file_stream_stop(void_stream_source hsource);
 
-/// <summary>
-///		关闭 hsource 内的 fhandle 字段指向的文件，然后释放 hsource 对象
-/// </summary>
-/// <param name="hsource"></param>
-extern void file_stream_free(void_stream_source hsource);
-
 FileTsStreamSource::FileTsStreamSource()
 {
 	start = [&](void_stream_source s)
@@ -36,17 +30,12 @@ FileTsStreamSource::FileTsStreamSource()
 
 void FileTsStreamSource::Free()
 {
-
+	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
+	fclose(pfile->fhandle);
 }
 
 vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psource)
 {
-	if (!psource)
-	{
-		// 内存分配失败
-		return vatek_memfail;
-	}
-
 	/* 打开文件，将文件句柄放到刚才分配的 FileTsStreamSource 里面。
 	* 打开方式：读写，二进制
 	*/
@@ -71,7 +60,6 @@ vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psourc
 			psource->stop = file_stream_stop;
 			psource->get = file_stream_get;
 			psource->check = file_stream_check;
-			psource->free = file_stream_free;
 			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, psource->packet_len, psource->file_size);
 			printf("\r\n");
 		}
@@ -136,10 +124,4 @@ uint8_t *file_stream_get(void_stream_source hsource)
 vatek_result file_stream_stop(void_stream_source hsource)
 {
 	return vatek_success;
-}
-
-void file_stream_free(void_stream_source hsource)
-{
-	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
-	fclose(pfile->fhandle);
 }

@@ -48,12 +48,9 @@ public:
 	function<vatek_result(void_stream_source hsource)> check;
 	function<uint8_t *(void_stream_source hsource)> get;
 	function<vatek_result(void_stream_source hsource)> stop;
-	function<void(void_stream_source hsource)> free;
 
-	virtual vatek_result Start()
-	{
-		return vatek_success;
-	}
+	virtual vatek_result Start() = 0;
+	virtual void Free() = 0;
 };
 
 /// <summary>
