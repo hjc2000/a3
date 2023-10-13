@@ -39,10 +39,9 @@ void FileTsStreamSource::Free()
 
 }
 
-vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
+vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psource)
 {
-	FileTsStreamSource *pfile = (FileTsStreamSource *)psource;
-	if (!pfile)
+	if (!psource)
 	{
 		// 内存分配失败
 		return vatek_memfail;
@@ -51,21 +50,21 @@ vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 	/* 打开文件，将文件句柄放到刚才分配的 FileTsStreamSource 里面。
 	* 打开方式：读写，二进制
 	*/
-	pfile->fhandle = fopen(file, "rb+");
+	psource->fhandle = fopen(file, "rb+");
 	vatek_result nres = vatek_format;
-	if (pfile->fhandle)
+	if (psource->fhandle)
 	{
 		// 通过 seek 到文件末尾来获取文件大小
-		fseek(pfile->fhandle, 0, SEEK_END);
-		pfile->file_size = (int32_t)ftell(pfile->fhandle);
+		fseek(psource->fhandle, 0, SEEK_END);
+		psource->file_size = (int32_t)ftell(psource->fhandle);
 		// 刚才 seek 到文件末尾了，现在要 seek 回文件开始
-		fseek(pfile->fhandle, 0, SEEK_SET);
+		fseek(psource->fhandle, 0, SEEK_SET);
 
 		// 锁定 ts 流
-		nres = pfile->lock_ts_file_stream();
+		nres = psource->lock_ts_file_stream();
 		if (!is_vatek_success(nres))
 		{
-			fclose(pfile->fhandle);
+			fclose(psource->fhandle);
 		}
 		else
 		{
@@ -73,7 +72,7 @@ vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 			psource->get = file_stream_get;
 			psource->check = file_stream_check;
 			psource->free = file_stream_free;
-			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, pfile->packet_len, pfile->file_size);
+			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, psource->packet_len, psource->file_size);
 			printf("\r\n");
 		}
 	}

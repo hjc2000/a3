@@ -48,7 +48,7 @@ UdpTsStreamSource::UdpTsStreamSource()
 	cout << "UdpTsStreamSource 构造" << endl;
 }
 
-vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
+vatek_result stream_source_udp_get(const char *ipaddr, UdpTsStreamSource *psource)
 {
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;
@@ -65,11 +65,10 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 
 	if (is_vatek_success(nres))
 	{
-		UdpTsStreamSource *udp_stream_source = (UdpTsStreamSource *)psource;
-		if (udp_stream_source)
+		if (psource)
 		{
-			udp_stream_source->hsocket = hsocket;
-			udp_stream_source->hlock = hlock;
+			psource->hsocket = hsocket;
+			psource->hlock = hlock;
 			_disp_l("open UDP/RTP address - [%s]", sparam.url);
 			printf("\r\n");
 			nres = vatek_success;

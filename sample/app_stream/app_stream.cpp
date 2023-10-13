@@ -105,12 +105,12 @@ shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstrea
 	if (strcmp(argv[2], "file") == 0)
 	{
 		stream_source = shared_ptr<TsStreamSource>{ new FileTsStreamSource{} };
-		stream_source_file_get(argv[3], stream_source.get());
+		stream_source_file_get(argv[3], (FileTsStreamSource *)stream_source.get());
 	}
 	else if (strcmp(argv[2], "udp") == 0 || strcmp(argv[2], "rtp") == 0)
 	{
 		stream_source = shared_ptr<TsStreamSource>{ new UdpTsStreamSource{} };
-		stream_source_udp_get(argv[3], stream_source.get());
+		stream_source_udp_get(argv[3], (UdpTsStreamSource *)stream_source.get());
 	}
 	else
 	{

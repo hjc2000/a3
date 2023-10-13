@@ -244,7 +244,7 @@ public:
 /// <param name="file">要打开的文件的路径</param>
 /// <param name="psource"></param>
 /// <returns></returns>
-vatek_result stream_source_file_get(const char *file, TsStreamSource *psource);
-vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource);
+vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psource);
+vatek_result stream_source_udp_get(const char *ipaddr, UdpTsStreamSource *psource);
 
 #endif
