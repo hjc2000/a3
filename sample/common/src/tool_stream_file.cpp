@@ -24,15 +24,19 @@ extern vatek_result file_stream_stop(void_stream_source hsource);
 /// <param name="hsource"></param>
 extern void file_stream_free(void_stream_source hsource);
 
-TsStreamSource::TsStreamSource()
+FileTsStreamSource::FileTsStreamSource()
 {
-	hsource = this;
 	start = [&](void_stream_source s)
 	{
 		return Start();
 	};
 
 	cout << "TsStreamSource 构造函数" << endl;
+}
+
+void FileTsStreamSource::Free()
+{
+
 }
 
 vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)

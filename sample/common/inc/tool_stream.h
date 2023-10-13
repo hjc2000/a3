@@ -35,7 +35,11 @@ typedef void *void_stream_source;
 class TsStreamSource
 {
 public:
-	TsStreamSource();
+	TsStreamSource()
+	{
+		hsource = this;
+	}
+
 	virtual ~TsStreamSource() {}
 
 	void_stream_source hsource = nullptr;
@@ -100,6 +104,8 @@ class FileTsStreamSource :public TsStreamSource
 	}
 
 public:
+	FileTsStreamSource();
+
 	/// <summary>
 	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
 	/// </summary>
@@ -193,6 +199,7 @@ public:
 	{
 		return vatek_success;
 	}
+	void Free();
 };
 
 #define UDP_SLICE_BUF_NUMS		32

@@ -24,7 +24,6 @@ extern int32_t tool_check_valid_buffer(UdpTsStreamSource *pudp);
 
 UdpTsStreamSource::UdpTsStreamSource()
 {
-	hsource = this;
 	start = [&](void_stream_source s)
 	{
 		return Start();
