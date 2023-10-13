@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 
 	vatek_device *hchip = NULL;
 	void_vatek_usbstream hustream = NULL;
-	TsStreamSource streamsource;
+	shared_ptr<TsStreamSource> streamsource{ new TsStreamSource{} };
 	vatek_result nres = vatek_success;
 	hmux_core hmux = NULL;
 	hmux_channel m_hchannel = NULL;
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
 
-	parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
+	parser_cmd_source(4, (char **)cmd, streamsource.get(), &usbcmd);
 	/*
 		step 1 :
 		- initialized supported device and open
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 				{
 					chip_info *pinfo = vatek_device_get_info(hchip);
 					printf_chip_info(pinfo);
-					nres = streamsource.start(streamsource.hsource);
+					nres = streamsource->start(streamsource->hsource);
 				}
 			}
 		}
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 		else
 		{
 			usbcmd.mode = ustream_mode_sync;
-			usbcmd.sync.void_param = &streamsource;
+			usbcmd.sync.void_param = streamsource.get();
 			usbcmd.sync.getbuffer = source_sync_get_buffer;
 
 			nres = vatek_usbstream_start(hustream, &usbcmd);
@@ -295,9 +295,9 @@ int main(int argc, char *argv[])
 		vatek_device_list_free(hdevlist);
 	}
 
-	if (streamsource.hsource)
+	if (streamsource->hsource)
 	{
-		streamsource.free(streamsource.hsource);
+		streamsource->free(streamsource->hsource);
 	}
 
 	printf_app_end();
