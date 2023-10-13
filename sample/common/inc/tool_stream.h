@@ -35,15 +35,7 @@ typedef void *void_stream_source;
 class TsStreamSource
 {
 public:
-	TsStreamSource()
-	{
-		hsource = this;
-	}
-
 	virtual ~TsStreamSource() {}
-
-	void_stream_source hsource = nullptr;
-
 	virtual vatek_result Start() = 0;
 	virtual vatek_result Stop() = 0;
 	virtual vatek_result Check() = 0;
@@ -247,7 +239,7 @@ public:
 /// <param name="file">要打开的文件的路径</param>
 /// <param name="psource"></param>
 /// <returns></returns>
-vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psource);
+vatek_result stream_source_file_get(const char *file, shared_ptr<FileTsStreamSource> psource);
 vatek_result stream_source_udp_get(const char *ipaddr, UdpTsStreamSource *psource);
 
 #endif

@@ -187,18 +187,17 @@ int32_t tool_check_valid_buffer(UdpTsStreamSource *pudp)
 vatek_result UdpTsStreamSource::Start()
 {
 	vatek_result nres = vatek_badstatus;
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (!pudp->hrecv)
+	if (!hrecv)
 	{
-		nres = cross_os_connect_socket(pudp->hsocket);
+		nres = cross_os_connect_socket(hsocket);
 		if (is_vatek_success(nres))
 		{
-			pudp->isrunning = 1;
-			pudp->hrecv = cross_os_create_thread(tool_recv_handle, pudp);
-			if (!pudp->hrecv)nres = vatek_hwfail;
+			isrunning = 1;
+			hrecv = cross_os_create_thread(tool_recv_handle, this);
+			if (!hrecv)nres = vatek_hwfail;
 
 			if (!is_vatek_success(nres))
-				nres = cross_os_disconnect_socket(pudp->hsocket);
+				nres = cross_os_disconnect_socket(hsocket);
 		}
 		else
 		{
@@ -211,31 +210,29 @@ vatek_result UdpTsStreamSource::Start()
 
 vatek_result UdpTsStreamSource::Stop()
 {
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (pudp->isrunning)
+	if (isrunning)
 	{
-		pudp->isrunning = 2;
-		while (pudp->isrunning)
+		isrunning = 2;
+		while (isrunning)
 			cross_os_sleep(100);
-		cross_os_free_thread(pudp->hrecv);
-		cross_os_disconnect_socket(pudp->hsocket);
+		cross_os_free_thread(hrecv);
+		cross_os_disconnect_socket(hsocket);
 	}
 
-	pudp->hrecv = NULL;
+	hrecv = NULL;
 	return vatek_success;
 }
 
 vatek_result UdpTsStreamSource::Check()
 {
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (!pudp->isrunning)
+	if (!isrunning)
 	{
 		_disp_err("recv thread not running");
 		return vatek_badstatus;
 	}
 	else
 	{
-		int32_t valid = tool_check_valid_buffer((UdpTsStreamSource *)hsource);
+		int32_t valid = tool_check_valid_buffer(this);
 		if (valid)return (vatek_result)1;
 		return (vatek_result)0;
 	}
@@ -244,12 +241,11 @@ vatek_result UdpTsStreamSource::Check()
 uint8_t *UdpTsStreamSource::Get()
 {
 	if (Check())
-		return tool_get_valid_buffer((UdpTsStreamSource *)hsource);
+		return tool_get_valid_buffer(this);
 	return NULL;
 }
 
 void UdpTsStreamSource::Free()
 {
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	pudp->Stop();
+	Stop();
 }

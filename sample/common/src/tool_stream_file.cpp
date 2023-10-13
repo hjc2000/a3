@@ -9,11 +9,10 @@ FileTsStreamSource::FileTsStreamSource()
 
 void FileTsStreamSource::Free()
 {
-	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
-	fclose(pfile->fhandle);
+	fclose(fhandle);
 }
 
-vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psource)
+vatek_result stream_source_file_get(const char *file, shared_ptr<FileTsStreamSource> psource)
 {
 	/* 打开文件，将文件句柄放到刚才分配的 FileTsStreamSource 里面。
 	* 打开方式：读写，二进制
@@ -49,9 +48,8 @@ vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psourc
 
 vatek_result FileTsStreamSource::Check()
 {
-	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	int32_t pos = 0;
-	uint8_t *ptr = &pfile->buffer[0];
+	uint8_t *ptr = buffer;
 	vatek_result nres = vatek_success;
 
 	/* CHIP_STREAM_SLICE_PACKET_NUMS 是用缓冲区大小除以 188，即计算缓冲区能容纳多少个
@@ -60,13 +58,13 @@ vatek_result FileTsStreamSource::Check()
 	while (pos < CHIP_STREAM_SLICE_PACKET_NUMS)
 	{
 		// 读取一个 ts 包
-		nres = (vatek_result)fread(ptr, pfile->packet_len, 1, pfile->fhandle);
+		nres = (vatek_result)fread(ptr, packet_len, 1, fhandle);
 		if (nres != 1)
 		{
 			// 读取失败，就 seek 回文件头，然后锁定 ts 流，然后 continue
 			// 为什么要这样？可能是为了排除因为即将到达文件尾所以读取包失败。
-			fseek(pfile->fhandle, 0, SEEK_SET);
-			nres = pfile->lock_ts_file_stream();
+			fseek(fhandle, 0, SEEK_SET);
+			nres = lock_ts_file_stream();
 			if (is_vatek_success(nres))
 				continue;
 		}
@@ -79,7 +77,7 @@ vatek_result FileTsStreamSource::Check()
 		}
 		else
 		{
-			nres = pfile->lock_ts_file_stream();
+			nres = lock_ts_file_stream();
 			if (!is_vatek_success(nres))
 				break;
 		}
@@ -93,6 +91,5 @@ vatek_result FileTsStreamSource::Check()
 
 uint8_t *FileTsStreamSource::Get()
 {
-	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
-	return &pfile->buffer[0];
+	return buffer;
 }
