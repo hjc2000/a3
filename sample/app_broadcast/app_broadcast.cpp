@@ -37,9 +37,9 @@
 #include <cross_os_api.h>
 #include <mux_handle.h>
 
-#include "../common/inc/tool_printf.h"
-#include "../common/inc/tool_tspacket.h"
-#include "../common/inc/tool_stream.h"
+#include "tool_printf.h"
+#include "tool_tspacket.h"
+#include "tool_stream.h"
 
 #define BROADCAST_EN_AUX 0
 #define BROADCAST_EN_BML 0
@@ -152,10 +152,10 @@ extern void auxsource_test_close(Pbroadcast_auxstream pauxtest);
 int main(int argc, char *argv[])
 {
 	vatek_device_list *hdevlist = NULL;
-	vatek_device * hchip = NULL;
+	vatek_device *hchip = NULL;
 	hvatek_broadcast hbc = NULL;
 	vatek_result nres = vatek_badparam;
-	chip_info * pinfo = NULL;
+	chip_info *pinfo = NULL;
 	hmux_core hmux = NULL;
 	Pbroadcast_auxstream pauxstream = NULL;
 
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 	if (is_vatek_success(nres))
 	{
 		vatek_device_list *hblists = NULL;
-		vatek_device * hbchip = NULL;
+		vatek_device *hbchip = NULL;
 		nres = vatek_device_list_enum(DEVICE_BUS_BRIDGE, service_broadcast, &hblists);
 		if (is_vatek_success(nres))
 		{

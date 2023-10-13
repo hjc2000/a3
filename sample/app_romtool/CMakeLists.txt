@@ -10,10 +10,10 @@ set(cli_SRC
     "app_romtool.cpp")
 
 set(cli_SRC_COM
-    "../common/src/tool_printf.cpp")
+    "../../api/src/tool_printf.cpp")
 
 set(cli_INC_COM
-    ../common/inc/tool_printf.h)
+    tool_printf.h)
 
 if(MSVC)
 	if(NOT TARGET libvatek_core)
@@ -40,8 +40,6 @@ if(MSVC)
     set_target_properties(app_romtool PROPERTIES LINK_FLAGS /SUBSYSTEM:CONSOLE)
     target_compile_options(app_romtool PRIVATE /wd26495 PRIVATE /wd26812 PRIVATE /wd26498)
 
-    source_group("common\\inc" FILES ${cli_INC_COM})
-    source_group("common\\src" FILES ${cli_SRC_COM})
     source_group("src\\" FILES ${cli_SRC})
 
 elseif(UNIX)

@@ -33,7 +33,7 @@
 
 #include <vatek_sdk_bridge.h>
 
-#include "../common/inc/tool_printf.h"
+#include "tool_printf.h"
 
 int main(int argc, char *argv[])
 {

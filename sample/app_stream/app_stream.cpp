@@ -2,9 +2,9 @@
 #include <vatek_sdk_device.h>
 #include <cross_os_api.h>
 
-#include "../common/inc/tool_printf.h"
-#include "../common/inc/tool_tspacket.h"
-#include "../common/inc/tool_stream.h"
+#include "tool_printf.h"
+#include "tool_tspacket.h"
+#include "tool_stream.h"
 #include <tool_dvb_t2.h>
 #include<Exception.h>
 #include<memory>
@@ -131,7 +131,7 @@ shared_ptr<ITsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstre
 
 int main(int argc, char *argv[])
 {
-	#if 01
+	#if 0
 	// ./app_stream dvbt file qq.ts
 	const char *cmd[] = {
 		"./app_stream",

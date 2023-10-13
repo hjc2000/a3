@@ -35,7 +35,7 @@
 #include <vatek_sdk_storage.h>
 #include <cross_os_api.h>
 
-#include "../common/inc/tool_printf.h"
+#include "tool_printf.h"
 
 extern vatek_result cmd_parser_romfile(int argc, char *argv[], char **romfile);
 extern void storage_process_handler(rom_progress_msg msg, void *progressval, void *param);
