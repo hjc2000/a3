@@ -44,12 +44,10 @@ public:
 
 	void_stream_source hsource = nullptr;
 
-	function<vatek_result(void_stream_source hsource)> start;
-	function<vatek_result(void_stream_source hsource)> check;
-	function<uint8_t *(void_stream_source hsource)> get;
-	function<vatek_result(void_stream_source hsource)> stop;
-
 	virtual vatek_result Start() = 0;
+	virtual vatek_result Stop() = 0;
+	virtual vatek_result Check() = 0;
+	virtual uint8_t *Get() = 0;
 	virtual void Free() = 0;
 };
 
@@ -192,11 +190,19 @@ public:
 		}
 	}
 
-	vatek_result Start()
+	vatek_result Start() override
 	{
 		return vatek_success;
 	}
-	void Free();
+
+	vatek_result Stop() override
+	{
+		return vatek_success;
+	}
+
+	vatek_result Check() override;
+	uint8_t *Get() override;
+	void Free() override;
 };
 
 #define UDP_SLICE_BUF_NUMS		32
@@ -228,11 +234,11 @@ public:
 	/// </summary>
 	int32_t isrunning = 0;
 
-	vatek_result Start();
-	vatek_result Stop();
-	vatek_result Check();
-	uint8_t *Get();
-	void Free();
+	vatek_result Start() override;
+	vatek_result Stop() override;
+	vatek_result Check() override;
+	uint8_t *Get() override;
+	void Free() override;
 };
 
 /// <summary>

@@ -2,30 +2,9 @@
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 
-extern vatek_result file_stream_check(void_stream_source hsource);
-
-/// <summary>
-///		将 hsource 强制转换为 FileTsStreamSource * 后返回 buffer 字段。这是一个一维数组的头指针。
-/// </summary>
-/// <param name="hsource"></param>
-/// <returns></returns>
-extern uint8_t *file_stream_get(void_stream_source hsource);
-
-/// <summary>
-///		
-/// </summary>
-/// <param name="hsource"></param>
-/// <returns>直接返回 vatek_success</returns>
-extern vatek_result file_stream_stop(void_stream_source hsource);
-
 FileTsStreamSource::FileTsStreamSource()
 {
-	start = [&](void_stream_source s)
-	{
-		return Start();
-	};
-
-	cout << "TsStreamSource 构造函数" << endl;
+	cout << "FileTsStreamSource 构造函数" << endl;
 }
 
 void FileTsStreamSource::Free()
@@ -57,9 +36,6 @@ vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psourc
 		}
 		else
 		{
-			psource->stop = file_stream_stop;
-			psource->get = file_stream_get;
-			psource->check = file_stream_check;
 			_disp_l("open file - [%s] - packet length:%d - packet size:%d", file, psource->packet_len, psource->file_size);
 			printf("\r\n");
 		}
@@ -71,7 +47,7 @@ vatek_result stream_source_file_get(const char *file, FileTsStreamSource *psourc
 	return nres;
 }
 
-vatek_result file_stream_check(void_stream_source hsource)
+vatek_result FileTsStreamSource::Check()
 {
 	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	int32_t pos = 0;
@@ -115,13 +91,8 @@ vatek_result file_stream_check(void_stream_source hsource)
 	return nres;
 }
 
-uint8_t *file_stream_get(void_stream_source hsource)
+uint8_t *FileTsStreamSource::Get()
 {
 	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	return &pfile->buffer[0];
-}
-
-vatek_result file_stream_stop(void_stream_source hsource)
-{
-	return vatek_success;
 }

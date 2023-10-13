@@ -16,10 +16,10 @@ static usbstream_param usbcmd;
 vatek_result source_sync_get_buffer(void *param, uint8_t **pslicebuf)
 {
 	TsStreamSource *ptssource = (TsStreamSource *)param;
-	vatek_result nres = ptssource->check(ptssource->hsource);
+	vatek_result nres = ptssource->Check();
 	if (nres > vatek_success)
 	{
-		*pslicebuf = ptssource->get(ptssource->hsource);
+		*pslicebuf = ptssource->Get();
 		nres = (vatek_result)1;
 	}
 
@@ -131,6 +131,7 @@ shared_ptr<TsStreamSource> parser_cmd_source(int32_t argc, char **argv, usbstrea
 
 int main(int argc, char *argv[])
 {
+	#if 01
 	/* ./app_stream dvbt file qq.ts */
 	const char *cmd[] = {
 		"./app_stream",
@@ -138,14 +139,15 @@ int main(int argc, char *argv[])
 		"file",
 		"zf.ts",
 	};
-
+	#else
 	/* ./app_stream dvbt udp udp://127.0.0.1:40000 */
-	//const char *cmd[] = {
-	//	"./app_stream",
-	//	"dvbt",
-	//	"udp",
-	//	"udp://localhost:1234",
-	//};
+	const char *cmd[] = {
+		"./app_stream",
+		"dvbt",
+		"udp",
+		"udp://localhost:1234",
+	};
+	#endif
 
 	vatek_device *hchip = NULL;
 	void_vatek_usbstream hustream = NULL;
@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
 				{
 					chip_info *pinfo = vatek_device_get_info(hchip);
 					printf_chip_info(pinfo);
-					nres = streamsource->start(streamsource->hsource);
+					nres = streamsource->Start();
 				}
 			}
 		}

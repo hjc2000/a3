@@ -24,23 +24,6 @@ extern int32_t tool_check_valid_buffer(UdpTsStreamSource *pudp);
 
 UdpTsStreamSource::UdpTsStreamSource()
 {
-	start = [&](void_stream_source s)
-	{
-		return Start();
-	};
-	stop = [&](void_stream_source s)
-	{
-		return Stop();
-	};
-	check = [&](void_stream_source s)
-	{
-		return Check();
-	};
-	get = [&](void_stream_source s)
-	{
-		return Get();
-	};
-
 	cout << "UdpTsStreamSource 构造" << endl;
 }
 
@@ -268,5 +251,5 @@ uint8_t *UdpTsStreamSource::Get()
 void UdpTsStreamSource::Free()
 {
 	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	pudp->stop(hsource);
+	pudp->Stop();
 }
