@@ -200,6 +200,27 @@ class UdpTsStreamSource :public TsStreamSource
 public:
 	UdpTsStreamSource()
 	{
+		start = [&](void_stream_source s)
+		{
+			return Start();
+		};
+		stop = [&](void_stream_source s)
+		{
+			return Stop();
+		};
+		check = [&](void_stream_source s)
+		{
+			return Check();
+		};
+		get = [&](void_stream_source s)
+		{
+			return Get();
+		};
+		free = [&](void_stream_source s)
+		{
+			Free();
+		};
+
 		cout << "UdpTsStreamSource 构造" << endl;
 	}
 
@@ -227,6 +248,10 @@ public:
 	int32_t isrunning = 0;
 
 	vatek_result Start();
+	vatek_result Stop();
+	vatek_result Check();
+	uint8_t *Get();
+	void Free();
 };
 
 /// <summary>

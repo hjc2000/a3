@@ -11,12 +11,6 @@
 
 #define UDP_BUFFER_LEN			(((4*1024*1024) / UDP_FRAME_LEN) * UDP_FRAME_LEN)
 
-extern vatek_result tool_udp_stream_start(void_stream_source hsource);
-extern vatek_result tool_udp_stream_check(void_stream_source hsource);
-extern uint8_t *tool_udp_stream_get(void_stream_source hsource);
-extern vatek_result tool_udp_stream_stop(void_stream_source hsource);
-extern void tool_udp_stream_free(void_stream_source hsource);
-
 /// <summary>
 ///		接收 UDP 流的线程函数
 /// </summary>
@@ -53,11 +47,6 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 			udp_stream_source->hlock = hlock;
 
 			psource->hsource = udp_stream_source;
-			psource->start = tool_udp_stream_start;
-			psource->stop = tool_udp_stream_stop;
-			psource->check = tool_udp_stream_check;
-			psource->get = tool_udp_stream_get;
-			psource->free = tool_udp_stream_free;
 			_disp_l("open UDP/RTP address - [%s]", sparam.url);
 			printf("\r\n");
 			nres = vatek_success;
@@ -73,77 +62,6 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 	}
 
 	return  nres;
-}
-
-vatek_result tool_udp_stream_start(void_stream_source hsource)
-{
-	vatek_result nres = vatek_badstatus;
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (!pudp->hrecv)
-	{
-		nres = cross_os_connect_socket(pudp->hsocket);
-		if (is_vatek_success(nres))
-		{
-			pudp->isrunning = 1;
-			pudp->hrecv = cross_os_create_thread(tool_recv_handle, pudp);
-			if (!pudp->hrecv)nres = vatek_hwfail;
-
-			if (!is_vatek_success(nres))
-				nres = cross_os_disconnect_socket(pudp->hsocket);
-		}
-		else
-		{
-			_disp_err("cross_os_connect_socket fail : %d", nres);
-		}
-	}
-
-	return nres;
-}
-
-vatek_result tool_udp_stream_check(void_stream_source hsource)
-{
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (!pudp->isrunning)
-	{
-		_disp_err("recv thread not running");
-		return vatek_badstatus;
-	}
-	else
-	{
-		int32_t valid = tool_check_valid_buffer((UdpTsStreamSource *)hsource);
-		if (valid)return (vatek_result)1;
-		return (vatek_result)0;
-	}
-}
-
-uint8_t *tool_udp_stream_get(void_stream_source hsource)
-{
-	if (tool_udp_stream_check(hsource))
-		return tool_get_valid_buffer((UdpTsStreamSource *)hsource);
-	return NULL;
-}
-
-vatek_result tool_udp_stream_stop(void_stream_source hsource)
-{
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	if (pudp->isrunning)
-	{
-		pudp->isrunning = 2;
-		while (pudp->isrunning)
-			cross_os_sleep(100);
-		cross_os_free_thread(pudp->hrecv);
-		cross_os_disconnect_socket(pudp->hsocket);
-	}
-
-	pudp->hrecv = NULL;
-	return vatek_success;
-}
-
-void tool_udp_stream_free(void_stream_source hsource)
-{
-	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
-	tool_udp_stream_stop(hsource);
-	delete hsource;
 }
 
 void tool_recv_handle(cross_thread_param *param)
@@ -288,4 +206,50 @@ vatek_result UdpTsStreamSource::Start()
 	}
 
 	return nres;
+}
+
+vatek_result UdpTsStreamSource::Stop()
+{
+	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
+	if (pudp->isrunning)
+	{
+		pudp->isrunning = 2;
+		while (pudp->isrunning)
+			cross_os_sleep(100);
+		cross_os_free_thread(pudp->hrecv);
+		cross_os_disconnect_socket(pudp->hsocket);
+	}
+
+	pudp->hrecv = NULL;
+	return vatek_success;
+}
+
+vatek_result UdpTsStreamSource::Check()
+{
+	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
+	if (!pudp->isrunning)
+	{
+		_disp_err("recv thread not running");
+		return vatek_badstatus;
+	}
+	else
+	{
+		int32_t valid = tool_check_valid_buffer((UdpTsStreamSource *)hsource);
+		if (valid)return (vatek_result)1;
+		return (vatek_result)0;
+	}
+}
+
+uint8_t *UdpTsStreamSource::Get()
+{
+	if (Check())
+		return tool_get_valid_buffer((UdpTsStreamSource *)hsource);
+	return NULL;
+}
+
+void UdpTsStreamSource::Free()
+{
+	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
+	pudp->stop(hsource);
+	delete hsource;
 }
