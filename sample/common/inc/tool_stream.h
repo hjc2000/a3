@@ -35,6 +35,7 @@ typedef void *void_stream_source;
 class TsStreamSource
 {
 public:
+	TsStreamSource();
 	virtual ~TsStreamSource() {}
 
 	void_stream_source hsource = nullptr;

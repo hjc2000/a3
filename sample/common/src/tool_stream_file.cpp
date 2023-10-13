@@ -2,12 +2,6 @@
 #include "../inc/tool_printf.h"
 #include "../inc/tool_tspacket.h"
 
-/// <summary>
-///		直接返回 vatek_success，其实就是 0
-/// </summary>
-/// <param name="hsource"></param>
-/// <returns></returns>
-extern vatek_result file_stream_start(void_stream_source hsource);
 extern vatek_result file_stream_check(void_stream_source hsource);
 
 /// <summary>
@@ -30,9 +24,20 @@ extern vatek_result file_stream_stop(void_stream_source hsource);
 /// <param name="hsource"></param>
 extern void file_stream_free(void_stream_source hsource);
 
+TsStreamSource::TsStreamSource()
+{
+	hsource = this;
+	start = [&](void_stream_source s)
+	{
+		return Start();
+	};
+
+	cout << "TsStreamSource 构造函数" << endl;
+}
+
 vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 {
-	FileTsStreamSource *pfile = new FileTsStreamSource;
+	FileTsStreamSource *pfile = (FileTsStreamSource *)psource;
 	if (!pfile)
 	{
 		// 内存分配失败
@@ -57,12 +62,9 @@ vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 		if (!is_vatek_success(nres))
 		{
 			fclose(pfile->fhandle);
-			delete pfile;
 		}
 		else
 		{
-			psource->hsource = pfile;
-			psource->start = file_stream_start;
 			psource->stop = file_stream_stop;
 			psource->get = file_stream_get;
 			psource->check = file_stream_check;
@@ -76,11 +78,6 @@ vatek_result stream_source_file_get(const char *file, TsStreamSource *psource)
 		_disp_err("file not current ts format - [%s]", file);
 
 	return nres;
-}
-
-vatek_result file_stream_start(void_stream_source hsource)
-{
-	return vatek_success;
 }
 
 vatek_result file_stream_check(void_stream_source hsource)
