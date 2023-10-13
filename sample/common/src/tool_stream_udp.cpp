@@ -27,7 +27,7 @@ UdpTsStreamSource::UdpTsStreamSource()
 	cout << "UdpTsStreamSource 构造" << endl;
 }
 
-vatek_result stream_source_udp_get(const char *ipaddr, UdpTsStreamSource *psource)
+vatek_result stream_source_udp_get(const char *ipaddr, shared_ptr<UdpTsStreamSource> psource)
 {
 	socket_param sparam = socket_param{};
 	vatek_result nres = vatek_success;

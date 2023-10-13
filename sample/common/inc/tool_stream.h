@@ -240,6 +240,6 @@ public:
 /// <param name="psource"></param>
 /// <returns></returns>
 vatek_result stream_source_file_get(const char *file, shared_ptr<FileTsStreamSource> psource);
-vatek_result stream_source_udp_get(const char *ipaddr, UdpTsStreamSource *psource);
+vatek_result stream_source_udp_get(const char *ipaddr, shared_ptr<UdpTsStreamSource> psource);
 
 #endif
