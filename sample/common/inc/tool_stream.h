@@ -200,6 +200,7 @@ class UdpTsStreamSource :public TsStreamSource
 public:
 	UdpTsStreamSource()
 	{
+		hsource = this;
 		start = [&](void_stream_source s)
 		{
 			return Start();

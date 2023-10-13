@@ -39,14 +39,11 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 
 	if (is_vatek_success(nres))
 	{
-		UdpTsStreamSource *udp_stream_source = new UdpTsStreamSource;
-		nres = vatek_memfail;
+		UdpTsStreamSource *udp_stream_source = (UdpTsStreamSource *)psource;
 		if (udp_stream_source)
 		{
 			udp_stream_source->hsocket = hsocket;
 			udp_stream_source->hlock = hlock;
-
-			psource->hsource = udp_stream_source;
 			_disp_l("open UDP/RTP address - [%s]", sparam.url);
 			printf("\r\n");
 			nres = vatek_success;
@@ -61,7 +58,7 @@ vatek_result stream_source_udp_get(const char *ipaddr, TsStreamSource *psource)
 			cross_os_free_mutex(hlock);
 	}
 
-	return  nres;
+	return nres;
 }
 
 void tool_recv_handle(cross_thread_param *param)
