@@ -160,7 +160,6 @@ int main(int argc, char *argv[])
 	usbcmd.modulator.mod.dvb_t.fft = fft_mode::fft_8k;
 	usbcmd.modulator.mod.dvb_t.guardinterval = guard_interval::guard_interval_1_16;
 	usbcmd.modulator.mod.dvb_t.coderate = code_rate::coderate_5_6;
-	usbcmd.sync = usbstream_sync{};
 
 	parser_cmd_source(4, (char **)cmd, &streamsource, &usbcmd);
 	/*

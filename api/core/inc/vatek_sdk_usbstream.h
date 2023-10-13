@@ -46,8 +46,6 @@ enum usbstream_remux
 	ustream_remux_passthrough,
 };
 
-typedef vatek_result(*fpsync_get_buffer)(void *param, uint8_t **slicebuf);
-
 enum uasync_status
 {
 	uasync_status_unsupport = -1,
@@ -66,14 +64,14 @@ enum uasync_mode
 struct usbstream_sync
 {
 	void *void_param = nullptr;
-	fpsync_get_buffer getbuffer = nullptr;
+	function<vatek_result(void *param, uint8_t **slicebuf)> getbuffer = nullptr;
 };
 
 struct usbstream_async
 {
 	uasync_mode mode;
-	uint32_t bitrate;			/* config source bitrate	[0: mean auto]*/
-	uint32_t prepare_ms;		/* config prepare time ms	[0: mean auto]*/
+	uint32_t bitrate = 0;			/* config source bitrate	[0: mean auto]*/
+	uint32_t prepare_ms = 0;		/* config prepare time ms	[0: mean auto]*/
 };
 
 class usbstream_param
@@ -85,8 +83,8 @@ public:
 	//uint32_t freq_khz;
 	r2_param r2param;
 	modulator_param modulator;
-	usbstream_sync sync;
-	usbstream_async async;
+	usbstream_sync sync{};
+	usbstream_async async{};
 };
 
 HAL_API vatek_result vatek_usbstream_open(vatek_device *hchip, void_vatek_usbstream *husstream);
