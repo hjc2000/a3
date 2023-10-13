@@ -275,5 +275,4 @@ void UdpTsStreamSource::Free()
 {
 	UdpTsStreamSource *pudp = (UdpTsStreamSource *)hsource;
 	pudp->stop(hsource);
-	delete hsource;
 }

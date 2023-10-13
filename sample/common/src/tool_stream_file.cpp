@@ -139,5 +139,4 @@ void file_stream_free(void_stream_source hsource)
 {
 	FileTsStreamSource *pfile = (FileTsStreamSource *)hsource;
 	fclose(pfile->fhandle);
-	delete pfile;
 }
