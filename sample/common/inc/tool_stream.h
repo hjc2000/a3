@@ -40,7 +40,6 @@ public:
 	virtual vatek_result Stop() = 0;
 	virtual vatek_result Check() = 0;
 	virtual uint8_t *Get() = 0;
-	virtual void Free() = 0;
 };
 
 /// <summary>
@@ -92,6 +91,12 @@ class FileTsStreamSource :public TsStreamSource
 
 public:
 	FileTsStreamSource();
+
+	~FileTsStreamSource()
+	{
+		cout << "FileTsStreamSource 析构" << endl;
+		fclose(fhandle);
+	}
 
 	/// <summary>
 	///		在 file_lock 中会被赋值为一个 ts 包的长度。有可能是 188 或 204.
@@ -194,7 +199,6 @@ public:
 
 	vatek_result Check() override;
 	uint8_t *Get() override;
-	void Free() override;
 };
 
 #define UDP_SLICE_BUF_NUMS		32
@@ -206,6 +210,7 @@ public:
 	~UdpTsStreamSource()
 	{
 		cout << "UdpTsStreamSource 析构" << endl;
+		Stop();
 	}
 
 	void_cross_socket hsocket = nullptr;
@@ -230,7 +235,6 @@ public:
 	vatek_result Stop() override;
 	vatek_result Check() override;
 	uint8_t *Get() override;
-	void Free() override;
 };
 
 /// <summary>

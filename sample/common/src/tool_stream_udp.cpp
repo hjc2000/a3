@@ -244,8 +244,3 @@ uint8_t *UdpTsStreamSource::Get()
 		return tool_get_valid_buffer(this);
 	return NULL;
 }
-
-void UdpTsStreamSource::Free()
-{
-	Stop();
-}
