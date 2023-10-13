@@ -28,7 +28,7 @@ if(MSVC)
 	endif()
 
 	add_executable(app_stream ${cli_SRC} ${cli_SRC_COM} ${cli_SRC_INTERNAL})
-	target_include_directories(app_stream PRIVATE "inc" "../../api/core/inc")
+	target_include_directories(app_stream PRIVATE "inc" "../../api/inc")
 	target_link_libraries(app_stream libvatek_core)
 
 elseif(UNIX)
@@ -37,7 +37,7 @@ elseif(UNIX)
 	endif()
 
 	add_executable(app_stream ${cli_SRC} ${cli_SRC_COM} ${cli_SRC_INTERNAL})
-	target_include_directories(app_stream PRIVATE "inc" "../../api/core/inc")
+	target_include_directories(app_stream PRIVATE "inc" "../../api/inc")
 	target_link_libraries(app_stream vatek_core)    
     
 endif()

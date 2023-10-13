@@ -32,7 +32,7 @@ endif()
 
 option(SDK2_EN_STATIC_ONLY "build static library only" OFF)
 
-add_subdirectory(api/core)
+add_subdirectory(api)
 
 if(${SDK2_EN_SAMPLE})
 	add_subdirectory(sample/app_stream)
